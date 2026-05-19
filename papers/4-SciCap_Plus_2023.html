@@ -1,0 +1,947 @@
+﻿<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>[2306.03491] SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning</title><meta property="og:description" content="In scholarly documents, figures provide a straightforward way of communicating scientific findings to readers. Automating figure caption generation helps move model understandings of scientific documents beyond text an…">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning">
+<meta name="twitter:image:src" content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png">
+<meta name="twitter:image:alt" content="ar5iv logo">
+<meta property="og:title" content="SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning">
+<meta property="og:site_name" content="ar5iv">
+<meta property="og:image" content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://ar5iv.labs.arxiv.org/html/2306.03491">
+<link rel="canonical" target="_blank" href="https://ar5iv.labs.arxiv.org/html/2306.03491">
+
+<!--Generated on Thu Feb 29 02:10:32 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<script>
+  function detectColorScheme(){
+    var theme="light";
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if(current_theme){
+      if(current_theme == "dark"){
+        theme = "dark";
+      } }
+    else if(!window.matchMedia) { return false; }
+    else if(window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      theme = "dark"; }
+    if (theme=="dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light"); } }
+
+  detectColorScheme();
+
+  function toggleColorScheme(){
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if (current_theme) {
+      if (current_theme == "light") {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+      else {
+        localStorage.setItem("ar5iv_theme", "light"); } }
+    else {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+    detectColorScheme(); }
+</script>
+<link media="all" rel="stylesheet" href="/assets/ar5iv-fonts.0.8.4.css"><link media="all" rel="stylesheet" href="/assets/ar5iv.0.8.4.css"><link media="all" rel="stylesheet" href="/assets/ar5iv-site.0.2.2.css">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">SciCap+: A Knowledge Augmented Dataset to 
+<br class="ltx_break">Study the Challenges of Scientific Figure Captioning</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">
+Zhishen Yang<sup id="id1.1.id1" class="ltx_sup">1</sup>, Raj Dabre<sup id="id2.2.id2" class="ltx_sup">2</sup>, Hideki Tanaka<sup id="id3.3.id3" class="ltx_sup">2</sup>, Naoaki Okazaki<sup id="id4.4.id4" class="ltx_sup">1</sup>
+<br class="ltx_break">
+</span></span>
+</div>
+
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+<p id="id5.id1" class="ltx_p">In scholarly documents, figures provide a straightforward way of communicating scientific findings to readers. Automating figure caption generation helps move model understandings of scientific documents beyond text and will help authors write informative captions that facilitate communicating scientific findings. Unlike previous studies, we reframe scientific figure captioning as a knowledge-augmented image captioning task that models need to utilize knowledge embedded across modalities for caption generation. To this end, we extended the large-scale SciCap dataset <cite class="ltx_cite ltx_citemacro_citep">(Hsu, Giles, and Huang <a href="#bib.bib12" title="" class="ltx_ref">2021</a>)</cite> to SciCap+ which includes mention-paragraphs (paragraphs mentioning figures) and OCR tokens. Then, we conduct experiments with the M4C-Captioner (a multimodal transformer-based model with a pointer network) as a baseline for our study. Our results indicate that mention-paragraphs serves as additional context knowledge, which significantly boosts the automatic standard image caption evaluation scores compared to the figure-only baselines. Human evaluations further reveal the challenges of generating figure captions that are informative to readers. The code and SciCap+ dataset will be publicly available:<span id="footnote1" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup><span class="ltx_tag ltx_tag_note">1</span><span class="ltx_ref ltx_nolink ltx_url ltx_ref_self">https://github.com/ZhishenYang/scientific˙figure˙captioning˙dataset</span></span></span></span></p>
+</div>
+<section id="Sx1" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Introduction</h2>
+
+<div id="Sx1.p1" class="ltx_para">
+<p id="Sx1.p1.1" class="ltx_p">Scholarly documents are the primary source for sharing scientific knowledge. These documents are available in various formats, such as journal articles, book chapters, and conference proceedings. A significant portion of these documents is text and together with figures and tables, they help communicate knowledge to readers. Using figures provides visual representations of complex information that facilitate the sharing of scientific findings with readers efficiently and straightforwardly. The standard practice for scientific writing is to write a caption for each figure, accompanied by paragraphs with detailed explanations. Figures and captions should be standalone, and readers should be able to understand the figures without referring to the main text. Helping authors write appropriate and informative captions for figures will improve the quality of scientific documents, thereby enhancing the speed and quality of scientific communication. In this study, we focus on automating the generation of captions for figures in scientific papers.</p>
+</div>
+<div id="Sx1.p2" class="ltx_para">
+<p id="Sx1.p2.1" class="ltx_p">Scientific figure captioning is a variant of the image captioning task. However, with the same goal of generating a caption, it has two unique challenges: 1. Figures are not natural images: In contrast to natural images, visual objects are texts and data points in scientific figures. 2. The captions of the figures should explain: Instead of simply identifying objects and texts in the figures, the caption should contain an analysis that the authors intend to present and highlight findings.</p>
+</div>
+<div id="Sx1.p3" class="ltx_para">
+<p id="Sx1.p3.1" class="ltx_p">A previous study <cite class="ltx_cite ltx_citemacro_citep">(Hsu, Giles, and Huang <a href="#bib.bib12" title="" class="ltx_ref">2021</a>)</cite>, SciCap, defines the scientific figure captioning task as a figure-to-caption task: A model generates captions only referring to figures. Their work reported relatively lower scores as measured by automatic evaluation metrics, indicating that there is considerable room for improvement. Intuitively, writing appropriate figure captions without sufficient background knowledge is difficult, since even humans will struggle to interpret a figure and write a caption unless some background knowledge is available. On the basis of this observation, we think that generating appropriate captions is infeasible without adding context knowledge to the caption generation model. This context comes in two forms: background knowledge from the running text and the OCR tokens in the figure, both of which should help reduce the burden on the captioning model. To this end, we augment the existing large-scale scientific figure captioning dataset: SciCap with mention-paragraphs and OCR tokens and call the resultant dataset as SciCap+. We then pose scientific figure captioning as a multimodal summarization task and use the M4C captioner model <cite class="ltx_cite ltx_citemacro_citep">(Sidorov et al. <a href="#bib.bib19" title="" class="ltx_ref">2020a</a>)</cite>(a model that utilizes multimodal knowledge to generate captions) as a baseline to study the scientific figure captioning task. The experimental result of automatic evaluation demonstrates that using knowledge embedded in different modalities, especially in the form of mention-paragraphs and OCR tokens, significantly boosts performance.</p>
+</div>
+<div id="Sx1.p4" class="ltx_para">
+<p id="Sx1.p4.1" class="ltx_p">In addition to experiments using automatic evaluation metrics, we also performed human generation and evaluation tasks in order to establish the inherent difficulty of scientific figure captioning. The results of the human evaluation reveal three findings: 1. Multimodal knowledge helps models outperform humans in caption generation tasks. 2. Model-generated captions are almost as informative as ground-truth captions: Human evaluators do not prefer either type of caption. 3. Even referring to mention-paragraphs, it is still challenging for humans to write captions that are close to ground truth. To the best of our knowledge, we are the first to pose scientific figure captioning as a multimodel summarization task and show that mention-paragraphs and OCR tokens as context substantially enhance the quality of generated captions.</p>
+</div>
+</section>
+<section id="Sx2" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Preliminary Study</h2>
+
+<figure id="Sx2.F1" class="ltx_figure"><img src="https://ar5iv.labs.arxiv.org/html/2306.03491/assets/x1.png" id="Sx2.F1.g1" class="ltx_graphics ltx_centering ltx_img_square" width="269" height="245" alt="Refer to caption">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>An example figure <cite class="ltx_cite ltx_citemacro_citep">(Zhang et al. <a href="#bib.bib23" title="" class="ltx_ref">2019</a>)</cite> with its captions and mention-paragraph and the text tokens recognized via OCR. Without referring to the mention-paragraph and the OCR tokens to tie the figure and the mention, we cannot have a proper interpretation of the data presented in the figure, which is communication cost comparison and speed up of CHEETAH over GAZELLE.</figcaption>
+</figure>
+<div id="Sx2.p1" class="ltx_para">
+<p id="Sx2.p1.1" class="ltx_p">In the traditional image captioning task, captioning an image aims at describing the appearances or natures of recognized objects and illustrating the relationships between recognized objects. Unlike the usual image captioning tasks, figures do not contain visual scenes. Instead, the captions provide interpretations of data presented in figures to highlight scientific findings that authors want to present to readers. With this unique characteristic, without referring to mention-paragraphs, which usually refer to the figure, it is extremely challenging for a human to have proper interpretations of figures. This is because they may lack background knowledge of the domain or context of the figure. As figure <a href="#Sx2.F1" title="Figure 1 ‣ Preliminary Study ‣ SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a> shows, by only looking at the figure, we do not know what ”comm.(KB)” stands for; therefore lacking the knowledge to write informative captions is challenging. However, the mention-paragraph contains ”communication cost” and this is also present in the caption, indicating that such background knowledge should help in writing accurate captions.</p>
+</div>
+</section>
+<section id="Sx3" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Problem Formulation</h2>
+
+<div id="Sx3.p1" class="ltx_para">
+<p id="Sx3.p1.6" class="ltx_p">The previous study <cite class="ltx_cite ltx_citemacro_citep">(Hsu, Giles, and Huang <a href="#bib.bib12" title="" class="ltx_ref">2021</a>)</cite> defined this task as an image captioning task as: Given a figure <math id="Sx3.p1.1.m1.1" class="ltx_Math" alttext="I" display="inline"><semantics id="Sx3.p1.1.m1.1a"><mi id="Sx3.p1.1.m1.1.1" xref="Sx3.p1.1.m1.1.1.cmml">I</mi><annotation-xml encoding="MathML-Content" id="Sx3.p1.1.m1.1b"><ci id="Sx3.p1.1.m1.1.1.cmml" xref="Sx3.p1.1.m1.1.1">𝐼</ci></annotation-xml><annotation encoding="application/x-tex" id="Sx3.p1.1.m1.1c">I</annotation></semantics></math>, the model generates a caption <math id="Sx3.p1.2.m2.4" class="ltx_Math" alttext="C=[c_{0},c_{1},...,c_{N}]" display="inline"><semantics id="Sx3.p1.2.m2.4a"><mrow id="Sx3.p1.2.m2.4.4" xref="Sx3.p1.2.m2.4.4.cmml"><mi id="Sx3.p1.2.m2.4.4.5" xref="Sx3.p1.2.m2.4.4.5.cmml">C</mi><mo id="Sx3.p1.2.m2.4.4.4" xref="Sx3.p1.2.m2.4.4.4.cmml">=</mo><mrow id="Sx3.p1.2.m2.4.4.3.3" xref="Sx3.p1.2.m2.4.4.3.4.cmml"><mo stretchy="false" id="Sx3.p1.2.m2.4.4.3.3.4" xref="Sx3.p1.2.m2.4.4.3.4.cmml">[</mo><msub id="Sx3.p1.2.m2.2.2.1.1.1" xref="Sx3.p1.2.m2.2.2.1.1.1.cmml"><mi id="Sx3.p1.2.m2.2.2.1.1.1.2" xref="Sx3.p1.2.m2.2.2.1.1.1.2.cmml">c</mi><mn id="Sx3.p1.2.m2.2.2.1.1.1.3" xref="Sx3.p1.2.m2.2.2.1.1.1.3.cmml">0</mn></msub><mo id="Sx3.p1.2.m2.4.4.3.3.5" xref="Sx3.p1.2.m2.4.4.3.4.cmml">,</mo><msub id="Sx3.p1.2.m2.3.3.2.2.2" xref="Sx3.p1.2.m2.3.3.2.2.2.cmml"><mi id="Sx3.p1.2.m2.3.3.2.2.2.2" xref="Sx3.p1.2.m2.3.3.2.2.2.2.cmml">c</mi><mn id="Sx3.p1.2.m2.3.3.2.2.2.3" xref="Sx3.p1.2.m2.3.3.2.2.2.3.cmml">1</mn></msub><mo id="Sx3.p1.2.m2.4.4.3.3.6" xref="Sx3.p1.2.m2.4.4.3.4.cmml">,</mo><mi mathvariant="normal" id="Sx3.p1.2.m2.1.1" xref="Sx3.p1.2.m2.1.1.cmml">…</mi><mo id="Sx3.p1.2.m2.4.4.3.3.7" xref="Sx3.p1.2.m2.4.4.3.4.cmml">,</mo><msub id="Sx3.p1.2.m2.4.4.3.3.3" xref="Sx3.p1.2.m2.4.4.3.3.3.cmml"><mi id="Sx3.p1.2.m2.4.4.3.3.3.2" xref="Sx3.p1.2.m2.4.4.3.3.3.2.cmml">c</mi><mi id="Sx3.p1.2.m2.4.4.3.3.3.3" xref="Sx3.p1.2.m2.4.4.3.3.3.3.cmml">N</mi></msub><mo stretchy="false" id="Sx3.p1.2.m2.4.4.3.3.8" xref="Sx3.p1.2.m2.4.4.3.4.cmml">]</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="Sx3.p1.2.m2.4b"><apply id="Sx3.p1.2.m2.4.4.cmml" xref="Sx3.p1.2.m2.4.4"><eq id="Sx3.p1.2.m2.4.4.4.cmml" xref="Sx3.p1.2.m2.4.4.4"></eq><ci id="Sx3.p1.2.m2.4.4.5.cmml" xref="Sx3.p1.2.m2.4.4.5">𝐶</ci><list id="Sx3.p1.2.m2.4.4.3.4.cmml" xref="Sx3.p1.2.m2.4.4.3.3"><apply id="Sx3.p1.2.m2.2.2.1.1.1.cmml" xref="Sx3.p1.2.m2.2.2.1.1.1"><csymbol cd="ambiguous" id="Sx3.p1.2.m2.2.2.1.1.1.1.cmml" xref="Sx3.p1.2.m2.2.2.1.1.1">subscript</csymbol><ci id="Sx3.p1.2.m2.2.2.1.1.1.2.cmml" xref="Sx3.p1.2.m2.2.2.1.1.1.2">𝑐</ci><cn type="integer" id="Sx3.p1.2.m2.2.2.1.1.1.3.cmml" xref="Sx3.p1.2.m2.2.2.1.1.1.3">0</cn></apply><apply id="Sx3.p1.2.m2.3.3.2.2.2.cmml" xref="Sx3.p1.2.m2.3.3.2.2.2"><csymbol cd="ambiguous" id="Sx3.p1.2.m2.3.3.2.2.2.1.cmml" xref="Sx3.p1.2.m2.3.3.2.2.2">subscript</csymbol><ci id="Sx3.p1.2.m2.3.3.2.2.2.2.cmml" xref="Sx3.p1.2.m2.3.3.2.2.2.2">𝑐</ci><cn type="integer" id="Sx3.p1.2.m2.3.3.2.2.2.3.cmml" xref="Sx3.p1.2.m2.3.3.2.2.2.3">1</cn></apply><ci id="Sx3.p1.2.m2.1.1.cmml" xref="Sx3.p1.2.m2.1.1">…</ci><apply id="Sx3.p1.2.m2.4.4.3.3.3.cmml" xref="Sx3.p1.2.m2.4.4.3.3.3"><csymbol cd="ambiguous" id="Sx3.p1.2.m2.4.4.3.3.3.1.cmml" xref="Sx3.p1.2.m2.4.4.3.3.3">subscript</csymbol><ci id="Sx3.p1.2.m2.4.4.3.3.3.2.cmml" xref="Sx3.p1.2.m2.4.4.3.3.3.2">𝑐</ci><ci id="Sx3.p1.2.m2.4.4.3.3.3.3.cmml" xref="Sx3.p1.2.m2.4.4.3.3.3.3">𝑁</ci></apply></list></apply></annotation-xml><annotation encoding="application/x-tex" id="Sx3.p1.2.m2.4c">C=[c_{0},c_{1},...,c_{N}]</annotation></semantics></math>. However, we reframe the scientific figure captioning task as a knowledge-augmented image captioning task requiring knowledge extracted from text and vision modalities. For a figure, we define a paragraph that mentions it (mention-paragraph) and text within the figure, extracted via OCR, as text modalities. The figure itself and visual appearances of OCR texts are visual modalities. Given a scientific figure <math id="Sx3.p1.3.m3.1" class="ltx_Math" alttext="I" display="inline"><semantics id="Sx3.p1.3.m3.1a"><mi id="Sx3.p1.3.m3.1.1" xref="Sx3.p1.3.m3.1.1.cmml">I</mi><annotation-xml encoding="MathML-Content" id="Sx3.p1.3.m3.1b"><ci id="Sx3.p1.3.m3.1.1.cmml" xref="Sx3.p1.3.m3.1.1">𝐼</ci></annotation-xml><annotation encoding="application/x-tex" id="Sx3.p1.3.m3.1c">I</annotation></semantics></math> and knowledge extracted from text and vision modality: <math id="Sx3.p1.4.m4.1" class="ltx_Math" alttext="K_{text}" display="inline"><semantics id="Sx3.p1.4.m4.1a"><msub id="Sx3.p1.4.m4.1.1" xref="Sx3.p1.4.m4.1.1.cmml"><mi id="Sx3.p1.4.m4.1.1.2" xref="Sx3.p1.4.m4.1.1.2.cmml">K</mi><mrow id="Sx3.p1.4.m4.1.1.3" xref="Sx3.p1.4.m4.1.1.3.cmml"><mi id="Sx3.p1.4.m4.1.1.3.2" xref="Sx3.p1.4.m4.1.1.3.2.cmml">t</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.4.m4.1.1.3.1" xref="Sx3.p1.4.m4.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.4.m4.1.1.3.3" xref="Sx3.p1.4.m4.1.1.3.3.cmml">e</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.4.m4.1.1.3.1a" xref="Sx3.p1.4.m4.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.4.m4.1.1.3.4" xref="Sx3.p1.4.m4.1.1.3.4.cmml">x</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.4.m4.1.1.3.1b" xref="Sx3.p1.4.m4.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.4.m4.1.1.3.5" xref="Sx3.p1.4.m4.1.1.3.5.cmml">t</mi></mrow></msub><annotation-xml encoding="MathML-Content" id="Sx3.p1.4.m4.1b"><apply id="Sx3.p1.4.m4.1.1.cmml" xref="Sx3.p1.4.m4.1.1"><csymbol cd="ambiguous" id="Sx3.p1.4.m4.1.1.1.cmml" xref="Sx3.p1.4.m4.1.1">subscript</csymbol><ci id="Sx3.p1.4.m4.1.1.2.cmml" xref="Sx3.p1.4.m4.1.1.2">𝐾</ci><apply id="Sx3.p1.4.m4.1.1.3.cmml" xref="Sx3.p1.4.m4.1.1.3"><times id="Sx3.p1.4.m4.1.1.3.1.cmml" xref="Sx3.p1.4.m4.1.1.3.1"></times><ci id="Sx3.p1.4.m4.1.1.3.2.cmml" xref="Sx3.p1.4.m4.1.1.3.2">𝑡</ci><ci id="Sx3.p1.4.m4.1.1.3.3.cmml" xref="Sx3.p1.4.m4.1.1.3.3">𝑒</ci><ci id="Sx3.p1.4.m4.1.1.3.4.cmml" xref="Sx3.p1.4.m4.1.1.3.4">𝑥</ci><ci id="Sx3.p1.4.m4.1.1.3.5.cmml" xref="Sx3.p1.4.m4.1.1.3.5">𝑡</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="Sx3.p1.4.m4.1c">K_{text}</annotation></semantics></math> and <math id="Sx3.p1.5.m5.1" class="ltx_Math" alttext="K_{vision}" display="inline"><semantics id="Sx3.p1.5.m5.1a"><msub id="Sx3.p1.5.m5.1.1" xref="Sx3.p1.5.m5.1.1.cmml"><mi id="Sx3.p1.5.m5.1.1.2" xref="Sx3.p1.5.m5.1.1.2.cmml">K</mi><mrow id="Sx3.p1.5.m5.1.1.3" xref="Sx3.p1.5.m5.1.1.3.cmml"><mi id="Sx3.p1.5.m5.1.1.3.2" xref="Sx3.p1.5.m5.1.1.3.2.cmml">v</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.5.m5.1.1.3.1" xref="Sx3.p1.5.m5.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.5.m5.1.1.3.3" xref="Sx3.p1.5.m5.1.1.3.3.cmml">i</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.5.m5.1.1.3.1a" xref="Sx3.p1.5.m5.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.5.m5.1.1.3.4" xref="Sx3.p1.5.m5.1.1.3.4.cmml">s</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.5.m5.1.1.3.1b" xref="Sx3.p1.5.m5.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.5.m5.1.1.3.5" xref="Sx3.p1.5.m5.1.1.3.5.cmml">i</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.5.m5.1.1.3.1c" xref="Sx3.p1.5.m5.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.5.m5.1.1.3.6" xref="Sx3.p1.5.m5.1.1.3.6.cmml">o</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.5.m5.1.1.3.1d" xref="Sx3.p1.5.m5.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.5.m5.1.1.3.7" xref="Sx3.p1.5.m5.1.1.3.7.cmml">n</mi></mrow></msub><annotation-xml encoding="MathML-Content" id="Sx3.p1.5.m5.1b"><apply id="Sx3.p1.5.m5.1.1.cmml" xref="Sx3.p1.5.m5.1.1"><csymbol cd="ambiguous" id="Sx3.p1.5.m5.1.1.1.cmml" xref="Sx3.p1.5.m5.1.1">subscript</csymbol><ci id="Sx3.p1.5.m5.1.1.2.cmml" xref="Sx3.p1.5.m5.1.1.2">𝐾</ci><apply id="Sx3.p1.5.m5.1.1.3.cmml" xref="Sx3.p1.5.m5.1.1.3"><times id="Sx3.p1.5.m5.1.1.3.1.cmml" xref="Sx3.p1.5.m5.1.1.3.1"></times><ci id="Sx3.p1.5.m5.1.1.3.2.cmml" xref="Sx3.p1.5.m5.1.1.3.2">𝑣</ci><ci id="Sx3.p1.5.m5.1.1.3.3.cmml" xref="Sx3.p1.5.m5.1.1.3.3">𝑖</ci><ci id="Sx3.p1.5.m5.1.1.3.4.cmml" xref="Sx3.p1.5.m5.1.1.3.4">𝑠</ci><ci id="Sx3.p1.5.m5.1.1.3.5.cmml" xref="Sx3.p1.5.m5.1.1.3.5">𝑖</ci><ci id="Sx3.p1.5.m5.1.1.3.6.cmml" xref="Sx3.p1.5.m5.1.1.3.6">𝑜</ci><ci id="Sx3.p1.5.m5.1.1.3.7.cmml" xref="Sx3.p1.5.m5.1.1.3.7">𝑛</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="Sx3.p1.5.m5.1c">K_{vision}</annotation></semantics></math>, we define figure caption generation task as <math id="Sx3.p1.6.m6.2" class="ltx_Math" alttext="P(C|I,K_{text},K_{vision})" display="inline"><semantics id="Sx3.p1.6.m6.2a"><mrow id="Sx3.p1.6.m6.2.2" xref="Sx3.p1.6.m6.2.2.cmml"><mi id="Sx3.p1.6.m6.2.2.3" xref="Sx3.p1.6.m6.2.2.3.cmml">P</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.6.m6.2.2.2" xref="Sx3.p1.6.m6.2.2.2.cmml">​</mo><mrow id="Sx3.p1.6.m6.2.2.1.1" xref="Sx3.p1.6.m6.2.2.1.1.1.cmml"><mo stretchy="false" id="Sx3.p1.6.m6.2.2.1.1.2" xref="Sx3.p1.6.m6.2.2.1.1.1.cmml">(</mo><mrow id="Sx3.p1.6.m6.2.2.1.1.1" xref="Sx3.p1.6.m6.2.2.1.1.1.cmml"><mi id="Sx3.p1.6.m6.2.2.1.1.1.4" xref="Sx3.p1.6.m6.2.2.1.1.1.4.cmml">C</mi><mo fence="false" id="Sx3.p1.6.m6.2.2.1.1.1.3" xref="Sx3.p1.6.m6.2.2.1.1.1.3.cmml">|</mo><mrow id="Sx3.p1.6.m6.2.2.1.1.1.2.2" xref="Sx3.p1.6.m6.2.2.1.1.1.2.3.cmml"><mi id="Sx3.p1.6.m6.1.1" xref="Sx3.p1.6.m6.1.1.cmml">I</mi><mo id="Sx3.p1.6.m6.2.2.1.1.1.2.2.3" xref="Sx3.p1.6.m6.2.2.1.1.1.2.3.cmml">,</mo><msub id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.cmml"><mi id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.2" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.2.cmml">K</mi><mrow id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.cmml"><mi id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.2" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.2.cmml">t</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.1" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.3" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.3.cmml">e</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.1a" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.4" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.4.cmml">x</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.1b" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.1.cmml">​</mo><mi id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.5" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.5.cmml">t</mi></mrow></msub><mo id="Sx3.p1.6.m6.2.2.1.1.1.2.2.4" xref="Sx3.p1.6.m6.2.2.1.1.1.2.3.cmml">,</mo><msub id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.cmml"><mi id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.2" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.2.cmml">K</mi><mrow id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.cmml"><mi id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.2" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.2.cmml">v</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1.cmml">​</mo><mi id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.3" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.3.cmml">i</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1a" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1.cmml">​</mo><mi id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.4" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.4.cmml">s</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1b" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1.cmml">​</mo><mi id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.5" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.5.cmml">i</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1c" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1.cmml">​</mo><mi id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.6" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.6.cmml">o</mi><mo lspace="0em" rspace="0em" id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1d" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1.cmml">​</mo><mi id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.7" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.7.cmml">n</mi></mrow></msub></mrow></mrow><mo stretchy="false" id="Sx3.p1.6.m6.2.2.1.1.3" xref="Sx3.p1.6.m6.2.2.1.1.1.cmml">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="Sx3.p1.6.m6.2b"><apply id="Sx3.p1.6.m6.2.2.cmml" xref="Sx3.p1.6.m6.2.2"><times id="Sx3.p1.6.m6.2.2.2.cmml" xref="Sx3.p1.6.m6.2.2.2"></times><ci id="Sx3.p1.6.m6.2.2.3.cmml" xref="Sx3.p1.6.m6.2.2.3">𝑃</ci><apply id="Sx3.p1.6.m6.2.2.1.1.1.cmml" xref="Sx3.p1.6.m6.2.2.1.1"><csymbol cd="latexml" id="Sx3.p1.6.m6.2.2.1.1.1.3.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.3">conditional</csymbol><ci id="Sx3.p1.6.m6.2.2.1.1.1.4.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.4">𝐶</ci><list id="Sx3.p1.6.m6.2.2.1.1.1.2.3.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2"><ci id="Sx3.p1.6.m6.1.1.cmml" xref="Sx3.p1.6.m6.1.1">𝐼</ci><apply id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1"><csymbol cd="ambiguous" id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.1.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1">subscript</csymbol><ci id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.2.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.2">𝐾</ci><apply id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3"><times id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.1.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.1"></times><ci id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.2.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.2">𝑡</ci><ci id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.3.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.3">𝑒</ci><ci id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.4.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.4">𝑥</ci><ci id="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.5.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.1.1.1.3.5">𝑡</ci></apply></apply><apply id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2"><csymbol cd="ambiguous" id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.1.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2">subscript</csymbol><ci id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.2.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.2">𝐾</ci><apply id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3"><times id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.1"></times><ci id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.2.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.2">𝑣</ci><ci id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.3.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.3">𝑖</ci><ci id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.4.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.4">𝑠</ci><ci id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.5.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.5">𝑖</ci><ci id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.6.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.6">𝑜</ci><ci id="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.7.cmml" xref="Sx3.p1.6.m6.2.2.1.1.1.2.2.2.3.7">𝑛</ci></apply></apply></list></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="Sx3.p1.6.m6.2c">P(C|I,K_{text},K_{vision})</annotation></semantics></math></p>
+</div>
+</section>
+<section id="Sx4" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">SciCap+ Dataset</h2>
+
+<div id="Sx4.p1" class="ltx_para">
+<p id="Sx4.p1.1" class="ltx_p">SciCap is a large-scale figure-caption dataset comprising graph plots extracted from 10 years of collections of arXiv computer science papers. We used around 414k figures from SciCap and augment each figure with its mention-paragraphs and OCR tokens with metadata. This section details the data set creation and data augmentation processes. Figure <a href="#Sx4.F2" title="Figure 2 ‣ SciCap+ Dataset ‣ SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2</span></a> shows the overall workflow behind the creation of SciCap+.</p>
+</div>
+<figure id="Sx4.F2" class="ltx_figure"><img src="https://ar5iv.labs.arxiv.org/html/2306.03491/assets/figures/dataset_creation.png" id="Sx4.F2.g1" class="ltx_graphics ltx_centering ltx_img_landscape" width="698" height="369" alt="Refer to caption">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 2: </span>The overall workflow of the data augmentation for creating SciCap+ dataset. For each figure in SciCap+, we extracted its mention-paragraphs and OCR tokens (OCR texts and bounding boxes). </figcaption>
+</figure>
+<section id="Sx4.SSx1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">Mention-paragraph Extraction</h3>
+
+<div id="Sx4.SSx1.p1" class="ltx_para">
+<p id="Sx4.SSx1.p1.1" class="ltx_p">We first obtained papers in PDF format from Kaggle arXiv dastaset <span id="footnote2" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">2</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">2</sup><span class="ltx_tag ltx_tag_note">2</span><span class="ltx_ref ltx_nolink ltx_url ltx_ref_self">https://www.kaggle.com/datasets/Cornell-University/arxiv</span></span></span></span>. The reason for using PDFs is that not all papers have source files and some are complicated to parse.
+After obtaining PDFs, we used PDFFigures 2.0 <cite class="ltx_cite ltx_citemacro_citep">(Clark and Divvala <a href="#bib.bib9" title="" class="ltx_ref">2016</a>)</cite> <span id="footnote3" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">3</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">3</sup><span class="ltx_tag ltx_tag_note">3</span><span class="ltx_ref ltx_nolink ltx_url ltx_ref_self">https://github.com/allenai/pdffigures2</span></span></span></span> to extract the body text of each paper. PDFFigure 2.0 is a tool that extracts figures, captions, tables, and text from scholarly PDFs in computer science. In scholarly documents, authors label figures with numbers (e.g. Figure 1. Fig. 1). For a figure, we used its figure number in a regular expression to locate a paragraph that mentions it.</p>
+</div>
+</section>
+<section id="Sx4.SSx2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">OCR Extraction</h3>
+
+<div id="Sx4.SSx2.p1" class="ltx_para">
+<p id="Sx4.SSx2.p1.1" class="ltx_p">The SciCap dataset also provides texts extracted from figures as metadata, but does not provide location information for each text. To include location information for each text in a figure, we used Google Vision OCR API to extract text tokens from each figure with its coordinates of bounding boxes.</p>
+</div>
+</section>
+<section id="Sx4.SSx3" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">Data Statistics</h3>
+
+<div id="Sx4.SSx3.p1" class="ltx_para">
+<p id="Sx4.SSx3.p1.1" class="ltx_p">The splitting of the SciCap dataset is at the figure level. Therefore, figures from the same paper may appear in different splits. This will lead to unfair evaluation, since the information of one figure in one split may coincidentally overlap with the information of another figure. We thus re-split figures at the document level to eliminate this overlapping problem.
+<cite class="ltx_cite ltx_citemacro_citet">Hsu, Giles, and Huang (<a href="#bib.bib12" title="" class="ltx_ref">2021</a>)</cite> show that text normalization and figure filtering do not improve model performance. Hence, we keep original captions and all figures (with/without sub-figures) in the SciCap+ dataset. For a figure, we kept only the first paragraph that mentions it in the body text. Table<a href="#Sx4.T1" title="Table 1 ‣ Data Statistics ‣ SciCap+ Dataset ‣ SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning" class="ltx_ref"><span class="ltx_text ltx_ref_tag">1</span></a> shows statistics of the SciCap+ dataset. In all three splits, around 90% of the captions are less than 66 words. All figures are graph plots.</p>
+</div>
+<figure id="Sx4.T1" class="ltx_table">
+<table id="Sx4.T1.1" class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<thead class="ltx_thead">
+<tr id="Sx4.T1.1.1.1" class="ltx_tr">
+<th id="Sx4.T1.1.1.1.1" class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row ltx_border_t"><span id="Sx4.T1.1.1.1.1.1" class="ltx_text ltx_font_bold">Split</span></th>
+<th id="Sx4.T1.1.1.1.2" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx4.T1.1.1.1.2.1" class="ltx_text ltx_font_bold">Figures</span></th>
+<th id="Sx4.T1.1.1.1.3" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx4.T1.1.1.1.3.1" class="ltx_text ltx_font_bold">Words</span></th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr id="Sx4.T1.1.2.1" class="ltx_tr">
+<th id="Sx4.T1.1.2.1.1" class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t">Training</th>
+<td id="Sx4.T1.1.2.1.2" class="ltx_td ltx_align_right ltx_border_t">394,005</td>
+<td id="Sx4.T1.1.2.1.3" class="ltx_td ltx_align_right ltx_border_t">12,336,511</td>
+</tr>
+<tr id="Sx4.T1.1.3.2" class="ltx_tr">
+<th id="Sx4.T1.1.3.2.1" class="ltx_td ltx_align_left ltx_th ltx_th_row">Test</th>
+<td id="Sx4.T1.1.3.2.2" class="ltx_td ltx_align_right">10,336</td>
+<td id="Sx4.T1.1.3.2.3" class="ltx_td ltx_align_right">323,382</td>
+</tr>
+<tr id="Sx4.T1.1.4.3" class="ltx_tr">
+<th id="Sx4.T1.1.4.3.1" class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_b">Validation</th>
+<td id="Sx4.T1.1.4.3.2" class="ltx_td ltx_align_right ltx_border_b">10,468</td>
+<td id="Sx4.T1.1.4.3.3" class="ltx_td ltx_align_right ltx_border_b">329,072</td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 1: </span>Statistics of the SciCap+ dataset.</figcaption>
+</figure>
+</section>
+<section id="Sx4.SSx4" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">Dataset Quality Evaluation</h3>
+
+<div id="Sx4.SSx4.p1" class="ltx_para">
+<p id="Sx4.SSx4.p1.1" class="ltx_p">Before conducting experiments, we conducted human evaluation of SciCap+ where we checked the mention-paragraphs and OCR tokens extraction quality. The aim was to establish whether the mention-paragraphs and OCR tokens were extracted correctly and relevant to the figure and its caption. To this end, we randomly selected 200 figures from the training set and for each figure, we asked two human evaluators to give scores of 1-5 (1 represents no relevance and 5 is highly relevant) for relevance between a caption of a figure and its mention-paragraphs and OCR tokens.
+</p>
+</div>
+<div id="Sx4.SSx4.p2" class="ltx_para">
+<p id="Sx4.SSx4.p2.1" class="ltx_p">Compared to natural image captioning, human evaluation tasks for the figure captioning domain requires expert knowledge. We recruited two colleagues to carry out this evaluation task. Both of them have Ph.D. degrees in computer science and work as researchers. Their experience implies that they have adequate experience writing figure captions.</p>
+</div>
+<div id="Sx4.SSx4.p3" class="ltx_para">
+<p id="Sx4.SSx4.p3.1" class="ltx_p">Figure <a href="#Sx4.F3" title="Figure 3 ‣ Dataset Quality Evaluation ‣ SciCap+ Dataset ‣ SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3</span></a> shows the distributions of the relevance scores. We can observe that two evaluators gave most of the figures (evaluator 1: 64% and evaluator 2: 79.5%) with relevance scores greater than 3 and a cohen kappa score of 0.28. This evaluation result indicates that the mention-paragraphs and OCR tokens have a satisfactory extraction quality and that the annotators considered most of them as relevant to the figure and its caption. However, the two annotators seem to have a relatively lower agreement (0.28) regarding which figures and captions are relevant to their mention-paragraphs and OCR tokens. We attribute this to the fact that evaluations of figure captions are highly subjective.</p>
+</div>
+<figure id="Sx4.F3" class="ltx_figure"><img src="https://ar5iv.labs.arxiv.org/html/2306.03491/assets/figures/correlation_score.png" id="Sx4.F3.g1" class="ltx_graphics ltx_centering ltx_img_landscape" width="314" height="198" alt="Refer to caption">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 3: </span>Score distribution on correlations between mention-paragraph, OCR tokens and figure captions. Both evaluators judged most of the figures with at least moderate correlations with captions. </figcaption>
+</figure>
+</section>
+</section>
+<section id="Sx5" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Experiments</h2>
+
+<div id="Sx5.p1" class="ltx_para">
+<p id="Sx5.p1.1" class="ltx_p">We conduct experiments using SciCap+ to empirically prove that scientific figure captioning is inherently a knowledge-augmented task and benefits from knowledge coming from both text and vision modalities.</p>
+</div>
+<section id="Sx5.SSx1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">Figure Captioning Model</h3>
+
+<div id="Sx5.SSx1.p1" class="ltx_para">
+<p id="Sx5.SSx1.p1.1" class="ltx_p">We used M4C-Captioner <cite class="ltx_cite ltx_citemacro_citep">(Sidorov et al. <a href="#bib.bib19" title="" class="ltx_ref">2020a</a>)</cite> as the baseline model to study the scientific figure captioning task. The M4C-Captioner is based on Multimodal Multi-Copy Mesh (M4C) <cite class="ltx_cite ltx_citemacro_citep">(Hu et al. <a href="#bib.bib13" title="" class="ltx_ref">2020</a>)</cite> that jointly learns representations across input modalities. To solve the out-of-vocabulary problem during caption generation, it is equipped with a pointer network that picks up text from OCR tokens or a predefined fixed dictionary. In this work, 3 input features are used, figure, mention-paragraphs and OCR tokens fed to encoders, the output representations of which are fed to the M4C-Captioner.</p>
+</div>
+</section>
+<section id="Sx5.SSx2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">Implementation and Training</h3>
+
+<div id="Sx5.SSx2.p1" class="ltx_para">
+<p id="Sx5.SSx2.p1.2" class="ltx_p">Our implementation of M4C-Captioner is based on the MMF framework <cite class="ltx_cite ltx_citemacro_citep">(Singh et al. <a href="#bib.bib21" title="" class="ltx_ref">2020</a>)</cite> and Pytorch. The implementation allows users to specify diverse pre-trained encoders for each modality, which can be fine-tuned or frozen during training. The M4C-captioner itself has <math id="Sx5.SSx2.p1.1.m1.1" class="ltx_Math" alttext="D=768" display="inline"><semantics id="Sx5.SSx2.p1.1.m1.1a"><mrow id="Sx5.SSx2.p1.1.m1.1.1" xref="Sx5.SSx2.p1.1.m1.1.1.cmml"><mi id="Sx5.SSx2.p1.1.m1.1.1.2" xref="Sx5.SSx2.p1.1.m1.1.1.2.cmml">D</mi><mo id="Sx5.SSx2.p1.1.m1.1.1.1" xref="Sx5.SSx2.p1.1.m1.1.1.1.cmml">=</mo><mn id="Sx5.SSx2.p1.1.m1.1.1.3" xref="Sx5.SSx2.p1.1.m1.1.1.3.cmml">768</mn></mrow><annotation-xml encoding="MathML-Content" id="Sx5.SSx2.p1.1.m1.1b"><apply id="Sx5.SSx2.p1.1.m1.1.1.cmml" xref="Sx5.SSx2.p1.1.m1.1.1"><eq id="Sx5.SSx2.p1.1.m1.1.1.1.cmml" xref="Sx5.SSx2.p1.1.m1.1.1.1"></eq><ci id="Sx5.SSx2.p1.1.m1.1.1.2.cmml" xref="Sx5.SSx2.p1.1.m1.1.1.2">𝐷</ci><cn type="integer" id="Sx5.SSx2.p1.1.m1.1.1.3.cmml" xref="Sx5.SSx2.p1.1.m1.1.1.3">768</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="Sx5.SSx2.p1.1.m1.1c">D=768</annotation></semantics></math> hidden dimension size, <math id="Sx5.SSx2.p1.2.m2.1" class="ltx_Math" alttext="K=4" display="inline"><semantics id="Sx5.SSx2.p1.2.m2.1a"><mrow id="Sx5.SSx2.p1.2.m2.1.1" xref="Sx5.SSx2.p1.2.m2.1.1.cmml"><mi id="Sx5.SSx2.p1.2.m2.1.1.2" xref="Sx5.SSx2.p1.2.m2.1.1.2.cmml">K</mi><mo id="Sx5.SSx2.p1.2.m2.1.1.1" xref="Sx5.SSx2.p1.2.m2.1.1.1.cmml">=</mo><mn id="Sx5.SSx2.p1.2.m2.1.1.3" xref="Sx5.SSx2.p1.2.m2.1.1.3.cmml">4</mn></mrow><annotation-xml encoding="MathML-Content" id="Sx5.SSx2.p1.2.m2.1b"><apply id="Sx5.SSx2.p1.2.m2.1.1.cmml" xref="Sx5.SSx2.p1.2.m2.1.1"><eq id="Sx5.SSx2.p1.2.m2.1.1.1.cmml" xref="Sx5.SSx2.p1.2.m2.1.1.1"></eq><ci id="Sx5.SSx2.p1.2.m2.1.1.2.cmml" xref="Sx5.SSx2.p1.2.m2.1.1.2">𝐾</ci><cn type="integer" id="Sx5.SSx2.p1.2.m2.1.1.3.cmml" xref="Sx5.SSx2.p1.2.m2.1.1.3">4</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="Sx5.SSx2.p1.2.m2.1c">K=4</annotation></semantics></math> transformer layers and 12 attention heads. We used sentencepiece <cite class="ltx_cite ltx_citemacro_citep">(Kudo and Richardson <a href="#bib.bib15" title="" class="ltx_ref">2018</a>)</cite> to obtain a dictionary of 32000 subwords built from both mention-paragraphs and OCR tokens. This is used as the M4C-captioner’s vocabulary. We followed the BERT-BASE hyperparameter setting and trained from scratch.</p>
+</div>
+<div id="Sx5.SSx2.p2" class="ltx_para">
+<p id="Sx5.SSx2.p2.1" class="ltx_p">Regarding the encoders that feed features to M4C-captioner, we used pre-trained Resnet-152 as the figure’s vision encoder. For each figure, we applied a 2D adaptive average pooling over outputs from layer 5 to obtain a global visual feature vector with a dimension of 2048. Layers 2, 3 and 4 layers were fine-tuned during training. For mention-paragraph features, SciBERT <cite class="ltx_cite ltx_citemacro_citep">(Beltagy, Lo, and Cohan <a href="#bib.bib4" title="" class="ltx_ref">2019</a>)</cite> was used to encode<span id="footnote4" class="ltx_note ltx_role_footnote"><sup class="ltx_note_mark">4</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">4</sup><span class="ltx_tag ltx_tag_note">4</span>We only used the first 3 layers of SciBERT for lightweightness.</span></span></span> it into 758-dimensional feature vectors. The number of vectors equals the number of sub-word tokens in the mention-paragraph, which we limit to 192. The mention-paragraph encoder is also fine-tuned during training. Finally, for OCR tokens, we use both text and visual features. We selected FastText <cite class="ltx_cite ltx_citemacro_citep">(Almazán et al. <a href="#bib.bib1" title="" class="ltx_ref">2014</a>)</cite> as the word encoder and Pyramidal Histogram of Characters (PHOC) <cite class="ltx_cite ltx_citemacro_citep">(Bojanowski et al. <a href="#bib.bib5" title="" class="ltx_ref">2017a</a>)</cite> as the character encoder. Regarding the visual feature encoder of OCR tokens, we first extracted Faster R-CNN fc6 features and then applied fc7 weights to it to obtain 2048-dimensional appearance features for bounding boxes of OCR tokens. The fc7 weights were fine-tuned during training. We kept a maximum of 95 OCR tokens per figure.</p>
+</div>
+<div id="Sx5.SSx2.p3" class="ltx_para">
+<p id="Sx5.SSx2.p3.2" class="ltx_p">We trained a model on a GPU server with 8 Nvidia Tesla V100 GPUs. Training a model with a complete set of features took 13 hours. During training, we used a batch size of 128. We selected CIDEr as the evaluation metric. The evaluation interval is every 2000 iterations, we stop training if CIDEr score does not improve for 4 evaluation intervals. The optimizer is Adam with a learning rate of <math id="Sx5.SSx2.p3.1.m1.1" class="ltx_Math" alttext="0.001" display="inline"><semantics id="Sx5.SSx2.p3.1.m1.1a"><mn id="Sx5.SSx2.p3.1.m1.1.1" xref="Sx5.SSx2.p3.1.m1.1.1.cmml">0.001</mn><annotation-xml encoding="MathML-Content" id="Sx5.SSx2.p3.1.m1.1b"><cn type="float" id="Sx5.SSx2.p3.1.m1.1.1.cmml" xref="Sx5.SSx2.p3.1.m1.1.1">0.001</cn></annotation-xml><annotation encoding="application/x-tex" id="Sx5.SSx2.p3.1.m1.1c">0.001</annotation></semantics></math> and <math id="Sx5.SSx2.p3.2.m2.1" class="ltx_Math" alttext="\epsilon=1.0\mathrm{E}{-08}" display="inline"><semantics id="Sx5.SSx2.p3.2.m2.1a"><mrow id="Sx5.SSx2.p3.2.m2.1.1" xref="Sx5.SSx2.p3.2.m2.1.1.cmml"><mi id="Sx5.SSx2.p3.2.m2.1.1.2" xref="Sx5.SSx2.p3.2.m2.1.1.2.cmml">ϵ</mi><mo id="Sx5.SSx2.p3.2.m2.1.1.1" xref="Sx5.SSx2.p3.2.m2.1.1.1.cmml">=</mo><mrow id="Sx5.SSx2.p3.2.m2.1.1.3" xref="Sx5.SSx2.p3.2.m2.1.1.3.cmml"><mrow id="Sx5.SSx2.p3.2.m2.1.1.3.2" xref="Sx5.SSx2.p3.2.m2.1.1.3.2.cmml"><mn id="Sx5.SSx2.p3.2.m2.1.1.3.2.2" xref="Sx5.SSx2.p3.2.m2.1.1.3.2.2.cmml">1.0</mn><mo lspace="0em" rspace="0em" id="Sx5.SSx2.p3.2.m2.1.1.3.2.1" xref="Sx5.SSx2.p3.2.m2.1.1.3.2.1.cmml">​</mo><mi mathvariant="normal" id="Sx5.SSx2.p3.2.m2.1.1.3.2.3" xref="Sx5.SSx2.p3.2.m2.1.1.3.2.3.cmml">E</mi></mrow><mo id="Sx5.SSx2.p3.2.m2.1.1.3.1" xref="Sx5.SSx2.p3.2.m2.1.1.3.1.cmml">−</mo><mn id="Sx5.SSx2.p3.2.m2.1.1.3.3" xref="Sx5.SSx2.p3.2.m2.1.1.3.3.cmml">08</mn></mrow></mrow><annotation-xml encoding="MathML-Content" id="Sx5.SSx2.p3.2.m2.1b"><apply id="Sx5.SSx2.p3.2.m2.1.1.cmml" xref="Sx5.SSx2.p3.2.m2.1.1"><eq id="Sx5.SSx2.p3.2.m2.1.1.1.cmml" xref="Sx5.SSx2.p3.2.m2.1.1.1"></eq><ci id="Sx5.SSx2.p3.2.m2.1.1.2.cmml" xref="Sx5.SSx2.p3.2.m2.1.1.2">italic-ϵ</ci><apply id="Sx5.SSx2.p3.2.m2.1.1.3.cmml" xref="Sx5.SSx2.p3.2.m2.1.1.3"><minus id="Sx5.SSx2.p3.2.m2.1.1.3.1.cmml" xref="Sx5.SSx2.p3.2.m2.1.1.3.1"></minus><apply id="Sx5.SSx2.p3.2.m2.1.1.3.2.cmml" xref="Sx5.SSx2.p3.2.m2.1.1.3.2"><times id="Sx5.SSx2.p3.2.m2.1.1.3.2.1.cmml" xref="Sx5.SSx2.p3.2.m2.1.1.3.2.1"></times><cn type="float" id="Sx5.SSx2.p3.2.m2.1.1.3.2.2.cmml" xref="Sx5.SSx2.p3.2.m2.1.1.3.2.2">1.0</cn><ci id="Sx5.SSx2.p3.2.m2.1.1.3.2.3.cmml" xref="Sx5.SSx2.p3.2.m2.1.1.3.2.3">E</ci></apply><cn type="integer" id="Sx5.SSx2.p3.2.m2.1.1.3.3.cmml" xref="Sx5.SSx2.p3.2.m2.1.1.3.3">08</cn></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="Sx5.SSx2.p3.2.m2.1c">\epsilon=1.0\mathrm{E}{-08}</annotation></semantics></math>. We also used a multistep learning rate schedule with warmup iterations of 1000 and a warmup factor of 0.2. We kept the maximum number of decoding steps at the decoding time as 67.
+For evaluation, we used five standard metrics for evaluating image captions: BLEU-4 <cite class="ltx_cite ltx_citemacro_citep">(Papineni et al. <a href="#bib.bib17" title="" class="ltx_ref">2002</a>)</cite>, METEOR <cite class="ltx_cite ltx_citemacro_citep">(Banerjee and Lavie <a href="#bib.bib3" title="" class="ltx_ref">2005</a>)</cite>, ROUGE-L <cite class="ltx_cite ltx_citemacro_citep">(Lin <a href="#bib.bib16" title="" class="ltx_ref">2004</a>)</cite>, CIDEr <cite class="ltx_cite ltx_citemacro_citep">(Vedantam, Lawrence Zitnick, and Parikh <a href="#bib.bib22" title="" class="ltx_ref">2015</a>)</cite> and SPICE <cite class="ltx_cite ltx_citemacro_citep">(Anderson et al. <a href="#bib.bib2" title="" class="ltx_ref">2016</a>)</cite>. Since figure captions contain scientific terms which can be seen as uncommon words, among all five metrics, we are particularly interested in CIDEr since it emphasizes them.</p>
+</div>
+<figure id="Sx5.T2" class="ltx_table">
+<div id="Sx5.T2.1" class="ltx_inline-block ltx_align_center ltx_transformed_outer" style="width:433.6pt;height:154.9pt;vertical-align:-0.7pt;"><span class="ltx_transformed_inner" style="transform:translate(-86.8pt,30.9pt) scale(0.714086824395354,0.714086824395354) ;">
+<table id="Sx5.T2.1.1" class="ltx_tabular ltx_align_middle">
+<tbody class="ltx_tbody">
+<tr id="Sx5.T2.1.1.1.1" class="ltx_tr">
+<td id="Sx5.T2.1.1.1.1.1" class="ltx_td ltx_align_left ltx_border_t"><span id="Sx5.T2.1.1.1.1.1.1" class="ltx_text ltx_font_bold">Model</span></td>
+<td id="Sx5.T2.1.1.1.1.2" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.1.1.2.1" class="ltx_text ltx_font_bold">BLEU-4</span></td>
+<td id="Sx5.T2.1.1.1.1.3" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.1.1.3.1" class="ltx_text ltx_font_bold">METEOR</span></td>
+<td id="Sx5.T2.1.1.1.1.4" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.1.1.4.1" class="ltx_text ltx_font_bold">ROUGE-L</span></td>
+<td id="Sx5.T2.1.1.1.1.5" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.1.1.5.1" class="ltx_text ltx_font_bold">SPICE</span></td>
+<td id="Sx5.T2.1.1.1.1.6" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.1.1.6.1" class="ltx_text ltx_font_bold">CIDEr</span></td>
+</tr>
+<tr id="Sx5.T2.1.1.2.2" class="ltx_tr">
+<td id="Sx5.T2.1.1.2.2.1" class="ltx_td ltx_align_left ltx_border_t">1. M4C-Captioner (Figure Only )</td>
+<td id="Sx5.T2.1.1.2.2.2" class="ltx_td ltx_align_right ltx_border_t">1.5</td>
+<td id="Sx5.T2.1.1.2.2.3" class="ltx_td ltx_align_right ltx_border_t">5.6</td>
+<td id="Sx5.T2.1.1.2.2.4" class="ltx_td ltx_align_right ltx_border_t">15.4</td>
+<td id="Sx5.T2.1.1.2.2.5" class="ltx_td ltx_align_right ltx_border_t">4.3</td>
+<td id="Sx5.T2.1.1.2.2.6" class="ltx_td ltx_align_right ltx_border_t">4.6</td>
+</tr>
+<tr id="Sx5.T2.1.1.3.3" class="ltx_tr">
+<td id="Sx5.T2.1.1.3.3.1" class="ltx_td ltx_align_left">2. M4C-Captioner (Mention Only)</td>
+<td id="Sx5.T2.1.1.3.3.2" class="ltx_td ltx_align_right">5.3</td>
+<td id="Sx5.T2.1.1.3.3.3" class="ltx_td ltx_align_right">11.0</td>
+<td id="Sx5.T2.1.1.3.3.4" class="ltx_td ltx_align_right">27.4</td>
+<td id="Sx5.T2.1.1.3.3.5" class="ltx_td ltx_align_right">14.3</td>
+<td id="Sx5.T2.1.1.3.3.6" class="ltx_td ltx_align_right">49.0</td>
+</tr>
+<tr id="Sx5.T2.1.1.4.4" class="ltx_tr">
+<td id="Sx5.T2.1.1.4.4.1" class="ltx_td ltx_align_left">3. M4C-Captioner (Figure and OCR features)</td>
+<td id="Sx5.T2.1.1.4.4.2" class="ltx_td ltx_align_right">2.6</td>
+<td id="Sx5.T2.1.1.4.4.3" class="ltx_td ltx_align_right">7.6</td>
+<td id="Sx5.T2.1.1.4.4.4" class="ltx_td ltx_align_right">20.5</td>
+<td id="Sx5.T2.1.1.4.4.5" class="ltx_td ltx_align_right">10.1</td>
+<td id="Sx5.T2.1.1.4.4.6" class="ltx_td ltx_align_right">22.2</td>
+</tr>
+<tr id="Sx5.T2.1.1.5.5" class="ltx_tr">
+<td id="Sx5.T2.1.1.5.5.1" class="ltx_td ltx_align_left">4. M4C-Captioner (Mention, Figure and OCR features)</td>
+<td id="Sx5.T2.1.1.5.5.2" class="ltx_td ltx_align_right">6.3</td>
+<td id="Sx5.T2.1.1.5.5.3" class="ltx_td ltx_align_right"><span id="Sx5.T2.1.1.5.5.3.1" class="ltx_text ltx_font_bold">12.0</span></td>
+<td id="Sx5.T2.1.1.5.5.4" class="ltx_td ltx_align_right">29.2</td>
+<td id="Sx5.T2.1.1.5.5.5" class="ltx_td ltx_align_right">15.8</td>
+<td id="Sx5.T2.1.1.5.5.6" class="ltx_td ltx_align_right">55.8</td>
+</tr>
+<tr id="Sx5.T2.1.1.6.6" class="ltx_tr">
+<td id="Sx5.T2.1.1.6.6.1" class="ltx_td ltx_align_left ltx_border_t"><span id="Sx5.T2.1.1.6.6.1.1" class="ltx_text ltx_font_bold">Ablation Study on Figures</span></td>
+<td id="Sx5.T2.1.1.6.6.2" class="ltx_td ltx_border_t"></td>
+<td id="Sx5.T2.1.1.6.6.3" class="ltx_td ltx_border_t"></td>
+<td id="Sx5.T2.1.1.6.6.4" class="ltx_td ltx_border_t"></td>
+<td id="Sx5.T2.1.1.6.6.5" class="ltx_td ltx_border_t"></td>
+<td id="Sx5.T2.1.1.6.6.6" class="ltx_td ltx_border_t"></td>
+</tr>
+<tr id="Sx5.T2.1.1.7.7" class="ltx_tr">
+<td id="Sx5.T2.1.1.7.7.1" class="ltx_td ltx_align_left ltx_border_t">5. M4C-Captioner (Mention and OCR features)</td>
+<td id="Sx5.T2.1.1.7.7.2" class="ltx_td ltx_align_right ltx_border_t">6.3</td>
+<td id="Sx5.T2.1.1.7.7.3" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.7.7.3.1" class="ltx_text ltx_font_bold">12.0</span></td>
+<td id="Sx5.T2.1.1.7.7.4" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.7.7.4.1" class="ltx_text ltx_font_bold">29.3</span></td>
+<td id="Sx5.T2.1.1.7.7.5" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.7.7.5.1" class="ltx_text ltx_font_bold">16.1</span></td>
+<td id="Sx5.T2.1.1.7.7.6" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.7.7.6.1" class="ltx_text ltx_font_bold">56.4</span></td>
+</tr>
+<tr id="Sx5.T2.1.1.8.8" class="ltx_tr">
+<td id="Sx5.T2.1.1.8.8.1" class="ltx_td ltx_align_left ltx_border_t"><span id="Sx5.T2.1.1.8.8.1.1" class="ltx_text ltx_font_bold">Ablation Study on OCR features</span></td>
+<td id="Sx5.T2.1.1.8.8.2" class="ltx_td ltx_border_t"></td>
+<td id="Sx5.T2.1.1.8.8.3" class="ltx_td ltx_border_t"></td>
+<td id="Sx5.T2.1.1.8.8.4" class="ltx_td ltx_border_t"></td>
+<td id="Sx5.T2.1.1.8.8.5" class="ltx_td ltx_border_t"></td>
+<td id="Sx5.T2.1.1.8.8.6" class="ltx_td ltx_border_t"></td>
+</tr>
+<tr id="Sx5.T2.1.1.9.9" class="ltx_tr">
+<td id="Sx5.T2.1.1.9.9.1" class="ltx_td ltx_align_left ltx_border_t">6. M4C-Captioner (Mention, Figure and w/o OCR features )</td>
+<td id="Sx5.T2.1.1.9.9.2" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx5.T2.1.1.9.9.2.1" class="ltx_text ltx_font_bold">6.4</span></td>
+<td id="Sx5.T2.1.1.9.9.3" class="ltx_td ltx_align_right ltx_border_t">11.5</td>
+<td id="Sx5.T2.1.1.9.9.4" class="ltx_td ltx_align_right ltx_border_t">27.9</td>
+<td id="Sx5.T2.1.1.9.9.5" class="ltx_td ltx_align_right ltx_border_t">14.6</td>
+<td id="Sx5.T2.1.1.9.9.6" class="ltx_td ltx_align_right ltx_border_t">50.5</td>
+</tr>
+<tr id="Sx5.T2.1.1.10.10" class="ltx_tr">
+<td id="Sx5.T2.1.1.10.10.1" class="ltx_td ltx_align_left">7. M4C-Captioner (Mention, Figure and OCR spatial features)</td>
+<td id="Sx5.T2.1.1.10.10.2" class="ltx_td ltx_align_right">5.8</td>
+<td id="Sx5.T2.1.1.10.10.3" class="ltx_td ltx_align_right">11.1</td>
+<td id="Sx5.T2.1.1.10.10.4" class="ltx_td ltx_align_right">27.3</td>
+<td id="Sx5.T2.1.1.10.10.5" class="ltx_td ltx_align_right">14.1</td>
+<td id="Sx5.T2.1.1.10.10.6" class="ltx_td ltx_align_right">48.0</td>
+</tr>
+<tr id="Sx5.T2.1.1.11.11" class="ltx_tr">
+<td id="Sx5.T2.1.1.11.11.1" class="ltx_td ltx_align_left">8. M4C-Captioner (Mention, Figure and OCR (w/o spatial features) features )</td>
+<td id="Sx5.T2.1.1.11.11.2" class="ltx_td ltx_align_right"><span id="Sx5.T2.1.1.11.11.2.1" class="ltx_text ltx_font_bold">6.4</span></td>
+<td id="Sx5.T2.1.1.11.11.3" class="ltx_td ltx_align_right"><span id="Sx5.T2.1.1.11.11.3.1" class="ltx_text ltx_font_bold">12.0</span></td>
+<td id="Sx5.T2.1.1.11.11.4" class="ltx_td ltx_align_right">29.1</td>
+<td id="Sx5.T2.1.1.11.11.5" class="ltx_td ltx_align_right">15.7</td>
+<td id="Sx5.T2.1.1.11.11.6" class="ltx_td ltx_align_right">54.6</td>
+</tr>
+<tr id="Sx5.T2.1.1.12.12" class="ltx_tr">
+<td id="Sx5.T2.1.1.12.12.1" class="ltx_td ltx_align_left ltx_border_b">9. M4C-Captioner (Mention, Figure and OCR (w/o visual features) features )</td>
+<td id="Sx5.T2.1.1.12.12.2" class="ltx_td ltx_align_right ltx_border_b">6.2</td>
+<td id="Sx5.T2.1.1.12.12.3" class="ltx_td ltx_align_right ltx_border_b">11.9</td>
+<td id="Sx5.T2.1.1.12.12.4" class="ltx_td ltx_align_right ltx_border_b">28.9</td>
+<td id="Sx5.T2.1.1.12.12.5" class="ltx_td ltx_align_right ltx_border_b">15.6</td>
+<td id="Sx5.T2.1.1.12.12.6" class="ltx_td ltx_align_right ltx_border_b">54.1</td>
+</tr>
+</tbody>
+</table>
+</span></div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 2: </span>Automatic evaluation scores of M4C-captioning on SciCap dataset. Aggregate knowledge from text and vision modalities significantly boosts the model performance compared to the figure-only baseline.</figcaption>
+</figure>
+</section>
+</section>
+<section id="Sx6" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Results</h2>
+
+<section id="Sx6.SSx1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">Main Result</h3>
+
+<div id="Sx6.SSx1.p1" class="ltx_para">
+<p id="Sx6.SSx1.p1.1" class="ltx_p">The experimental results in table <a href="#Sx5.T2" title="Table 2 ‣ Implementation and Training ‣ Experiments ‣ SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2</span></a> demonstrate that using the mention-paragraph and OCR tokens significantly improves scores on all five metrics compared to the figure-only baseline. The experimental results align with our hypothesis and preliminary study that scientific figure captioning is a knowledge-augmented image captioning task, OCR tokens and knowledge embedded in mention-paragraphs help in composing informative captions.</p>
+</div>
+<div id="Sx6.SSx1.p2" class="ltx_para">
+<p id="Sx6.SSx1.p2.1" class="ltx_p">We established a baseline M4C-Captioner (Figure only) with figures as the only input modality to the M4C-Captioner model in row #1. This baseline is in the non-knowledge setting. Therefore, low scores in all metrics show that the model needs knowledge of other modalities. Using the mention only in row #2 shows that the mention certainly contains a lot of useful information, as evidenced by the increase in performance. When OCR features are added to the figure input in row #3, scores for all metrics have significant gains compared to the figure-only baseline, but are still weaker than when only mentions are used. This motivates the combination of mentions and OCR features and in row #4, compared to the figure-only baseline and figure-OCR-only baseline, the performance further improves. Perhaps the most interesting result is in row #5 where we only use the mentions and OCR features but not the figure and get the best performance, particularly for SPICE and CIDEr, albeit comparable to when the figure is included in row #4. All these results indicate that explicitly extracted multimodal knowledge helps to compose informative captions.</p>
+</div>
+</section>
+<section id="Sx6.SSx2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">Ablation Studies</h3>
+
+<div id="Sx6.SSx2.p1" class="ltx_para">
+<p id="Sx6.SSx2.p1.1" class="ltx_p">We first performed an ablation study on figures by removing visual feature vectors, the CIDEr score increases slightly, indicating that the visual feature is more like noise for the model. This is likely because the Resnet-152 visual encoder we used was not trained on figures.</p>
+</div>
+<div id="Sx6.SSx2.p2" class="ltx_para">
+<p id="Sx6.SSx2.p2.1" class="ltx_p">We enriched the representations of the OCR features by adding text, visual, and spatial features. Ablation studies aim to reveal impacts of each OCR token feature. All comparisons are with row #4 even though row #5 gives slightly better scores. With OCR features completely removed in row #6, the CIDEr scores decrease by 5.3. Using only OCR spatial features in row #7, the CIDEr score dropped by 7.8. Removing OCR spatial features in row #8, the CIDEr scores dropped by 1.2. Upon removal of OCR visual features in row #9, the CIDEr score is close to removing spatial features.</p>
+</div>
+<div id="Sx6.SSx2.p3" class="ltx_para">
+<p id="Sx6.SSx2.p3.1" class="ltx_p">The above ablation study indicates that the enriched OCR contributes to the informativeness of generated captions. Unlike OCR features, where appearance features are helpful to the model, removing visual features of figures increases CIDEr scores, further indicating that we need a specific vision encoder for figures to provide meaningful features.</p>
+</div>
+</section>
+</section>
+<section id="Sx7" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Human Evaluation</h2>
+
+<div id="Sx7.p1" class="ltx_para">
+<p id="Sx7.p1.1" class="ltx_p">Having established that knowledge helps a model perform figure captioning, we conducted some human evaluation activities to determine their subjective quality.
+We conducted human caption generation and evaluation tasks. The human generation task is to examine whether humans can write better captions than models. The evaluation task is the appropriateness evaluation task, which consists of evaluating how appropriate the model-generated captions are versus ground-truth captions. Both tasks were performed by the same human subjects for the quality assessment of the data set.</p>
+</div>
+<section id="Sx7.SSx1" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">Figure Caption Generation Task</h3>
+
+<figure id="Sx7.T3" class="ltx_table">
+<table id="Sx7.T3.1" class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<thead class="ltx_thead">
+<tr id="Sx7.T3.1.1.1" class="ltx_tr">
+<th id="Sx7.T3.1.1.1.1" class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row ltx_border_t"><span id="Sx7.T3.1.1.1.1.1" class="ltx_text ltx_font_bold">Annotator</span></th>
+<th id="Sx7.T3.1.1.1.2" class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_th_row ltx_border_t"><span id="Sx7.T3.1.1.1.2.1" class="ltx_text ltx_font_bold">Inputs</span></th>
+<th id="Sx7.T3.1.1.1.3" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx7.T3.1.1.1.3.1" class="ltx_text ltx_font_bold">BLEU-4</span></th>
+<th id="Sx7.T3.1.1.1.4" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx7.T3.1.1.1.4.1" class="ltx_text ltx_font_bold">METEOR</span></th>
+<th id="Sx7.T3.1.1.1.5" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx7.T3.1.1.1.5.1" class="ltx_text ltx_font_bold">ROUGE-L</span></th>
+<th id="Sx7.T3.1.1.1.6" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx7.T3.1.1.1.6.1" class="ltx_text ltx_font_bold">SPICE</span></th>
+<th id="Sx7.T3.1.1.1.7" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx7.T3.1.1.1.7.1" class="ltx_text ltx_font_bold">CIDEr</span></th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr id="Sx7.T3.1.2.1" class="ltx_tr">
+<th id="Sx7.T3.1.2.1.1" class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t">1. Annotator 1</th>
+<th id="Sx7.T3.1.2.1.2" class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_t">Figure-only</th>
+<td id="Sx7.T3.1.2.1.3" class="ltx_td ltx_align_right ltx_border_t">2.4</td>
+<td id="Sx7.T3.1.2.1.4" class="ltx_td ltx_align_right ltx_border_t">8.3</td>
+<td id="Sx7.T3.1.2.1.5" class="ltx_td ltx_align_right ltx_border_t">13.2</td>
+<td id="Sx7.T3.1.2.1.6" class="ltx_td ltx_align_right ltx_border_t">9.4</td>
+<td id="Sx7.T3.1.2.1.7" class="ltx_td ltx_align_right ltx_border_t">14.6</td>
+</tr>
+<tr id="Sx7.T3.1.3.2" class="ltx_tr">
+<th id="Sx7.T3.1.3.2.1" class="ltx_td ltx_align_left ltx_th ltx_th_row">2. Annotator 2</th>
+<th id="Sx7.T3.1.3.2.2" class="ltx_td ltx_align_center ltx_th ltx_th_row">Figure-only</th>
+<td id="Sx7.T3.1.3.2.3" class="ltx_td ltx_align_right"><span id="Sx7.T3.1.3.2.3.1" class="ltx_text ltx_font_bold">3.8</span></td>
+<td id="Sx7.T3.1.3.2.4" class="ltx_td ltx_align_right"><span id="Sx7.T3.1.3.2.4.1" class="ltx_text ltx_font_bold">10.1</span></td>
+<td id="Sx7.T3.1.3.2.5" class="ltx_td ltx_align_right"><span id="Sx7.T3.1.3.2.5.1" class="ltx_text ltx_font_bold">21.5</span></td>
+<td id="Sx7.T3.1.3.2.6" class="ltx_td ltx_align_right">8.9</td>
+<td id="Sx7.T3.1.3.2.7" class="ltx_td ltx_align_right"><span id="Sx7.T3.1.3.2.7.1" class="ltx_text ltx_font_bold">23.8</span></td>
+</tr>
+<tr id="Sx7.T3.1.4.3" class="ltx_tr">
+<th id="Sx7.T3.1.4.3.1" class="ltx_td ltx_align_left ltx_th ltx_th_row">3. M4C-Captioner</th>
+<th id="Sx7.T3.1.4.3.2" class="ltx_td ltx_align_center ltx_th ltx_th_row">Image and OCR features</th>
+<td id="Sx7.T3.1.4.3.3" class="ltx_td ltx_align_right">3.6</td>
+<td id="Sx7.T3.1.4.3.4" class="ltx_td ltx_align_right">7.6</td>
+<td id="Sx7.T3.1.4.3.5" class="ltx_td ltx_align_right">20.5</td>
+<td id="Sx7.T3.1.4.3.6" class="ltx_td ltx_align_right"><span id="Sx7.T3.1.4.3.6.1" class="ltx_text ltx_font_bold">11.5</span></td>
+<td id="Sx7.T3.1.4.3.7" class="ltx_td ltx_align_right">18.7</td>
+</tr>
+<tr id="Sx7.T3.1.5.4" class="ltx_tr">
+<th id="Sx7.T3.1.5.4.1" class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t">4. Annotator 1</th>
+<th id="Sx7.T3.1.5.4.2" class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_t">Figure-Mention</th>
+<td id="Sx7.T3.1.5.4.3" class="ltx_td ltx_align_right ltx_border_t"><span id="Sx7.T3.1.5.4.3.1" class="ltx_text ltx_font_bold">7.7</span></td>
+<td id="Sx7.T3.1.5.4.4" class="ltx_td ltx_align_right ltx_border_t">13.4</td>
+<td id="Sx7.T3.1.5.4.5" class="ltx_td ltx_align_right ltx_border_t">19.1</td>
+<td id="Sx7.T3.1.5.4.6" class="ltx_td ltx_align_right ltx_border_t">15.9</td>
+<td id="Sx7.T3.1.5.4.7" class="ltx_td ltx_align_right ltx_border_t">11.3</td>
+</tr>
+<tr id="Sx7.T3.1.6.5" class="ltx_tr">
+<th id="Sx7.T3.1.6.5.1" class="ltx_td ltx_align_left ltx_th ltx_th_row">5. Annotator 2</th>
+<th id="Sx7.T3.1.6.5.2" class="ltx_td ltx_align_center ltx_th ltx_th_row">Figure-Mention</th>
+<td id="Sx7.T3.1.6.5.3" class="ltx_td ltx_align_right">7.5</td>
+<td id="Sx7.T3.1.6.5.4" class="ltx_td ltx_align_right"><span id="Sx7.T3.1.6.5.4.1" class="ltx_text ltx_font_bold">14.8</span></td>
+<td id="Sx7.T3.1.6.5.5" class="ltx_td ltx_align_right">24.8</td>
+<td id="Sx7.T3.1.6.5.6" class="ltx_td ltx_align_right">14.3</td>
+<td id="Sx7.T3.1.6.5.7" class="ltx_td ltx_align_right">18.8</td>
+</tr>
+<tr id="Sx7.T3.1.7.6" class="ltx_tr">
+<th id="Sx7.T3.1.7.6.1" class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_b">6. M4C-Captioner</th>
+<th id="Sx7.T3.1.7.6.2" class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_b">Mention, Figure and OCR features</th>
+<td id="Sx7.T3.1.7.6.3" class="ltx_td ltx_align_right ltx_border_b">5.5</td>
+<td id="Sx7.T3.1.7.6.4" class="ltx_td ltx_align_right ltx_border_b">11.6</td>
+<td id="Sx7.T3.1.7.6.5" class="ltx_td ltx_align_right ltx_border_b"><span id="Sx7.T3.1.7.6.5.1" class="ltx_text ltx_font_bold">28.1</span></td>
+<td id="Sx7.T3.1.7.6.6" class="ltx_td ltx_align_right ltx_border_b"><span id="Sx7.T3.1.7.6.6.1" class="ltx_text ltx_font_bold">16.1</span></td>
+<td id="Sx7.T3.1.7.6.7" class="ltx_td ltx_align_right ltx_border_b"><span id="Sx7.T3.1.7.6.7.1" class="ltx_text ltx_font_bold">47.7</span></td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 3: </span>Automatic evaluation scores on human-generated captions. The model has similar performances when the figure is the only available source. Using knowledge from vision and text modality, the model has a larger gain on CIDEr scores. </figcaption>
+</figure>
+<figure id="Sx7.T4" class="ltx_table">
+<table id="Sx7.T4.1" class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<thead class="ltx_thead">
+<tr id="Sx7.T4.1.1.1" class="ltx_tr">
+<th id="Sx7.T4.1.1.1.1" class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_t"><span id="Sx7.T4.1.1.1.1.1" class="ltx_text ltx_font_bold">Model</span></th>
+<th id="Sx7.T4.1.1.1.2" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx7.T4.1.1.1.2.1" class="ltx_text ltx_font_bold">Average Scores</span></th>
+<th id="Sx7.T4.1.1.1.3" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx7.T4.1.1.1.3.1" class="ltx_text ltx_font_bold">Average Scores</span></th>
+<th id="Sx7.T4.1.1.1.4" class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_border_t"><span id="Sx7.T4.1.1.1.4.1" class="ltx_text ltx_font_bold">Cohen-Kappa Scores</span></th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr id="Sx7.T4.1.2.1" class="ltx_tr">
+<td id="Sx7.T4.1.2.1.1" class="ltx_td"></td>
+<th id="Sx7.T4.1.2.1.2" class="ltx_td ltx_align_right ltx_th ltx_th_column"><span id="Sx7.T4.1.2.1.2.1" class="ltx_text ltx_font_bold">Evaluator 1</span></th>
+<th id="Sx7.T4.1.2.1.3" class="ltx_td ltx_align_right ltx_th ltx_th_column"><span id="Sx7.T4.1.2.1.3.1" class="ltx_text ltx_font_bold">Evaluator 2</span></th>
+<td id="Sx7.T4.1.2.1.4" class="ltx_td"></td>
+</tr>
+<tr id="Sx7.T4.1.3.2" class="ltx_tr">
+<td id="Sx7.T4.1.3.2.1" class="ltx_td ltx_align_left ltx_border_t">1. M4C-Captioner (Mention, Figure and OCR features)</td>
+<td id="Sx7.T4.1.3.2.2" class="ltx_td ltx_align_right ltx_border_t">1.8</td>
+<td id="Sx7.T4.1.3.2.3" class="ltx_td ltx_align_right ltx_border_t">2.13</td>
+<td id="Sx7.T4.1.3.2.4" class="ltx_td ltx_align_right ltx_border_t">0.27</td>
+</tr>
+<tr id="Sx7.T4.1.4.3" class="ltx_tr">
+<td id="Sx7.T4.1.4.3.1" class="ltx_td ltx_align_left">2. M4C-Captioner (Mention and OCR features)</td>
+<td id="Sx7.T4.1.4.3.2" class="ltx_td ltx_align_right"><span id="Sx7.T4.1.4.3.2.1" class="ltx_text ltx_font_bold">2.03</span></td>
+<td id="Sx7.T4.1.4.3.3" class="ltx_td ltx_align_right"><span id="Sx7.T4.1.4.3.3.1" class="ltx_text ltx_font_bold">2.35</span></td>
+<td id="Sx7.T4.1.4.3.4" class="ltx_td ltx_align_right">0.23</td>
+</tr>
+<tr id="Sx7.T4.1.5.4" class="ltx_tr">
+<td id="Sx7.T4.1.5.4.1" class="ltx_td ltx_align_left">3. M4C-Captioner (Mention Only)</td>
+<td id="Sx7.T4.1.5.4.2" class="ltx_td ltx_align_right">1.8</td>
+<td id="Sx7.T4.1.5.4.3" class="ltx_td ltx_align_right">2.22</td>
+<td id="Sx7.T4.1.5.4.4" class="ltx_td ltx_align_right">0.31</td>
+</tr>
+<tr id="Sx7.T4.1.6.5" class="ltx_tr">
+<td id="Sx7.T4.1.6.5.1" class="ltx_td ltx_align_left">4. M4C-Captioner (Figure and OCR features)</td>
+<td id="Sx7.T4.1.6.5.2" class="ltx_td ltx_align_right">1.91</td>
+<td id="Sx7.T4.1.6.5.3" class="ltx_td ltx_align_right">2.08</td>
+<td id="Sx7.T4.1.6.5.4" class="ltx_td ltx_align_right">0.36</td>
+</tr>
+<tr id="Sx7.T4.1.7.6" class="ltx_tr">
+<td id="Sx7.T4.1.7.6.1" class="ltx_td ltx_align_left ltx_border_b ltx_border_t">5. Ground truth</td>
+<td id="Sx7.T4.1.7.6.2" class="ltx_td ltx_align_right ltx_border_b ltx_border_t">1.95</td>
+<td id="Sx7.T4.1.7.6.3" class="ltx_td ltx_align_right ltx_border_b ltx_border_t">2.07</td>
+<td id="Sx7.T4.1.7.6.4" class="ltx_td ltx_align_right ltx_border_b ltx_border_t">0.32</td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 4: </span>Average appropriateness score on model-generated and ground truth captions. Two evaluators gave low scores on both model-generated and ground truth captions, with the fair inter-annotator agreement.</figcaption>
+</figure>
+<div id="Sx7.SSx1.p1" class="ltx_para">
+<p id="Sx7.SSx1.p1.1" class="ltx_p">The figure caption generation task is to generate captions under two conditions separately: 1. Figure-only: Human annotators write captions given only figures. This is to compare with captions generated by M4C-Captioner that only has access to figures and OCR features. 2. Figure-Mention: Human annotators write captions given both figures and their mention-paragraphs. We randomly selected 100 figures from the test set and to compare human-generated captions with captions generated by M4C-Captioner.</p>
+</div>
+<div id="Sx7.SSx1.p2" class="ltx_para">
+<p id="Sx7.SSx1.p2.1" class="ltx_p">The table <a href="#Sx7.T3" title="Table 3 ‣ Figure Caption Generation Task ‣ Human Evaluation ‣ SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning" class="ltx_ref"><span class="ltx_text ltx_ref_tag">3</span></a> shows automatic evaluation results for human caption generation tasks. Given only figures (rows #1, 2), both annotators got low scores across all metrics, among those, annotator 2 led all metrics except SPICE. Since humans perform OCR naturally with their eyes we compare with M4C-captioner (Figure and OCR features). It has the best SPICE score, although it outperformed annotator 1 in 4 of 5 evaluation metrics, it achieved similar performance compared with annotator 2. This shows that without additional knowledge, humans aren’t that better than machines.</p>
+</div>
+<div id="Sx7.SSx1.p3" class="ltx_para">
+<p id="Sx7.SSx1.p3.1" class="ltx_p">However, given mention-paragraphs and figures (rows #4, 5), compared to the figure-only condition, both annotators got improved scores in BLEU-4, METEOR, ROUGE-L, and SPICE but lower scores in CIDEr. Previous studies have shown that CIDEr is more reliable as an evaluation metric for caption generation, and the lowered CIDEr scores indicates that humans are likely to struggle with additional knowledge. On the other hand, having access to full features, M4C-captioner gained a significantly better CIDEr score compared to human annotators. The automatic evaluation results of the human generation tasks show the steep difficulty in writing figure captions close to ground truth.</p>
+</div>
+<div id="Sx7.SSx1.p4" class="ltx_para">
+<p id="Sx7.SSx1.p4.1" class="ltx_p">Even given mention-paragraphs, our annotator wrote captions with low scores across all standard image captioning evaluation metrics. We ascribe it as figure captions are highly subjective and require in-domain knowledge to write. Although our annotators are researchers, they cannot be professional in all knowledge existing in the computer science domain. Granted mention-paragraphs and OCR tokens as external knowledge sources, and with large-amount data training, the model can significantly outperform humans.</p>
+</div>
+</section>
+<section id="Sx7.SSx2" class="ltx_subsection">
+<h3 class="ltx_title ltx_title_subsection">Appropriateness Evaluation</h3>
+
+<div id="Sx7.SSx2.p1" class="ltx_para">
+<p id="Sx7.SSx2.p1.1" class="ltx_p">This task evaluates the appropriateness of model-generated and ground-truth captions. We used the same set of 100 figures as in the figure caption generation task, and placed ground-truth captions and model-generated captions in random order. Then, human evaluators rank each caption to give appropriateness scores (1-4) to each caption. The evaluation scale: 1. Inappropriate: a caption does not match the figure, is not a sentence, is wrong, or is misleading. 2. Not sure: It is impossible to judge appropriateness solely from the figure. 3. Possible: A possible candidate that is incomplete but not wrong. 4. Appropriate: An informative caption that interprets the figure well. Since an appropriate figure caption should stand alone and readers should understand the messages the figure wants to represent without referring to the body text, we do not show mention-paragraphs to evaluators.</p>
+</div>
+<div id="Sx7.SSx2.p2" class="ltx_para">
+<p id="Sx7.SSx2.p2.1" class="ltx_p">Table <a href="#Sx7.T4" title="Table 4 ‣ Figure Caption Generation Task ‣ Human Evaluation ‣ SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning" class="ltx_ref"><span class="ltx_text ltx_ref_tag">4</span></a> shows the results of the evaluations. Two evaluators gave low average scores to both model-generated captions and ground-truth captions. In addition, evaluators only reached fair agreements on scoring (0.23-0.36). Using the mention and OCR features (row #2), gets the best human evaluation scores and this is in line with the corresponding score in Table <a href="#Sx5.T2" title="Table 2 ‣ Implementation and Training ‣ Experiments ‣ SciCap+: A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning" class="ltx_ref"><span class="ltx_text ltx_ref_tag">2</span></a> where it also achieves the best CIDEr performance, indicating that human evaluation is reliable despite the fair agreements. The evaluation results indicate that the model-generated and ground-truth captions are not always informative to both evaluators, which reveals the need to improve caption writing quality and model performance. We observed that captions tend to be written without following specific rules, and this may contribute to lack of agreement. With low inter-rater agreements, we found how informative a figure caption is highly subjective and depends on in-domain background knowledge evaluators have.</p>
+</div>
+</section>
+</section>
+<section id="Sx8" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Related Work</h2>
+
+<div id="Sx8.p1" class="ltx_para">
+<p id="Sx8.p1.1" class="ltx_p">Unlike natural image captioning, figure captioning has been scarcely studied in history. SciCap <cite class="ltx_cite ltx_citemacro_citep">(Hsu, Giles, and Huang <a href="#bib.bib12" title="" class="ltx_ref">2021</a>)</cite> is the most recent work on scientific figure captioning, they released a large-scale scientific figure captioning dataset that includes figures from academic papers in arXiv dataset. Before SciCap, FigCAP <cite class="ltx_cite ltx_citemacro_citep">(Chen et al. <a href="#bib.bib8" title="" class="ltx_ref">2019</a>)</cite> <cite class="ltx_cite ltx_citemacro_citep">(Chen et al. <a href="#bib.bib7" title="" class="ltx_ref">2020</a>)</cite> and FigureQA <cite class="ltx_cite ltx_citemacro_citep">(Kahou et al. <a href="#bib.bib14" title="" class="ltx_ref">2017</a>)</cite> are two figure captioning datasets, but their figures are synthesized. We decided to extend and study on SciCap dataset, since its figures are from real-world scientific papers. In this paper, we also have leveraged multimodal knowledge using pre-trained models.</p>
+</div>
+<div id="Sx8.p2" class="ltx_para">
+<p id="Sx8.p2.1" class="ltx_p">Multimodal machine learning is to model knowledge across various modalities. The closest multimodal task to figure captioning is image captioning, a popular architecture is encode-decoder, where the decoder learns to generate captions conditioned on visual features extracted from the encoder. Recent works on integrating texts in natural images for visual question answering and image captioning tasks are based on transformer architecture augmented with a pointer network <cite class="ltx_cite ltx_citemacro_citep">(Hu et al. <a href="#bib.bib13" title="" class="ltx_ref">2020</a>; Sidorov et al. <a href="#bib.bib20" title="" class="ltx_ref">2020b</a>)</cite>. The transformer enriches representations by integrating knowledge from both text and visual modality. The pointer network dynamically selects words from the fixed dictionary or OCR tokens during generation.</p>
+</div>
+<div id="Sx8.p3" class="ltx_para">
+<p id="Sx8.p3.1" class="ltx_p">Using knowledge embedded in pre-trained models is a common practice in solving multimodal tasks. In this work, we used SciBert <cite class="ltx_cite ltx_citemacro_citep">(Beltagy, Lo, and Cohan <a href="#bib.bib4" title="" class="ltx_ref">2019</a>)</cite>, a BERT model <cite class="ltx_cite ltx_citemacro_citep">(Devlin et al. <a href="#bib.bib10" title="" class="ltx_ref">2019</a>)</cite> that was pre-trained in scientific papers, to obtain informative representations for the texts extracted from computer science papers. Since terms that exist in the figures may be uncommon words, we also used FastText <cite class="ltx_cite ltx_citemacro_citep">(Bojanowski et al. <a href="#bib.bib6" title="" class="ltx_ref">2017b</a>)</cite> to obtain word embeddings with subword information. For visual modality, we used Renst152 <cite class="ltx_cite ltx_citemacro_citep">(He et al. <a href="#bib.bib11" title="" class="ltx_ref">2016</a>)</cite> and Faster R-CNN <cite class="ltx_cite ltx_citemacro_citep">(Ren et al. <a href="#bib.bib18" title="" class="ltx_ref">2015</a>)</cite> used in extract features from images and bounding boxes.</p>
+</div>
+</section>
+<section id="Sx9" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Conclusion</h2>
+
+<div id="Sx9.p1" class="ltx_para">
+<p id="Sx9.p1.1" class="ltx_p">In this paper, we study the challenges of the scientific figure captioning task. Extending from the previous study <cite class="ltx_cite ltx_citemacro_citep">(Hsu, Giles, and Huang <a href="#bib.bib12" title="" class="ltx_ref">2021</a>)</cite>, we reframe this task as a knowledge-augmented image captioning task, that is, a model needs to use knowledge extracted across modalities to generate captions. To this end, we released a new version of the SciCap dataset: SciCap+ by augmenting figures with their mention-paragraphs and OCR tokens. We used M4C-Captioner model as the baseline model to utilize knowledge across three modalities: mention-paragraphs, figures, and OCR tokens. The automatic evaluation experiments further reveal that using knowledge significantly improves evaluation metric scores. Compared with human-generated captions, we found models can generate better captions than humans regarding the automatic evaluation metrics. However, human evaluations demonstrated that writing scientific figure captioning is challenging even for humans, and the model-generated figure captions, despite their reasonable automatic evaluation quality, are still far from achieving a level appropriate for humans. The release of the SciCap+ dataset is to promote the further development of scientific figure captioning. For future work, we are interested in how to use multimodal pretraining strategies in this task.</p>
+</div>
+</section>
+<section id="Sx10" class="ltx_section">
+<h2 class="ltx_title ltx_title_section">Acknowledgment</h2>
+
+<div id="Sx10.p1" class="ltx_para">
+<p id="Sx10.p1.1" class="ltx_p">These research results were partly obtained from the commissioned research (No. 225) by National Institute of Information and Communications Technology (NICT), Japan, and partly obtained from the first author’s internship research under NICT.</p>
+</div>
+</section>
+<section id="bib" class="ltx_bibliography">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+
+<ul class="ltx_biblist">
+<li id="bib.bib1" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Almazán et al. (2014)</span>
+<span class="ltx_bibblock">
+Almazán, J.; Gordo, A.; Fornés, A.; and Valveny, E. 2014.
+
+</span>
+<span class="ltx_bibblock">Word spotting and recognition with embedded attributes.
+
+</span>
+<span class="ltx_bibblock"><em id="bib.bib1.1.1" class="ltx_emph ltx_font_italic">IEEE transactions on pattern analysis and machine
+intelligence</em>, 36(12): 2552–2566.
+
+</span>
+</li>
+<li id="bib.bib2" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Anderson et al. (2016)</span>
+<span class="ltx_bibblock">
+Anderson, P.; Fernando, B.; Johnson, M.; and Gould, S. 2016.
+
+</span>
+<span class="ltx_bibblock">Spice: Semantic propositional image caption evaluation.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib2.1.1" class="ltx_emph ltx_font_italic">European conference on computer vision</em>, 382–398. Springer.
+
+</span>
+</li>
+<li id="bib.bib3" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Banerjee and Lavie (2005)</span>
+<span class="ltx_bibblock">
+Banerjee, S.; and Lavie, A. 2005.
+
+</span>
+<span class="ltx_bibblock">METEOR: An automatic metric for MT evaluation with improved
+correlation with human judgments.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib3.1.1" class="ltx_emph ltx_font_italic">Proceedings of the acl workshop on intrinsic and extrinsic
+evaluation measures for machine translation and/or summarization</em>, 65–72.
+
+</span>
+</li>
+<li id="bib.bib4" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Beltagy, Lo, and Cohan (2019)</span>
+<span class="ltx_bibblock">
+Beltagy, I.; Lo, K.; and Cohan, A. 2019.
+
+</span>
+<span class="ltx_bibblock">SciBERT: A Pretrained Language Model for Scientific Text.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib4.1.1" class="ltx_emph ltx_font_italic">Proceedings of the 2019 Conference on Empirical Methods in
+Natural Language Processing and the 9th International Joint Conference on
+Natural Language Processing (EMNLP-IJCNLP)</em>, 3615–3620. Hong Kong, China:
+Association for Computational Linguistics.
+
+</span>
+</li>
+<li id="bib.bib5" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Bojanowski et al. (2017a)</span>
+<span class="ltx_bibblock">
+Bojanowski, P.; Grave, E.; Joulin, A.; and Mikolov, T. 2017a.
+
+</span>
+<span class="ltx_bibblock">Enriching Word Vectors with Subword Information.
+
+</span>
+<span class="ltx_bibblock"><em id="bib.bib5.1.1" class="ltx_emph ltx_font_italic">TACL</em>, 5: 135–146.
+
+</span>
+</li>
+<li id="bib.bib6" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Bojanowski et al. (2017b)</span>
+<span class="ltx_bibblock">
+Bojanowski, P.; Grave, E.; Joulin, A.; and Mikolov, T. 2017b.
+
+</span>
+<span class="ltx_bibblock">Enriching Word Vectors with Subword Information.
+
+</span>
+<span class="ltx_bibblock"><em id="bib.bib6.1.1" class="ltx_emph ltx_font_italic">Transactions of the Association for Computational Linguistics</em>,
+5: 135–146.
+
+</span>
+</li>
+<li id="bib.bib7" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chen et al. (2020)</span>
+<span class="ltx_bibblock">
+Chen, C.; Zhang, R.; Koh, E.; Kim, S.; Cohen, S.; and Rossi, R. 2020.
+
+</span>
+<span class="ltx_bibblock">Figure Captioning with Relation Maps for Reasoning.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib7.1.1" class="ltx_emph ltx_font_italic">Proceedings of the IEEE/CVF Winter Conference on
+Applications of Computer Vision (WACV)</em>.
+
+</span>
+</li>
+<li id="bib.bib8" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chen et al. (2019)</span>
+<span class="ltx_bibblock">
+Chen, C.; Zhang, R.; Koh, E.; Kim, S.; Cohen, S.; Yu, T.; Rossi, R.; and
+Bunescu, R. 2019.
+
+</span>
+<span class="ltx_bibblock">Figure captioning with reasoning and sequence-level training.
+
+</span>
+<span class="ltx_bibblock"><em id="bib.bib8.1.1" class="ltx_emph ltx_font_italic">arXiv preprint arXiv:1906.02850</em>.
+
+</span>
+</li>
+<li id="bib.bib9" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Clark and Divvala (2016)</span>
+<span class="ltx_bibblock">
+Clark, C.; and Divvala, S. 2016.
+
+</span>
+<span class="ltx_bibblock">Pdffigures 2.0: Mining figures from research papers.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib9.1.1" class="ltx_emph ltx_font_italic">2016 IEEE/ACM Joint Conference on Digital Libraries (JCDL)</em>,
+143–152. IEEE.
+
+</span>
+</li>
+<li id="bib.bib10" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Devlin et al. (2019)</span>
+<span class="ltx_bibblock">
+Devlin, J.; Chang, M.-W.; Lee, K.; and Toutanova, K. 2019.
+
+</span>
+<span class="ltx_bibblock">BERT: Pre-training of Deep Bidirectional Transformers for Language
+Understanding.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib10.1.1" class="ltx_emph ltx_font_italic">Proceedings of the 2019 Conference of the North American
+Chapter of the Association for Computational Linguistics: Human Language
+Technologies, Volume 1 (Long and Short Papers)</em>, 4171–4186. Minneapolis,
+Minnesota: Association for Computational Linguistics.
+
+</span>
+</li>
+<li id="bib.bib11" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">He et al. (2016)</span>
+<span class="ltx_bibblock">
+He, K.; Zhang, X.; Ren, S.; and Sun, J. 2016.
+
+</span>
+<span class="ltx_bibblock">Deep residual learning for image recognition.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib11.1.1" class="ltx_emph ltx_font_italic">Proceedings of the IEEE conference on computer vision and
+pattern recognition</em>, 770–778.
+
+</span>
+</li>
+<li id="bib.bib12" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Hsu, Giles, and Huang (2021)</span>
+<span class="ltx_bibblock">
+Hsu, T.-Y.; Giles, C. L.; and Huang, T.-H. 2021.
+
+</span>
+<span class="ltx_bibblock">SciCap: Generating Captions for Scientific Figures.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib12.1.1" class="ltx_emph ltx_font_italic">Findings of the Association for Computational Linguistics:
+EMNLP 2021</em>, 3258–3264. Punta Cana, Dominican Republic: Association for
+Computational Linguistics.
+
+</span>
+</li>
+<li id="bib.bib13" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Hu et al. (2020)</span>
+<span class="ltx_bibblock">
+Hu, R.; Singh, A.; Darrell, T.; and Rohrbach, M. 2020.
+
+</span>
+<span class="ltx_bibblock">Iterative Answer Prediction with Pointer-Augmented Multimodal
+Transformers for TextVQA.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib13.1.1" class="ltx_emph ltx_font_italic">Proceedings of the IEEE Conference on Computer Vision and
+Pattern Recognition</em>.
+
+</span>
+</li>
+<li id="bib.bib14" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kahou et al. (2017)</span>
+<span class="ltx_bibblock">
+Kahou, S. E.; Michalski, V.; Atkinson, A.; Kádár, Á.; Trischler,
+A.; and Bengio, Y. 2017.
+
+</span>
+<span class="ltx_bibblock">Figureqa: An annotated figure dataset for visual reasoning.
+
+</span>
+<span class="ltx_bibblock"><em id="bib.bib14.1.1" class="ltx_emph ltx_font_italic">arXiv preprint arXiv:1710.07300</em>.
+
+</span>
+</li>
+<li id="bib.bib15" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kudo and Richardson (2018)</span>
+<span class="ltx_bibblock">
+Kudo, T.; and Richardson, J. 2018.
+
+</span>
+<span class="ltx_bibblock">SentencePiece: A simple and language independent subword
+tokenizer and detokenizer for Neural Text Processing.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib15.1.1" class="ltx_emph ltx_font_italic">Proceedings of the 2018 Conference on Empirical Methods in
+Natural Language Processing: System Demonstrations</em>, 66–71. Brussels,
+Belgium: Association for Computational Linguistics.
+
+</span>
+</li>
+<li id="bib.bib16" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lin (2004)</span>
+<span class="ltx_bibblock">
+Lin, C.-Y. 2004.
+
+</span>
+<span class="ltx_bibblock">Rouge: A package for automatic evaluation of summaries.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib16.1.1" class="ltx_emph ltx_font_italic">Text summarization branches out</em>, 74–81.
+
+</span>
+</li>
+<li id="bib.bib17" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Papineni et al. (2002)</span>
+<span class="ltx_bibblock">
+Papineni, K.; Roukos, S.; Ward, T.; and Zhu, W.-J. 2002.
+
+</span>
+<span class="ltx_bibblock">Bleu: a Method for Automatic Evaluation of Machine Translation.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib17.1.1" class="ltx_emph ltx_font_italic">Proceedings of the 40th Annual Meeting of the Association
+for Computational Linguistics</em>, 311–318. Philadelphia, Pennsylvania, USA:
+Association for Computational Linguistics.
+
+</span>
+</li>
+<li id="bib.bib18" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Ren et al. (2015)</span>
+<span class="ltx_bibblock">
+Ren, S.; He, K.; Girshick, R.; and Sun, J. 2015.
+
+</span>
+<span class="ltx_bibblock">Faster R-CNN: Towards Real-Time Object Detection with Region Proposal
+Networks.
+
+</span>
+<span class="ltx_bibblock">In Cortes, C.; Lawrence, N.; Lee, D.; Sugiyama, M.; and Garnett, R.,
+eds., <em id="bib.bib18.1.1" class="ltx_emph ltx_font_italic">Advances in Neural Information Processing Systems</em>, volume 28.
+Curran Associates, Inc.
+
+</span>
+</li>
+<li id="bib.bib19" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Sidorov et al. (2020a)</span>
+<span class="ltx_bibblock">
+Sidorov, O.; Hu, R.; Rohrbach, M.; and Singh, A. 2020a.
+
+</span>
+<span class="ltx_bibblock">Textcaps: a dataset for image captioning with reading comprehension.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib19.1.1" class="ltx_emph ltx_font_italic">European conference on computer vision</em>, 742–758. Springer.
+
+</span>
+</li>
+<li id="bib.bib20" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Sidorov et al. (2020b)</span>
+<span class="ltx_bibblock">
+Sidorov, O.; Hu, R.; Rohrbach, M.; and Singh, A. 2020b.
+
+</span>
+<span class="ltx_bibblock">TextCaps: a Dataset for Image Captioningwith Reading Comprehension.
+
+</span>
+</li>
+<li id="bib.bib21" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Singh et al. (2020)</span>
+<span class="ltx_bibblock">
+Singh, A.; Goswami, V.; Natarajan, V.; Jiang, Y.; Chen, X.; Shah, M.; Rohrbach,
+M.; Batra, D.; and Parikh, D. 2020.
+
+</span>
+<span class="ltx_bibblock">MMF: A multimodal framework for vision and language research.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_ref ltx_nolink ltx_url ltx_ref_self">https://github.com/facebookresearch/mmf</span>.
+
+</span>
+</li>
+<li id="bib.bib22" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Vedantam, Lawrence Zitnick, and Parikh (2015)</span>
+<span class="ltx_bibblock">
+Vedantam, R.; Lawrence Zitnick, C.; and Parikh, D. 2015.
+
+</span>
+<span class="ltx_bibblock">Cider: Consensus-based image description evaluation.
+
+</span>
+<span class="ltx_bibblock">In <em id="bib.bib22.1.1" class="ltx_emph ltx_font_italic">Proceedings of the IEEE conference on computer vision and
+pattern recognition</em>, 4566–4575.
+
+</span>
+</li>
+<li id="bib.bib23" class="ltx_bibitem">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Zhang et al. (2019)</span>
+<span class="ltx_bibblock">
+Zhang, Q.; Wang, C.; Xin, C.; and Wu, H. 2019.
+
+</span>
+<span class="ltx_bibblock">Cheetah: An ultra-fast, approximation-free, and privacy-preserved
+neural network framework based on joint obscure linear and nonlinear
+computations.
+
+</span>
+<span class="ltx_bibblock"><em id="bib.bib23.1.1" class="ltx_emph ltx_font_italic">arXiv preprint arXiv:1911.05184</em>.
+
+</span>
+</li>
+</ul>
+</section>
+</article>
+</div>
+<div class="ar5iv-footer"><a href="https://ar5iv.labs.arxiv.org/html/2306.03490" class="ar5iv-nav-button ar5iv-nav-button-prev">◄</a>
+    <a class="ar5iv-home-button" href="/"><img height="40" alt="ar5iv homepage" src="/assets/ar5iv.png"></a>
+    <a href="/feeling_lucky" class="ar5iv-text-button">Feeling<br>lucky?</a>
+    <a href="/land_of_honey_and_milk" rel="nofollow" aria-hidden="true" tabindex="-1"></a>
+    <a href="/log/2306.03491" class="ar5iv-text-button ar5iv-severity-warning">Conversion<br>report</a>
+    <a class="ar5iv-text-button" target="_blank" href="https://github.com/dginev/ar5iv/issues/new?template=improve-article--arxiv-id-.md&title=Improve+article+2306.03491">Report<br>an issue</a>
+    <a href="https://arxiv.org/abs/2306.03491" class="ar5iv-text-button arxiv-ui-theme">View&nbsp;original<br>on&nbsp;arXiv</a><a href="https://ar5iv.labs.arxiv.org/html/2306.03492" class="ar5iv-nav-button ar5iv-nav-button-next">►</a>
+</div><footer class="ltx_page_footer">
+<a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle ar5iv color scheme"><span class="color-scheme-icon"></span></a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/license" target="_blank">Copyright</a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/policies/privacy_policy" target="_blank">Privacy Policy</a>
+
+<div class="ltx_page_logo">Generated  on Thu Feb 29 02:10:32 2024 by <a target="_blank" href="http://dlmf.nist.gov/LaTeXML/" class="ltx_LaTeXML_logo"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg==" alt="Mascot Sammy"></a>
+</div></footer>
+</div>
+
+    <script>
+      var canMathML = typeof(MathMLElement) == "function";
+      if (!canMathML) {
+        var body = document.querySelector("body");
+        body.firstElementChild.setAttribute('style', 'opacity: 0;');
+        var loading = document.createElement("div");
+        loading.setAttribute("id", "mathjax-loading-spinner");
+        var message = document.createElement("div");
+        message.setAttribute("id", "mathjax-loading-message");
+        message.innerText = "Typesetting Equations...";
+        body.prepend(loading);
+        body.prepend(message);
+
+        var el = document.createElement("script");
+        el.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+        document.querySelector("head").appendChild(el);
+
+        window.MathJax = {
+          startup: {
+            pageReady: () => {
+              return MathJax.startup.defaultPageReady().then(() => {
+                body.removeChild(loading);
+                body.removeChild(message);
+                body.firstElementChild.removeAttribute('style');
+              }); } } };
+      }
+    </script>
+    <script>
+    // Auxiliary function, building the preview feature when
+    // an inline citation is clicked
+    function clicked_cite(e) {
+      e.preventDefault();
+      let cite = this.closest('.ltx_cite');
+      let next = cite.nextSibling;
+      if (next && next.nodeType == Node.ELEMENT_NODE && next.getAttribute('class') == "ar5iv-bibitem-preview") {
+        next.remove();
+        return; }
+      // Before adding a preview modal,
+      // cleanup older previews, in case they're still open
+      document.querySelectorAll('span.ar5iv-bibitem-preview').forEach(function(node) {
+        node.remove();
+      })
+
+      // Create the preview
+      preview = document.createElement('span');
+      preview.setAttribute('class','ar5iv-bibitem-preview');
+      let target = document.getElementById(this.getAttribute('href').slice(1));
+      target.childNodes.forEach(function (child) {
+        preview.append(child.cloneNode(true));
+      });
+      let close_x = document.createElement('button');
+      close_x.setAttribute("aria-label","Close modal for bibliography item preview");
+      close_x.textContent = "×";
+      close_x.setAttribute('class', 'ar5iv-button-close-preview');
+      close_x.setAttribute('onclick','this.parentNode.remove()');
+      preview.append(close_x);
+      preview.querySelectorAll('.ltx_tag_bibitem').forEach(function(node) {
+        node.remove();
+      });
+      cite.parentNode.insertBefore(preview, cite.nextSibling);
+      return;
+    }
+    // Global Document initialization:
+    // - assign the preview feature to all inline citation links
+    document.querySelectorAll(".ltx_cite .ltx_ref").forEach(function (link) {
+      link.addEventListener("click", clicked_cite);
+    });
+    </script>
+    </body>
+</html>
+

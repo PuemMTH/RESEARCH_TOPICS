@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thesis Paper Synthesis — Scientific Figure Captioning</title>
+<meta name="description" content="สรุปงานวิจัย 5 ฉบับสำหรับวิทยานิพนธ์: การสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการ">
+<link rel="stylesheet" href="summary.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+<div class="container">
+  <a class="nav-brand" href="#">✦ <span>Thesis</span> Research</a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#papers">Papers</a></li>
+    <li><a href="#synthesis">Synthesis</a></li>
+  </ul>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="container">
+  <h1>Scientific Figure Captioning<br>Research Synthesis</h1>
+  <p class="subtitle">สรุปงานวิจัย 5 ฉบับหลักสำหรับวิทยานิพนธ์: การสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการโดยใช้บริบทจากเนื้อหาเอกสาร</p>
+  <div class="hero-meta">
+    <span class="badge">อาจารย์ที่ปรึกษา: ผศ.ดร. หัชทัย ชาญเลขา</span>
+    <span class="badge coral">5 Core Papers</span>
+    <span class="badge">Hybrid RAG + VLM</span>
+  </div>
+</div>
+</section>
+
+<!-- PAPER 1: SciCap -->
+<section class="section" id="papers">
+<div class="container">
+<div class="section-header"><span class="overline">Paper Summaries</span><h2>Core Research Papers</h2></div>
+
+<div class="detail-block" id="p1">
+<div class="detail-header">
+  <span class="num">1</span>
+  <h3>SciCap: Generating Captions for Scientific Figures</h3>
+  <span class="venue-tag">EMNLP 2021</span>
+</div>
+<div class="detail-body">
+
+<h4>🎯 Overview</h4>
+<p>SciCap (Hsu et al., 2021) เป็นงานวิจัยพื้นฐานที่สร้าง <strong>Large-scale Dataset</strong> สำหรับ Scientific Figure Captioning จากบทความวิชาการใน arXiv สาขา Computer Science กว่า 10 ปี พร้อมทั้งเสนอ Neural Baseline Framework สำหรับการสร้างคำอธิบายรูปกราฟอัตโนมัติ</p>
+
+<h4>📌 จุดประสงค์หลักของ Paper</h4>
+<div class="key-box">
+<h5>ปัญหาที่ Paper นี้แก้</h5>
+<ul>
+  <li><strong>ก่อน SciCap ไม่มี benchmark dataset ขนาดใหญ่</strong> สำหรับ scientific figure captioning — งานก่อนหน้าใช้ dataset เล็กหรือ domain เฉพาะ ทำให้เปรียบเทียบ model ได้ยาก</li>
+  <li><strong>ไม่มี baseline ที่ชัดเจน</strong> ว่า neural approach ทำได้ดีแค่ไหนบน real-world scientific figures</li>
+  <li><strong>ไม่มีการวิเคราะห์</strong> ว่า caption ของ scientific figures มีลักษณะอย่างไร (ยาวแค่ไหน, มีกี่ประโยค, ภาษาเป็นอย่างไร)</li>
+</ul>
+</div>
+<ul>
+  <li><strong>เป้าหมายที่ 1:</strong> สร้าง large-scale, publicly available dataset จาก arXiv เพื่อเป็น shared benchmark</li>
+  <li><strong>เป้าหมายที่ 2:</strong> วิเคราะห์ลักษณะของ caption ในเอกสารวิชาการจริง (caption statistics, first-sentence patterns)</li>
+  <li><strong>เป้าหมายที่ 3:</strong> สร้าง neural baseline เพื่อวัดว่า figure-only approach ทำได้ดีแค่ไหน และเผยจุดอ่อนของ approach นี้</li>
+  <li><strong>เป้าหมายที่ 4:</strong> วางมาตรฐาน evaluation metrics (BLEU-4, METEOR, ROUGE-L, CIDEr) สำหรับ task นี้</li>
+</ul>
+
+<h4>📊 Dataset Construction</h4>
+<ul>
+  <li><strong>แหล่งข้อมูล:</strong> arXiv CS papers (2010-2020) ~290K papers</li>
+  <li><strong>เครื่องมือ:</strong> PDFFigures 2.0 สำหรับดึง figure-caption pairs</li>
+  <li><strong>ขนาด:</strong> ~416K figure-caption pairs (หลังกรอง: Graph plots เท่านั้น)</li>
+  <li><strong>การกรอง:</strong> เก็บเฉพาะ graph plots (line, bar, scatter) ตัด diagrams/photos ออก</li>
+  <li><strong>แบ่งข้อมูล:</strong> Train/Val/Test ตาม figure-level split</li>
+</ul>
+
+<h4>🔬 Methodology — Neural Baseline</h4>
+<div class="method-box">
+<span class="label">Pipeline Architecture</span>
+Input: Figure Image → CNN Encoder (ResNet-101) → Visual Features
+                    → LSTM Decoder → Generated Caption
+<span class="muted">
++ Preprocessing: Text normalization, subfigure filtering
++ Training: Cross-entropy loss → SCST (Self-Critical Sequence Training)
++ Evaluation: BLEU-4, METEOR, ROUGE-L, CIDEr</span>
+</div>
+
+<h4>📈 Key Results</h4>
+<ul>
+  <li>Caption ส่วนใหญ่มี 1 ประโยค (~60%) → เป็น first-sentence prediction task</li>
+  <li>Text normalization ไม่ช่วยเพิ่มประสิทธิภาพ</li>
+  <li>SCST ช่วยเพิ่ม CIDEr score อย่างมีนัยสำคัญเทียบกับ Cross-Entropy</li>
+  <li>คะแนนโดยรวมยังต่ำ → แสดงว่า Figure-only approach มีข้อจำกัด ต้องการ context เพิ่มเติม</li>
+</ul>
+
+<div class="key-box teal">
+<h5>🔗 ความเกี่ยวข้องกับวิทยานิพนธ์ (เจาะลึก)</h5>
+<ul>
+  <li><strong>Dataset:</strong> SciCap เป็น standard benchmark ที่งานเราจะใช้ evaluate — ทำให้เปรียบเทียบกับงานอื่นได้โดยตรง</li>
+  <li><strong>Baseline สำหรับ ablation:</strong> Figure-only (ResNet + LSTM) เป็น baseline ระดับล่างสุดในการทดลองของเรา เพื่อพิสูจน์ว่า RAG + VLM ทำได้ดีกว่า</li>
+  <li><strong>Research gap:</strong> ผลลัพธ์ที่ต่ำของ figure-only baseline คือหลักฐานที่เราอ้างได้ว่า "ทำไมต้องใช้ document context" ซึ่งตรงกับ <em>วัตถุประสงค์ข้อ 2</em> ของวิทยานิพนธ์เรา (พัฒนากระบวนการวิเคราะห์รูปภาพร่วมกับบริบท)</li>
+  <li><strong>Task definition:</strong> เรา reuse การ define task (first-sentence prediction, graph plots focus) จาก SciCap เป็น scope เริ่มต้น</li>
+  <li><strong>Metrics:</strong> BLEU-4, METEOR, CIDEr จาก SciCap เป็น automatic metrics หลักที่เราต้องรายงาน</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- PAPER 2: MLBCAP -->
+<div class="detail-block" id="p2">
+<div class="detail-header">
+  <span class="num">2</span>
+  <h3>MLBCAP: Multi-LLM Collaborative Figure Caption Generation</h3>
+  <span class="venue-tag">AAAI 2025 Workshop</span>
+</div>
+<div class="detail-body">
+
+<h4>🎯 Overview</h4>
+<p>MLBCAP เป็น <strong>State-of-the-art framework</strong> ที่ใช้ Multi-LLM Collaborative approach สำหรับสร้าง caption ที่มีคุณภาพสูง โดยใช้ LLM หลายตัวทำงานร่วมกันในแต่ละขั้นตอน: Data Cleaning, Caption Generation, Quality Judgment, และ Post-Editing</p>
+
+<h4>📌 จุดประสงค์หลักของ Paper</h4>
+<div class="key-box">
+<h5>ปัญหาที่ Paper นี้แก้</h5>
+<ul>
+  <li><strong>Training data quality:</strong> SciCap dataset มี caption คุณภาพต่ำจำนวนมาก (ผู้เขียน paper บางคนเขียน caption ไม่ดี) → ทำให้ model ที่ train บน dataset นี้ถูก "สอน" ด้วยตัวอย่างที่ไม่ดี</li>
+  <li><strong>Single model bottleneck:</strong> การใช้ VLM ตัวเดียวทำทุกอย่าง (perception + reasoning + generation + quality check) ทำให้ optimize ได้ยาก</li>
+  <li><strong>Lack of quality control:</strong> ไม่มีกลไกตรวจสอบว่า caption ที่สร้างขึ้นมีคุณภาพพอก่อน output</li>
+</ul>
+</div>
+<ul>
+  <li><strong>เป้าหมายที่ 1:</strong> สร้าง data cleaning pipeline ที่ใช้ LLM กรอง caption คุณภาพต่ำออกจาก SciCap → ได้ SciCap-refined dataset</li>
+  <li><strong>เป้าหมายที่ 2:</strong> แบ่ง caption generation task ออกเป็น subtasks → assign LLM ที่เหมาะสมให้แต่ละ role</li>
+  <li><strong>เป้าหมายที่ 3:</strong> เพิ่ม quality judgment loop เพื่อเลือก caption ที่ดีที่สุดก่อน output</li>
+  <li><strong>เป้าหมายที่ 4:</strong> บรรลุ SOTA บน SciCap benchmark ทุก metrics</li>
+</ul>
+
+<h4>🔬 4-Stage Framework</h4>
+<div class="method-box">
+<span class="label">MLBCAP Pipeline</span>
+Stage 1: Quality Assessment (LLM₁)
+  → ประเมินคุณภาพ caption ดั้งเดิม → คัดกรอง low-quality ออก
+
+Stage 2: Caption Generation (LLM₂ = VLM)
+  → สร้าง candidate captions จาก figure + context
+  → ใช้ VLM เช่น GPT-4V, LLaVA
+
+Stage 3: Quality Judgment (LLM₃)
+  → เปรียบเทียบ original vs generated caption
+  → ให้คะแนนและเลือก caption ที่ดีกว่า
+
+Stage 4: Post-Editing (LLM₄)
+  → ปรับปรุง caption ที่เลือก → เพิ่มความถูกต้อง/ครบถ้วน
+</div>
+
+<h4>📈 Key Contributions</h4>
+<ul>
+  <li><strong>Multi-LLM Collaboration:</strong> แต่ละ LLM มีบทบาทเฉพาะ ไม่ใช่ใช้ model เดียวทำทุกอย่าง</li>
+  <li><strong>Quality-Aware Pipeline:</strong> กรองข้อมูลคุณภาพต่ำก่อนนำไป train</li>
+  <li><strong>SciCap-refined Dataset:</strong> Dataset ใหม่ที่ผ่านการกรองและปรับปรุงคุณภาพ</li>
+  <li><strong>ผลลัพธ์:</strong> SOTA บน SciCap benchmark ทุก metrics (BLEU, METEOR, CIDEr)</li>
+</ul>
+
+<div class="key-box teal">
+<h5>🔗 ความเกี่ยวข้องกับวิทยานิพนธ์ (เจาะลึก)</h5>
+<ul>
+  <li><strong>Pipeline structure ที่เราต่อยอด:</strong> เรายืม 4-stage logic มา แต่แทน proprietary LLM (GPT-4V) ด้วย open-source VLM (InternVL/LLaVA) + เพิ่ม RAG เป็น Stage 1.5 ระหว่าง figure input กับ generation</li>
+  <li><strong>Modular design = ablation ง่าย:</strong> การแยก stage ชัดเจนทำให้เราสามารถทดสอบว่า "RAG context ช่วยที่ stage ไหนมากที่สุด" → ตอบ <em>วัตถุประสงค์ข้อ 4</em> (ประเมินคุณภาพ)</li>
+  <li><strong>Research gap ที่เราเติม:</strong> MLBCAP ไม่ได้ใช้ RAG — context ที่ใส่ไปเป็น fixed mention-paragraph แบบ SciCap+ งานเราเพิ่ม semantic retrieval ทำให้ context ที่ได้มีความเกี่ยวข้องมากขึ้น</li>
+  <li><strong>Open-source gap:</strong> MLBCAP พึ่ง GPT-4V ซึ่งมีค่าใช้จ่ายและไม่ reproducible → งานเราใช้ open-source ทั้งหมด ซึ่งเป็น contribution เพิ่มเติม</li>
+  <li><strong>Quality judgment เป็น evaluation framework:</strong> แนวคิด LLM-as-judge ใน Stage 3 นำมาใช้เป็นส่วนหนึ่งของ evaluation ของเรา ควบคู่กับ BLEU/CIDEr</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- PAPER 3: DePlot -->
+<div class="detail-block" id="p3">
+<div class="detail-header">
+  <span class="num">3</span>
+  <h3>DePlot: One-shot Visual Language Reasoning by Plot-to-Table Translation</h3>
+  <span class="venue-tag">ACL 2023 · Google</span>
+</div>
+<div class="detail-body">
+
+<h4>🎯 Overview</h4>
+<p>DePlot (Liu et al., 2023 — Google Research) เสนอแนวคิดแยก <strong>visual encoding</strong> ออกจาก <strong>reasoning</strong> โดยแปลง chart/plot เป็น linearized data table ก่อน แล้วส่งให้ LLM ทำ reasoning ต่อ ทำให้ใช้ few-shot/one-shot prompting ได้โดยไม่ต้อง fine-tune</p>
+
+<h4>📌 จุดประสงค์หลักของ Paper</h4>
+<div class="key-box">
+<h5>ปัญหาที่ Paper นี้แก้</h5>
+<ul>
+  <li><strong>End-to-end models ผสม perception กับ reasoning:</strong> เมื่อ model ทำ chart QA แบบ end-to-end มันต้อง learn ทั้งการ "อ่าน" chart และการ "คิด" วิเคราะห์พร้อมกัน → ยากที่จะปรับปรุงแต่ละส่วน</li>
+  <li><strong>Fine-tuning ต้องการ data มาก:</strong> การ fine-tune LLM สำหรับแต่ละ chart domain ต้องการ labeled data จำนวนมาก ซึ่งหายาก</li>
+  <li><strong>Chart perception ไม่แม่นยำ:</strong> LLM ที่รับ image โดยตรงมักอ่านค่าตัวเลขหรือ label ผิดพลาด (hallucinate)</li>
+</ul>
+</div>
+<ul>
+  <li><strong>เป้าหมายที่ 1:</strong> แยก "chart perception" ออกจาก "numerical reasoning" เป็น 2 modules ที่ upgrade แยกกันได้</li>
+  <li><strong>เป้าหมายที่ 2:</strong> พิสูจน์ว่า chart → text table เป็น intermediate representation ที่ดี สำหรับให้ LLM ทำ reasoning ต่อโดยไม่ต้อง fine-tune</li>
+  <li><strong>เป้าหมายที่ 3:</strong> สร้าง metric ใหม่ (RMS) สำหรับวัดความแม่นยำของ chart-to-table conversion</li>
+  <li><strong>เป้าหมายที่ 4:</strong> แสดงว่า one-shot prompting + DePlot ทำได้ดีกว่า fully fine-tuned SOTA ก่อนหน้า</li>
+</ul>
+
+<h4>🔬 Methodology</h4>
+<div class="method-box">
+<span class="label">DePlot Architecture</span>
+Step 1: Plot-to-Table (Visual Encoder)
+  Chart Image → Pix2Struct (fine-tuned) → Linearized Text Table
+  <span class="muted">"Title | x_label | y_label \n val1 | val2 | val3 ..."</span>
+
+Step 2: Table-to-Answer (LLM Reasoning)
+  Linearized Table + Question → LLM (PaLM/Codex) → Answer
+  <span class="muted">ใช้ few-shot prompting, ไม่ต้อง fine-tune LLM</span>
+</div>
+
+<h4>📊 RMS Metric (Relative Mapping Similarity)</h4>
+<p>DePlot เสนอ metric ใหม่ <strong>RMS</strong> สำหรับวัดคุณภาพการแปลง chart → table ซึ่งเน้นว่าค่าสัมพัทธ์ (relative magnitude) ถูกต้อง แม้ค่าตัวเลขจะไม่ตรง exact match</p>
+
+<h4>📈 Key Results</h4>
+<ul>
+  <li>One-shot DePlot + LLM ทำได้ใกล้เคียงหรือดีกว่า SOTA ที่ fine-tune เต็มรูปแบบ</li>
+  <li>Chart-to-table accuracy สูงกว่า ChartOCR อย่างมาก</li>
+  <li>ใช้ได้กับหลาย chart types: bar, line, pie, scatter</li>
+  <li>แยก perception กับ reasoning ทำให้อัปเกรดแต่ละส่วนได้อิสระ</li>
+</ul>
+
+<div class="key-box amber">
+<h5>🔗 ความเกี่ยวข้องกับวิทยานิพนธ์ (เจาะลึก)</h5>
+<ul>
+  <li><strong>หลักการ "perception-reasoning separation":</strong> นี่คือ design principle สำคัญของ pipeline เรา — ใช้ VLM สำหรับ extract ข้อมูลจาก figure (perception) แยกออกจาก LLM ที่ generate caption (reasoning) ป้องกัน hallucination</li>
+  <li><strong>Intermediate representation สำหรับ charts:</strong> ในงานเรา เมื่อ figure เป็น graph/plot เราสามารถใช้ chart→table เป็นขั้นกลางก่อนส่งให้ LLM generate caption → ลด perceptual error ตาม pattern ของ DePlot</li>
+  <li><strong>RMS metric:</strong> สำหรับ evaluation ในกรณีที่ caption พูดถึงค่าตัวเลข เราอาจนำ RMS มาเสริม BLEU/CIDEr เพื่อวัดความแม่นยำของตัวเลขที่พูดถึง</li>
+  <li><strong>ปัญหาที่ DePlot ยังไม่แก้:</strong> DePlot ไม่ใช้ document context เลย — รู้แค่ข้อมูลในกราฟ แต่ไม่รู้ว่ากราฟนี้อยู่ใน paper เรื่องอะไร → นี่คือช่องว่างที่งานเราเติม ด้วย RAG</li>
+  <li><strong>ตอบ วัตถุประสงค์ข้อ 2:</strong> แนวคิดการแปลง figure เป็น structured representation ก่อน เป็นส่วนหนึ่งของ "กระบวนการวิเคราะห์รูปภาพ" ในวิทยานิพนธ์เรา</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- PAPER 4: SciCap+ -->
+<div class="detail-block" id="p4">
+<div class="detail-header">
+  <span class="num">4</span>
+  <h3>SciCap+: A Knowledge-Augmented Dataset for Scientific Figure Captioning</h3>
+  <span class="venue-tag">AAAI 2023</span>
+</div>
+<div class="detail-body">
+
+<h4>🎯 Overview</h4>
+<p>SciCap+ (Yang et al., 2023) ขยาย SciCap dataset โดยเพิ่ม <strong>mention-paragraphs</strong> (ย่อหน้าที่กล่าวถึงรูป) และ <strong>OCR tokens</strong> เข้าไป แล้ว reframe ปัญหาจาก "figure-to-caption" เป็น <strong>"knowledge-augmented image captioning"</strong></p>
+
+<h4>📌 จุดประสงค์หลักของ Paper</h4>
+<div class="key-box">
+<h5>ปัญหาที่ Paper นี้แก้</h5>
+<ul>
+  <li><strong>SciCap ใช้ figure เดียว:</strong> งานก่อนหน้า (SciCap baseline) พิสูจน์แล้วว่า figure-only ทำได้ไม่ดี แต่ยังไม่มีใครทดสอบอย่างเป็นระบบว่า "context แบบไหนช่วยได้มากที่สุด"</li>
+  <li><strong>ขาด document-level knowledge:</strong> caption ที่ดีต้องรู้ว่ากราฟนี้บอกอะไร ซึ่งมักอยู่ใน body text ของ paper ไม่ใช่แค่ visual features</li>
+  <li><strong>Data leakage ใน SciCap split:</strong> SciCap แบ่ง train/test แบบ figure-level ทำให้ figures จาก paper เดียวกันอาจอยู่ทั้ง train และ test → model อาจ "จำ" paper แทนที่จะ learn</li>
+</ul>
+</div>
+<ul>
+  <li><strong>เป้าหมายที่ 1:</strong> เพิ่ม mention-paragraphs และ OCR tokens เข้า dataset เพื่อสร้าง knowledge-augmented version</li>
+  <li><strong>เป้าหมายที่ 2:</strong> ทดสอบ ablation อย่างเป็นระบบ — วัดว่า (figure only) vs (figure + OCR) vs (figure + mention) vs (mention + OCR ไม่มี figure) ให้ผลต่างกันแค่ไหน</li>
+  <li><strong>เป้าหมายที่ 3:</strong> แก้ data leakage โดย re-split ที่ document-level เพื่อให้ผลการประเมินน่าเชื่อถือกว่าเดิม</li>
+  <li><strong>เป้าหมายที่ 4:</strong> พิสูจน์ empirically ว่า document context (mention-paragraphs) มีผลต่อคุณภาพ caption มากกว่า visual features</li>
+</ul>
+
+<h4>📊 Dataset Augmentation</h4>
+<ul>
+  <li><strong>Mention-paragraphs:</strong> ดึงจาก PDF body text ด้วย PDFFigures 2.0 + regex matching</li>
+  <li><strong>OCR tokens:</strong> ใช้ Google Vision OCR API ดึงข้อความ + bounding box coordinates</li>
+  <li><strong>ขนาด:</strong> ~414K figures พร้อม augmented metadata</li>
+  <li><strong>Re-split:</strong> แบ่งข้อมูลใหม่ที่ document-level (ไม่ใช่ figure-level) เพื่อป้องกัน data leakage</li>
+</ul>
+
+<h4>🔬 Model: M4C-Captioner</h4>
+<div class="method-box">
+<span class="label">M4C-Captioner Architecture</span>
+Input Modalities:
+  1. Figure → ResNet-152 → Visual Features (2048-d)
+  2. Mention-paragraph → SciBERT → Text Features (768-d, max 192 tokens)
+  3. OCR tokens → FastText + PHOC + Faster R-CNN → Multi-modal Features
+
+All features → M4C Transformer (4 layers, 12 heads) → Caption
+<span class="muted">+ Pointer Network: เลือกคำจาก vocabulary หรือ copy จาก OCR tokens</span>
+</div>
+
+<h4>📈 Critical Finding</h4>
+<div class="key-box">
+<h5>🔑 ผลลัพธ์สำคัญที่สุด</h5>
+<ul>
+  <li><strong>Mention-paragraph เพียงอย่างเดียว</strong> ให้ผลดีกว่า figure-only อย่างมาก</li>
+  <li><strong>Mention + OCR (ไม่มี figure)</strong> ให้ผลดีที่สุด → visual feature จาก ResNet เป็น noise!</li>
+  <li><strong>Model ชนะ Human</strong> ในทุก automatic metrics เมื่อมี context</li>
+  <li><strong>Human evaluation:</strong> แม้มี mention-paragraph มนุษย์ยังเขียน caption ได้ไม่ดี → task นี้ยากมาก</li>
+</ul>
+</div>
+
+<div class="key-box teal">
+<h5>🔗 ความเกี่ยวข้องกับวิทยานิพนธ์ (เจาะลึก)</h5>
+<ul>
+  <li><strong>หลักฐานตรงที่สุดสำหรับ hypothesis เรา:</strong> SciCap+ พิสูจน์ว่า mention-paragraph สำคัญกว่า visual features — นี่คือ empirical justification สำคัญที่สุดสำหรับ <em>วัตถุประสงค์ข้อ 2</em> ของวิทยานิพนธ์เรา</li>
+  <li><strong>ข้อจำกัดของ SciCap+ ที่เราแก้:</strong> mention-paragraph ใน SciCap+ ดึงด้วย regex matching อย่างง่าย → มักได้ context ที่ไม่ครบหรือ noisy — งานเราใช้ RAG (semantic similarity retrieval) เพื่อดึง context ที่เกี่ยวข้องได้ดีกว่า</li>
+  <li><strong>Visual encoder ที่ดีกว่า:</strong> ResNet เป็น noise → งานเราใช้ modern VLM (InternVL, LLaVA) ที่มี vision encoder ดีกว่ามาก ตอบ <em>วัตถุประสงค์ข้อ 3</em> (สร้าง caption ที่สะท้อน academic content)</li>
+  <li><strong>Document-level split:</strong> เราจะยึดแนวทางของ SciCap+ ในการแบ่ง train/test แบบ document-level เพื่อความน่าเชื่อถือของผล</li>
+  <li><strong>Ablation design:</strong> เราออกแบบ experiment ตาม SciCap+ — ทดสอบ context levels: (1) figure-only → (2) +OCR → (3) +mention → (4) +full RAG → พิสูจน์ว่าแต่ละระดับช่วยเพิ่มคุณภาพขนาดไหน ตอบ <em>วัตถุประสงค์ข้อ 4</em></li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- PAPER 5: Survey -->
+<div class="detail-block" id="p5">
+<div class="detail-header">
+  <span class="num">5</span>
+  <h3>Survey: Multimodal Information Fusion for Chart Understanding</h3>
+  <span class="venue-tag">Survey 2025</span>
+</div>
+<div class="detail-body">
+
+<h4>🎯 Overview</h4>
+<p>Survey paper ล่าสุด (2025) ที่ให้ภาพรวมครบถ้วนของ Chart Understanding ด้วย MLLMs ครอบคลุม evolution, limitations, และ future directions ตั้งแต่ classic DL ถึง modern MLLM paradigms</p>
+
+<h4>📌 จุดประสงค์หลักของ Paper</h4>
+<div class="key-box">
+<h5>ปัญหาที่ Paper นี้แก้</h5>
+<ul>
+  <li><strong>Field กระจัดกระจาย:</strong> งานวิจัยด้าน chart understanding มีหลาย sub-tasks (QA, captioning, data extraction) แต่ขาด unified taxonomy และ cross-task comparison</li>
+  <li><strong>ขาดการ map ว่า MLLM แต่ละ architecture เหมาะกับ task ไหน:</strong> นักวิจัยใหม่ไม่รู้ว่าควรเลือก approach ใดสำหรับ task ที่ต้องการ</li>
+  <li><strong>Limitations ของ current models ยังไม่ได้ถูก characterize อย่างเป็นระบบ:</strong> ทุกคนรู้ว่า model มีปัญหา hallucination แต่ไม่ได้วิเคราะห์ว่ามาจากอะไรกันแน่</li>
+</ul>
+</div>
+<ul>
+  <li><strong>เป้าหมายที่ 1:</strong> สร้าง comprehensive taxonomy ของ chart understanding tasks แบ่งเป็น Basic (Classification, Element Extraction, Factoid QA) และ Advanced (Captioning, Chart-to-Table, Open-ended QA)</li>
+  <li><strong>เป้าหมายที่ 2:</strong> Review วิวัฒนาการของ MLLM architectures สำหรับ chart — จาก component-assembled VLMs ไปจนถึง MoE และ RL-based approaches</li>
+  <li><strong>เป้าหมายที่ 3:</strong> Identify ข้อจำกัดหลัก 5 ประการของ current MLLMs (perceptual deficits, OCR shortcut, hallucination, lack of robustness, weak multi-hop reasoning)</li>
+  <li><strong>เป้าหมายที่ 4:</strong> ระบุ future research directions เพื่อ guide งานวิจัยในอนาคต</li>
+</ul>
+
+<h4>📊 Downstream Tasks Taxonomy</h4>
+<table class="comparison-table">
+<tr><th>Task</th><th>Description</th><th>Level</th></tr>
+<tr><td>Chart Classification</td><td>จำแนกประเภท chart</td><td>Basic</td></tr>
+<tr><td>Element Extraction</td><td>ดึงองค์ประกอบ (axis, legend, data)</td><td>Basic</td></tr>
+<tr><td>Factoid QA</td><td>ตอบคำถามเฉพาะเจาะจง (single answer)</td><td>Basic</td></tr>
+<tr><td>Chart Captioning</td><td>สร้างคำอธิบาย/สรุป</td><td>Advanced</td></tr>
+<tr><td>Chart-to-Table</td><td>แปลงกราฟเป็นตาราง</td><td>Advanced</td></tr>
+<tr><td>Chart-to-Code</td><td>แปลงกราฟเป็นโค้ด Python</td><td>Advanced</td></tr>
+<tr><td>Open-ended QA</td><td>ตอบคำถามเปิด (multi-sentence)</td><td>Advanced</td></tr>
+</table>
+
+<h4>🏗️ MLLM Architecture Evolution</h4>
+<ul>
+  <li><strong>Component-Assembled VLMs:</strong> Donut, Pix2Struct, Matcha, UniChart, ChartInstruct</li>
+  <li><strong>Adapting General-Purpose MLLMs:</strong> Fine-tuning (LoRA/SFT) + Knowledge Distillation</li>
+  <li><strong>Prompting Strategies:</strong> Chain of Chart Reasoning (CCR), CoT, Program of Thoughts (PoT)</li>
+  <li><strong>Intermediate Representations:</strong> Data tables (DePlot), Python code (ChartCoder), SVG/XML</li>
+  <li><strong>MoE (Mixture of Experts):</strong> ChartMoE — dynamic routing ตาม query type</li>
+  <li><strong>Reinforcement Learning:</strong> DPO, GRPO — เพิ่ม reasoning + ลด hallucination</li>
+</ul>
+
+<h4>⚠️ Key Limitations of Current MLLMs</h4>
+<div class="key-box">
+<h5>ปัญหาหลักที่พบ</h5>
+<ul>
+  <li><strong>Perceptual Deficits:</strong> Vision Encoder ไม่สามารถจับ fine-grained details (grid lines, exact values)</li>
+  <li><strong>OCR Shortcut:</strong> Models พึ่ง text labels มากเกินไป แทนที่จะ reason จาก visual data</li>
+  <li><strong>Hallucination:</strong> สร้างข้อมูลที่ดูสมเหตุสมผลแต่ไม่ตรงกับ chart จริง</li>
+  <li><strong>Lack of Robustness:</strong> เปลี่ยน style เล็กน้อย (สี, font) ทำให้ performance ตกลงมาก</li>
+  <li><strong>Weak Multi-hop Reasoning:</strong> ยังทำ causality inference, prediction ได้ไม่ดี</li>
+</ul>
+</div>
+
+<h4>🔮 Future Directions</h4>
+<ul>
+  <li>Discriminative Fine-Tuning with Hard Negatives</li>
+  <li>Fine-Grained Visual Grounding (region-level alignment)</li>
+  <li>RL for Chain-of-Thought reasoning</li>
+  <li>Multi-Agent Debate for verification</li>
+  <li>Dynamic Resolution + Synthetic Data Augmentation</li>
+</ul>
+
+<div class="key-box amber">
+<h5>🔗 ความเกี่ยวข้องกับวิทยานิพนธ์ (เจาะลึก)</h5>
+<ul>
+  <li><strong>การ position งานของเราใน field:</strong> Survey นี้ยืนยันว่า "Chart Captioning" เป็น Advanced task ที่ยังมีช่องว่างสำคัญ — โดยเฉพาะ "context gap" ที่ current models ไม่มี document context → งานเราตอบช่องว่างนี้โดยตรง</li>
+  <li><strong>ตอบ Limitation ที่ survey ระบุ:</strong>
+    <ul>
+      <li><em>Hallucination</em> → เราแก้โดย grounding caption ด้วย retrieved context จาก paper จริง</li>
+      <li><em>Perceptual Deficits</em> → เราแก้โดยแยก perception (VLM) ออกจาก generation (LLM) ตามแนว DePlot</li>
+      <li><em>OCR Shortcut</em> → เราใช้ mention-paragraph ซึ่งให้ semantic understanding ไม่ใช่แค่ text labels</li>
+    </ul>
+  </li>
+  <li><strong>Intermediate representation approach:</strong> Survey ยืนยันว่า chart→table/code เป็น promising direction → support การออกแบบ pipeline ของเรา</li>
+  <li><strong>Literature review anchor:</strong> เราใช้ survey นี้เป็น anchor ของ related work section ในวิทยานิพนธ์ เพื่อแสดงภาพรวม field และ motivate งานของเรา</li>
+  <li><strong>Evaluation approach:</strong> Survey แนะนำ multi-level evaluation → งานเราใช้ทั้ง automatic metrics + human evaluation + LLM-as-judge ตามคำแนะนำนี้ ตอบ <em>วัตถุประสงค์ข้อ 4</em> อย่างครบถ้วน</li>
+</ul>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="section section-alt" id="comparison">
+<div class="container">
+<div class="section-header"><span class="overline">Cross-Paper Analysis</span><h2>Comparative Overview</h2></div>
+<div style="overflow-x:auto;">
+<table class="comparison-table">
+<tr>
+  <th>Paper</th><th>Year</th><th>Input</th><th>Key Innovation</th><th>Limitation</th><th>ช่องว่างที่งานเราเติม</th>
+</tr>
+<tr class="highlight">
+  <td><strong>SciCap</strong></td><td>2021</td>
+  <td>Figure only</td>
+  <td>Large-scale dataset + neural baseline</td>
+  <td>No context → low scores</td>
+  <td>เพิ่ม document context ผ่าน RAG</td>
+</tr>
+<tr>
+  <td><strong>SciCap+</strong></td><td>2023</td>
+  <td>Figure + Mention + OCR</td>
+  <td>Knowledge-augmented captioning</td>
+  <td>Regex context (ไม่ semantic), old encoder</td>
+  <td>แทน regex ด้วย RAG + แทน ResNet ด้วย VLM สมัยใหม่</td>
+</tr>
+<tr class="highlight">
+  <td><strong>DePlot</strong></td><td>2023</td>
+  <td>Chart image</td>
+  <td>Plot→Table + LLM reasoning</td>
+  <td>ไม่มี document context</td>
+  <td>เพิ่ม RAG context เสริม intermediate representation</td>
+</tr>
+<tr>
+  <td><strong>MLBCAP</strong></td><td>2025</td>
+  <td>Figure + Context</td>
+  <td>Multi-LLM collaborative pipeline</td>
+  <td>Proprietary LLMs, ไม่มี semantic retrieval</td>
+  <td>Open-source + RAG-augmented context retrieval</td>
+</tr>
+<tr class="highlight">
+  <td><strong>Survey</strong></td><td>2025</td>
+  <td>Comprehensive review</td>
+  <td>Taxonomy + Future directions</td>
+  <td>No new model proposed</td>
+  <td>ระบุ "context gap" ที่งานเราแก้ตรงๆ</td>
+</tr>
+</table>
+</div>
+</div>
+</section>
+
+<!-- SYNTHESIS -->
+<section class="section section-dark" id="synthesis">
+<div class="container">
+<div class="section-header"><span class="overline">Thesis Integration</span><h2>Synthesis & Research Direction</h2></div>
+<div class="synthesis-grid">
+
+<div class="synthesis-card">
+  <span class="tag coral">GAP IDENTIFIED</span>
+  <h4>Context is King</h4>
+  <p>SciCap+ พิสูจน์ว่า mention-paragraphs สำคัญกว่า visual features (ResNet) แต่ยังใช้แค่ regex matching ง่ายๆ → RAG สามารถดึง context ที่เกี่ยวข้องได้ดีกว่ามาก และ modern VLM ทำ figure understanding ได้ดีกว่า ResNet อีกมาก</p>
+</div>
+
+<div class="synthesis-card">
+  <span class="tag teal">METHODOLOGY</span>
+  <h4>Hybrid RAG + VLM</h4>
+  <p>รวม DePlot (chart→table) + SciCap+ (document context) + MLBCAP (multi-stage pipeline): ใช้ VLM สำหรับ perception, RAG สำหรับ context retrieval, LLM สำหรับ generation — แต่ละ component ที่เราเลือกมีงานวิจัยรองรับ</p>
+</div>
+
+<div class="synthesis-card">
+  <span class="tag amber">INNOVATION</span>
+  <h4>Open-Source Pipeline</h4>
+  <p>MLBCAP พึ่ง proprietary LLMs → เราใช้ open-source VLM (InternVL, LLaVA) + Docling สำหรับ parsing → reproducible, cost-effective, customizable และเป็น contribution ในแง่ accessibility ของ research</p>
+</div>
+
+<div class="synthesis-card">
+  <span class="tag coral">EVALUATION</span>
+  <h4>Multi-level Assessment</h4>
+  <p>ใช้ทั้ง automatic metrics (BLEU, CIDEr, RMS จาก DePlot) + human evaluation + LLM-as-judge (จาก MLBCAP) ตาม survey recommendations — ครอบคลุม วัตถุประสงค์ข้อ 4 ของวิทยานิพนธ์อย่างสมบูรณ์</p>
+</div>
+
+<div class="synthesis-card">
+  <span class="tag teal">ABLATION</span>
+  <h4>Context Level Study</h4>
+  <p>ออกแบบ experiment ตาม SciCap+ ablation pattern: (1) Figure-only (2) +OCR (3) +Mention (4) +Full RAG context → พิสูจน์ hypothesis อย่างเป็นระบบ ตอบ วัตถุประสงค์ข้อ 2 และ 3</p>
+</div>
+
+<div class="synthesis-card">
+  <span class="tag amber">SCOPE</span>
+  <h4>Beyond Graph Plots</h4>
+  <p>Survey ชี้ว่า field ขยายไปสู่ non-canonical charts → งานเราเริ่มจาก graph plots (ตาม SciCap) แล้วขยายไปครอบคลุม diagrams, flowcharts, scientific visualizations ในขั้นถัดไป</p>
+</div>
+
+</div>
+
+<!-- Thesis Objectives Mapping -->
+<div style="margin-top:64px;">
+<div class="section-header"><span class="overline">Thesis Connection</span><h2>วัตถุประสงค์วิทยานิพนธ์ ↔ หลักฐานจาก Papers</h2></div>
+<table class="comparison-table" style="background:var(--surface-dark-elevated);">
+<tr>
+  <th style="background:var(--surface-dark-elevated); color:var(--on-dark);">วัตถุประสงค์</th>
+  <th style="background:var(--surface-dark-elevated); color:var(--on-dark);">Paper ที่ Support</th>
+  <th style="background:var(--surface-dark-elevated); color:var(--on-dark);">หลักฐาน/แนวทาง</th>
+</tr>
+<tr>
+  <td style="color:var(--on-dark-soft);">1. ศึกษาแนวทางการสร้าง caption</td>
+  <td style="color:var(--on-dark);">SciCap, Survey 2025</td>
+  <td style="color:var(--on-dark-soft);">Baseline understanding + taxonomy ของ approach ทั้งหมด</td>
+</tr>
+<tr>
+  <td style="color:var(--on-dark-soft);">2. พัฒนากระบวนการวิเคราะห์รูปภาพ + บริบท</td>
+  <td style="color:var(--on-dark);">SciCap+, DePlot, MLBCAP</td>
+  <td style="color:var(--on-dark-soft);">Perception-reasoning separation (DePlot) + context integration (SciCap+) + modular pipeline (MLBCAP)</td>
+</tr>
+<tr>
+  <td style="color:var(--on-dark-soft);">3. สร้าง caption ที่สะท้อน academic content</td>
+  <td style="color:var(--on-dark);">SciCap+, MLBCAP</td>
+  <td style="color:var(--on-dark-soft);">Mention-paragraph ทำให้ caption มี academic content มากขึ้น + Quality-aware generation</td>
+</tr>
+<tr>
+  <td style="color:var(--on-dark-soft);">4. ประเมินคุณภาพ caption อย่างรอบด้าน</td>
+  <td style="color:var(--on-dark);">SciCap (metrics), DePlot (RMS), Survey (evaluation rec.)</td>
+  <td style="color:var(--on-dark-soft);">BLEU/CIDEr + RMS + LLM-as-judge + Human evaluation</td>
+</tr>
+</table>
+</div>
+
+<!-- CTA -->
+<div class="cta-band" style="margin-top:64px;">
+  <h2>Proposed Pipeline Architecture</h2>
+  <p>PDF Document → Docling (Layout Analysis) → Figure Extraction + Context Chunking → VLM (Figure Understanding) + RAG (Context Retrieval) → LLM (Caption Generation) → Quality Assessment</p>
+</div>
+
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+<div class="container">
+  <p>Thesis Research Paper Synthesis — Scientific Figure Captioning with Document Context</p>
+  <p style="margin-top:8px;">อาจารย์ที่ปรึกษา: <a href="#">ผศ.ดร. หัชทัย ชาญเลขา</a> · Generated for thesis committee preparation</p>
+</div>
+</footer>
+
+</body>
+</html>
