@@ -1,21 +1,61 @@
 ---
 name: deploy-ipu
-description: Docker Compose config template for deploying services on the ipu server under /data/ipu/puem/. Covers network setup, volume mounts, and service-specific gotchas.
+description: Deploy a new service to the ipu server. Covers folder structure, docker-compose network config, and important commands.
 ---
 
-# Docker Compose Config — IPU Server
+# Deploy Service — IPU Server
+
+## Folder Structure
+
+วางทุก service ไว้ที่ `/data/ipu/puem/<service-name>/`
+
+```
+/data/ipu/puem/<service-name>/
+├── docker-compose.yml
+├── data/        ← bind mount สำหรับ app data
+└── db/          ← bind mount สำหรับ database
+```
+
+```bash
+ssh ipu "mkdir -p /data/ipu/puem/<service-name>/{data,db}"
+```
+
+---
 
 ## Networks
 
 | Network | หน้าที่ |
 |---------|---------|
-| `ipuserver_internal` | communication ระหว่าง container ภายใน (เช่น app ↔ db) |
+| `ipuserver_internal` | communication ระหว่าง container ภายใน (app ↔ db ↔ cache) |
 | `ipuserver_webserver` | nginx มองเห็น container ที่ port 80 — เฉพาะ public-facing เท่านั้น |
 
 - ไม่ expose port ออก host เลย
-- Backend/DB ต่อแค่ `ipuserver_internal`
-- App ที่ให้ nginx เข้าถึงต่อทั้งสอง network
+- DB / cache / worker ต่อแค่ `ipuserver_internal`
 - URL pattern: `https://ipulab.com/service/<container-name>/`
+
+---
+
+## Important Commands
+
+```bash
+# Deploy
+ssh ipu "cd /data/ipu/puem/<service-name> && docker compose up -d"
+
+# Stop
+ssh ipu "cd /data/ipu/puem/<service-name> && docker compose down"
+
+# Restart single container
+ssh ipu "docker restart <container-name>"
+
+# Logs
+ssh ipu "docker logs <container-name> --tail 50 -f"
+
+# Check status
+ssh ipu "docker ps --filter name=<service-name> --format 'table {{.Names}}\t{{.Status}}\t{{.Networks}}'"
+```
+
+> ⚠️ `docker compose down` หยุด container แต่ข้อมูลใน `./data` และ `./db` ยังอยู่ครบ
+> ⚠️ ถ้าต้องการล้าง DB ให้ลบ `./db/*` แยกต่างหาก อย่า rm -rf ทั้ง folder โดยไม่ตั้งใจ
 
 ---
 
@@ -84,9 +124,15 @@ networks:
 
 ---
 
-## Full Example — Immich
+## Full Example — Immich (multi-container)
 
-Immich มีหลาย container: server, microservices, machine learning, redis, postgres
+```
+/data/ipu/puem/immich/
+├── docker-compose.yml
+├── upload/       ← photos/videos
+├── model-cache/  ← ML models
+└── db/           ← postgres data
+```
 
 ```yaml
 name: ipuserver
@@ -103,7 +149,6 @@ services:
       - immich-db
     environment:
       - DB_HOSTNAME=immich-db
-      - DB_PORT=5432
       - DB_DATABASE_NAME=immich
       - DB_USERNAME=immich
       - DB_PASSWORD=immich_secret
@@ -114,9 +159,9 @@ services:
       - ./upload:/usr/src/app/upload
     networks:
       - ipuserver_internal    # คุยกับ db, redis, ml
-      - ipuserver_webserver   # nginx เข้าถึง port 3001
+      - ipuserver_webserver   # nginx เข้าถึงได้
 
-  # ── Background workers ──────────────────────────────────────
+  # ── Background workers (internal only) ─────────────────────
   immich-microservices:
     image: ghcr.io/immich-app/immich-server:release
     container_name: immich-microservices
@@ -127,7 +172,6 @@ services:
       - immich-db
     environment:
       - DB_HOSTNAME=immich-db
-      - DB_PORT=5432
       - DB_DATABASE_NAME=immich
       - DB_USERNAME=immich
       - DB_PASSWORD=immich_secret
@@ -136,7 +180,7 @@ services:
     volumes:
       - ./upload:/usr/src/app/upload
     networks:
-      - ipuserver_internal    # internal only — ไม่ต้องให้ nginx เห็น
+      - ipuserver_internal
 
   immich-ml:
     image: ghcr.io/immich-app/immich-machine-learning:release
@@ -145,15 +189,15 @@ services:
     volumes:
       - ./model-cache:/cache
     networks:
-      - ipuserver_internal    # internal only
+      - ipuserver_internal
 
-  # ── Data layer ──────────────────────────────────────────────
+  # ── Data layer (internal only) ──────────────────────────────
   immich-redis:
     image: redis:7-alpine
     container_name: immich-redis
     restart: unless-stopped
     networks:
-      - ipuserver_internal    # internal only
+      - ipuserver_internal
 
   immich-db:
     image: tensorchord/pgvecto-rs:pg16-v0.2.0
@@ -166,7 +210,7 @@ services:
     volumes:
       - ./db:/var/lib/postgresql/data
     networks:
-      - ipuserver_internal    # internal only
+      - ipuserver_internal
 
 networks:
   ipuserver_internal:
@@ -176,4 +220,3 @@ networks:
 ```
 
 เข้าใช้งานที่ `https://ipulab.com/service/immich/`
-
