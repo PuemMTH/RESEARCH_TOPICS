@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Judging LLM-as-a-Judge — Paper Analysis</title>
+<link rel="stylesheet" href="../../assets/summary.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+<div class="container">
+  <a class="nav-brand" href="#">✦ <span>Research</span> Notes</a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#limitations">Limitations</a></li>
+    <li><a href="#thesis">Thesis</a></li>
+  </ul>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="container">
+  <h1>Judging LLM-as-a-Judge<br>with MT-Bench and Chatbot Arena</h1>
+  <p class="subtitle">งานวิจัยแรกที่ศึกษาอย่างเป็นระบบว่า LLM แข็งแกร่งอย่าง GPT-4 สามารถทำหน้าที่เป็น "ผู้ตัดสิน" แทนมนุษย์ในการประเมินคุณภาพ chatbot ได้แม่นยำเพียงใด พร้อมเสนอ benchmark สองตัวและวิเคราะห์ bias สี่ประเภทของ LLM judge</p>
+  <div class="hero-meta">
+    <span class="badge">Lianmin Zheng, Wei-Lin Chiang, Ying Sheng et al.</span>
+    <span class="badge coral">NeurIPS 2023 · Datasets &amp; Benchmarks</span>
+    <span class="badge">UC Berkeley · Stanford · CMU</span>
+    <span class="badge"><a href="https://arxiv.org/abs/2306.05685" style="color:inherit">arXiv:2306.05685</a></span>
+  </div>
+</div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="section" id="overview">
+<div class="container">
+<div class="section-header"><span class="overline">Abstract &amp; Contributions</span><h2>ภาพรวม</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">!</span><h3>ปัญหาที่ Paper นี้แก้</h3></div>
+<div class="detail-body">
+<div class="key-box">
+<h5>Core Problem</h5>
+<ul>
+  <li><strong>Benchmark ดั้งเดิมใช้ไม่ได้กับ Chat Assistants:</strong> benchmark อย่าง MMLU, HellaSwag, HELM วัด core capability แต่ไม่สะท้อน human preference ในบทสนทนาจริง — โมเดลที่ได้คะแนน MMLU สูงไม่จำเป็นต้องถูก user ชื่นชอบ</li>
+  <li><strong>Human Evaluation แพงและช้า:</strong> การให้มนุษย์ประเมินทุกคู่โมเดลไม่ scalable — ต้องการ automated surrogate ที่เชื่อถือได้</li>
+  <li><strong>Traditional Metrics ล้มเหลวกับ Open-ended Questions:</strong> BLEU, ROUGE วัด string similarity ซึ่งไม่มีความหมายสำหรับคำตอบที่ถูกแต่เขียนต่างกัน</li>
+  <li><strong>ยังไม่มี benchmark วัด Multi-turn &amp; Instruction-following:</strong> ความสามารถที่สำคัญที่สุดของ chat assistant ยังไม่มี benchmark ที่เหมาะสม</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">★</span><h3>Key Contributions</h3></div>
+<div class="detail-body">
+<ul>
+  <li><strong>MT-Bench:</strong> 80 คำถาม multi-turn คุณภาพสูงใน 8 หมวด (Writing, Roleplay, Extraction, Reasoning, Math, Coding, STEM, Humanities) — ออกแบบมาให้แยกความแตกต่างของโมเดลได้ชัดเจน</li>
+  <li><strong>Chatbot Arena:</strong> แพลตฟอร์ม crowdsourced battle ที่ผู้ใช้โหวตแบบ anonymous — เก็บ 30K votes จากการใช้งานจริง ไม่ใช่ pre-defined questions</li>
+  <li><strong>Systematic Study of LLM-as-a-Judge:</strong> วิเคราะห์ bias 4 ประเภท + เสนอ solutions + ยืนยันด้วย 3K expert votes และ 3K crowdsourced votes ว่า GPT-4 judge ตรงกับมนุษย์ >80%</li>
+  <li><strong>Hybrid Evaluation Framework:</strong> เสนอให้ใช้ capability benchmarks + preference benchmarks + LLM-as-a-judge ร่วมกัน</li>
+  <li><strong>Public Datasets:</strong> เปิดเผย 80 MT-bench questions, 3K expert votes, 30K arena conversations</li>
+</ul>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="section section-alt" id="methodology">
+<div class="container">
+<div class="section-header"><span class="overline">How It Works</span><h2>Methodology</h2></div>
+
+<!-- Part 1: Benchmarks -->
+<div class="detail-block">
+<div class="detail-header"><span class="num">1</span><h3>สองเส้นทางในการเก็บ Human Preference</h3></div>
+<div class="detail-body">
+<div class="method-box">
+<span class="label">Dual Benchmark Design</span>
+<p>Paper ใช้สองแนวทางที่เสริมกัน: <strong>MT-Bench</strong> (controlled, expert evaluation) และ <strong>Chatbot Arena</strong> (wild, crowdsourced) ทั้งสองให้ ground truth สำหรับวัดว่า LLM judge แม่นยำแค่ไหน</p>
+</div>
+
+<div class="detail-block" style="border-left: 3px solid var(--accent-warm,#cc785c); padding-left: 1em; margin: 1em 0;">
+<div class="detail-header"><span class="num">A</span><h3>MT-Bench</h3></div>
+<div class="detail-body">
+<ul>
+  <li>80 คำถาม multi-turn ใน 8 หมวด (10 คำถาม/หมวด)</li>
+  <li>แต่ละคำถามมี 2 turns — turn แรกถามเนื้อหา, turn สองทดสอบ instruction-following (เช่น "rewrite เริ่มทุกประโยคด้วยตัว A")</li>
+  <li>ให้ 58 expert labelers (ระดับ grad student) ประเมิน ≥20 คู่ → ได้ ~3K votes</li>
+  <li>ทดสอบ 6 โมเดล: GPT-4, GPT-3.5, Claude-v1, Vicuna-13B, Alpaca-13B, LLaMA-13B</li>
+</ul>
+</div>
+</div>
+
+<div class="detail-block" style="border-left: 3px solid var(--accent-warm,#cc785c); padding-left: 1em; margin: 1em 0;">
+<div class="detail-header"><span class="num">B</span><h3>Chatbot Arena</h3></div>
+<div class="detail-body">
+<ul>
+  <li>แพลตฟอร์ม anonymous battle — user คุยกับ 2 โมเดล side-by-side แล้วโหวต</li>
+  <li>เก็บ 30K votes ใน 1 เดือน จาก 2,114 unique IPs</li>
+  <li>ครอบคลุม: GPT-4, GPT-3.5, Claude, Vicuna-7/13B, Koala-13B, Alpaca-13B, LLaMA-13B, Dolly-12B</li>
+  <li>ข้อได้เปรียบ: คำถามมาจากผู้ใช้จริง ไม่ได้ pre-defined → สะท้อน real-world use cases</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Part 2: LLM Judge Types -->
+<div class="detail-block">
+<div class="detail-header"><span class="num">2</span><h3>LLM-as-a-Judge: 3 รูปแบบ</h3></div>
+<div class="detail-body">
+<div class="method-box">
+<span class="label">Judge Variations</span>
+<p>Paper เสนอ 3 วิธีใช้ LLM เป็นผู้ตัดสิน ซึ่งสามารถใช้แยกกันหรือผสมกันได้ตามความเหมาะสม</p>
+</div>
+<ul>
+  <li><strong>Pairwise Comparison:</strong> ให้ LLM judge ดูคำตอบ 2 ชุดแล้วตัดสินว่าชุดไหนดีกว่าหรือ tie — แม่นยำกว่าแต่ไม่ scalable (O(n²) pairs)</li>
+  <li><strong>Single Answer Grading:</strong> ให้คะแนนตอบเดียว — scalable กว่าแต่คะแนน absolute อาจไม่เสถียรถ้า judge model เปลี่ยน</li>
+  <li><strong>Reference-guided Grading:</strong> ให้ reference answer ก่อนแล้วค่อยให้คะแนน — จำเป็นสำหรับคำถาม math/reasoning ที่ judge ต้องรู้คำตอบที่ถูก</li>
+</ul>
+</div>
+</div>
+
+<!-- Part 3: Biases -->
+<div class="detail-block">
+<div class="detail-header"><span class="num">3</span><h3>4 Biases ของ LLM Judge และวิธีแก้</h3></div>
+<div class="detail-body">
+
+<div class="key-box amber">
+<h5>Bias 1: Position Bias</h5>
+<p>LLM judge ชอบคำตอบที่อยู่ <strong>ตำแหน่งแรก</strong> มากกว่า ทดสอบโดยส่งคำตอบที่เหมือนกัน 2 ชุด (เรียก GPT-3.5 ด้วย temperature 0.7 สองครั้ง) แล้วสลับตำแหน่ง</p>
+<ul>
+  <li>Claude-v1: consistent เพียง 23.8% (biased toward first 75%!)</li>
+  <li>GPT-3.5: consistent 46.2%</li>
+  <li>GPT-4: consistent 65% (ดีที่สุด แต่ยังมี bias)</li>
+</ul>
+<p><strong>Solution:</strong> เรียก judge สองครั้งด้วยตำแหน่งสลับกัน — declare win เฉพาะเมื่อชนะทั้งสองครั้ง ถ้า inconsistent ให้เป็น tie</p>
+</div>
+
+<div class="key-box amber">
+<h5>Bias 2: Verbosity Bias</h5>
+<p>LLM judge ชอบคำตอบที่ <strong>ยาวกว่า</strong> แม้ข้อมูลซ้ำกัน ทดสอบด้วย "repetitive list attack" — เพิ่ม items ซ้ำเข้าไปในคำตอบเดิม</p>
+<ul>
+  <li>Claude-v1 &amp; GPT-3.5: fail rate <strong>91.3%</strong> (ถูกหลอกเกือบทั้งหมด)</li>
+  <li>GPT-4: fail rate เพียง <strong>8.7%</strong></li>
+</ul>
+</div>
+
+<div class="key-box amber">
+<h5>Bias 3: Self-Enhancement Bias</h5>
+<p>LLM judge อาจชอบคำตอบของตัวเองมากกว่า เช่น GPT-4 favor ตัวเองด้วย win rate สูงกว่า human 10%, Claude-v1 สูงกว่า 25% — แต่ข้อมูลยังไม่พอสรุปได้ชัดเจน GPT-3.5 ไม่แสดง bias นี้</p>
+</div>
+
+<div class="key-box amber">
+<h5>Bias 4: Limited Math/Reasoning Ability</h5>
+<p>LLM judge ถูกชักจูงโดยคำตอบที่ผิดในโจทย์ math/reasoning — แม้จะแก้ข้อนั้นได้ถ้าถามตรงๆ แต่เมื่อเห็นคำตอบผิดใน context ก็ตัดสินผิดตามไปด้วย</p>
+<ul>
+  <li>Default prompt: fail rate <strong>14/20</strong> (70%)</li>
+  <li>Chain-of-Thought prompt: <strong>6/20</strong> (30%)</li>
+  <li>Reference-guided: <strong>3/20</strong> (15%) ← ดีที่สุด</li>
+</ul>
+</div>
+
+</div>
+</div>
+
+<!-- Part 4: Agreement Metric -->
+<div class="detail-block">
+<div class="detail-header"><span class="num">4</span><h3>Agreement Metric</h3></div>
+<div class="detail-body">
+<div class="method-box">
+<span class="label">Definition</span>
+<p>Agreement = ความน่าจะเป็นที่จะสุ่มเลือก 1 คน จากแต่ละกลุ่มแล้วทั้งสองเห็นตรงกันในคำถามที่สุ่มมา (ไม่ใช่คนเดียวกัน) วิธีนี้ทำให้เปรียบเทียบ human-human agreement กับ GPT4-human agreement ได้อย่างยุติธรรม</p>
+</div>
+<p>ทดสอบทั้ง Setup S1 (รวม tie) และ S2 (ไม่รวม tie) — S2 ให้ค่า agreement สูงกว่าและมีความหมายทางการประเมินมากกว่า</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- RESULTS -->
+<section class="section" id="results">
+<div class="container">
+<div class="section-header"><span class="overline">Experiments &amp; Numbers</span><h2>Results &amp; Benchmarks</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">↗</span><h3>Agreement: GPT-4 Judge vs Human</h3></div>
+<div class="detail-body">
+<table class="comparison-table">
+<thead>
+  <tr><th>Judge</th><th>Dataset</th><th>Setup</th><th>Agreement w/ Human</th><th>Note</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>GPT-4 (pairwise)</strong></td><td>MT-Bench</td><td>S2 (w/o tie)</td><td><strong>85%</strong></td><td>สูงกว่า human-human (81%)!</td></tr>
+  <tr><td>GPT-4 (single grading)</td><td>MT-Bench</td><td>S2</td><td>~82%</td><td>Scalable, rubric เสถียร</td></tr>
+  <tr><td>Human-Human</td><td>MT-Bench</td><td>S2</td><td>81%</td><td>Gold standard baseline</td></tr>
+  <tr><td>GPT-3.5 (pairwise)</td><td>MT-Bench</td><td>S2</td><td>~75%</td><td>ต่ำกว่า GPT-4 ชัดเจน</td></tr>
+  <tr><td>GPT-4 (pairwise)</td><td>Chatbot Arena</td><td>S2</td><td>~80%</td><td>ยืนยัน real-world setting</td></tr>
+</tbody>
+</table>
+<div class="key-box teal">
+<h5>Key Takeaways</h5>
+<ul>
+  <li>GPT-4 judge <strong>ตรงกับมนุษย์ 85%</strong> ซึ่งเท่ากับหรือสูงกว่า human-human agreement (81%) — หมายความว่า GPT-4 consistent กว่ามนุษย์เฉลี่ยด้วยซ้ำ</li>
+  <li>Agreement เพิ่มขึ้นตามความแตกต่างของโมเดล — คู่ที่ประสิทธิภาพต่างกันมากได้ agreement เกือบ 100%</li>
+  <li>GPT-4 single-answer grading ทำงานได้ใกล้เคียง pairwise แต่ scalable กว่า — เหมาะสำหรับ large-scale evaluation</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">📊</span><h3>MT-Bench Category Win Rates (GPT-4 vs Others)</h3></div>
+<div class="detail-body">
+<table class="comparison-table">
+<thead>
+  <tr><th>Model</th><th>Writing</th><th>Reasoning</th><th>Math</th><th>Coding</th><th>STEM</th><th>Humanities</th></tr>
+</thead>
+<tbody>
+  <tr><td><strong>GPT-4</strong></td><td>61.2%</td><td>49.3%</td><td>66.1%</td><td>56.3%</td><td><strong>76.6%</strong></td><td><strong>72.2%</strong></td></tr>
+  <tr><td>GPT-3.5</td><td>50.9%</td><td>32.6%</td><td>63.8%</td><td>55.0%</td><td>52.8%</td><td>53.8%</td></tr>
+  <tr><td>Vicuna-13B</td><td>39.7%</td><td>20.1%</td><td>18.0%</td><td>36.9%</td><td>47.0%</td><td>47.5%</td></tr>
+  <tr><td>LLaMA-13B</td><td>15.1%</td><td>7.8%</td><td>7.5%</td><td>2.1%</td><td>6.8%</td><td>10.1%</td></tr>
+</tbody>
+</table>
+<p style="font-size:0.9em; color:#888; margin-top:0.5em">Vicuna-13B อ่อนแอมากใน math (18%) และ reasoning (20%) เมื่อเทียบกับ GPT-4 — ยืนยันว่า MT-Bench แยกความสามารถโมเดลได้จริง</p>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">🧪</span><h3>Position Bias Analysis</h3></div>
+<div class="detail-body">
+<table class="comparison-table">
+<thead>
+  <tr><th>Judge</th><th>Prompt</th><th>Consistency</th><th>Biased toward 1st</th></tr>
+</thead>
+<tbody>
+  <tr><td>Claude-v1</td><td>default</td><td>23.8%</td><td><strong>75.0%</strong></td></tr>
+  <tr><td>GPT-3.5</td><td>default</td><td>46.2%</td><td>50.0%</td></tr>
+  <tr><td><strong>GPT-4</strong></td><td>default</td><td><strong>65.0%</strong></td><td>30.0%</td></tr>
+  <tr><td>GPT-4</td><td>few-shot</td><td><strong>77.5%</strong></td><td>~22%</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- LIMITATIONS -->
+<section class="section section-alt" id="limitations">
+<div class="container">
+<div class="section-header"><span class="overline">Gaps &amp; Future Work</span><h2>ข้อจำกัดและทิศทางต่อไป</h2></div>
+
+<div class="detail-block">
+<div class="detail-body">
+<div class="key-box amber">
+<h5>Limitations ที่ Paper ยอมรับ</h5>
+<ul>
+  <li><strong>เน้น helpfulness เท่านั้น:</strong> ไม่ได้ประเมิน safety, honesty, harmlessness — ซึ่งสำคัญมากในการ deploy จริง</li>
+  <li><strong>Metric เดียวสำหรับทุกมิติ:</strong> helpfulness มีหลาย dimension (accuracy, relevance, creativity) แต่ถูก collapse เป็นคะแนนเดียว ไม่มีการแยกวิเคราะห์</li>
+  <li><strong>Self-enhancement bias ยังสรุปไม่ได้:</strong> ข้อมูลยังไม่พอ และทำ controlled study ยากเพราะต้อง rephrase คำตอบให้เหมือน style ของโมเดลอื่น</li>
+  <li><strong>Solutions ยัง preliminary:</strong> position swapping และ reference-guided judge แก้ได้บางส่วน แต่ไม่ครบถ้วน — ต้องการ advanced methods เพิ่มเติม</li>
+  <li><strong>Multi-turn prompt complexity:</strong> การแสดง 2 full conversations ใน single prompt ดีกว่า 2 prompts แยก แต่ทำให้ prompt ยาวมากและ expensive</li>
+</ul>
+</div>
+
+<div class="key-box" style="margin-top: 1em;">
+<h5>Future Directions ที่ Paper ระบุ</h5>
+<ul>
+  <li>Benchmarking chatbots at scale ด้วย broader categories</li>
+  <li>Open-source LLM judge ที่ align กับ human preference (ไม่ต้องพึ่ง GPT-4)</li>
+  <li>Enhancing open models' math/reasoning capability</li>
+</ul>
+</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- THESIS RELEVANCE -->
+<section class="section section-dark" id="thesis">
+<div class="container">
+<div class="section-header"><span class="overline">Connection to My Research</span><h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2></div>
+
+<div class="synthesis-grid">
+
+  <div class="synthesis-card">
+    <h4>What I Borrow</h4>
+    <p><strong>LLM-as-a-Judge สำหรับ Figure Caption Evaluation</strong> — แทนที่จะใช้ BLEU/METEOR (ซึ่ง paper นี้เองก็วิจารณ์ว่าไม่เหมาะกับ open-ended questions), วิทยานิพนธ์ควรใช้ GPT-4 judge ประเมินคุณภาพ caption ที่ generate ออกมา</p>
+    <p style="margin-top:0.5em"><strong>Reference-guided grading</strong> — เมื่อประเมิน caption ของ scientific figure, สามารถให้ original caption จาก paper เป็น reference เพื่อให้ judge รู้ว่า "คำตอบที่ถูก" คืออะไร ลด fail rate จาก 70% → 15%</p>
+    <p style="margin-top:0.5em"><strong>Position swapping technique</strong> — ถ้าต้องทำ pairwise comparison ระหว่าง caption จากหลายวิธี ต้องสลับตำแหน่งทุกครั้งเพื่อหักล้าง position bias</p>
+  </div>
+
+  <div class="synthesis-card">
+    <h4>Where I Diverge</h4>
+    <p><strong>Domain-specific evaluation</strong> — scientific figure captions มี structure ที่เฉพาะเจาะจงกว่า chatbot responses ทั่วไป เช่น ต้องอธิบาย x-axis, y-axis, trend, และ key finding — จะต้อง customize prompt ให้เหมาะกับ scientific domain</p>
+    <p style="margin-top:0.5em"><strong>Multi-dimensional scoring</strong> — ต่างจาก paper นี้ที่ใช้ single score, งาน caption evaluation ควรแยก dimension เช่น factual accuracy, visual grounding, completeness, fluency</p>
+    <p style="margin-top:0.5em"><strong>RAG context as reference</strong> — ในระบบ RAG ที่ดึงบริบทจาก paper มาช่วย generate caption, judge ควรได้ดูทั้ง retrieved context และ original caption เพื่อประเมินว่า RAG ช่วยเพิ่มคุณภาพจริงหรือไม่</p>
+  </div>
+
+  <div class="synthesis-card">
+    <h4>Open Questions</h4>
+    <p><strong>GPT-4 verbosity bias กับ caption:</strong> caption ที่ยาวกว่าจะได้คะแนนสูงกว่าเสมอไหม ทั้งที่ caption สั้นๆ ที่ตรงประเด็นอาจดีกว่า? ต้องออกแบบ evaluation prompt ที่ควบคุม verbosity bias ด้วย</p>
+    <p style="margin-top:0.5em"><strong>Self-enhancement ใน scientific domain:</strong> ถ้าใช้ GPT-4 ทั้ง generate และ evaluate captions, self-enhancement bias จะส่งผลมากแค่ไหน? ควรใช้ judge โมเดลอื่น (Claude, Gemini) เป็น cross-check</p>
+    <p style="margin-top:0.5em"><strong>Open-source judge:</strong> Paper เสนอ fine-tuning Vicuna-13B เป็น judge — น่าสนใจว่า fine-tuning เฉพาะ domain scientific figures จะได้ judge ที่ดีแค่ไหนโดยไม่ต้องพึ่ง GPT-4 ซึ่งแพงมาก</p>
+  </div>
+
+</div>
+
+<div class="detail-block" style="margin-top: 2em;">
+<div class="detail-header"><span class="num">🔗</span><h3>ความสัมพันธ์กับ Paper อื่นในคลัง</h3></div>
+<div class="detail-body">
+<ul>
+  <li><strong>SciCap (Paper #1):</strong> ใช้ BLEU/METEOR เป็น metric หลัก — paper นี้ให้ justification ว่าทำไมต้องเปลี่ยนไปใช้ LLM judge แทน</li>
+  <li><strong>SciCap+ (Paper #4):</strong> เพิ่ม context-based evaluation — ตรงกับ reference-guided grading ของ paper นี้</li>
+  <li><strong>RAG Beyond the Buzz (Paper #6):</strong> ถ้าใช้ RAG generate captions, LLM-as-a-Judge เป็น natural choice สำหรับ evaluate ว่า RAG ช่วยจริงหรือไม่ โดยไม่ต้องพึ่ง manual annotation</li>
+</ul>
+</div>
+</div>
+
+</div>
+</section>
+
+<footer class="footer">
+<div class="container">
+  <p>Analysis generated 2026-05-24 · arXiv:2306.05685 · NeurIPS 2023 Datasets &amp; Benchmarks Track</p>
+</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+{
+  "arxiv_id": "2306.05685",
+  "title": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena",
+  "authors": [
+    "Lianmin Zheng1Wei-Lin Chiang1∗Ying Sheng4∗Siyuan Zhuang1\\AndZhanghao Wu1Yonghao Zhuang3Zi Lin2Zhuohan Li1Dacheng Li13\\AndEric P. Xing35Hao Zhang12Joseph E. Gonzalez1Ion Stoica11UC Berkeley2UC San Diego3Carnegie Mellon University4Stanford5MBZUAI"
+  ],
+  "abstract": "Evaluating large language model (LLM) based chat assistants is challenging due to their broad capabilities and the inadequacy of existing benchmarks in measuring human preferences.\nTo address this, we explore using strong LLMs as judges to evaluate these models on more open-ended questions.\nWe examine the usage and limitations of LLM-as-a-judge, including position, verbosity, and self-enhancement biases, as well as limited reasoning ability, and propose solutions to mitigate some of them.\nWe then verify the agreement between LLM judges and human preferences by introducing two benchmarks: MT-bench, a multi-turn question set; and Chatbot Arena, a crowdsourced battle platform.\nOur results reveal that strong LLM judges like GPT-4 can match both controlled and crowdsourced human preferences well, achieving over 80% agreement, the same level of agreement between humans.\nHence, LLM-as-a-judge is a scalable and explainable way to approximate human preferences, which are otherwise very expensive to obtain.\nAdditionally, we show our benchmark and traditional benchmarks complement each other by evaluating several variants of LLaMA and Vicuna.\nThe MT-bench questions, 3K expert votes, and 30K conversations with human preferences are publicly available at https://github.com/lm-sys/FastChat/tree/main/fastchat/llm_judge .",
+  "year": "2023",
+  "figure_count": 27,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:Multi-turn dialogues between a user and two AI assistants—LLaMA-13B (Assistant A) and Vicuna-13B (Assistant B)—initiated by a question from the MMLU benchmark and a follow-up instruction. GPT-4 is then presented with the context to determine which assistant answers better.",
+      "src": "/html/2306.05685/assets/x1.png"
+    },
+    {
+      "id": "S3.T4.fig1",
+      "caption": "Table 3:Failure rate under “repetitive list” attack for different LLM judges on 23 answers.",
+      "src": ""
+    },
+    {
+      "id": "S3.T4.fig2",
+      "caption": "Table 4:Judge failure rate on 10 math questions with different prompts. We test LLaMA-13B vs. Vicuna-13B and swap positions. A failure means when GPT-4 says an incorrect answer is correct.",
+      "src": ""
+    },
+    {
+      "id": "S4.T5.st1",
+      "caption": "(a)First Turn",
+      "src": ""
+    },
+    {
+      "id": "S4.T5.st2",
+      "caption": "(b)Second Turn",
+      "src": ""
+    },
+    {
+      "id": "S4.T7.fig1",
+      "caption": "Table 6:Agreement between two types of judges on Chatbot Arena.\n“G4-S” denotes GPT-4 with single-answer grading.\n“G4”, “G3.5” and “C” denote GPT-4, GPT-3.5, and Claude with pairwise comparison, respectively.\n“H” denotes human.\nThe remaining of table follows the same format asTable5(b).",
+      "src": ""
+    },
+    {
+      "id": "S4.T7.1",
+      "caption": "Table 7:Agreement and win rate difference. Each point corresponds to a model pair and counts only the non-tie votes between the two models. The x-axis value is the win rate difference between the two models. The y-axis value is the GPT-4 and human agreement.",
+      "src": "/html/2306.05685/assets/x2.png"
+    },
+    {
+      "id": "S4.F2",
+      "caption": "Figure 2:Average win rate of six models under different judges on MT-bench.",
+      "src": "/html/2306.05685/assets/x3.png"
+    },
+    {
+      "id": "S4.F3",
+      "caption": "Figure 3:Average win rate of nine models under different judges on Chatbot Arena.",
+      "src": "/html/2306.05685/assets/x4.png"
+    },
+    {
+      "id": "A1.F4",
+      "caption": "Figure 4:The default prompt for pairwise comparison.",
+      "src": "/html/2306.05685/assets/x5.png"
+    },
+    {
+      "id": "A1.F5",
+      "caption": "Figure 5:The default prompt for single answer grading.",
+      "src": "/html/2306.05685/assets/x6.png"
+    },
+    {
+      "id": "A1.F6",
+      "caption": "Figure 6:The chain-of-thought prompt for math and reasoning questions.",
+      "src": "/html/2306.05685/assets/x7.png"
+    },
+    {
+      "id": "A1.F7",
+      "caption": "Figure 7:The prompt for reference-guided pairwise comparison.",
+      "src": "/html/2306.05685/assets/x8.png"
+    },
+    {
+      "id": "A1.F8",
+      "caption": "Figure 8:The prompt for multi-turn pairwise comparison.",
+      "src": "/html/2306.05685/assets/x9.png"
+    },
+    {
+      "id": "A1.F9",
+      "caption": "Figure 9:The prompt for reference-guided multi-turn single-answer grading.",
+      "src": "/html/2306.05685/assets/x10.png"
+    },
+    {
+      "id": "A2.F10",
+      "caption": "Figure 10:An example of position bias. When Assistant A is placed in the first position, GPT-4 thinks A is better, but its verdict changes when we swap the position of A and B. We observe similar pattern from other LLM judges such as Claude/GPT-3.5.",
+      "src": "/html/2306.05685/assets/x11.png"
+    },
+    {
+      "id": "A2.F11",
+      "caption": "Figure 11:An example of “repetitive list” attack to examine verbosity bias. Except for the two rephrased items (highlighted in red), Assistant A’s answer is exactly the same as Assistant B. Both GPT-3.5 and Claude-v1 show a verbosity bias towards the longer and repetitive answer. Only GPT-4 successfully detected this attack.",
+      "src": "/html/2306.05685/assets/x12.png"
+    },
+    {
+      "id": "A2.F12",
+      "caption": "Figure 12:With a default prompt, GPT-4 shows limited capability in grading math questions. Despite being able to answer the question itself, its judgment was influenced by the given answers, leading to arithmetic mistakes highlighted in yellow.",
+      "src": "/html/2306.05685/assets/x13.png"
+    },
+    {
+      "id": "A2.F13",
+      "caption": "Figure 13:An example of GPT-4’s limited capability in grading reasoning question. Despite GPT-4 knows how to solve the question (if asked separately), it made a wrong judgement saying both assistants’ wrong answers are correct.",
+      "src": "/html/2306.05685/assets/x14.png"
+    },
+    {
+      "id": "A2.F14",
+      "caption": "Figure 14:An example of GPT-4’s wrong judgment with chain-of-thought prompt. We can see GPT-4 exactly copied Assistant B’s answer (which contains arithmetic errors) and determined Assistant A’s answer is incorrect. This suggest GPT-4’s chain-of-thought process can be significantly influenced by the given answers despite we ask it to think independently.",
+      "src": "/html/2306.05685/assets/x15.png"
+    },
+    {
+      "id": "A2.F15",
+      "caption": "Figure 15:In this example, despite Assistant A correctly followed user’s instruction to generate a concrete plan for the second example of its previous response, GPT-4 wrongly referred to the second example in Assistant B’s response, resulting in a wrong judgment. This suggests the prompt design that breaks the questions into two prompts may cause LLM judge struggle to locate assistants’ previous responses.",
+      "src": "/html/2306.05685/assets/x16.png"
+    },
+    {
+      "id": "A3.F16",
+      "caption": "Figure 16:The screenshot of MT-bench data collection. We show an instruction similar to the prompt we give to GPT-4. We present questions from MT-bench and answers from two random anonymous assistants and ask which one is better. We present the first-turn conversation and ask humans to vote, then repeat the same procedure for the second-turn. A user can skip up to 5 questions if they are not confident. For some questions (e.g., math, reasoning), they can also see a reference solution.",
+      "src": "/html/2306.05685/assets/figures/screenshot_mt_bench.png"
+    },
+    {
+      "id": "A3.F17",
+      "caption": "Figure 17:The screenshot of MT-bench data collection. When human’s vote differs from GPT-4, we additionally show GPT-4’s judgment (red region in the screenshot) and ask the user to click one of the three buttons to decide whether GPT-4’s judgment is reasonable.",
+      "src": "/html/2306.05685/assets/figures/screenshot_mt_bench_agree.png"
+    },
+    {
+      "id": "A3.F18",
+      "caption": "Figure 18:The screenshot of Chatbot Arena.",
+      "src": "/html/2306.05685/assets/figures/screenshot_arena.png"
+    },
+    {
+      "id": "A4.T14.st1",
+      "caption": "(a)First Turn",
+      "src": ""
+    },
+    {
+      "id": "A4.T14.st2",
+      "caption": "(b)Second Turn",
+      "src": ""
+    },
+    {
+      "id": "A4.F19",
+      "caption": "Figure 19:Category-wise scores of 6 models on MT-bench.",
+      "src": "/html/2306.05685/assets/x17.png"
+    }
+  ],
+  "paper_number": 7,
+  "slug": "LLMJudge",
+  "base_name": "7-LLMJudge_2023"
+}
