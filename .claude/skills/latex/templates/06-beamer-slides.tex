@@ -5,10 +5,32 @@
 \usepackage{xcolor}
 \usepackage{graphicx}
 
+%% ─── Design system tokens (@docs/design/design.md) ──────────
+\definecolor{primary}{HTML}{cc785c}
 \definecolor{coral}{HTML}{cc785c}
+\definecolor{primary-active}{HTML}{a9583e}
+\definecolor{primary-disabled}{HTML}{e6dfd8}
 \definecolor{ink}{HTML}{141413}
-\definecolor{cream}{HTML}{faf9f5}
+\definecolor{body-strong}{HTML}{252523}
+\definecolor{body}{HTML}{3d3d3a}
 \definecolor{muted}{HTML}{6c6a64}
+\definecolor{muted-soft}{HTML}{8e8b82}
+\definecolor{canvas}{HTML}{faf9f5}
+\definecolor{cream}{HTML}{faf9f5}
+\definecolor{surface-soft}{HTML}{f5f0e8}
+\definecolor{surface-card}{HTML}{efe9de}
+\definecolor{surface-cream-strong}{HTML}{e8e0d2}
+\definecolor{surface-dark}{HTML}{181715}
+\definecolor{surface-dark-elevated}{HTML}{252320}
+\definecolor{surface-dark-soft}{HTML}{1f1e1b}
+\definecolor{hairline}{HTML}{e6dfd8}
+\definecolor{on-dark}{HTML}{faf9f5}
+\definecolor{on-dark-soft}{HTML}{a09d96}
+\definecolor{accent-teal}{HTML}{5db8a6}
+\definecolor{accent-amber}{HTML}{e8a55a}
+\definecolor{success}{HTML}{5db872}
+\definecolor{warning}{HTML}{d4a017}
+\definecolor{error}{HTML}{c64545}
 
 \babelprovide[import, onchar=ids fonts]{thai}
 \babelprovide[import, onchar=ids fonts]{english}
@@ -50,14 +72,17 @@
 \usetheme{default}
 \usecolortheme{default}
 
-\setbeamercolor{frametitle}{fg=ink, bg=cream}
+\setbeamercolor{frametitle}{fg=ink, bg=canvas}
 \setbeamercolor{title}{fg=ink}
-\setbeamercolor{normal text}{fg=ink}
-\setbeamercolor{structure}{fg=coral}
-\setbeamercolor{block title}{bg=coral!20, fg=ink}
-\setbeamercolor{block body}{bg=coral!5}
-\setbeamercolor{footline}{fg=muted}
-\setbeamercolor{background canvas}{bg=cream}
+\setbeamercolor{subtitle}{fg=muted}
+\setbeamercolor{normal text}{fg=body}
+\setbeamercolor{structure}{fg=primary}
+\setbeamercolor{block title}{bg=surface-card, fg=ink}
+\setbeamercolor{block body}{bg=surface-soft, fg=body}
+\setbeamercolor{alerted text}{fg=primary}
+\setbeamercolor{footline}{fg=muted-soft}
+\setbeamercolor{background canvas}{bg=canvas}
+\setbeamercolor{palette primary}{fg=ink, bg=surface-card}
 
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{frametitle}[default][left]

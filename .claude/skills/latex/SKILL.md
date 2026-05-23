@@ -94,14 +94,48 @@ curl -s -X POST http://localhost:3001/compile \
 
 ---
 
-## Color Tokens
+## Color Tokens (จาก `@docs/design/design.md`)
 
+ทุก template โหลด token ชุดนี้ครบ — ใช้ชื่อ token ได้เลยใน `\textcolor{token}{...}`, `\color{token}`, `\definecolor`
+
+### Brand / CTA
 | Token | Hex | ใช้สำหรับ |
 |-------|-----|----------|
-| `coral` | `#cc785c` | Headings accent, links, borders |
-| `ink` | `#141413` | Body text |
-| `muted` | `#6c6a64` | Secondary text, footnotes |
-| `cream` / `lightbg` | `#faf9f5` | Background, alternating rows |
+| `primary` / `coral` | `#cc785c` | Primary CTA, links, rule lines, section accent |
+| `primary-active` | `#a9583e` | Pressed / hover-darker variant |
+| `primary-disabled` | `#e6dfd8` | Disabled state, hairline borders |
+
+### Text
+| Token | Hex | ใช้สำหรับ |
+|-------|-----|----------|
+| `ink` | `#141413` | Headlines, primary text |
+| `body-strong` | `#252523` | Emphasized paragraphs |
+| `body` | `#3d3d3a` | Default running text |
+| `muted` | `#6c6a64` | Sub-heads, captions, footer |
+| `muted-soft` | `#8e8b82` | Fine print, page numbers |
+| `on-dark` | `#faf9f5` | Text on dark surfaces |
+| `on-dark-soft` | `#a09d96` | Secondary text on dark |
+
+### Surface
+| Token | Hex | ใช้สำหรับ |
+|-------|-----|----------|
+| `canvas` | `#faf9f5` | Page background (cream, not white) |
+| `surface-soft` | `#f5f0e8` | Section dividers, light bands |
+| `surface-card` | `#efe9de` | Feature cards, content cards |
+| `surface-cream-strong` | `#e8e0d2` | Selected tabs, emphasized bands |
+| `hairline` | `#e6dfd8` | 1px borders on cream surfaces |
+| `surface-dark` | `#181715` | Code blocks, dark cards, footer |
+| `surface-dark-elevated` | `#252320` | Elevated elements inside dark |
+| `surface-dark-soft` | `#1f1e1b` | Code block bg inside dark cards |
+
+### Accent / Semantic
+| Token | Hex | ใช้สำหรับ |
+|-------|-----|----------|
+| `accent-teal` | `#5db8a6` | Status indicators, secondary highlights |
+| `accent-amber` | `#e8a55a` | Category badges, inline highlights |
+| `success` | `#5db872` | Done / available status |
+| `warning` | `#d4a017` | Warning callouts |
+| `error` | `#c64545` | Validation errors |
 
 ---
 
