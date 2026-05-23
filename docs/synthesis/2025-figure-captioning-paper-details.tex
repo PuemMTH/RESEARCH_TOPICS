@@ -1,8 +1,8 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 \usepackage{amsmath}
 \usepackage{fontspec}
 \usepackage{babel}
-\usepackage[margin=2.3cm]{geometry}
+\usepackage[margin=1.65cm]{geometry}
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{hyperref}
@@ -10,24 +10,22 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{longtable}
+\usepackage{titlesec}
+\usepackage{multicol}
 
-\definecolor{primary}{HTML}{cc785c}
 \definecolor{coral}{HTML}{cc785c}
 \definecolor{ink}{HTML}{141413}
 \definecolor{body}{HTML}{3d3d3a}
 \definecolor{muted}{HTML}{6c6a64}
-\definecolor{canvas}{HTML}{faf9f5}
 \definecolor{surface-soft}{HTML}{f5f0e8}
 \definecolor{hairline}{HTML}{e6dfd8}
 \definecolor{accent-teal}{HTML}{5db8a6}
 \definecolor{accent-amber}{HTML}{e8a55a}
-\definecolor{lightbg}{HTML}{f5f0e8}
 
 \hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
 
 \babelprovide[import, onchar=ids fonts]{thai}
 \babelprovide[import, onchar=ids fonts]{english}
-
 \babelfont{rm}{Noto Sans}
 \babelfont[thai]{rm}{Noto Sans Thai}
 \babelfont{tt}{Noto Sans Mono}
@@ -54,238 +52,310 @@
   end, "thai_break")
 }
 
-\emergencystretch=1em
-\setlist[itemize]{leftmargin=1.8em}
-\setlist[enumerate]{leftmargin=2em}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}{\small\bfseries\color{ink}}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+\titlespacing*{\subsection}{0pt}{7pt}{3pt}
+\titlespacing*{\subsubsection}{0pt}{5pt}{2pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{3pt}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.16}
+\setlist[itemize]{leftmargin=1.35em, topsep=2pt, itemsep=1pt, parsep=0pt}
+\setlist[enumerate]{leftmargin=1.55em, topsep=2pt, itemsep=1pt, parsep=0pt}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 
 \newmdenv[
-  backgroundcolor=lightbg,
+  backgroundcolor=surface-soft,
   linecolor=coral,
-  linewidth=2pt,
+  linewidth=1.4pt,
   topline=false, rightline=false, bottomline=false,
-  innerleftmargin=12pt, innerrightmargin=8pt,
-  innertopmargin=8pt, innerbottommargin=8pt,
-]{highlight}
-
-\title{\textbf{รายละเอียด Paper ปี 2025 สำหรับ Research Gap}\\
-\large Scientific Figure Captioning และ Context-Aware Caption Generation}
-\author{Thesis Notes}
-\date{24 พฤษภาคม 2026}
+  innerleftmargin=8pt, innerrightmargin=8pt,
+  innertopmargin=5pt, innerbottommargin=5pt,
+  skipabove=5pt, skipbelow=5pt
+]{note}
 
 \begin{document}
-\maketitle
+\small
 
-\begin{highlight}
-\textbf{โจทย์วิทยานิพนธ์:} การสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการโดยใช้บริบทจากเนื้อหาเอกสาร \\
-\textbf{แกน keyword:} Scientific Figure Captioning, Context-Aware Caption Generation, Multimodal Profile, Figure-Mentioning Paragraph, OCR, Faithfulness Evaluation
-\end{highlight}
+{\Large\bfseries รายละเอียด Paper ปี 2025 สำหรับ Research Gap}\\[-1pt]
+{\color{muted}Scientific Figure Captioning + Context-Aware Caption Generation \hfill 24 พฤษภาคม 2026}
 
-\section*{ภาพรวม Paper ที่เลือก}
+\vspace{4pt}
+\hrule height 0.8pt
+\vspace{6pt}
 
-\begin{longtable}{@{}L{4.2cm}L{2cm}L{4.2cm}L{4.8cm}@{}}
+\begin{note}
+\textbf{Thesis target:} สร้างคำอธิบายรูปภาพและกราฟใน academic documents โดยใช้ visual content + document context. \\
+\textbf{คำถามหลักหลังอ่าน paper ชุดนี้:} context แบบใดช่วย caption จริง, context ควรถูก retrieve อย่างไรจาก PDF, และจะประเมิน faithfulness/context relevance แยกจาก lexical overlap อย่างไร
+\end{note}
+
+\section*{Executive Map}
+
+\begin{longtable}{@{}L{3.15cm}L{2.1cm}L{4.15cm}L{5.15cm}@{}}
 \toprule
-\textbf{Paper} & \textbf{ปี} & \textbf{แกนหลัก} & \textbf{เหตุผลที่เกี่ยวข้องกับ Thesis} \\
+\textbf{Paper} & \textbf{Focus} & \textbf{What it proves} & \textbf{Gap left for thesis} \\
 \midrule
-LaMP-Cap: Personalized Figure Caption Generation With Multimodal Figure Profiles & 2025 & Dataset + multimodal profile & พิสูจน์ว่า context จาก paper เดียวกันช่วย caption generation และเปิดช่องให้ thesis ขยายเป็น full-document retrieval \\
-Leveraging Author-Specific Context for Scientific Figure Caption Generation & 2025 & Two-stage context-aware prompt pipeline & แสดงปัญหา zero-shot hallucination และวิธี filter/context refinement ที่ใช้ได้จริงใน SciCap Challenge \\
-Personalized Scientific Figure Caption Generation & 2025 & Fine-tuned VLM + quality-aware generation & ชี้ว่า paragraph, mention, OCR และ profile data ช่วย performance แต่เกิด trade-off ระหว่าง style กับ quality \\
+LaMP-Cap (2025) & Dataset + multimodal profile & Profile figures จาก paper เดียวกันช่วยให้ caption ใกล้ author-written caption มากขึ้น & ยังใช้ curated profile ไม่ใช่ context retrieval จาก raw PDF หรือ full document \\
+Author-Specific Context (2025) & Prompt pipeline + refinement & Context filtering และ profile-based few-shot refinement ลด irrelevant content และเพิ่ม style alignment & Pipeline ยังพึ่ง prompt optimizer/reranker หลายตัว และไม่ได้เป็น layout-aware retrieval \\
+Personalized SciFigCap (2025) & Fine-tuned Qwen + quality-aware generation & Paragraph, mention, OCR, profile เพิ่ม performance แต่ style matching ชนกับ quality & ต้องแยก metric สำหรับ style, quality, faithfulness, context relevance \\
 \bottomrule
 \end{longtable}
 
-\newpage
+\section{Paper 1: LaMP-Cap}
 
-\section{LaMP-Cap: Personalized Figure Caption Generation With Multimodal Figure Profiles}
+\textbf{Full title:} LaMP-Cap: Personalized Figure Caption Generation With Multimodal Figure Profiles \\
+\textbf{arXiv:} \href{https://arxiv.org/abs/2506.06561}{2506.06561} \quad
+\textbf{Authors:} Ho Yin ``Sam'' Ng, Ting-Yao Hsu, Aashish Anantha Ramakrishnan และคณะ \\
+\textbf{Repo files:} papers/8-LaMPCap\_2025.* และ docs/synthesis/8-LaMPCap\_2025-analysis.html
 
-\noindent
-\begin{tabular}{@{}ll@{}}
-\textbf{arXiv} & \href{https://arxiv.org/abs/2506.06561}{2506.06561} \\
-\textbf{ผู้เขียน} & Ho Yin ``Sam'' Ng, Ting-Yao Hsu, Aashish Anantha Ramakrishnan และคณะ \\
-\textbf{Keyword} & Scientific Figure Captioning, Personalized Caption Generation, Multimodal Profile \\
-\textbf{ไฟล์ใน Repo} & papers/8-LaMPCap\_2025.* \\
-\end{tabular}
+\subsection{Core Idea}
+LaMP-Cap เปลี่ยนโจทย์จาก ``generate caption จาก target figure อย่างเดียว'' เป็น ``generate caption จาก target figure พร้อม profile figures จาก paper เดียวกัน'' โดยถือว่า profile figures สะท้อนทั้ง domain context, writing style, terminology และวิธีที่ผู้เขียนอธิบาย visual evidence ใน paper นั้น
 
-\subsection*{ปัญหาที่ Paper แก้}
-งาน image captioning หรือ figure captioning เดิมมักสร้าง caption จาก target image และข้อความประกอบเพียงเล็กน้อย แต่ scientific figure caption ใน paper จริงไม่ได้ต้องการแค่คำบรรยายภาพทั่วไป ผู้เขียนมักต้องการ caption ที่สอดคล้องกับ domain vocabulary, writing style และ narrative ของ paper เดียวกัน งาน personalization ก่อนหน้าอย่าง LaMP ส่วนใหญ่เน้น text-only setting จึงยังไม่ตอบโจทย์ multimodal scientific captioning ที่ทั้ง input และ profile มีทั้งภาพและข้อความ
+\begin{note}
+\textbf{แก่นของ paper:} ถ้าอยากให้ caption ไม่ generic ต้องให้โมเดลเห็นตัวอย่าง caption/figure อื่นจาก paper เดียวกัน เพราะ scientific captions มักมี style และ vocabulary เฉพาะของ paper/author
+\end{note}
 
-\subsection*{Contribution สำคัญ}
+\subsection{Task Definition แบบละเอียด}
+\begin{longtable}{@{}L{3cm}L{11.6cm}@{}}
+\toprule
+\textbf{Element} & \textbf{Description} \\
+\midrule
+Target figure & รูปที่ต้อง generate caption \\
+Target source & target image + figure-mentioning paragraphs เช่นย่อหน้าที่มี ``Figure 3 shows...'' \\
+Profile figures & รูปอื่นจาก paper เดียวกัน สูงสุด 3 รูป \\
+Profile source & profile image + profile figure-mentioning paragraph \\
+Profile caption & caption จริงของ profile figure ใช้เป็น signal ด้าน style/structure \\
+Output & caption ของ target figure ที่ควรใกล้ author-written caption \\
+\bottomrule
+\end{longtable}
+
+\subsection{Dataset Construction}
+\begin{itemize}
+\item Source dataset คือ SciCap Challenge Dataset จาก arXiv papers
+\item เลือกหนึ่ง figure ต่อ paper เป็น target และใช้ figures ที่เหลือเป็น profile
+\item paper ที่มี figure เดียวถูกตัดออก เพราะไม่มี profile ให้ใช้
+\item จำกัด profile สูงสุด 3 รูป เพราะ SciCap Challenge จำกัดจำนวน figure ต่อ paper
+\item train/validation/test ตาม split เดิม 80/10/10
+\end{itemize}
+
+\begin{note}
+\textbf{Scale:} 110,828 target figures; 197,075 profile figures; 307,903 total figures. Figure types หลักคือ Graph Plot, Node Diagram, Equation, Bar Chart, Scatterplot.
+\end{note}
+
+\subsection{Experimental Setup}
+\begin{longtable}{@{}L{3.2cm}L{11.4cm}@{}}
+\toprule
+\textbf{Setting} & \textbf{Meaning} \\
+\midrule
+No-Profile & ใช้ target image + paragraph เท่านั้น \\
+One-Profile & เพิ่ม profile figure หนึ่งชุดจาก paper เดียวกัน \\
+All-Profile & ใช้ profile figures ทั้งหมดที่มี \\
+Same-paper profile & profile มาจาก paper เดียวกัน ใช้วัด personalization/context effect \\
+Metric & BLEU, ROUGE, BERTScore และบางการทดลองมี human evaluation \\
+\bottomrule
+\end{longtable}
+
+\subsection{Key Findings}
+\begin{itemize}
+\item Profile information ช่วยให้ generated caption ใกล้ ground-truth author captions มากขึ้นในหลาย model
+\item All-Profile มักดีที่สุด แต่ gain หลักเกิดจาก No-Profile ไป One-Profile แปลว่า context ชิ้นแรกที่ relevant สำคัญมาก
+\item ใน ablation, profile caption สำคัญที่สุด เพราะให้ทั้ง style และ target format; profile image สำคัญกว่า paragraph ในหลายกรณี แปลว่า multimodal profile มีประโยชน์จริง ไม่ใช่แค่ text context
+\item BERTScore ระหว่าง target และ profile captions สูง แต่ ROUGE-L กระจายกว้าง แปลว่า profile captions มี semantic relatedness แต่ไม่ได้ copy wording เหมือนกัน
+\item Qwen-2.5-VL-7B มี failure rate สูงกว่า model อื่นในบาง profile setting เป็น warning ว่า open-source VLM ต้องมี validation/fallback
+\end{itemize}
+
+\subsection{Limitations ที่ควรอ้างเป็น Gap}
+\begin{itemize}
+\item Context ยังเป็น \textbf{profile figures ที่ curated แล้ว} ไม่ใช่ context ที่ retrieve จาก PDF จริง
+\item ยังไม่ตอบว่า context จาก abstract, methodology, results section, nearby text หรือ cross-reference ช่วยมากกว่า profile figures หรือไม่
+\item การ optimize ให้ใกล้ author-written caption อาจไม่เท่ากับการได้ caption ที่ factual หรือ useful เพราะ original caption อาจสั้น/คลุมเครือ
+\item Evaluation ยังพึ่ง lexical/semantic similarity metrics เป็นหลัก
+\end{itemize}
+
+\subsection{How to Use in Thesis}
+\begin{itemize}
+\item ใช้ LaMP-Cap เป็น baseline dataset สำหรับทดลอง context-aware captioning
+\item เปลี่ยนจาก fixed profile context เป็น RAG ที่ retrieve context หลายระดับจาก paper
+\item ทำ ablation เทียบ: target only, mention paragraph, OCR, section context, profile figure, retrieved full-document context
+\item ใช้ finding ``One-Profile gives large gain'' เป็นเหตุผลว่า retrieval quality สำคัญกว่า context length
+\end{itemize}
+
+\section{Paper 2: Leveraging Author-Specific Context for Scientific Figure Caption Generation}
+
+\textbf{Full title:} Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge \\
+\textbf{arXiv:} \href{https://arxiv.org/abs/2510.07993}{2510.07993} \quad
+\textbf{Authors:} Watcharapong Timklaypachara, Monrada Chiewhawan, Nopporn Lekuthai, Titipat Achakulvisut \\
+\textbf{Repo files:} papers/9-AuthorContextSciCap\_2025.*
+
+\subsection{Core Idea}
+Paper นี้เป็น system paper สำหรับ SciCap Challenge ที่ใช้ LaMP-Cap แล้วออกแบบ two-stage pipeline: ขั้นแรกสร้าง caption ที่ content-grounded ด้วย context filtering + category-focused prompt optimization ขั้นที่สอง refine caption ด้วย profile figures เพื่อให้ style ใกล้ paper ต้นฉบับ
+
+\begin{note}
+\textbf{แก่นของ paper:} ถ้าเอา paragraph ส่งเข้า LLM ตรง ๆ จะเกิด noisy caption และ hallucination จึงต้อง filter context ก่อน แล้วค่อย refine style ด้วย profile examples
+\end{note}
+
+\subsection{Pipeline แบบละเอียด}
+\begin{longtable}{@{}L{3cm}L{5.7cm}L{5.8cm}@{}}
+\toprule
+\textbf{Module} & \textbf{Input/Process} & \textbf{Purpose} \\
+\midrule
+Context filtering & paragraph data จาก target figure & ลด irrelevant content ก่อน generation \\
+Category-focused prompt & paper category เช่น CS, Math, Physics, Statistics & ให้ prompt ใช้ terminology/structure ที่เหมาะกับ domain \\
+MIPROv2 & bootstrap instruction-example pairs + Bayesian optimization & optimize prompt โดยเน้น ROUGE-L precision \\
+SIMBA & feedback-driven optimization & หา reasoning path และแก้ problematic cases \\
+Candidate selection & captions จากหลาย category/prompt & เลือก caption ที่ alignment ดีกว่า \\
+Profile refinement & profile figures/captions เป็น few-shot examples & ปรับ style, length, conciseness และ author alignment \\
+\bottomrule
+\end{longtable}
+
+\subsection{Important Design Choices}
+\begin{itemize}
+\item ใช้ category-focused prompts เพราะ scientific papers ต่าง field มี caption convention ต่างกัน
+\item paper ที่มีหลาย category สร้างหลาย candidate แล้วเลือกภายหลัง แทนการบังคับให้ prompt เดียวครอบคลุมทุก field
+\item Stage 2 กำหนดความยาวประมาณ \(\pm 15\%\) เพื่อแก้ปัญหา caption ที่ verbose จาก Stage 1
+\item ใช้ profile captions เป็น structural reference ไม่ใช่แค่ข้อมูล factual
+\item ใช้ Gemini-2.5-flash เป็น reranker เพื่อเน้น precision/style consistency
+\end{itemize}
+
+\subsection{Results แบบละเอียด}
+\begin{longtable}{@{}L{4.1cm}L{4.3cm}L{6.2cm}@{}}
+\toprule
+\textbf{Experiment} & \textbf{Reported result} & \textbf{Interpretation for thesis} \\
+\midrule
+Filtered paragraph + prompt optimization & ROUGE-1 recall 0.4867 \(\rightarrow\) 0.5443; ROUGE-2 recall 0.2223 \(\rightarrow\) 0.2572 & Filtering ช่วย coverage แต่ต้องระวัง precision ลด \\
+Category-focused prompting & ROUGE-1 recall +8.3\%; BLEU-4 loss จำกัดกว่า non-category prompt & Domain-aware generation สำคัญสำหรับ academic caption \\
+Non-category-focused prompting & recall เพิ่มมาก แต่ precision ลดหนัก & context เยอะ/กว้างเกินไปทำให้ caption verbose และ off-topic \\
+Gemini reranking & ROUGE precision +3.46 ถึง +4.43\% & มี post-generation selector ช่วยลด caption ที่ไม่ตรงประเด็น \\
+Profile-informed refinement & BLEU +40--48\%; ROUGE precision +25--27\% & profile context ช่วย style และ conciseness ชัดเจน \\
+\bottomrule
+\end{longtable}
+
+\subsection{Limitations ที่ควรอ้างเป็น Gap}
+\begin{itemize}
+\item ยังเป็น prompt-engineering-heavy pipeline ต้องใช้ DSPy optimizer, reranker และ few-shot refinement หลายชั้น
+\item Category-focused prompt ไม่ใช่ retrieval จาก document structure จริง เช่น section, layout, table, figure proximity
+\item ใช้ BLEU/ROUGE เป็นหลัก ทำให้วัด lexical overlap มากกว่า visual faithfulness
+\item ไม่ได้เสนอ full PDF ingestion pipeline จึงยังไม่แก้โจทย์ end-to-end academic document understanding
+\end{itemize}
+
+\subsection{How to Use in Thesis}
+\begin{itemize}
+\item ใช้เป็น argument ว่า \textbf{context filtering is necessary}
+\item เปลี่ยน context filtering จาก prompt/manual rule เป็น retrieval module: mention detector, section-aware retrieval, semantic retrieval, OCR alignment
+\item เพิ่ม evaluator ที่ตรวจ hallucination หลัง generation แทนพึ่ง reranker จาก metric overlap อย่างเดียว
+\item ทำ comparison: prompt-optimized context vs RAG-retrieved context
+\end{itemize}
+
+\section{Paper 3: Personalized Scientific Figure Caption Generation}
+
+\textbf{Full title:} Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer \\
+\textbf{arXiv:} \href{https://arxiv.org/abs/2509.25817}{2509.25817} \quad
+\textbf{Authors:} Jaeyoung Kim, Jongho Lee, Hongjun Choi, Sion Jang \\
+\textbf{Repo files:} papers/10-PersonalizedSciFigCap\_2025.*
+
+\subsection{Core Idea}
+Paper นี้ถามตรง ๆ ว่า author profile data ช่วย personalized figure captioning แค่ไหน และที่สำคัญกว่านั้นคือการทำให้ caption เหมือน author-written caption อาจไม่เท่ากับการทำให้ caption คุณภาพดีขึ้น ผู้เขียนจึงเพิ่ม quality evaluator และทดลอง quality-aware generation
+
+\begin{note}
+\textbf{แก่นของ paper:} Context/profile เพิ่ม BLEU/ROUGE ได้ แต่ metric เหล่านี้อาจ reward style imitation มากกว่า informativeness จึงต้องแยก quality objective ออกจาก style objective
+\end{note}
+
+\subsection{Architecture และ Input}
+\begin{longtable}{@{}L{3.2cm}L{11.4cm}@{}}
+\toprule
+\textbf{Component} & \textbf{Detail} \\
+\midrule
+\(f_{quality}\) & Qwen-2.5-VL-3B fine-tuned เพื่อให้คะแนน caption quality 1--6 \\
+Quality labels & สร้าง synthetic labels ด้วย GPT-4.1 จาก figure-caption pairs \\
+\(g_{caption}\) & Qwen-2.5-VL-7B fine-tuned เป็น caption generator \\
+Target inputs & figure image \(F\), explanatory paragraphs \(P\), textual mentions \(M\), OCR text \(O\) \\
+Profile inputs & related figures จาก paper เดียวกัน พร้อม \(F, P, M, O, C\) \\
+Training filter & ใช้เฉพาะ samples ที่ \(f_{quality}\) ทำนาย quality score \(\geq 3\) \\
+\bottomrule
+\end{longtable}
+
+\subsection{Quality Evaluator Details}
+\begin{itemize}
+\item สร้าง synthetic quality assessment dataset 3,000 samples ด้วย GPT-4.1
+\item fine-tune Qwen-2.5-VL-3B เพื่อประเมิน score 1 = low quality ถึง 6 = high quality
+\item validation 200 samples ได้ Spearman rank correlation 0.759 และ Quadratic Weighted Kappa 0.754
+\item เหตุผลที่ต้องมี evaluator: caption จาก arXiv จำนวนมากมีคุณภาพต่ำ การ train ตรง ๆ จาก reference อาจทำให้ model copy low-quality captions
+\end{itemize}
+
+\subsection{Caption Generator Details}
+\begin{itemize}
+\item ใช้ Qwen-2.5-VL-7B เป็น generator เพราะเป็น open-source VLM ที่ fine-tune ได้
+\item fine-tune 1 epoch ด้วย AdamW, learning rate \(2e{-5}\), batch size 2
+\item input รวม target context และ profile context จาก paper เดียวกัน
+\item ประเมินบน personalized SciCap/LaMP-Cap test set ด้วย BLEU และ ROUGE
+\end{itemize}
+
+\subsection{Results แบบละเอียด}
+\begin{longtable}{@{}L{4.2cm}L{4.2cm}L{6.2cm}@{}}
+\toprule
+\textbf{Finding} & \textbf{Number} & \textbf{Interpretation} \\
+\midrule
+Fine-tuned Qwen ชนะ Gemini บน full test & BLEU-4 0.304 vs 0.278; ROUGE-L 0.555 vs 0.540 & open-source VLM fine-tuning เป็น baseline ที่ทำได้จริงสำหรับ thesis \\
+เพิ่ม paragraph จาก F+C baseline & BLEU-4 0.123 \(\rightarrow\) 0.295; ROUGE-L 0.355 \(\rightarrow\) 0.545 & paragraph context เป็น signal ใหญ่มาก ไม่ควรทำ image-only \\
+เพิ่ม mention และ OCR & full config BLEU-4 0.304; ROUGE-L 0.555 & mention/OCR เพิ่ม gain แบบ incremental แต่สำคัญสำหรับ factual detail \\
+profile quantity effect & 3 profile figures มักได้คะแนนสูงสุด & context มากขึ้นช่วย แต่ต้องดูคุณภาพ context ด้วย \\
+Generated quality issue & Gemini และ Qwen ได้ quality score เฉลี่ยราว 3 และต่ำกว่า author captions & style-matching ไม่พอ ต้องมี quality objective \\
+Forced-Q6 & quality score สูงขึ้น แต่ ROUGE-L อาจลด & metric overlap อาจลงโทษ caption ที่ informative กว่า reference \\
+\bottomrule
+\end{longtable}
+
+\subsection{Quality-Style Trade-off}
+ประเด็นที่ควรเอาไปเขียน research gap คือ style fidelity และ caption quality อาจอยู่คนละ objective โมเดลที่ optimize ให้ใกล้ author caption อาจเรียนรู้ wording/style ของผู้เขียน แต่ไม่ได้ guarantee ว่า caption factual, informative หรือ useful กว่าเดิม ในกรณี reference caption คุณภาพต่ำ การ generate caption ที่ดีกว่าอาจทำให้ ROUGE ลด เพราะ wording ไม่ตรง reference
+
+\subsection{Limitations ที่ควรอ้างเป็น Gap}
+\begin{itemize}
+\item Quality evaluator พึ่ง GPT-4.1 labels จึงยังมี judge bias และควรตรวจด้วย human/domain expert
+\item Metrics หลักยังเป็น BLEU/ROUGE ทำให้แยกไม่ได้ว่า score สูงเพราะ factual ดีหรือแค่ wording เหมือน
+\item ใช้ LaMP-Cap fields ที่ curated แล้ว ยังไม่ได้ parse PDF เอง
+\item ยังไม่ประเมิน visual faithfulness และ context faithfulness อย่างเป็นระบบ
+\end{itemize}
+
+\subsection{How to Use in Thesis}
+\begin{itemize}
+\item ใช้ Qwen-2.5-VL-7B fine-tuned เป็น open-source baseline
+\item ใช้ input components \(F, P, M, O\) เป็น ablation design สำหรับ thesis
+\item เพิ่ม evaluation dimensions: visual faithfulness, context relevance, academic informativeness, style similarity
+\item ใช้ quality-aware idea เป็น refinement/checking module หลัง generation
+\end{itemize}
+
+\section{Research Gap ที่เขียนต่อใน Proposal ได้ทันที}
+
+\begin{longtable}{@{}L{3.1cm}L{5.5cm}L{6.1cm}@{}}
+\toprule
+\textbf{Gap} & \textbf{หลักฐานจาก paper} & \textbf{Thesis contribution ที่เสนอได้} \\
+\midrule
+Context Integration Gap & LaMP-Cap ใช้ profile figures; Author-Specific ใช้ filtered paragraph/profile; Personalized ใช้ curated \(P,M,O\) & สร้าง multi-level context retriever จาก PDF จริง: mention paragraph, section, OCR, nearby text, cross-reference \\
+End-to-End Gap & ทั้ง 3 งานเริ่มจาก dataset fields ที่เตรียมไว้แล้ว & ทำ pipeline PDF \(\rightarrow\) layout parsing \(\rightarrow\) figure extraction \(\rightarrow\) context retrieval \(\rightarrow\) caption generation \\
+Evaluation Gap & BLEU/ROUGE เพิ่มแต่ quality อาจไม่เพิ่ม; Forced-Q6 ทำให้ ROUGE ลดได้ & เสนอ evaluation framework แยก visual faithfulness, context relevance, informativeness, lexical similarity \\
+Retrieval Quality Gap & One-Profile ให้ gain ใหญ่; non-category prompt เพิ่ม recall แต่ลด precision & ศึกษาว่า context ที่ถูก retrieve แบบไหนดีที่สุด และ context เยอะแค่ไหนจึงเริ่มทำให้ noisy \\
+Open-source Feasibility Gap & Qwen fine-tuned ชนะ Gemini ในบาง setting แต่มี failure risk ในงานอื่น & สร้าง reproducible baseline ด้วย open-source VLM + validation/fallback layer \\
+\bottomrule
+\end{longtable}
+
+\begin{note}
+\textbf{Working thesis claim:} Existing 2025 work shows that context improves scientific figure captioning, but current methods rely on curated profile/context fields and lexical metrics. This thesis will investigate an end-to-end, layout-aware, retrieval-based pipeline that extracts context directly from academic PDFs and evaluates generated captions for visual faithfulness, context relevance, and academic informativeness.
+\end{note}
+
+\section{Experiment Plan จาก Literature}
 \begin{enumerate}
-\item เสนอ \textbf{LaMP-Cap dataset} สำหรับ personalized figure caption generation โดยสร้างจาก SciCap Challenge Dataset
-\item นิยาม task เป็นการสร้าง caption ให้ target figure โดยใช้ multimodal source และ multimodal profile จาก paper เดียวกัน
-\item ให้ profile figure สูงสุด 3 รูปต่อ target figure โดยแต่ละ profile มี image, caption และ figure-mentioning paragraph
-\item ทดลองกับ LLM/VLM หลายตัวและพบว่า profile information ช่วยให้ generated captions ใกล้ ground-truth author captions มากขึ้น
-\item ablation study แสดงลำดับความสำคัญของ profile component: caption สำคัญที่สุด ตามด้วย image และ paragraph
+\item \textbf{Baseline:} image-only VLM captioning
+\item \textbf{Context ablation:} +mention paragraph, +OCR, +section context, +nearby text, +profile figures, +RAG retrieved context
+\item \textbf{Retrieval comparison:} lexical figure-reference retrieval vs semantic retrieval vs section-aware retrieval
+\item \textbf{Generation comparison:} prompt-based VLM vs fine-tuned Qwen2.5-VL vs RAG+VLM
+\item \textbf{Evaluation:} BLEU/ROUGE/BERTScore plus LLM/human rubric for faithfulness, context relevance, informativeness
 \end{enumerate}
 
-\subsection*{Dataset และ Method}
-LaMP-Cap curate จาก SciCap Challenge Dataset ซึ่งมี scientific figures จาก arXiv papers จำนวนมาก วิธีสร้างคือเลือกหนึ่ง figure จาก paper เป็น target figure แล้วใช้ figure อื่นจาก paper เดียวกันเป็น profile เพื่อแทน context และ author style เอกสารที่มีเพียงรูปเดียวถูกตัดออกเพราะไม่มี profile ให้ใช้
-
-\begin{highlight}
-\textbf{ตัวเลขสำคัญของ dataset}
-\begin{itemize}[nosep]
-\item 110,828 target figures
-\item 307,903 figures รวม target และ profile
-\item 197,075 profile figures
-\item split: 80\% train, 10\% validation, 10\% test
-\item figure types หลัก: Graph Plot, Node Diagram, Equation, Bar Chart, Scatterplot
-\end{itemize}
-\end{highlight}
-
-Input ของ task แบ่งเป็นสองส่วน ส่วนแรกคือ target source ได้แก่ target figure image และ figure-mentioning paragraph ส่วนที่สองคือ profile ได้แก่ image, caption และ related paragraph ของ figures อื่นใน paper เดียวกัน การทดลองเปรียบเทียบ No-Profile, One-Profile และ All-Profile เพื่อดูว่าจำนวน profile ส่งผลต่อ caption generation อย่างไร
-
-\subsection*{ผลลัพธ์สำคัญ}
-\begin{itemize}
-\item การใช้ profile information ทำให้ caption ใกล้ reference caption มากขึ้นอย่างสม่ำเสมอ
-\item All-Profile มักให้คะแนนดีที่สุด แต่ gain จาก No-Profile ไป One-Profile ใหญ่กว่าการเพิ่ม profile หลังจากนั้น แปลว่าการเลือก context ที่ relevant สำคัญกว่าการใส่ context เยอะเสมอ
-\item ablation พบว่า profile caption มีผลมากที่สุด แต่ profile image ก็มีประโยชน์มากกว่า figure-mentioning paragraph ในบาง setting
-\item BERTScore และ ROUGE-L distribution ระหว่าง target กับ profile captions ชี้ว่า profile มี semantic relatedness สูง แต่ lexical overlap ต่ำ เหมาะกับการเป็น style/context signal
-\end{itemize}
-
-\subsection*{ข้อจำกัด}
-\begin{itemize}
-\item profile ถูกจำกัดสูงสุด 3 รูป ไม่ใช่ full-document context ทั้ง paper
-\item task ยังใช้ context ที่ถูก curate มาแล้วจาก dataset ไม่ได้เริ่มจาก raw PDF parsing
-\item evaluation ยังพึ่ง BLEU/ROUGE/BERTScore ซึ่งอาจไม่วัด faithfulness ต่อภาพหรือความถูกต้องเชิงวิชาการครบถ้วน
-\item การใกล้ author-written caption ไม่ได้แปลว่า caption ดีกว่าเสมอ เพราะ original caption อาจไม่ informative
-\end{itemize}
-
-\subsection*{ความเกี่ยวข้องกับ Thesis}
-Paper นี้เป็นฐานที่ดีสำหรับ research gap ของ thesis เพราะพิสูจน์แล้วว่า context จาก paper เดียวกันช่วย scientific figure captioning ได้ แต่ยังเปิดช่องว่างสำคัญคือ context ยังเป็น profile figures ที่ curated แล้ว ไม่ใช่ context retrieval จาก academic PDF ทั้งฉบับ Thesis สามารถต่อยอดเป็น \textbf{multi-level document context retrieval} เช่น mention paragraph, section context, abstract, nearby text, OCR และ cross-reference แล้วนำไปใช้กับ VLM/RAG caption generation
-
-\newpage
-
-\section{Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge}
-
-\noindent
-\begin{tabular}{@{}ll@{}}
-\textbf{arXiv} & \href{https://arxiv.org/abs/2510.07993}{2510.07993} \\
-\textbf{ผู้เขียน} & Watcharapong Timklaypachara, Monrada Chiewhawan, Nopporn Lekuthai, Titipat Achakulvisut \\
-\textbf{Keyword} & Context-Aware Caption Generation, Author-Specific Context, Prompt Optimization \\
-\textbf{ไฟล์ใน Repo} & papers/9-AuthorContextSciCap\_2025.* \\
-\end{tabular}
-
-\subsection*{ปัญหาที่ Paper แก้}
-งานนี้เริ่มจาก observation ว่า zero-shot prompting ที่ใช้ paragraph information โดยตรงมักสร้าง caption ที่ noisy มี irrelevant content และ hallucination โดยเฉพาะเมื่อ paragraph ยาวหรือมีข้อมูลที่ไม่ได้เกี่ยวกับ figure โดยตรง Scientific figure caption จึงต้องแก้สองโจทย์พร้อมกัน: ต้อง ground กับ content จริง และต้องมี style/structure ที่ใกล้กับ paper ต้นฉบับ
-
-\subsection*{Contribution สำคัญ}
-\begin{enumerate}
-\item เสนอ two-stage caption generation pipeline สำหรับ 3rd SciCap Challenge
-\item Stage 1 ทำ content-grounded caption generation โดยใช้ context filtering และ category-focused prompt optimization
-\item Stage 2 ทำ profile-informed stylistic refinement โดยใช้ few-shot prompting จาก profile figures
-\item ใช้ DSPy MIPROv2 และ SIMBA เพื่อ optimize prompt ตาม paper category
-\item ใช้ Gemini-2.5-flash เป็น reranker/candidate selector เพื่อเลือก caption ที่เหมาะกว่า
-\end{enumerate}
-
-\subsection*{Method}
-Pipeline แบ่งเป็นสอง stage:
-
-\paragraph{Stage 1: Content-Grounded Caption Generation}
-ระบบกรอง paragraph เพื่อเอาประโยคที่เกี่ยวกับ figure มากขึ้น จากนั้นใช้ category-focused prompt templates เพราะ paper ต่าง field มี terminology และ pattern ของ caption ต่างกัน MIPROv2 สร้าง instruction-example pairs และ optimize ด้วย ROUGE-L precision ส่วน SIMBA เพิ่ม feedback-driven optimization เพื่อหา reasoning path และปรับ rule สำหรับ problematic cases
-
-\paragraph{Stage 2: Profile-Informed Stylistic Refinement}
-หลังได้ caption จาก Stage 1 ระบบใช้ profile figures จาก LaMP-Cap เป็น few-shot examples เพื่อปรับ style ให้ใกล้กับ paper ต้นฉบับ และบังคับความยาวประมาณ \(\pm 15\%\) เพื่อคุม conciseness จุดนี้สำคัญเพราะ Stage 1 อาจได้ caption ที่มี content coverage ดี แต่ยัง verbose หรือไม่เหมือน writing style ของผู้เขียน
-
-\subsection*{ผลลัพธ์สำคัญ}
-\begin{highlight}
-\textbf{Key numbers}
-\begin{itemize}[nosep]
-\item Filtering + prompt optimization เพิ่ม ROUGE-1 recall จาก 0.4867 เป็น 0.5443
-\item ROUGE-2 recall เพิ่มจาก 0.2223 เป็น 0.2572
-\item Category-focused prompting เพิ่ม ROUGE-1 recall ประมาณ +8.3\% และลด BLEU-4 น้อยกว่า non-category-focused prompting
-\item Gemini reranking เพิ่ม ROUGE precision ประมาณ 3.46--4.43\%
-\item Profile-informed refinement เพิ่ม BLEU ประมาณ 40--48\% และ precision-based ROUGE ประมาณ 25--27\%
-\end{itemize}
-\end{highlight}
-
-\subsection*{ข้อจำกัด}
-\begin{itemize}
-\item pipeline มีหลาย component ทำให้ cost, reproducibility และ implementation complexity สูง
-\item category prompt optimization ยังไม่ใช่ retrieval จาก document structure โดยตรง
-\item การใช้ BLEU/ROUGE อาจให้คะแนนกับ lexical/style overlap มากกว่าความถูกต้องของข้อมูลในภาพ
-\item ใช้ profile context เป็นหลัก ยังไม่ได้ใช้ layout-aware PDF context เช่น section, table, caption proximity หรือ cross-reference อย่างเป็นระบบ
-\end{itemize}
-
-\subsection*{ความเกี่ยวข้องกับ Thesis}
-Paper นี้ช่วยยืนยันว่า \textbf{context filtering ก่อน generation} เป็นขั้นตอนจำเป็น ไม่ควรส่ง paragraph ทั้งหมดให้โมเดลโดยไม่กรอง Thesis สามารถนำแนวคิดนี้ไปออกแบบ retrieval module ที่เลือก context จากเอกสารทั้งฉบับแบบอัตโนมัติ แทนที่จะพึ่ง category prompt และ profile-only refinement Research gap ที่ชัดคือการสร้าง pipeline ที่เริ่มจาก PDF จริง แล้วทำ layout-aware context extraction ก่อนส่งเข้า VLM
-
-\newpage
-
-\section{Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer}
-
-\noindent
-\begin{tabular}{@{}ll@{}}
-\textbf{arXiv} & \href{https://arxiv.org/abs/2509.25817}{2509.25817} \\
-\textbf{ผู้เขียน} & Jaeyoung Kim, Jongho Lee, Hongjun Choi, Sion Jang \\
-\textbf{Keyword} & Scientific Figure Captioning, Quality-Aware Generation, Qwen2.5-VL \\
-\textbf{ไฟล์ใน Repo} & papers/10-PersonalizedSciFigCap\_2025.* \\
-\end{tabular}
-
-\subsection*{ปัญหาที่ Paper แก้}
-Paper นี้ศึกษาว่า profile data ช่วย personalized scientific figure captioning ได้จริงแค่ไหน และชี้ปัญหาสำคัญว่า metric แบบ BLEU/ROUGE อาจทำให้โมเดลเรียนรู้การเลียนแบบ author style หรือ lexical pattern มากกว่าการสร้าง caption ที่ informative และ factual งานก่อนหน้าระบุว่า caption ใน arXiv จำนวนมากมีคุณภาพต่ำ ดังนั้นการ fine-tune จาก caption เหล่านี้โดยตรงอาจทำให้โมเดลเรียนรู้ caption ที่ไม่ดีตามไปด้วย
-
-\subsection*{Contribution สำคัญ}
-\begin{enumerate}
-\item สร้าง quality evaluator โดยใช้ GPT-4.1 สร้าง synthetic labels ระดับ 1--6 แล้ว fine-tune Qwen-2.5-VL-3B
-\item fine-tune Qwen-2.5-VL-7B เป็น personalized caption generator จาก LaMP-Cap
-\item วิเคราะห์ input components ได้แก่ figure, paragraph, mention, OCR และ profile data
-\item เสนอ quality-aware caption generation เพื่อควบคุม trade-off ระหว่าง personalization และ caption quality
-\item ชี้ limitation ของ BLEU/ROUGE เมื่อ reference caption เองอาจมีคุณภาพต่ำ
-\end{enumerate}
-
-\subsection*{Method}
-ระบบมีสองส่วนหลัก ส่วนแรกคือ \(f_{quality}\) สำหรับประเมิน caption quality โดยใช้ figure-caption pairs และให้คะแนน 1 ถึง 6 ตามคุณภาพ ส่วนนี้ fine-tune จาก Qwen-2.5-VL-3B ด้วย synthetic labels จาก GPT-4.1 จำนวน 3,000 samples และ validate บน 200 samples
-
-ส่วนที่สองคือ \(g_{caption}\) ใช้ Qwen-2.5-VL-7B เป็น generator โดย input มี target figure, explanatory paragraphs, textual mentions, OCR text และ profile data จาก paper เดียวกัน สำหรับ supervised fine-tuning ใช้เฉพาะ samples ที่ quality score \(\geq 3\) เพื่อเลี่ยง low-quality captions
-
-\begin{highlight}
-\textbf{ตัวเลขจาก quality evaluator}
-\begin{itemize}[nosep]
-\item Spearman rank correlation = 0.759
-\item Quadratic Weighted Kappa = 0.754
-\item training samples สำหรับ quality assessment = 3,000
-\item validation samples = 200
-\end{itemize}
-\end{highlight}
-
-\subsection*{ผลลัพธ์สำคัญ}
-\begin{itemize}
-\item Fine-tuned Qwen2.5-VL-7B ทำคะแนนบน full test ดีกว่า Gemini-2.5-flash: BLEU-4 = 0.304 เทียบกับ 0.278 และ ROUGE-L = 0.555 เทียบกับ 0.540
-\item จำนวน profile ที่มากขึ้นช่วยเพิ่ม BLEU/ROUGE อย่างสม่ำเสมอ โดยตัวอย่างที่มี 3 profile figures ได้คะแนนสูงสุดในหลาย metric
-\item Ablation พบว่าเพิ่ม paragraphs จาก baseline F+C ทำให้ BLEU-4 เพิ่มจาก 0.123 เป็น 0.295 และ ROUGE-L เพิ่มจาก 0.355 เป็น 0.545
-\item mentions และ OCR เพิ่มผลแบบ incremental จน full configuration ได้ BLEU-4 = 0.304 และ ROUGE-L = 0.555
-\item quality-aware generation แบบ Forced-Q6 ทำให้ quality score สูงขึ้น แต่ ROUGE-L อาจลดในกรณี reference caption คุณภาพต่ำ
-\end{itemize}
-
-\subsection*{ข้อจำกัด}
-\begin{itemize}
-\item quality labels มาจาก GPT-4.1 จึงอาจสะท้อน bias ของ judge model
-\item optimization เพื่อ style matching อาจลด informativeness ของ caption
-\item evaluation หลักยังพึ่ง lexical overlap metrics ทำให้ caption ที่ดีกว่าแต่ wording ต่างจาก reference อาจได้คะแนนต่ำ
-\item ยังไม่ได้เป็น pipeline จาก raw academic PDF เพราะใช้ LaMP-Cap fields ที่เตรียมไว้แล้ว
-\end{itemize}
-
-\subsection*{ความเกี่ยวข้องกับ Thesis}
-Paper นี้ให้ insight สำคัญมากสำหรับ thesis: context components อย่าง paragraph, mention และ OCR มีผลชัดเจนต่อ caption quality แต่การประเมินด้วย BLEU/ROUGE เพียงอย่างเดียวอาจไม่พอ Thesis ควรแยก evaluation อย่างน้อย 4 มิติ คือ visual faithfulness, context relevance, academic informativeness และ lexical/style similarity นอกจากนี้แนวทาง quality-aware generation สามารถต่อยอดเป็น post-generation verification หรือ refinement module เพื่อลด hallucination
-
-\newpage
-
-\section*{Research Gap ที่สรุปจากทั้ง 3 Paper}
-
-\begin{enumerate}
-\item \textbf{Context Integration Gap:} งานปี 2025 ใช้ context มากขึ้น แต่ยังมักเป็น profile figures หรือ fields ที่ curated แล้ว ยังไม่ใช่ retrieval จาก PDF ทั้งฉบับ
-\item \textbf{End-to-End Pipeline Gap:} ยังขาดระบบครบวงจรจาก PDF parsing, layout analysis, figure extraction, context retrieval ไปจนถึง caption generation
-\item \textbf{Evaluation Gap:} BLEU/ROUGE/BERTScore วัด similarity กับ reference แต่ไม่พอสำหรับ faithfulness, factuality และ informativeness
-\item \textbf{Quality-Style Trade-off:} การทำให้ caption เหมือน author-written caption อาจไม่เท่ากับการทำให้ caption ดีขึ้น เพราะ reference caption บางส่วนมีคุณภาพต่ำ
-\item \textbf{Retrieval Quality Gap:} ยังไม่มีคำตอบชัดว่าควรเลือก context แบบใด ระหว่าง profile figures, mention paragraph, section context, OCR, nearby text หรือ full-document RAG
-\end{enumerate}
-
-\begin{highlight}
-\textbf{ข้อเสนอสำหรับ thesis direction:}
-พัฒนา Hybrid RAG + VLM pipeline ที่เริ่มจาก academic PDF จริง ทำ layout-aware document parsing แล้วดึง multi-level context สำหรับ target figure ก่อนสร้าง caption พร้อม evaluation ที่แยก visual faithfulness, context relevance และ academic informativeness ออกจาก lexical overlap
-\end{highlight}
-
-\vspace{16pt}
-\noindent\rule{\textwidth}{1pt}
-\noindent{\color{muted}\small สร้างด้วย LaTeX skill · อ้างอิงจาก papers/8--10 และ docs/synthesis analysis · \today}
+\vspace{4pt}
+\hrule height 0.6pt
+\vspace{3pt}
+{\color{muted}\footnotesize Generated with local LaTeX skill. Source papers: arXiv:2506.06561, 2510.07993, 2509.25817.}
 
 \end{document}
