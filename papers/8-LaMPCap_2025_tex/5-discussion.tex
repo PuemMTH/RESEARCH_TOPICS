@@ -1,0 +1,55 @@
+
+Our results with \dataset show that including figure images in profiles improves personalized caption generation, and that more profile information makes captions closer to the original author-written captions.
+Although we focused on personalized text generation, \citeauthor{zhang2024personalization} noted strong links between LLM-based personalized text generation and downstream applications such as recommendation systems, suggesting that multimodal profiles could also benefit tasks like multimodal recommendation.
+%Our findings also echo challenges identified by \citeauthor{zhang2024personalization}, including reduced LLM effectiveness when profiles lack similarity---a cold-start problem common in low-resource settings.
+Our findings also echo challenges noted by \citeauthor{zhang2024personalization}, such as reduced LLM effectiveness when profiles lack similarity---a problem linked to cold-start scenarios in low-resource settings. 
+
+We further highlight the limitations of automatic metrics for evaluating personalized text generation.
+As shown in prior work~\cite{salemi2025expert}, n-gram-based scores, such as BLEU and ROUGE, often fail to reflect human judgments of quality accurately.
+We hope our work, along with the \dataset dataset, motivates the community to explore multimodal profiles and broaden the scope of LLM personalization.
+
+
+
+
+
+%Our results with \dataset show that including visual elements (figure images) in profiles enhances personalized caption generation, with more profile information further improving performance. 
+%While our study focused only on personalized text generation, \citeauthor{zhang2024personalization} highlighted deep connections between LLM-based personalized text generation and downstream applications like recommendation systems, suggesting that multimodal profiles could benefit tasks beyond text generation, including multimodal recommendation.
+%Our findings also echo challenges noted by \citeauthor{zhang2024personalization}, such as reduced LLM effectiveness when profiles lack similarity---a problem linked to cold-start scenarios in low-resource settings. 
+%Our findings also highlight the limitations of automatic evaluation metrics for personalization. We observed a discrepancy between scores from similarity-based metrics like BLEU and ROUGE-L and our human evaluation results. This aligns with prior research, such as the ExPERT study~\cite{salemi2025expert}, which also reported a low correlation between automatic metrics and human judgments. This shows a critical trade-off in generation tasks: optimizing for similarity to a reference text does not always yield higher perceived quality by human.
+%We hope our results encourage the research community to explore multimodal profiles for broader LLM personalization.
+
+
+
+
+%------------ dead kitten -------------
+\begin{comment}
+
+
+
+
+Our results with \dataset show that including visual elements (figure images) in profiles improves personalized caption generation, with more profile information leading to better performance. 
+While our work focused on personalized text generation, \citeauthor{zhang2024personalization} recently highlighted the deep connections between LLM-based personalized text generation and personalization in downstream applications like recommendation systems. 
+Our findings also align with some challenges \citeauthor{zhang2024personalization} identified in this space, such as reduced LLM effectiveness when profiles lack similarity---an issue related to the cold-start problem in low-resource scenarios.
+
+
+
+
+
+
+
+
+
+
+
+\kenneth{1. BLEU score=1 cases; 2. using authors?}
+\sam{thinking if we should also discuss the difference between at least 1 profile > no Profile, but all > 1 profile a little bit}
+\sam{not quite sure  what it means by second point "using authors?" --> 1 author vs multiple authors?}
+
+Analysis of the BLEU score distribution reveals numerous cases with scores at or near 1. Our sampling of these high-scoring instances shows that original captions often share structural similarities with the referenced paragraphs used as input for caption generation. This similarity increases the likelihood of generating captions identical to the original captions. This pattern may reflect established academic writing conventions where authors intentionally maintain consistency between figure captions and main text, or discipline-specific practices that encourage repetition of key information~\cite{ng2025understanding}.
+
+\sam{not sure if this should be put here to explain some sample of perfect BLEU score, OR should be placed in Limitation session}
+However, there are also several instances generating captions identical to the original ones despite differences in sentence structure between original and profile figures. This may be attributed to the SciCap dataset's age, suggesting that language models used in our experiments might have been pre-trained on papers included in this dataset, enabling them to reproduce the original captions verbatim.
+    
+\end{comment}
+
+

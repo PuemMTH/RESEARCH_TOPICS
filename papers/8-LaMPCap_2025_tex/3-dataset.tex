@@ -1,0 +1,122 @@
+%\paragraph{Data Source and Curation Process.}
+We constructed \dataset by curating the \textsc{SciCap} Challenge Dataset~\cite{hsu2025large}.
+We first selected all papers containing at least two figures. 
+From each paper, we then randomly designated one figure as the \textbf{target figure} (the one needing a caption) and used the remaining figures from that paper (up to a maximum of three, since the \textsc{SciCap} Challenge allowed at most four figures per paper) as the \textbf{profile} to provide personalization context.
+%In \dataset, the model generates captions for a target figure using the image and figure-mentioning paragraphs as the \textit{source}, and using the source-caption pair(s) of profile figure(s) as the \textit{profile} to adapt the caption style and context.
+%In \dataset, the model generates captions for a target figure using its image and figure-mentioning paragraphs as the \textit{source}, while the source-caption pairs of \textit{profile} figures help adapt the caption style and context.
+
+%\paragraph{Dataset Statistics.}
+Following the \textsc{SciCap} Challenge Dataset's split (\ie, 80/10/10 train/val/test), \dataset includes 110,828 target figures: 
+86,197 for training, 
+12,361 for validation, and 
+12,270 for testing. 
+Among these, 54,680 (49.3\%) had one profile figure, 26,193 (23.6\%) had two, and 30,027 (27.1\%) had three, totaling 197,075 profile figures. 
+Papers with only one figure were excluded. %as at least two figures are required to form target-profile pairs. 
+See \autoref{app:dataset-details} for details.
+% Detailed data splits by figure type and profile count are in \autoref{app:dataset-details}.
+%\sam{The detail data split by figure type and the number of profile distribution are included in \autoref{app:dataset-details}.}
+%\kenneth{TODO Sam: Do 49.X\%, not just 49\%}\sam{done!}
+%\kenneth{TODO Sam: Update all the numbers!!!}\sam{updated!}
+
+%--------------- dead kittren -------------
+\begin{comment}
+
+
+
+
+We curated the \textsc{SciCap} Challenge Dataset to construct \dataset~\cite{hsu2025large}.
+%\kenneth{TODO: Cite TACL paper}
+\textsc{SciCap} Challenge Dataset included 476,389 figures, each with figure images, captions, and figure-mentioning paragraphs, extracted from 231,675 arXiv papers.
+%\kenneth{TODO Sam: Update numbers.}
+To create \dataset, we focused on papers with at least two figures. 
+For each eligible paper, we randomly selected one figure as the \textbf{target figure}, which the model must generate a caption for.
+The remaining figure(s) from the same paper served as the \textbf{profile}, providing context for personalized caption generation.
+%Due to the \textsc{SciCap} Challenge Dataset's design, which limits each paper to a maximum of four figures, each target figure in \dataset has at most three profile figures.
+%Due to the \textsc{SciCap} Challenge Dataset's design, which limits each paper to a maximum of four figures to encourage participation from smaller labs with limited computational resources, each target figure in \dataset has at most three profile figures.
+%Because the \textsc{SciCap} Challenge Dataset limited each arXiv paper to at most four figures---to support participation from smaller labs with limited computing resources---each target figure in \dataset can have at most three profile figures.
+
+Because the \textsc{SciCap} Challenge Dataset limited each arXiv paper to a maximum of four figures to reduce data size and support participation from smaller labs with limited computing resources, each target figure in \dataset can have at most three profile figures.
+Because the \textsc{SciCap} Challenge Dataset limited each arXiv paper to a maximum of four figures to reduce data size and support participation from smaller labs with limited computing resources, each target figure in \dataset can have at most three profile figures.
+
+
+
+
+
+
+
+
+
+
+We followed the original \textsc{SciCap} Challenge Dataset split (\ie, 80\%/10\%/10\% training/validation/test), resulting in 239,350 figures (86,197 papers) for training, 34,269 figures (12,361 papers) for validation, and 34,284 figures (12,270 papers) for testing. Among the papers included, 54,680 have one profile figure, 26,193 have two, and 30,027 have three.
+Papers containing only one figure were excluded, as at least two figures are needed to form target-profile pairs.
+
+110,828 papers with 307,903 figures after filtering. 
+We excluded 120,847 papers containing only one figure, as at least two figures are needed to form target-profile pairs.
+This process yielded 239,350 figures (86,197 papers) for training, 34,269 figures (12,361 papers) for validation, and 34,284 figures (12,270 papers) for testing. Among the papers included, 54,680 have one profile figure, 26,193 have two, and 30,027 have three.
+
+
+
+
+
+
+
+
+
+
+
+
+We built \dataset using the \textsc{SciCap} Challenge Dataset, which contains XXXXXXX figures from XXXXXX arXiv papers. 
+Each figure is accompanied by an image, a caption, and figure-mentioning paragraphs.
+
+To create \dataset, we focused on papers with at least two figures. For each eligible paper, we randomly selected one figure as the target figure, which the model must generate a caption for. The remaining figure(s) from the same paper served as the profile, providing context for personalized caption generation.
+
+Due to the \textsc{SciCap} Challenge Dataset’s design, which limits each paper to a maximum of four figures to support smaller labs with limited computing resources, each target figure in \dataset has at most three profile figures.
+
+In \dataset, the model generates captions for a target figure using its image and figure-mentioning paragraphs as the source, while the source-caption pairs of profile figures help adapt the caption style and context.
+
+
+
+
+
+To create \dataset, we randomly selected one figure from each paper with at least two figures as the \textbf{target figure}.
+The remaining figure(s) from the same arXiv paper served as the target figure's \textbf{profile}, providing context for personalized caption generation. 
+\textsc{SciCap} Challenge Dataset limited each paper to a maximum of four (4) figures to encourage participation from smaller labs with limited computing resources, so each target figure in \dataset only had up to three (3) profile figures.
+
+When using \dataset, the model generates captions for a \textbf{target figure} using its image and figure-mentioning paragraphs as \texttt{source} while using the source-caption pairs of all the figure(s) in its \texttt{profile} to tailor the writing style and context.
+
+
+
+
+\paragraph{Overview.}
+
+
+\paragraph{Dataset Construction Process.}
+
+
+
+\kenneth{---------------- KENNETH IS WORKING HERE -------------------}
+
+\kenneth{TODO Sam: Be more direct, e.g., ``We constructed \dataset using the data in the \textsc{SciCap} Challenge Dataset...''}
+
+We constructed the \dataset using the data from \textsc{SciCap} Challenge Dataset, as it aligns with our focus on personalized scientific caption generation. The \dataset curation involved the following steps:
+
+First, we grouped the figures by their arXiv paper index to ensure related figures shared the same writing context and style, which facilitates our purpose to construct 'profile' for personalization in caption generation. Each figure entry contains the figure image (Img), the paragraph mentioning the figure (Para), and the original caption (Cap). We kept the metadata such as figure type, paper categories and caption length for further analysis.
+
+Next, from each paper, we randomly selected one figure as the 'target figure' for caption generation (using random seed 42 to ensure reproducibility). The remaining figures from the same paper served as 'profile figures', providing writing style, context and reference for caption generation. This approach assumes that figures from the same paper share authorship and contextual consistency, making them suitable for personalization scenarios.
+
+Following the original \textsc{SciCap} Challenge Dataset split (80\% training, 10\% validation, 10\% testing), we obtained 110,828 qualified papers with 307,903 figures after filtering. We excluded 120,847 papers containing only one figure from the \textsc{SciCap} Challenge Dataset. It is because at least two figures from the same paper are required to form the target-profile pairs.
+The following is the distribution of data split: 239,350 figures (86,197 papers) for training, 34,269 figures (12,361 papers) for validation, 34,284 figures (12,270 papers) for testing. Figure \ref{fig:data-split-dist} provides a detailed breakdown of figure type across each data split.
+\input{figures/fig02/fig02_data_split_dist}
+
+The resulting distribution of number of profile figure is as follows: 54,680 papers contain one profile figure, 26,193 contain two profile figures, and 30,027 contain three profile figures. Figure \ref{fig:profile-dist} provides a detailed distribution across each data split.
+\input{figures/fig03/fig03_profile_dist}
+
+% target 
+% profile
+% data source
+% data selecting steps
+% final statistics (split, target figure / profile figures)
+
+\kenneth{Mention how many data in scicap challenge dataset we did NOT use---- sometimes we just don't have profile.} \ed{we may need to explain why we use only up to three profiles}
+    
+\end{comment}

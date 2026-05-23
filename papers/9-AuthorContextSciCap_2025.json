@@ -1,0 +1,40 @@
+{
+  "arxiv_id": "2510.07993",
+  "title": "Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge",
+  "authors": [
+    "Watcharapong Timklaypachara1,2Monrada Chiewhawan1,2Nopporn Lekuthai1,2Titipat Achakulvisut11Department of Biomedical Engineering, Faculty of Engineering, Mahidol University2Faculty of Medicine Ramathibodi Hospital, Mahidol University, Bangkok, Thailand"
+  ],
+  "abstract": "Scientific figure captions require both accuracy and stylistic consistency to convey visual information. Here, we present a domain-specific caption generation system for the 3rd SciCap Challenge that integrates figure-related textual context with author-specific writing styles using the LaMP-Cap dataset. Our approach uses a two-stage pipeline: Stage 1 combines context filtering, category-specific prompt optimization via DSPy’s MIPROv2 and SIMBA, and caption candidate selection; Stage 2 applies few-shot prompting with profile figures for stylistic refinement. Our experiments demonstrate that category-specific prompts outperform both zero-shot and general optimized approaches, improving ROUGE-1 recall by +8.3% while limiting precision loss to -2.8% and BLEU-4 reduction to -10.9%. Profile-informed stylistic refinement gains of 40–48% in BLEU scores and 25–27% in ROUGE. Our system demonstrates that combining contextual understanding with author-specific stylistic adaptation can generate captions that are scientifically accurate and stylistically faithful to the source paper.",
+  "year": "2025",
+  "figure_count": 5,
+  "figure_captions": [
+    {
+      "id": "S3.F1",
+      "caption": "Figure 1:Overview of our multi-stage caption generation framework",
+      "src": "/html/2510.07993/assets/scicap-and-rsna_figures.jpg"
+    },
+    {
+      "id": "S4.T1.st1",
+      "caption": "(a)(a) BLEU & ROUGE-1 results",
+      "src": ""
+    },
+    {
+      "id": "S4.T1.st2",
+      "caption": "(b)(b) ROUGE-2 & ROUGE-L results",
+      "src": ""
+    },
+    {
+      "id": "S4.T2.st1",
+      "caption": "(a)(a) BLEU & ROUGE-1 results",
+      "src": ""
+    },
+    {
+      "id": "S4.T2.st2",
+      "caption": "(b)(b) ROUGE-2 & ROUGE-L results",
+      "src": ""
+    }
+  ],
+  "paper_number": 9,
+  "slug": "AuthorContextSciCap",
+  "base_name": "9-AuthorContextSciCap_2025"
+}

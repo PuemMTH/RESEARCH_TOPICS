@@ -1,0 +1,125 @@
+{
+  "arxiv_id": "2506.06561",
+  "title": "\\dataset : Personalized Figure Caption Generation With Multimodal Figure Profiles",
+  "authors": [
+    "Ho Yin ‘Sam’ Ng1Ting-Yao Hsu1Aashish Anantha Ramakrishnan1Branislav Kveton2Nedim Lipka2Franck Dernoncourt2Dongwon Lee1Tong Yu2Sungchul Kim2Ryan A. Rossi2Ting-Hao ‘Kenneth’ Huang11Pennsylvania State University2Adobe Research1{sam.ng,txh357,aashish,dongwon,txh710}@psu.edu2{kveton,lipka,dernonco,tyu,sukim,ryrossi}@adobe.com"
+  ],
+  "abstract": "Figure captions are crucial for helping readers understand and remember a figure’s key message.\nMany models have been developed to generate these captions, helping authors compose better quality captions more easily.\nYet, authors almost always need to revise generic AI-generated captions to match their writing style and the domain’s style, highlighting the need for personalization.\nDespite language models’ personalization (LaMP) advances, these technologies often focus on text-only settings and rarely address scenarios where both inputs and profiles are multimodal.\nThis paper introduces \\dataset , 1 1 1 \\dataset dataset and code are available on GitHub: https://github.com/Crowd-AI-Lab/lamp-cap . a dataset for personalized figure caption generation with multimodal figure profiles.\nFor each target figure, \\dataset provides not only the needed inputs, such as figure images, but also up to three other figures from the same document—each with its image, caption, and figure-mentioning paragraphs—as a profile to characterize the context.\nExperiments with four LLMs show that using profile information consistently helps generate captions closer to the original author-written ones.\nAblation studies reveal that images in the profile are more helpful than figure-mentioning paragraphs, highlighting the advantage of using multimodal profiles over text-only ones.",
+  "year": "2025",
+  "figure_count": 22,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:Overview of\\dataset. For each target figure, the dataset provides a multimodalsource—the figure image and figure-mentioning paragraphs—and a multimodalprofileof up to three other figures (i.e., profile figures) from the same paper, each with its image, caption, and related paragraphs. The model generates a caption for the target figure using this source and profile.",
+      "src": "/html/2506.06561/assets/figures/overview-figure-v202505200403.png"
+    },
+    {
+      "id": "S4.F2",
+      "caption": "a-1BLEU-4 (Context-Aligned Subset)",
+      "src": "/html/2506.06561/assets/figures/fig04_easyHard/01_easy_bleu4-v2.png"
+    },
+    {
+      "id": "S4.F2.sf1",
+      "caption": "a-1BLEU-4 (Context-Aligned Subset)",
+      "src": "/html/2506.06561/assets/figures/fig04_easyHard/01_easy_bleu4-v2.png"
+    },
+    {
+      "id": "S4.F2.sf2",
+      "caption": "b-1BLEU-4 (Context-Misaligned Subset)",
+      "src": "/html/2506.06561/assets/figures/fig04_easyHard/03_hard_bleu4-v2.png"
+    },
+    {
+      "id": "S4.F2.sf3",
+      "caption": "a-2ROUGE-2 (Context-Misaligned Subset)",
+      "src": "/html/2506.06561/assets/figures/fig04_easyHard/02_easy_rouge2-v4.png"
+    },
+    {
+      "id": "S4.F2.sf4",
+      "caption": "b-2ROUGE-2 (Context-Misaligned Subset)",
+      "src": "/html/2506.06561/assets/figures/fig04_easyHard/04_hard_rouge2-v4.png"
+    },
+    {
+      "id": "S4.F3",
+      "caption": "Figure 3:Ablation study on caption generation by removing one profile element at a time (caption, image, or figure-mentioning paragraph). Captions contribute the most, followed by images, then paragraphs.",
+      "src": "/html/2506.06561/assets/figures/fig01/fig01_ablation_study-v5.png"
+    },
+    {
+      "id": "A1.F4",
+      "caption": "Figure 4:Data split of\\datasetby figure type. The dataset contains 307,903 figures from 110,828 scientific papers, split into training (80%), validation (10%), and testing (10%) sets. Each set includes target and profile figures. The five main figure types are a) Graph Plot, b) Node Diagram, c) Equation, d) Bar Chart, and e) Scatterplot. Graph plots are the most common figure type across all splits.",
+      "src": "/html/2506.06561/assets/figures/fig02/data-split-distribution-v2.png"
+    },
+    {
+      "id": "A1.F5",
+      "caption": "Figure 5:Profile distribution in\\dataset, showing the number of target figures with 1, 2, or 3 profile figures.",
+      "src": "/html/2506.06561/assets/figures/fig03/profile-dist-v2.png"
+    },
+    {
+      "id": "A6.F6",
+      "caption": "Figure 6:Distribution of BERTScore (left) and ROUGE-L (right) metrics between Target and Profile captions in the\\datasetTest Set. Both these scores share a left-shifted skewed unimodal distribution. The BERTScore plot shows that the provided profile captions for each target arevery semantically related. On the other hand, the broader spread of ROUGE-L scores shows that profile captions exhibitlow lexical overlap. High semantic relatedness and lexical variety motivates our use of profile captions as key style indicators for personalization.",
+      "src": "/html/2506.06561/assets/figures/fig05_maxscoreDist/distribution_plot_max_bert.png"
+    },
+    {
+      "id": "A6.F6.fig1",
+      "caption": "",
+      "src": "/html/2506.06561/assets/figures/fig05_maxscoreDist/distribution_plot_max_bert.png"
+    },
+    {
+      "id": "A6.F6.fig2",
+      "caption": "",
+      "src": "/html/2506.06561/assets/figures/fig05_maxscoreDist/distribution_plot_max_rouge.png"
+    },
+    {
+      "id": "A8.F7",
+      "caption": "(a)BLEU-4 for GPT-4o",
+      "src": "/html/2506.06561/assets/figures/fig06_mainStudy-BLEU4-dist/01_bleu4_4o.png"
+    },
+    {
+      "id": "A8.F7.sf1",
+      "caption": "(a)BLEU-4 for GPT-4o",
+      "src": "/html/2506.06561/assets/figures/fig06_mainStudy-BLEU4-dist/01_bleu4_4o.png"
+    },
+    {
+      "id": "A8.F7.sf2",
+      "caption": "(b)BLEU-4 for Llama-4 Scout",
+      "src": "/html/2506.06561/assets/figures/fig06_mainStudy-BLEU4-dist/02_bleu4_Llama.png"
+    },
+    {
+      "id": "A8.F7.sf3",
+      "caption": "(c)BLEU-4 for Gemini-2.5 Flash Preview",
+      "src": "/html/2506.06561/assets/figures/fig06_mainStudy-BLEU4-dist/03_bleu4_gemini.png"
+    },
+    {
+      "id": "A8.F7.sf4",
+      "caption": "(d)BLEU-4 for GPT-4.1 Mini",
+      "src": "/html/2506.06561/assets/figures/fig06_mainStudy-BLEU4-dist/04_bleu4_mini.png"
+    },
+    {
+      "id": "A8.F8",
+      "caption": "(a)ROUGE-2 for GPT-4o",
+      "src": "/html/2506.06561/assets/figures/fig07_mainStudy-ROUGE2-dist/01_rouge2_4o.png"
+    },
+    {
+      "id": "A8.F8.sf1",
+      "caption": "(a)ROUGE-2 for GPT-4o",
+      "src": "/html/2506.06561/assets/figures/fig07_mainStudy-ROUGE2-dist/01_rouge2_4o.png"
+    },
+    {
+      "id": "A8.F8.sf2",
+      "caption": "(b)ROUGE-2 for Llama-4 Scout",
+      "src": "/html/2506.06561/assets/figures/fig07_mainStudy-ROUGE2-dist/02_rouge2_Llama.png"
+    },
+    {
+      "id": "A8.F8.sf3",
+      "caption": "(c)ROUGE-2 for Gemini-2.5 Flash Preview",
+      "src": "/html/2506.06561/assets/figures/fig07_mainStudy-ROUGE2-dist/03_rouge2_gemini.png"
+    },
+    {
+      "id": "A8.F8.sf4",
+      "caption": "(d)ROUGE-2 for GPT-4.1 Mini",
+      "src": "/html/2506.06561/assets/figures/fig07_mainStudy-ROUGE2-dist/04_rouge2_mini.png"
+    }
+  ],
+  "paper_number": 8,
+  "slug": "LaMPCap",
+  "base_name": "8-LaMPCap_2025"
+}

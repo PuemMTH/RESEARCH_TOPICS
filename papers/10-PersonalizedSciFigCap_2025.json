@@ -1,0 +1,56 @@
+{
+  "arxiv_id": "2509.25817",
+  "title": "Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer",
+  "authors": [
+    "Jaeyoung Kim , Jongho Lee & Hongjun ChoiTeamreboott Inc.Seoul, Korea{jaeyoungkim,jongho.lee,hongjun.choi}@reboott.ai",
+    "Sion JangMIRI D.I.H Inc.Seoul, Koreawayterren@gmail.com"
+  ],
+  "abstract": "We study personalized figure caption generation using author profile data from scientific papers. Our experiments demonstrate that rich author profile data, combined with relevant metadata, can improve the personalization performance of multimodal large language models. However, we also reveal a fundamental trade-off between matching author style and maintaining caption quality. Our findings offer valuable insights and future directions for developing practical caption automation systems that balance both objectives. This work was conducted as part of the 3rd SciCap challenge. 1 1 1 https://scicap.ai",
+  "year": "2025",
+  "figure_count": 8,
+  "figure_captions": [
+    {
+      "id": "S0.F1",
+      "caption": "Figure 1:Multimodal LLM architecture for the personalized figure caption generation task. The model receives two types of inputs: (1) target figure information including the figure itself (F), explanatory paragraphs (P), textual mentions (M), and OCR-extracted text (O), and (2) optional profile data from N related figures in the same paper (where N can be 0), each containing corresponding figures, paragraphs, mentions, OCR text, and captions (C).",
+      "src": "/html/2509.25817/assets/x1.png"
+    },
+    {
+      "id": "S1.F2",
+      "caption": "Figure 2:Confusion matrix showing the agreement between fine-tuned Qwen-2.5-VL-3B and GPT-4.1.",
+      "src": "/html/2509.25817/assets/imgs/analysis_quality_model_confusion_heatmap.png"
+    },
+    {
+      "id": "S3.F3",
+      "caption": "Figure 3:Caption quality score comparing Gemini-2.5-flash and fine-tuned Qwen-2.5-VL-7B. Both models generate lower quality captions compared to author-written captions.",
+      "src": "/html/2509.25817/assets/imgs/profile_quality_bar_v3.png"
+    },
+    {
+      "id": "S3.F3.fig1",
+      "caption": "Figure 3:Caption quality score comparing Gemini-2.5-flash and fine-tuned Qwen-2.5-VL-7B. Both models generate lower quality captions compared to author-written captions.",
+      "src": "/html/2509.25817/assets/imgs/profile_quality_bar_v3.png"
+    },
+    {
+      "id": "S3.F3.fig2",
+      "caption": "Table 3:Comparison of quality-aware caption generation strategies. Forced-Q6 conditions the model on maximum quality score (6) during inference, while Predicted-Q uses the model’s own quality predictions. Target Quality indicates the quality scores of original author-written captions as evaluated by GPT-4.1.",
+      "src": ""
+    },
+    {
+      "id": "A1.F4",
+      "caption": "Figure 4:Quality-aware model architecture for personalized caption generation. (a) Training phase: The model predicts both the quality score (Q) and caption (C) from profile data and target figure information, learning to associate quality levels with caption characteristics. (b) Inference phase: The model can be conditioned on a specified quality score (e.g., Q=6 for maximum quality) to control the quality-personalization trade-off during generation. Profile data includes figures (F), paragraphs (P), mentions (M), OCR text (O), and captions (C) from related figures in the same paper.",
+      "src": "/html/2509.25817/assets/x2.png"
+    },
+    {
+      "id": "A1.F5",
+      "caption": "Figure 5:The actual prompt for caption quality assessment we used in our experiments.",
+      "src": "/html/2509.25817/assets/x3.png"
+    },
+    {
+      "id": "A1.F6",
+      "caption": "Figure 6:The actual prompt for caption generation in our experiments.",
+      "src": "/html/2509.25817/assets/x4.png"
+    }
+  ],
+  "paper_number": 10,
+  "slug": "PersonalizedSciFigCap",
+  "base_name": "10-PersonalizedSciFigCap_2025"
+}

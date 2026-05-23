@@ -1,0 +1,7 @@
+This appendix session is to supplement the result in \autoref{para:profile-result} regarding the main study of caption generation using different profile configuration across 4 models.
+
+\autoref{fig:dist-bleu4} shows the BLEU-4 distribution across different language models and profile configurations.
+
+\autoref{fig:dist-rouge2} shows the ROUGE-2 distribution across different language models and profile configurations.
+
+\autoref{tab:BERTScore_LLM} shows BERTScore semantic similarity between the generated and gold captions. The results correlate strongly with our BLEU and ROUGE metrics, confirming the same performance trends. The \textit{All-Profile} setting achieves the highest score, followed closely by \textit{1-Profile}. Notably, this analysis reveals a pattern of diminishing returns. The performance leap from \textit{No-Profile} to \textit{1-Profile} is substantially larger than the subsequent gain from \textit{1-Profile }to \textit{All-Profile}, indicating that while the first profile provides a significant semantic boost, the marginal benefit of additional profiles is less substantial.

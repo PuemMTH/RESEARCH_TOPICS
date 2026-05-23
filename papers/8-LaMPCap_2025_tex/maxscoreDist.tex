@@ -1,0 +1,20 @@
+\begin{figure*}[t]
+    \centering
+    % Top row
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig05_maxscoreDist/distribution_plot_max_bert.png}
+        \vspace{-1.5pc}
+        % \caption{BLEU-4 (Easy)}
+        \label{fig:bert_dist}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.48\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig05_maxscoreDist/distribution_plot_max_rouge.png}
+        \vspace{-1.5pc}
+        % \caption{BLEU-4 (Hard)}
+        \label{fig:rouge_dist}
+    \end{subfigure}
+    
+    \caption{Distribution of BERTScore (left) and ROUGE-L (right) metrics between Target and Profile captions in the \textbf{\dataset} Test Set. Both these scores share a left-shifted skewed unimodal distribution. The BERTScore plot shows that the provided profile captions for each target are \textit{very semantically related}. On the other hand, the broader spread of ROUGE-L scores shows that profile captions exhibit \textit{low lexical overlap}. High semantic relatedness and lexical variety motivates our use of profile captions as key style indicators for personalization.}
+    \label{fig:profile_target_distribtions}
+\end{figure*}

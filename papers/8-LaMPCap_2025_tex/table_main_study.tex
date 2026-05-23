@@ -1,0 +1,308 @@
+% \begin{table}
+% \footnotesize
+% \setlength{\tabcolsep}{2pt}
+% \centering
+% \begin{tabular}{@{}l@{\hspace{1pt}}l@{\hspace{1pt}}cccc@{\hspace{2pt}}ccc@{}}
+% \toprule
+% \multirow{2}{*}{\textbf{LLM}} & \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}c@{}}Profile\\ Used\end{tabular}}} & \multicolumn{4}{c}{\textbf{BLEU}} & \multicolumn{3}{c}{\textbf{ROUGE}} \\ 
+% \cmidrule(lr){3-6} \cmidrule(l){7-9}
+%  &  & \textbf{B-1} & \textbf{B-2} & \textbf{B-3} & \textbf{B-4} & \textbf{R-1} & \textbf{R-2} & \textbf{R-L} \\ 
+% \midrule
+% \multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}GPT-\\ 4o\end{tabular}}} & \textbf{No} & .219 & .133 & .091  & .063 & .321 & .127 & .248 \\ \cline{2-9} 
+%  & \textbf{One} & .279 & .186 & .137 & .103 & .384 & .178 & .313 \\ \cline{2-9} 
+%  & \textbf{All} & .292 & .200 & .150 & .115 & .397 & .194 & .328 \\ \hline
+% \multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}llama \\ 4\\ scout\end{tabular}}} & \textbf{No} & .254 & .178 & .138 & .112 & .357 & .182 & .293 \\ \cline{2-9} 
+%  & \textbf{One} & .372 & .293 & .246 & .211 & .481 & .300 & .423 \\ \cline{2-9} 
+%  & \textbf{All} & .396 & .318 & .270 & .235 & .503 & .324 & .447 \\ \hline
+% \multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}Gemini\\ 2.5\\ Flash\end{tabular}}} & \textbf{No} & .305 & .230 & .188 & .160 & .417 & .237 & .361 \\ \cline{2-9} 
+%  & \textbf{One} & .370 & .291 & .244 & .209 & .482 & .301 & .426 \\ \cline{2-9} 
+%  & \textbf{All} & .395 & .317 & .270 & .234 & .504 & .328 & .449 \\ \hline
+% \multirow{3}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}GPT-\\ 4o\\ mini\end{tabular}}} & \textbf{No} & .209 & .124 & .081 & .054 & .305 & .117 & .225 \\ \cline{2-9} 
+%  & \textbf{One} & .286 & .202 & .155 & .121 & .398 & .207 & .326 \\ \cline{2-9} 
+%  & \textbf{All} & .300 & .218 & .171 & .137 & .412 & .225 & .342 \\ \hline
+% \end{tabular}
+% \caption{Performance comparison of LLMs with different profile settings.\kenneth{TODO Ed and Sam: Figure out a way to make this Table fit in 1-column. We don't have space for 2-column.}\sam{a bit tight, but see if works}\kenneth{There must be ways we can fit this within 1-column. Maybe ask CY?}}
+% \label{tab:main-result}
+% \end{table}
+
+
+\begin{table}[t]
+\centering
+\footnotesize
+%\scriptsize
+\renewcommand{\arraystretch}{1.215}
+\setlength{\tabcolsep}{2.0pt}
+\definecolor{vlightgreen}{rgb}{0.95, 1.0, 0.95}
+\definecolor{lightgreen}{rgb}{0.85, 0.95, 0.85}
+\definecolor{darkgreen}{rgb}{0.7, 0.9, 0.7}
+
+\definecolor{lightred}{rgb}{1.0, 0.9, 0.9}
+\definecolor{darkred}{rgb}{0.9, 0.7, 0.7}
+
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage[table,xcdraw]{xcolor}
+% Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage[table,xcdraw]{xcolor}
+% Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage[table,xcdraw]{xcolor}
+% Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage[table,xcdraw]{xcolor}
+% Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage[table,xcdraw]{xcolor}
+% Beamer presentation requires \usepackage{colortbl} instead of \usepackage[table,xcdraw]{xcolor}
+
+
+\begin{tabular}{@{}lccccccccc@{}}
+\toprule
+ &
+\multicolumn{2}{c}{\textbf{Profile}} &
+  \multicolumn{4}{c}{\textbf{BLEU}} &
+  \multicolumn{3}{c}{\textbf{ROUGE}} \\ \cmidrule(l){2-10} 
+\multirow{-2}{*}{\textbf{LLM}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}Same\\ Paper\end{tabular}} &
+  \textbf{\begin{tabular}[c]{@{}c@{}}\#\\ $\le 3$\end{tabular}} &
+  \textbf{B-1} &
+  \textbf{B-2} &
+  \textbf{B-3} &
+  \textbf{B-4} &
+  \textbf{R-1} &
+  \textbf{R-2} &
+  \textbf{R-L} \\ \midrule
+ &
+  N/A &
+  0 &
+  .219 &
+  .133 &
+  .091 &
+  .063 &
+  .321 &
+  .127 &
+  .248 \\ \cmidrule(l){2-10} 
+ &
+   &
+  \cellcolor{darkred}1 &
+  \cellcolor{darkred}.189 &
+  \cellcolor{darkred}.108 &
+  \cellcolor{darkred}.070 &
+  \cellcolor{darkred}.046 &
+  \cellcolor{darkred}.289 &
+  \cellcolor{darkred}.101 &
+  \cellcolor{darkred}.218 \\
+ &
+  \multirow{-2}{*}{N} &
+  \cellcolor{lightred}3 &
+  \cellcolor{lightred}.206 &
+  \cellcolor{lightred}.118 &
+  \cellcolor{lightred}.076 &
+  \cellcolor{lightred}.051 &
+  \cellcolor{lightred}.300 &
+  \cellcolor{lightred}.107 &
+  \cellcolor{lightred}.223 \\ \cmidrule(l){2-10} 
+ &
+   &
+  \cellcolor{lightgreen}1 &
+  \cellcolor{lightgreen}.279 &
+  \cellcolor{lightgreen}.186 &
+  \cellcolor{lightgreen}.137 &
+  \cellcolor{lightgreen}.103 &
+  \cellcolor{lightgreen}.384 &
+  \cellcolor{lightgreen}.178 &
+  \cellcolor{lightgreen}.313 \\
+\multirow{-5}{*}{\begin{tabular}[c]{@{}l@{}}GPT-\\ 4o\end{tabular}} &
+  \multirow{-2}{*}{Y} &
+    \cellcolor{darkgreen} All &
+  \cellcolor{darkgreen}.292 &
+  \cellcolor{darkgreen}.200 &
+  \cellcolor{darkgreen}.150 &
+  \cellcolor{darkgreen}.115 &
+  \cellcolor{darkgreen}.397 &
+  \cellcolor{darkgreen}.194 &
+  \cellcolor{darkgreen}.328 \\ \midrule
+ &
+  N/A &
+  0 &
+  .254 &
+  .178 &
+  .138 &
+  .112 &
+  .357 &
+  .182 &
+  .293 \\ \cmidrule(l){2-10} 
+ &
+   &
+  \cellcolor{darkred}1 &
+  \cellcolor{darkred}.223 &
+  \cellcolor{darkred}.167 &
+  \cellcolor{darkred}.132 &
+  \cellcolor{darkred}.107 &
+  \cellcolor{darkred}.348 &
+  \cellcolor{darkred}.180 &
+  \cellcolor{darkred}.295 \\
+ &
+  \multirow{-2}{*}{N} &
+  \cellcolor{vlightgreen}3 &
+  \cellcolor{vlightgreen}.251 &
+  \cellcolor{vlightgreen}.187 &
+  \cellcolor{vlightgreen}.152 &
+  \cellcolor{vlightgreen}.129 &
+  \cellcolor{vlightgreen}.368 &
+  \cellcolor{vlightgreen}.202 &
+  \cellcolor{vlightgreen}.317 \\ \cmidrule(l){2-10} 
+ &
+   &
+  \cellcolor{lightgreen}1 &
+  \cellcolor{lightgreen}.372 &
+  \cellcolor{lightgreen}.293 &
+  \cellcolor{lightgreen}.246 &
+  \cellcolor{lightgreen}.211 &
+  \cellcolor{lightgreen}.481 &
+  \cellcolor{lightgreen}.300 &
+  \cellcolor{lightgreen}.423 \\
+\multirow{-5}{*}{\begin{tabular}[c]{@{}l@{}}Llama-\\ 4 \\ Scout\end{tabular}} &
+  \multirow{-2}{*}{Y} &
+  \cellcolor{darkgreen}All &
+  \cellcolor{darkgreen}.396 &
+  \cellcolor{darkgreen}.318 &
+  \cellcolor{darkgreen}.270 &
+  \cellcolor{darkgreen}.235 &
+  \cellcolor{darkgreen}.503 &
+  \cellcolor{darkgreen}.324 &
+  \cellcolor{darkgreen}.447 \\ \midrule
+ &
+  N/A &
+  0 &
+  .305 &
+  .230 &
+  .188 &
+  .160 &
+  .417 &
+  .237 &
+  .361 \\ \cmidrule(l){2-10} 
+ &
+   &
+  \cellcolor{darkred}1 &
+  \cellcolor{darkred}.268 &
+  \cellcolor{darkred}.198 &
+  \cellcolor{darkred}.159 &
+  \cellcolor{darkred}.132 &
+  \cellcolor{darkred}.388 &
+  \cellcolor{darkred}.213 &
+  \cellcolor{darkred}.335 \\
+ &
+  \multirow{-2}{*}{N} &
+  \cellcolor{lightred}3 &
+  \cellcolor{lightred}.279 &
+  \cellcolor{lightred}.205 &
+  \cellcolor{lightred}.164 &
+  \cellcolor{lightred}.137 &
+  \cellcolor{lightred}.398 &
+  \cellcolor{lightred}.217 &
+  \cellcolor{lightred}.343 \\ \cmidrule(l){2-10} 
+ &
+   &
+  \cellcolor{lightgreen}1 &
+  \cellcolor{lightgreen}.370 &
+  \cellcolor{lightgreen}.291 &
+  \cellcolor{lightgreen}.244 &
+  \cellcolor{lightgreen}.209 &
+  \cellcolor{lightgreen}.482 &
+  \cellcolor{lightgreen}.301 &
+  \cellcolor{lightgreen}.426 \\
+\multirow{-5}{*}{\begin{tabular}[c]{@{}l@{}}Gemini-\\ 2.5\\ Flash \\ Preview\end{tabular}} &
+  \multirow{-2}{*}{Y} &
+  \cellcolor{darkgreen}All &
+  \cellcolor{darkgreen}.395 &
+  \cellcolor{darkgreen}.317 &
+  \cellcolor{darkgreen}.270 &
+  \cellcolor{darkgreen}.234 &
+  \cellcolor{darkgreen}.504 &
+  \cellcolor{darkgreen}.328 &
+  \cellcolor{darkgreen}.449 \\ \midrule
+ &
+  N/A &
+  0 &
+  .209 &
+  .124 &
+  .081 &
+  .054 &
+  .305 &
+  .117 &
+  .225 \\ \cmidrule(l){2-10} 
+ &
+   &
+  \cellcolor{vlightgreen}1 &
+  \cellcolor{vlightgreen}.216 &
+  \cellcolor{vlightgreen}.133 &
+  \cellcolor{vlightgreen}.091 &
+  \cellcolor{vlightgreen}.063 &
+  \cellcolor{vlightgreen}.325 &
+  \cellcolor{vlightgreen}.132 &
+  \cellcolor{vlightgreen}.250 \\
+ &
+  \multirow{-2}{*}{N} &
+  \cellcolor{vlightgreen}3 &
+  \cellcolor{vlightgreen}.220 &
+  \cellcolor{vlightgreen}.136 &
+  \cellcolor{vlightgreen}.093 &
+  \cellcolor{vlightgreen}.065 &
+  \cellcolor{vlightgreen}.328 &
+  \cellcolor{vlightgreen}.134 &
+  \cellcolor{vlightgreen}.252 \\ \cmidrule(l){2-10} 
+ &
+   &
+  \cellcolor{lightgreen}1 &
+  \cellcolor{lightgreen}.286 &
+  \cellcolor{lightgreen}.202 &
+  \cellcolor{lightgreen}.155 &
+  \cellcolor{lightgreen}.121 &
+  \cellcolor{lightgreen}.398 &
+  \cellcolor{lightgreen}.207 &
+  \cellcolor{lightgreen}.326 \\
+\multirow{-5}{*}{\begin{tabular}[c]{@{}l@{}}GPT-\\ 4.1 \\ Mini\end{tabular}} &
+  \multirow{-2}{*}{Y} &
+  \cellcolor{darkgreen}All &
+  \cellcolor{darkgreen}.300 &
+  \cellcolor{darkgreen}.218 &
+  \cellcolor{darkgreen}.171 &
+  \cellcolor{darkgreen}.137 &
+  \cellcolor{darkgreen}.412 &
+  \cellcolor{darkgreen}.225 &
+  \cellcolor{darkgreen}.342 \\ \bottomrule
+\end{tabular}
+
+
+%\caption{Performance of LLMs on caption generation using different profile settings. The results show that using profile figures (especially all available ones) consistently improves performance across all models.}
+\vspace{-.5pc}
+\caption{Performance of LLMs on caption generation across profile settings. The highest scores are achieved by using \textbf{all} available profile(s) from the \textbf{same} paper.}
+\vspace{-1pc}
+\label{tab:llm_comparison}
+\end{table}
+
+%\kenneth{(1) Try to use \texttt{centering} tag and \texttt{footnotesize} tag to make it smaller-ish. (2) Change ``Paper'' to ``Source Paper'', sharing the same header of ``Profile'' with (4). (4) Change ``Profile (max.3)'' to  ``\#~Profile (max=3)'', sharing the same header of ``Profile'' with (3) (See the image I sent you.) (5) Replace ``Random'' with ``Unrelated'' or ``Unrel.''.}
+%\sam{(1) Footnotesize is used already in previous version, I used a smaller size (scriptsize) to see if it works.}\kenneth{This feels too small to be honest. Let's use footnotesize. Try (1) replacing ``\#~Profile'' with just ``\#'', and (2) replace ``Source Paper'' with ``Same Paper'' and use "N/A", "Y", "N" as colum values.}
+
+%\caption{Performance of LLMs on caption generation across different profile settings. The highest scores are achieved by using \textbf{all} available profile figures from the \textbf{same} paper.}

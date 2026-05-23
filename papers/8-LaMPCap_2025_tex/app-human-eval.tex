@@ -1,0 +1,25 @@
+This appendix session provides supplementary materials for the human evaluation study described in \autoref{sec:humanEval}. \autoref{fig:human-eval} shows the interface of the user study in Microsoft Form. 
+
+To supplement the 
+
+Our protocol was reviewed and approved by the Institutional Review Board (IRB) of The Pennsylvania State University (STUDY00025214), which granted a waiver of written documentation of consent. Consent was implied by participants voluntary action of proceeding with and completing the survey.
+Each participant received \$20 cash compensation upon completion of the study. The following is the instruction shown to the human participant before they start the study.
+
+\begin{lstlisting}[basicstyle=\small\ttfamily, breaklines=true, frame=single]
+We are conducting a human evaluation study on the quality of captions generated for scientific figures.
+For each question, you will be shown the paper's title and abstract to provide context, followed by a figure and four caption options.
+Your task is to rank the captions based on how well they help you understand the figure.
+
+Some captions may be generated with the assistance of AI. However, the goal is not to identify which captions are human- or AI-written. Please focus only on the clarity and usefulness of each caption in conveying the figure's message.
+
+There are no right or wrong answers; please use your own judgment. The survey includes 50 figures and takes about 1.5 hours to complete. Please use a desktop computer only. To ensure fair evaluation, please avoid searching for the original papers online while completing the task.
+\end{lstlisting}
+
+And for each figure, we ask them to do the ranking of the captions with the following prompt:
+\begin{lstlisting}[basicstyle=\small\ttfamily, breaklines=true, frame=single]
+Please rank the four captions below based on how well they help you understand the figure.
+Drag and drop to reorder them from 1 (best) to 4 (worst) using your mouse.
+\end{lstlisting}
+
+%\input{table/table_ablation-study}
+\input{figures/fig_humanStudyUI/fig_human-study-UI}

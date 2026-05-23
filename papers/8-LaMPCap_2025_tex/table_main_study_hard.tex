@@ -1,0 +1,34 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{2pt}
+\definecolor{lightgreen}{rgb}{0.9, 1.0, 0.9}
+\definecolor{darkgreen}{rgb}{0.7, 0.9, 0.7}
+\begin{tabular}{lcccccccc}
+\toprule
+\multirow{2}{*}{\textbf{LLM}} & \multirow{2}{*}{\textbf{Profile}} & \multicolumn{4}{c}{\textbf{BLEU}} & \multicolumn{3}{c}{\textbf{ROUGE}} \\ 
+\cmidrule(lr){3-6} \cmidrule(lr){7-9}
+ & \textbf{Used} & \textbf{B-1} & \textbf{B-2} & \textbf{B-3} & \textbf{B-4} & \textbf{R-1} & \textbf{R-2} & \textbf{R-L} \\ 
+\midrule
+\multirow{3}{*}{GPT-4o} & No & .217 & .131 & .088 & .061 & .320 & .124 & .245 \\ 
+ & \cellcolor{lightgreen}One & \cellcolor{lightgreen}.238 & \cellcolor{lightgreen}.144 & \cellcolor{lightgreen}.097 & \cellcolor{lightgreen}.067 & \cellcolor{lightgreen}.345 & \cellcolor{lightgreen}.135 & \cellcolor{lightgreen}.269 \\ 
+ & \cellcolor{darkgreen}All & \cellcolor{darkgreen}.244 & \cellcolor{darkgreen}.150 & \cellcolor{darkgreen}.102 & \cellcolor{darkgreen}.071 & \cellcolor{darkgreen}.351 & \cellcolor{darkgreen}.142 & \cellcolor{darkgreen}.275 \\ 
+\midrule
+\multirow{3}{*}{Llama-4 Scout} & No & .255 & .178 & .138 & .112 & .360 & .181 & .292 \\ 
+ & \cellcolor{lightgreen}One & \cellcolor{lightgreen}.316 & \cellcolor{lightgreen}.233 & \cellcolor{lightgreen}.187 & \cellcolor{lightgreen}.155 & \cellcolor{lightgreen}.430 & \cellcolor{lightgreen}.238 & \cellcolor{lightgreen}.366 \\ 
+ & \cellcolor{darkgreen}All & \cellcolor{darkgreen}.326 & \cellcolor{darkgreen}.243 & \cellcolor{darkgreen}.196 & \cellcolor{darkgreen}.164 & \cellcolor{darkgreen}.440 & \cellcolor{darkgreen}.248 & \cellcolor{darkgreen}.376 \\ 
+\midrule
+\multirow{3}{*}{\begin{tabular}[c]{@{}l@{}}Gemini-2.5\\Flash Preview\end{tabular}} & No & .301 & .227 & .186 & .159 & .414 & .235 & .357 \\ 
+ & \cellcolor{lightgreen}One & \cellcolor{lightgreen}.317 & \cellcolor{lightgreen}.235 & \cellcolor{lightgreen}.189 & \cellcolor{lightgreen}.157 & \cellcolor{lightgreen}.434 & \cellcolor{lightgreen}.244 & \cellcolor{lightgreen}.371 \\ 
+ & \cellcolor{darkgreen}All & \cellcolor{darkgreen}.326 & \cellcolor{darkgreen}.244 & \cellcolor{darkgreen}.197 & \cellcolor{darkgreen}.164 & \cellcolor{darkgreen}.443 & \cellcolor{darkgreen}.253 & \cellcolor{darkgreen}.380 \\ 
+\midrule
+\multirow{3}{*}{GPT-4.1 Mini} & No & .215 & .127 & .082 & .054 & .312 & .117 & .226 \\ 
+ & \cellcolor{lightgreen}One & \cellcolor{lightgreen}.243 & \cellcolor{lightgreen}.156 & \cellcolor{lightgreen}.109 & \cellcolor{lightgreen}.078 & \cellcolor{lightgreen}.357 & \cellcolor{lightgreen}.157 & \cellcolor{lightgreen}.278 \\ 
+ & \cellcolor{darkgreen}All & \cellcolor{darkgreen}.249 & \cellcolor{darkgreen}.162 & \cellcolor{darkgreen}.114 & \cellcolor{darkgreen}.083 & \cellcolor{darkgreen}.364 & \cellcolor{darkgreen}.164 & \cellcolor{darkgreen}.284 \\ 
+\bottomrule
+\end{tabular}
+\caption{Performance on {\dataset} Context-Misaligned Subset (n=9,690) across LLMs and profile configurations.}
+\label{tab:main-result-hard}
+\vspace{-1pc}
+\end{table}

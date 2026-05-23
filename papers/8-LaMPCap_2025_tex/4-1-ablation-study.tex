@@ -1,0 +1,32 @@
+% \paragraph{Caption is the most important thing; image next. Paragraph is the least important---even our INLG paper said so! (CITATION). \cite{huang-etal-2023-summaries}}
+% \paragraph{Caption is the most important thing; image next. Paragraph is the least important---even our INLG paper said so! (CITATION). \cite{huang-etal-2023-summaries}}
+
+
+\paragraph{Captions are the most important profile element, while images are more influential than paragraphs.}
+To assess the importance of each profile element, we conducted an ablation study on the test set using the GPT-4o model with the One Profile setting.
+We tested three conditions by removing one profile element at a time: 
+{\em (i)} figure captions (No Caption), 
+{\em (ii)} figure images (No Image), and 
+{\em (iii)} figure-mentioning paragraphs (No Paragraph). 
+\autoref{fig:ablation} shows the results. 
+Removing captions had the most significant impact, as captions directly guide generation. 
+Removing images also reduced performance more than removing paragraphs, highlighting the greater influence of visual information.
+%\sam{The detailed result can be referred to \autoref{app:ablation-study-detail}.}
+\autoref{app:ablation-study-detail} shows the detailed results.
+
+
+%------------ dead kitten ----------
+\begin{comment}
+
+We conducted an ablation study on the test set (consisting of 12,270 target figures) to evaluate the impact of different profile components on caption generation performance using GPT-4o model. We tested three conditions by removing individual profile elements: (1) No Captions, (2) No Image, and (3) No Paragraph. Generated captions were compared against original target captions using BLEU and ROUGE scores. Results indicated that the 'No Captions' condition yielded the lowest scores, highlighting the critical role of profile captions in producing contextually accurate captions. The 'No Image' condition showed slightly lower performance compared to 'No Paragraph', suggesting images have a moderately greater impact than paragraphs. The detailed results are shown in Figure~\ref{fig:ablation}. These findings align with previous research emphasizing the importance of captions in generating coherent and contextually relevant text \cite{huang-etal-2023-summaries}.
+
+
+
+\kenneth{TODO: Add a small table here}
+\sam{added barchart above}\sam{not sure if still need table, maybe put in appendix?}
+
+    
+\end{comment}
+
+
+

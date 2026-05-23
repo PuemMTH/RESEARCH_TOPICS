@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<title>[2510.07993] Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge</title><meta content="Scientific figure captions require both accuracy and stylistic consistency to convey visual information. Here, we present a domain-specific caption generation system for the 3rd SciCap Challenge that integrates figure-&hellip;" property="og:description">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="summary" name="twitter:card">
+<meta content="Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge" name="twitter:title">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" name="twitter:image:src">
+<meta content="ar5iv logo" name="twitter:image:alt">
+<meta content="Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge" property="og:title">
+<meta content="ar5iv" property="og:site_name">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" property="og:image">
+<meta content="article" property="og:type">
+<meta content="https://ar5iv.labs.arxiv.org/html/2510.07993" property="og:url">
+<link href="https://ar5iv.labs.arxiv.org/html/2510.07993" rel="canonical" target="_blank">
+<!--Generated on Wed Nov  5 18:01:54 2025 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<script>
+  function detectColorScheme(){
+    var theme="light";
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if(current_theme){
+      if(current_theme == "dark"){
+        theme = "dark";
+      } }
+    else if(!window.matchMedia) { return false; }
+    else if(window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      theme = "dark"; }
+    if (theme=="dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light"); } }
+
+  detectColorScheme();
+
+  function toggleColorScheme(){
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if (current_theme) {
+      if (current_theme == "light") {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+      else {
+        localStorage.setItem("ar5iv_theme", "light"); } }
+    else {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+    detectColorScheme(); }
+</script>
+<link href="/assets/ar5iv-fonts.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv-site.0.2.2.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">Leveraging Author-Specific Context for Scientific Figure 
+<br class="ltx_break">Caption Generation: 3rd SciCap Challenge </h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Watcharapong Timklaypachara<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1,2</span></sup> &thinsp;
+Monrada Chiewhawan<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1,2</span></sup> &thinsp;
+Nopporn Lekuthai<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1,2</span></sup>
+<br class="ltx_break"><span class="ltx_text ltx_font_bold">Titipat Achakulvisut<sup class="ltx_sup"><span class="ltx_text ltx_font_medium ltx_font_italic">1</span></sup></span>
+<br class="ltx_break"><sup class="ltx_sup">1</sup>Department of Biomedical Engineering, Faculty of Engineering, Mahidol University 
+<br class="ltx_break"><sup class="ltx_sup">2</sup>Faculty of Medicine Ramathibodi Hospital, Mahidol University, Bangkok, Thailand
+</span></span>
+</div>
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+<p class="ltx_p">Scientific figure captions require both accuracy and stylistic consistency to convey visual information. Here, we present a domain-specific caption generation system for the 3rd SciCap Challenge that integrates figure-related textual context with author-specific writing styles using the LaMP-Cap dataset. Our approach uses a two-stage pipeline: Stage 1 combines context filtering, category-specific prompt optimization via DSPy&rsquo;s MIPROv2 and SIMBA, and caption candidate selection; Stage 2 applies few-shot prompting with profile figures for stylistic refinement. Our experiments demonstrate that category-specific prompts outperform both zero-shot and general optimized approaches, improving ROUGE-1 recall by +8.3% while limiting precision loss to -2.8% and BLEU-4 reduction to -10.9%. Profile-informed stylistic refinement gains of 40&ndash;48% in BLEU scores and 25&ndash;27% in ROUGE. Our system demonstrates that combining contextual understanding with author-specific stylistic adaptation can generate captions that are scientifically accurate and stylistically faithful to the source paper.</p>
+</div>
+<div class="ltx_para" id="p1">
+<p class="ltx_p ltx_align_center">&emsp;<a class="ltx_ref ltx_href ltx_font_typewriter" href="github.com/biodatlab/scicap-titipapa" title>https://github.com/biodatlab/scicap-titipapa</a></p>
+</div>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2>
+<div class="ltx_para ltx_noindent" id="S1.p1">
+<p class="ltx_p">Scientific figure captions play a crucial role in helping diverse audiences interpret and understand complex visual information <cite class="ltx_cite ltx_citemacro_citep">(Lundgard & Satyanarayan, <a class="ltx_ref" href="#bib.bib5" title>2021</a>)</cite>. However, manual caption writing is time-consuming and often inconsistent, particularly when authors must generate numerous captions while maintaining stylistic coherence throughout their manuscripts. Automatic caption generation provides a promising solution to enhance scientific communication efficiency and reduce the burden on researchers <cite class="ltx_cite ltx_citemacro_citep">(Hsu et&nbsp;al., <a class="ltx_ref" href="#bib.bib3" title>2021</a>)</cite>. Recent advances in large language models (LLMs) have demonstrated the ability to comprehend complex scientific content and adapt to distinctive linguistic patterns <cite class="ltx_cite ltx_citemacro_citep">(Zanotto & Aroyehun, <a class="ltx_ref" href="#bib.bib9" title>2024</a>)</cite>. This capability enables the development of context-aware systems that can generate specific author writing styles, potentially reducing manual editing.
+Our approach uses the LaMP-Cap dataset with contextual information to generate context-grounded and personalized scientific captions. Here, we present a two-stage scientific figure caption generation at the 3rd SciCap Challenge. The first stage involves context filtering, prompt optimization to generate category-focused captions, and candidate selection. The second stage incorporates relevant profile information to improve stylistic elements consistent with the source paper. We found that combining these approaches improves the alignment of the generated caption.</p>
+</div>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_font_bold ltx_title_section">
+<span class="ltx_tag ltx_tag_section"><span class="ltx_text ltx_font_medium">2</span> </span>Data Processing</h2>
+<div class="ltx_para ltx_noindent" id="S2.p1">
+<p class="ltx_p">We used the LaMP-CAP dataset for caption generation. The dataset consists of 110,828 scientific articles with 80:10:10 train/test/validation splits. Each article includes one target figure and up to three associated profile figures. Each figure contains mentioned text, accompanying paragraph, OCR texts, caption length, and figure type as a context for the caption generation. During prompt optimization, we exclusively used the training set to generate instruction templates per paper category. This dataset contains 8 fields including Computer Science, Economics, Electrical Engineering and Systems Science, Mathematics, Physics, Quantitative Biology, Quantitative Finance, and Statistics. There are 155 unique categories with 50,110 single category papers and 60,718 papers with multiple categories (1.83 &plusmn; 0.95 categories per paper on average).</p>
+</div>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_font_bold ltx_title_section">
+<span class="ltx_tag ltx_tag_section"><span class="ltx_text ltx_font_medium">3</span> </span>Methodology</h2>
+<div class="ltx_para ltx_noindent" id="S3.p1">
+<p class="ltx_p">Zero-shot prompting with paragraph information produces noisy captions with irrelevant content and hallucinations. We developed a two-stage pipeline to address this issue (Figure&nbsp;<a class="ltx_ref" href="#S3.F1" title="Figure 1 ‣ 3 Methodology ‣ Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge"><span class="ltx_text ltx_ref_tag">1</span></a>). Stage 1 generates content-grounded captions while minimizing irrelevant content. Stage 2 refines captions using profile-informed stylistic adjustments for factual accuracy and author alignment.</p>
+</div>
+<figure class="ltx_figure" id="S3.F1"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="202" id="S3.F1.g1" src="../assets/papers/9-AuthorContextSciCap_2025/scicap-and-rsna_figures.jpg" width="359">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>Overview of our multi-stage caption generation framework</figcaption>
+</figure>
+<section class="ltx_subsection" id="S3.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.1 </span><span class="ltx_text ltx_font_bold">Stage 1: Content-Grounded Caption Generation</span> </h3>
+<section class="ltx_subsubsection" id="S3.SS1.SSS1">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">3.1.1 </span>Filtering Irrelevant Information</h4>
+<div class="ltx_para ltx_noindent" id="S3.SS1.SSS1.p1">
+<p class="ltx_p">We adapted sentence-based filtering from <cite class="ltx_cite ltx_citemacro_citet">Li et&nbsp;al. (<a class="ltx_ref" href="#bib.bib4" title>2024</a>)</cite> using Flan T5 as a relevance scorer. Input paragraphs are segmented into chunks using spaCy, and conditional log-likelihood between chunks and mentioning text is estimated. Chunks are retained if they exceed baseline null-prompt likelihood by threshold <math alttext="\lambda" class="ltx_Math" display="inline" id="S3.SS1.SSS1.p1.m1" intent=":literal"><semantics><mi>&lambda;</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> = 1.2. This filter is applied only to the training set to obtain category-specific prompt templates. We try both filtering and non-filtering approaches in our experiments to evaluate the impact on caption quality.</p>
+</div>
+</section>
+<section class="ltx_subsubsection" id="S3.SS1.SSS2">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">3.1.2 </span>Category-level Prompt Optimization </h4>
+<div class="ltx_para ltx_noindent" id="S3.SS1.SSS2.p1">
+<p class="ltx_p">Scientific papers within domains share similar terminology and structural patterns, but papers often span multiple categories (e.g., Mathematics, Computer Science, Economics). We develop category-focused prompt templates using MIPROv2 and SIMBA from DSPy Toolkit <cite class="ltx_cite ltx_citemacro_citep">(Opsahl-Ong et&nbsp;al., <a class="ltx_ref" href="#bib.bib7" title>2024</a>)</cite> <cite class="ltx_cite ltx_citemacro_citep">(Vach, <a class="ltx_ref" href="#bib.bib8" title>2025</a>)</cite>. MIPROv2 creates instruction-example pairs from bootstrap templates, optimizing for ROUGE-L precision via Bayesian surrogate modeling. SIMBA then applies feedback-driven optimization to generate reasoning paths and detect problematic cases, incorporating improvement rules into the updated configurations. Papers with multiple categories proceed to the caption candidate selection stage, while single-category papers use their domain-specific caption directly.</p>
+</div>
+</section>
+<section class="ltx_subsubsection" id="S3.SS1.SSS3">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">3.1.3 </span>Caption Candidate Selection</h4>
+<div class="ltx_para ltx_noindent" id="S3.SS1.SSS3.p1">
+<p class="ltx_p">One caption candidate is generated per paper category using its corresponding category-focused prompt template. For papers with multiple categories, we used an LLM to rank and output the best caption candidate. Using Gemini-2.5 Flash, the LLM was given (i) the target figure information without the ground-truth caption, (ii) the complete list of category-wise candidates for that paper, and (iii) strict instructions (See <a class="ltx_ref" href="#A1.T3" title="Table 3 ‣ Appendix A Appendix ‣ Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge">Appendix</a>) to minimize hallucination and select a single optimal caption to represent the paper. For papers with only one category, the caption was taken directly from the optimized prompt for that category.</p>
+</div>
+</section>
+</section>
+<section class="ltx_subsection" id="S3.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.2 </span><span class="ltx_text ltx_font_bold">Stage 2: Profile-Informed Stylistic Refinement</span> </h3>
+<div class="ltx_para ltx_noindent" id="S3.SS2.p1">
+<p class="ltx_p">We hypothesized that content-grounded captions lacked personalization and precision due to irrelevant content. To address this, we applied few-shot prompting with two goals: (i) enforcing a &plusmn;15% caption length limit for conciseness, and (ii) personalizing captions using author-specific stylistic patterns from profile figures. Profile captions served as structural references under the assumption of consistent writing style within each paper.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span><span class="ltx_text ltx_font_bold">Evaluation</span> </h2>
+<div class="ltx_para ltx_noindent" id="S4.p1">
+<p class="ltx_p">We evaluate caption quality using BLEU-1 to BLEU-4 and ROUGE-1, ROUGE-2, and ROUGE-L metrics to evaluate how closely the generated captions match corresponding reference captions in terms of lexical overlap and structural similarity. The ROUGE scores yield precision, recall, and F1-score values to evaluate over- and under-generation tendencies.</p>
+</div>
+<section class="ltx_subsection" id="S4.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.1 </span>Result of Development Set</h3>
+<section class="ltx_subsubsection" id="S4.SS1.SSS1">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">4.1.1 </span><span class="ltx_text ltx_font_bold">Effect of Sentence-Level Filtering on Prompt Optimization</span> </h4>
+<div class="ltx_para ltx_noindent" id="S4.SS1.SSS1.p1">
+<p class="ltx_p">We compared the impact of sentence-level filtering on paragraph data with the effects of prompt optimization to evaluate their respective contributions. We examined prompt optimization under two conditions: (a) using the original target figure&rsquo;s data, and (b) replacing the original paragraph with its filtered version. The result (shown in Table <a class="ltx_ref" href="#S4.T1" title="Table 1 ‣ 4.2.1 Caption Candidate Selection Result ‣ 4.2 Result of Test Set ‣ 4 Evaluation ‣ Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge"><span class="ltx_text ltx_ref_tag">1</span></a>) indicated that the filtered paragraph setting (b) improved all ROUGE score recalls: ROUGE-1 improved by 11.8% (0.4867 to 0.5443), ROUGE-2 by 15.7% (0.2223 to 0.2572), and ROUGE-L by (0.4068 to 0.4430). However, we observe modest declines in BLEU (5.1 to 7.7% decrease) and ROUGE precision (13.4 to 17.6% decrease). This trade-off indicates that filtering during prompt optimization improves recall metrics while reducing precision, suggesting a shift toward more comprehensive but less precise outputs.</p>
+</div>
+</section>
+<section class="ltx_subsubsection" id="S4.SS1.SSS2">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">4.1.2 </span><span class="ltx_text ltx_font_bold">Prompt Performance </span> </h4>
+<div class="ltx_para ltx_noindent" id="S4.SS1.SSS2.p1">
+<p class="ltx_p">We evaluated three prompting strategies under setting (b): (i) Zero Shot i.e., using only target information without any profile information, (ii) Non-category-focused (MIPROv2 and SIMBA), and (iii) Category-focused (MIPROv2 and SIMBA). As shown in Table <a class="ltx_ref" href="#S4.T1" title="Table 1 ‣ 4.2.1 Caption Candidate Selection Result ‣ 4.2 Result of Test Set ‣ 4 Evaluation ‣ Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge"><span class="ltx_text ltx_ref_tag">1</span></a>, Category-focused achieved the best balance, keeping ROUGE-1 and ROUGE-L precision within -2.8% and -2.9% of Zero Shot while limiting BLEU-4 loss to -10.9% (vs. -27.3% for Non-category-focused). It improved recall by +6.4% to +9.6% over (i) and limited F-measure drops to &nbsp;4%. In contrast, Non-category-focused produced inflated recall gains (+26&ndash;32%) but severe precision drops (-35&ndash;39%), reflecting verbose and off-topic content. These results support Category-focused prompting as a more controlled way to enhance recall without sacrificing precision.</p>
+</div>
+</section>
+</section>
+<section class="ltx_subsection" id="S4.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.2 </span>Result of Test Set</h3>
+<section class="ltx_subsubsection" id="S4.SS2.SSS1">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">4.2.1 </span>Caption Candidate Selection Result</h4>
+<div class="ltx_para ltx_noindent" id="S4.SS2.SSS1.p1">
+<p class="ltx_p">We evaluated caption quality using Gemini-2.5-flash as a reranker, comparing the selected captions against the pool of all generated captions. The selected captions achieved higher alignment performance (Table <a class="ltx_ref" href="#S4.T2" title="Table 2 ‣ 4.2.2 Personalized Caption with Profile Figure ‣ 4.2 Result of Test Set ‣ 4 Evaluation ‣ Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge"><span class="ltx_text ltx_ref_tag">2</span></a>). BLEU scores showed marginal improvements across all n-gram levels (+0.13% to +1.56%). ROUGE precision exhibited more consistent gains (+3.46% to +4.43%), and ROUGE F-measure improved modestly (+0.61% to +1.51%). In contrast, ROUGE recall decreased slightly (-1.75% to -2.37%), suggesting that the reranker prioritizes precision and stylistic consistency at the expense of broader content coverage.</p>
+</div>
+<figure class="ltx_table" id="S4.T1">
+<div class="ltx_flex_figure ltx_flex_table">
+<div class="ltx_flex_cell ltx_flex_size_1">
+<figure class="ltx_table ltx_figure_panel ltx_align_center" id="S4.T1.st1">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">(a) </span><span class="ltx_text ltx_font_bold">(a) BLEU & ROUGE-1 results</span></figcaption>
+<div class="ltx_inline-block ltx_align_center ltx_transformed_outer" style="width:357.7pt;height:66.1pt;vertical-align:-31.5pt;"><span class="ltx_transformed_inner" style="transform:translate(-117.7pt,21.7pt) scale(0.60318,0.60318) ;">
+<p class="ltx_p">
+<span class="ltx_inline-block ltx_transformed_outer" style="width:593.1pt;height:109.6pt;vertical-align:-52.3pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<span class="ltx_p">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">Condition</span></span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">B1</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">B2</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">B3</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">B4</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R1-P</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R1-R</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R1-F</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Prompt Opt. &ndash; Orig. Para. (a)</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2706</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1721</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1178</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.0840</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3800</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4867</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3682</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Prompt Opt. &ndash; Filt. Para. (b)</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2498</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-7.7%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1614</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-6.2%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1110</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-5.8%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.0805</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-5.1%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3296</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-13.4%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.5443</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+11.8%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3529</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-4.2%)</span></span>
+</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Zero Shot (i)</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.2998</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.2004</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.1436</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.1088</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.4151</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4599</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.3937</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Non-cat. Prompt (ii)</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2365</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-21.1%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1547</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-22.8%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1079</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-24.9%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.0791</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-27.3%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2665</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-35.8%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.6089</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+32.4%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3260</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-17.2%)</span></span>
+</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Cat.-focused Prompt (iii)</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2699</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-10.0%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1819</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-9.3%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1293</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-10.0%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.0970</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-10.9%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4034</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-2.8%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4979</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+8.3%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3774</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-4.1%)</span></span>
+</span></span></span>
+</span></span>
+</span></span></p>
+</span></div>
+</figure>
+</div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1">
+<figure class="ltx_table ltx_figure_panel ltx_align_center" id="S4.T1.st2">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">(b) </span><span class="ltx_text ltx_font_bold">(b) ROUGE-2 & ROUGE-L results</span></figcaption>
+<div class="ltx_inline-block ltx_align_center ltx_transformed_outer" style="width:357.7pt;height:73.2pt;vertical-align:-34.9pt;"><span class="ltx_transformed_inner" style="transform:translate(-89.0pt,18.2pt) scale(0.66786,0.66786) ;">
+<p class="ltx_p">
+<span class="ltx_inline-block ltx_transformed_outer" style="width:535.6pt;height:109.6pt;vertical-align:-52.3pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<span class="ltx_p">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">Condition</span></span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R2-P</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R2-R</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R2-F</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">RL-P</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">RL-R</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">RL-F</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Prompt Opt. &ndash; Orig. Para. (a)</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1800</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2223</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1740</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3145</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4068</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3032</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Prompt Opt. &ndash; Filt. Para. (b)</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1522</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-15.4%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2572</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+15.7%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1636</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-6.0%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2591</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-17.6%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4430</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+8.9%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2790</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-8.0%)</span></span>
+</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Zero Shot (i)</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.2122</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2359</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.2053</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.3378</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3760</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.3210</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Non-cat. Prompt (ii)</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1298</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-38.8%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.2973</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+26.0%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1612</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-21.5%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2056</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-39.2%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.4822</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+28.3%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2528</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-21.2%)</span></span>
+</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Cat.-focused Prompt (iii)</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1972</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-7.1%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2511</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+6.4%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1904</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-7.2%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3279</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-2.9%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4119</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+9.6%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3078</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-4.1%)</span></span>
+</span></span></span>
+</span></span>
+</span></span></p>
+</span></div>
+</figure>
+</div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 1: </span>Evaluation of captions under two settings: (1) paragraph choice with original vs. filtered paragraphs, and (2) prompt strategies with zero-shot, non-category-focused, and category-focused prompts.</figcaption>
+</figure>
+</section>
+<section class="ltx_subsubsection" id="S4.SS2.SSS2">
+<h4 class="ltx_title ltx_title_subsubsection">
+<span class="ltx_tag ltx_tag_subsubsection">4.2.2 </span><span class="ltx_text ltx_font_bold">Personalized Caption with Profile Figure</span> </h4>
+<div class="ltx_para ltx_noindent" id="S4.SS2.SSS2.p1">
+<p class="ltx_p">We observed that the selected captions achieved high ROUGE-1, ROUGE-2, and ROUGE-L recall scores (0.55, 0.30, and 0.47, respectively) but comparatively lower ROUGE-1, ROUGE-2, and ROUGE-L precision scores (0.40, 0.22, and 0.34, respectively) due to excessive irrelevant content.
+Few-shot prompting with the profile figures&rsquo; information improved BLEU scores (40&ndash;48% gain) and precision-based ROUGE metrics (25&ndash;27% gain), while maintaining competitive recall (5.60% to 3.50% loss), compared to the caption before refinement, indicating more concise and relevant captions without sacrificing essential content coverage.</p>
+</div>
+<figure class="ltx_table" id="S4.T2">
+<div class="ltx_flex_figure ltx_flex_table">
+<div class="ltx_flex_cell ltx_flex_size_1">
+<figure class="ltx_table ltx_figure_panel ltx_align_center" id="S4.T2.st1">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">(a) </span><span class="ltx_text ltx_font_bold">(a) BLEU & ROUGE-1 results</span></figcaption>
+<div class="ltx_inline-block ltx_align_center ltx_transformed_outer" style="width:377.6pt;height:45.1pt;vertical-align:-21.0pt;"><span class="ltx_transformed_inner" style="transform:translate(-117.2pt,14.0pt) scale(0.61701,0.61701) ;">
+<p class="ltx_p">
+<span class="ltx_inline-block ltx_transformed_outer" style="width:612.0pt;height:73.2pt;vertical-align:-34.1pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<span class="ltx_p">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">Condition</span></span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">B1</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">B2</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">B3</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">B4</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R1-P</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R1-R</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R1-F</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">All Generated Captions</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3008</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+0.13%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2127</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+0.66%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1621</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+1.12%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1303</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+1.56%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4217</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+3.46%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.5446</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-2.37%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4103</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+0.61%)</span></span>
+</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Selected Before Personalization</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3004</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2113</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1603</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.1283</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4000</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.5500</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4078</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Selected After Personalization</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.4226</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+40.6%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.3093</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+46.3%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.2377</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+48.3%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.1825</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+42.3%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.5090</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+24.9%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.5266</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-5.6%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.4972</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+21.9%)</span></span>
+</span></span></span>
+</span></span>
+</span></span></p>
+</span></div>
+</figure>
+</div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1">
+<figure class="ltx_table ltx_figure_panel ltx_align_center" id="S4.T2.st2">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">(b) </span><span class="ltx_text ltx_font_bold">(b) ROUGE-2 & ROUGE-L results</span></figcaption>
+<div class="ltx_inline-block ltx_align_center ltx_transformed_outer" style="width:377.6pt;height:51.1pt;vertical-align:-23.8pt;"><span class="ltx_transformed_inner" style="transform:translate(-81.8pt,11.1pt) scale(0.6977,0.6977) ;">
+<p class="ltx_p">
+<span class="ltx_inline-block ltx_transformed_outer" style="width:541.2pt;height:73.2pt;vertical-align:-34.1pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<span class="ltx_p">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">Condition</span></span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R2-P</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R2-R</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">R2-F</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">RL-P</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">RL-R</span>
+<span class="ltx_td ltx_align_center ltx_border_tt" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">RL-F</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">All Generated Captions</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2335</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+4.43%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3035</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-1.75%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2285</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+1.51%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3563</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+4.26%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4655</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-1.97%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3479</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+1.28%)</span></span>
+</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Selected Before Personalization</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2200</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.3000</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2251</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3400</span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.4700</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.3435</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">Selected After Personalization</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.2858</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+27.8%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.2982</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-3.5%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.2805</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+24.6%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;"><span class="ltx_text ltx_font_bold">0.4351</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+27.3%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4499</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(-5.3%)</span></span>
+</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">
+<span class="ltx_tabular ltx_align_middle">
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">0.4254</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:-0.25pt;padding-bottom:-0.25pt;">(+23.9%)</span></span>
+</span></span></span>
+</span></span>
+</span></span></p>
+</span></div>
+</figure>
+</div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 2: </span>Comparison of caption performance (all, pre- vs. post-personalization); percentages show changes vs. baseline, with precision gains and recall losses.</figcaption>
+</figure>
+<div class="ltx_pagination ltx_role_newpage"></div>
+</section>
+</section>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+<ul class="ltx_biblist">
+<li class="ltx_bibitem" id="bib.bib1">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Bogireddy et&nbsp;al. (2025)</span>
+<span class="ltx_bibblock">
+Bogireddy, S. P. T. R., Majeedi, A., Gajjala, V., Xu, Z., Rai, S., & Potlapalli, V. (2025).
+Neural at ArchEHR-QA 2025: Agentic Prompt Optimization for Evidence-Grounded Clinical Question Answering.
+<span class="ltx_text ltx_font_italic">Proceedings of the 24th Workshop on Biomedical Language Processing (Shared Tasks)</span>, 104&ndash;109.
+Association for Computational Linguistics.
+<a class="ltx_ref ltx_url ltx_font_typewriter" href="http://dx.doi.org/10.18653/v1/2025.bionlp-share.13" target="_blank" title>http://dx.doi.org/10.18653/v1/2025.bionlp-share.13</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib2">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Hsu et&nbsp;al. (2025)</span>
+<span class="ltx_bibblock">
+Hsu, T. Y. E., Hsu, Y. L., Rohatgi, S., Huang, C. Y., Ng, H. Y. S., Rossi, R., &hellip;& Huang, T. H. K. (2025).
+Do large multimodal models solve caption generation for scientific figures? Lessons learned from SCICAP Challenge 2023.
+<span class="ltx_text ltx_font_italic">arXiv preprint</span> arXiv:2501.19353. (Accepted to TACL 2025).
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib3">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Hsu et&nbsp;al. (2021)</span>
+<span class="ltx_bibblock">
+Hsu, T.-Y., Giles, C. L., & Huang, T.-H. (2021).
+SciCap: Generating captions for scientific figures.
+<span class="ltx_text ltx_font_italic">arXiv preprint</span> arXiv:2110.11624.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib4">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Li et&nbsp;al. (2024)</span>
+<span class="ltx_bibblock">
+Li, P., Li, T., Wang, J., Wang, B., & Yang, Y. (2024).
+Proposal report for the 2nd SciCap competition 2024.
+<span class="ltx_text ltx_font_italic">arXiv preprint</span> arXiv:2407.01897.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib5">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lundgard & Satyanarayan (2021)</span>
+<span class="ltx_bibblock">
+Lundgard, A., & Satyanarayan, A. (2021).
+Accessible visualization via natural language descriptions: A four-level model of semantic content.
+<span class="ltx_text ltx_font_italic">IEEE Transactions on Visualization and Computer Graphics</span>, 28(1), 1073&ndash;1083.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib6">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Ng et&nbsp;al. (2025)</span>
+<span class="ltx_bibblock">
+Ng, H. Y., Hsu, T.-Y., Ramakrishnan, A. A., Kveton, B., Lipka, N., Dernoncourt, F., Lee, D., Yu, T., Kim, S., Rossi, R. A., & Huang, T.-H. (2025).
+LaMP-Cap: Personalized Figure Caption Generation With Multimodal Figure Profiles.
+<span class="ltx_text ltx_font_italic">arXiv preprint</span> arXiv:2506.06561.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib7">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Opsahl-Ong et&nbsp;al. (2024)</span>
+<span class="ltx_bibblock">
+Opsahl-Ong, K., Ryan, M. J., Purtell, J., Broman, D., Potts, C., & Zaharia, M., et&nbsp;al. (2024).
+Optimizing Instructions and Demonstrations for Multi-Stage Language Model Programs.
+<span class="ltx_text ltx_font_italic">arXiv preprint</span> arXiv:2406.11695. Available at: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2406.11695" target="_blank" title>https://arxiv.org/abs/2406.11695</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib8">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Vach (2025)</span>
+<span class="ltx_bibblock">
+Vach, M. (2025).
+DSPy SIMBA explained.
+Available at: <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://blog.mariusvach.com/posts/dspy-simba" target="_blank" title>https://blog.mariusvach.com/posts/dspy-simba</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib9">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Zanotto & Aroyehun (2024)</span>
+<span class="ltx_bibblock">
+Zanotto, S. E., & Aroyehun, S. (2024).
+Human variability vs. machine consistency: A linguistic analysis of texts generated by humans and large language models.
+<span class="ltx_text ltx_font_italic">arXiv preprint</span> arXiv:2412.03025.
+
+</span>
+</li>
+</ul>
+</section>
+<div class="ltx_pagination ltx_role_newpage"></div>
+<section class="ltx_appendix" id="A1">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix A </span>Appendix</h2>
+<figure class="ltx_table" id="A1.T3">
+<div class="ltx_flex_figure ltx_flex_table">
+<div class="ltx_flex_cell ltx_flex_size_2">
+<div class="ltx_logical-block ltx_figure_panel ltx_minipage ltx_align_center ltx_align_top" style="width:186.8pt;">
+<div class="ltx_para ltx_noindent" id="A1.T3.p1">
+<span class="ltx_inline-block"><svg class="ltx_picture" height="1844.9" id="A1.T3.p1.pic1" overflow="visible" version="1.1" viewbox="0 0 258.5 1844.9" width="258.5"><g fill="#000000" stroke="#000000" stroke-width="0.4pt" style="--ltx-stroke-color:#000000;--ltx-fill-color:#000000;" transform="translate(0,1844.9) matrix(1 0 0 -1 0 0)"><g fill="#666666" fill-opacity="1.0" style="--ltx-fill-color:#666666;"><path d="M 0 5.91 L 0 1839 C 0 1842.26 2.64 1844.9 5.91 1844.9 L 252.6 1844.9 C 255.86 1844.9 258.5 1842.26 258.5 1839 L 258.5 5.91 C 258.5 2.64 255.86 0 252.6 0 L 5.91 0 C 2.64 0 0 2.64 0 5.91 Z" style="stroke:none"></path></g><g fill="#F5F5F5" fill-opacity="1.0" style="--ltx-fill-color:#F5F5F5;"><path d="M 1.97 5.91 L 1.97 1827.01 L 256.53 1827.01 L 256.53 5.91 C 256.53 3.73 254.77 1.97 252.6 1.97 L 5.91 1.97 C 3.73 1.97 1.97 3.73 1.97 5.91 Z" style="stroke:none"></path></g><g fill-opacity="1.0" transform="matrix(1.0 0.0 0.0 1.0 5.57 1832.5)"><foreignobject color="#FFFFFF" height="12.3" overflow="visible" style="--ltx-fg-color:#FFFFFF;--fo_width :17.88em;--fo_height:0.69em;--fo_depth :0.19em;" transform="matrix(1 0 0 -1 0 9.61)" width="247.37"><span class="ltx_foreignobject_container"><span class="ltx_foreignobject_content">
+<span class="ltx_inline-block ltx_minipage ltx_align_bottom" style="width:17.88em;">
+<span class="ltx_p">Caption Ranking Prompt</span>
+</span></span></span></foreignobject></g><g fill-opacity="1.0" transform="matrix(1.0 0.0 0.0 1.0 5.57 8.26)"><foreignobject color="#000000" height="1817.84" overflow="visible" style="--ltx-fg-color:#000000;--fo_width :17.88em;--fo_height:131.18em;--fo_depth :0.19em;" transform="matrix(1 0 0 -1 0 1815.15)" width="247.37"><span class="ltx_foreignobject_container"><span class="ltx_foreignobject_content">
+<span class="ltx_inline-block ltx_minipage ltx_align_bottom" style="width:17.88em;">
+<span class="ltx_p"><span class="ltx_text ltx_font_bold">Context:</span></span>
+<span class="ltx_itemize" id="A1.I1">
+<span class="ltx_item" id="A1.I1.i1" style="list-style-type:none;"><span class="ltx_tag ltx_tag_item">&bull;</span>
+<span class="ltx_para" id="A1.I1.i1.p1">
+<span class="ltx_p">Type: {figure type}</span>
+</span></span>
+<span class="ltx_item" id="A1.I1.i2" style="list-style-type:none;"><span class="ltx_tag ltx_tag_item">&bull;</span>
+<span class="ltx_para" id="A1.I1.i2.p1">
+<span class="ltx_p">Mention: {mention}</span>
+</span></span>
+<span class="ltx_item" id="A1.I1.i3" style="list-style-type:none;"><span class="ltx_tag ltx_tag_item">&bull;</span>
+<span class="ltx_para" id="A1.I1.i3.p1">
+<span class="ltx_p">Paragraph: {paragraph}</span>
+</span></span>
+<span class="ltx_item" id="A1.I1.i4" style="list-style-type:none;"><span class="ltx_tag ltx_tag_item">&bull;</span>
+<span class="ltx_para ltx_noindent" id="A1.I1.i4.p1">
+<span class="ltx_p">OCR: {OCR text}</span>
+</span></span>
+</span>
+<span class="ltx_p"><span class="ltx_text ltx_font_bold">Captions:</span> &ldquo;Cap. 1&rdquo;, &ldquo;Cap. 2&rdquo;, &ldquo;Cap. 3&rdquo; &hellip;</span>
+<span class="ltx_p"><span class="ltx_text ltx_font_bold">Task:</span> Rank best<math alttext="\to" class="ltx_Math" display="inline" id="A1.T3.p1.pic1.m1" intent=":literal"><semantics><mo stretchy="false">&rarr;</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math>worst by clarity, relevance, accuracy, tone.</span>
+<span class="ltx_p"><span class="ltx_text ltx_font_bold">Output:</span> Ordered list + justifications.</span>
+</span></span></span></foreignobject></g></g></svg></span>
+</div>
+</div>
+</div>
+<div class="ltx_flex_cell ltx_flex_size_2">
+<div class="ltx_logical-block ltx_figure_panel ltx_minipage ltx_align_center ltx_align_top" style="width:186.8pt;">
+<div class="ltx_para ltx_noindent" id="A1.T3.p2">
+<span class="ltx_inline-block"><svg class="ltx_picture" height="1978.27" id="A1.T3.p2.pic1" overflow="visible" version="1.1" viewbox="0 0 258.5 1978.27" width="258.5"><g fill="#000000" stroke="#000000" stroke-width="0.4pt" style="--ltx-stroke-color:#000000;--ltx-fill-color:#000000;" transform="translate(0,1978.27) matrix(1 0 0 -1 0 0)"><g fill="#666666" fill-opacity="1.0" style="--ltx-fill-color:#666666;"><path d="M 0 5.91 L 0 1972.36 C 0 1975.63 2.64 1978.27 5.91 1978.27 L 252.6 1978.27 C 255.86 1978.27 258.5 1975.63 258.5 1972.36 L 258.5 5.91 C 258.5 2.64 255.86 0 252.6 0 L 5.91 0 C 2.64 0 0 2.64 0 5.91 Z" style="stroke:none"></path></g><g fill="#F5F5F5" fill-opacity="1.0" style="--ltx-fill-color:#F5F5F5;"><path d="M 1.97 5.91 L 1.97 1960.37 L 256.53 1960.37 L 256.53 5.91 C 256.53 3.73 254.77 1.97 252.6 1.97 L 5.91 1.97 C 3.73 1.97 1.97 3.73 1.97 5.91 Z" style="stroke:none"></path></g><g fill-opacity="1.0" transform="matrix(1.0 0.0 0.0 1.0 5.57 1965.86)"><foreignobject color="#FFFFFF" height="12.3" overflow="visible" style="--ltx-fg-color:#FFFFFF;--fo_width :17.88em;--fo_height:0.69em;--fo_depth :0.19em;" transform="matrix(1 0 0 -1 0 9.61)" width="247.37"><span class="ltx_foreignobject_container"><span class="ltx_foreignobject_content">
+<span class="ltx_inline-block ltx_minipage ltx_align_bottom" style="width:17.88em;">
+<span class="ltx_p">Caption Refinement Prompt</span>
+</span></span></span></foreignobject></g><g fill-opacity="1.0" transform="matrix(1.0 0.0 0.0 1.0 5.57 8.26)"><foreignobject color="#000000" height="1951.21" overflow="visible" style="--ltx-fg-color:#000000;--fo_width :17.88em;--fo_height:140.82em;--fo_depth :0.19em;" transform="matrix(1 0 0 -1 0 1948.52)" width="247.37"><span class="ltx_foreignobject_container"><span class="ltx_foreignobject_content">
+<span class="ltx_inline-block ltx_minipage ltx_align_bottom" style="width:17.88em;">
+<span class="ltx_p">Refine caption style only; <span class="ltx_text ltx_font_bold">no new info</span>.</span>
+<span class="ltx_p"><span class="ltx_text ltx_font_bold">Rules:</span></span>
+<span class="ltx_itemize" id="A1.I2">
+<span class="ltx_item" id="A1.I2.i1" style="list-style-type:none;"><span class="ltx_tag ltx_tag_item">&bull;</span>
+<span class="ltx_para" id="A1.I2.i1.p1">
+<span class="ltx_p">Keep facts; no new entities</span>
+</span></span>
+<span class="ltx_item" id="A1.I2.i2" style="list-style-type:none;"><span class="ltx_tag ltx_tag_item">&bull;</span>
+<span class="ltx_para" id="A1.I2.i2.p1">
+<span class="ltx_p">Edit style/structure only</span>
+</span></span>
+<span class="ltx_item" id="A1.I2.i3" style="list-style-type:none;"><span class="ltx_tag ltx_tag_item">&bull;</span>
+<span class="ltx_para ltx_noindent" id="A1.I2.i3.p1">
+<span class="ltx_p">Preserve IDs; concise</span>
+</span></span>
+</span>
+<span class="ltx_p"><span class="ltx_text ltx_font_bold">Optional Demos:</span> Mention, Paragraph, Refined caption (&times;3)</span>
+<span class="ltx_p"><span class="ltx_text ltx_font_bold">Target:</span>
+Mention: {mention_tgt}</span>
+<span class="ltx_p">Paragraph: {para_tgt}</span>
+<span class="ltx_p">Initial: {init_cap}</span>
+<span class="ltx_p">Length: {len_hint}</span>
+<span class="ltx_p"><span class="ltx_text ltx_font_bold">Output:</span> Final caption only.</span>
+</span></span></span></foreignobject></g></g></svg></span>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 3: </span>Prompt templates: (A) ranking and (B) refinement.</figcaption>
+</figure>
+</section>
+</article>
+</div>
+<div class="ar5iv-footer"><a class="ar5iv-nav-button ar5iv-nav-button-prev" href="/html/2510.07992">◄</a>
+<a class="ar5iv-home-button" href="/"><img alt="ar5iv homepage" height="40" src="/assets/ar5iv.png"></a>
+<a class="ar5iv-text-button" href="/feeling_lucky">Feeling<br>lucky?</a>
+<a aria-hidden="true" href="/land_of_honey_and_milk" rel="nofollow" tabindex="-1"></a>
+<a class="ar5iv-text-button ar5iv-severity-error" href="/log/2510.07993">Conversion<br>report</a>
+<a class="ar5iv-text-button" href="https://github.com/dginev/ar5iv/issues/new?template=improve-article--arxiv-id-.md&title=Improve+article+2510.07993" target="_blank">Report<br>an issue</a>
+<a class="ar5iv-text-button arxiv-ui-theme" href="https://arxiv.org/abs/2510.07993">View&nbsp;original<br>on&nbsp;arXiv</a><a class="ar5iv-nav-button ar5iv-nav-button-next" href="/html/2510.07994">►</a>
+</div><footer class="ltx_page_footer">
+<a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle ar5iv color scheme"><span class="color-scheme-icon"></span></a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/license" target="_blank">Copyright</a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/policies/privacy_policy" target="_blank">Privacy Policy</a>
+<div class="ltx_page_logo">Generated  on Wed Nov  5 18:01:54 2025 by <a class="ltx_LaTeXML_logo" href="http://dlmf.nist.gov/LaTeXML/" target="_blank"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img alt="Mascot Sammy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg=="></a>
+</div></footer>
+</div>
+<script>
+      var canMathML = typeof(MathMLElement) == "function";
+      if (!canMathML) {
+        var body = document.querySelector("body");
+        body.firstElementChild.setAttribute('style', 'opacity: 0;');
+        var loading = document.createElement("div");
+        loading.setAttribute("id", "mathjax-loading-spinner");
+        var message = document.createElement("div");
+        message.setAttribute("id", "mathjax-loading-message");
+        message.innerText = "Typesetting Equations...";
+        body.prepend(loading);
+        body.prepend(message);
+
+        var el = document.createElement("script");
+        el.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+        document.querySelector("head").appendChild(el);
+
+        window.MathJax = {
+          startup: {
+            pageReady: () => {
+              return MathJax.startup.defaultPageReady().then(() => {
+                body.removeChild(loading);
+                body.removeChild(message);
+                body.firstElementChild.removeAttribute('style');
+              }); } } };
+      }
+    </script>
+<script>
+    // Auxiliary function, building the preview feature when
+    // an inline citation is clicked
+    function clicked_cite(e) {
+      e.preventDefault();
+      let cite = this.closest('.ltx_cite');
+      let next = cite.nextSibling;
+      if (next && next.nodeType == Node.ELEMENT_NODE && next.getAttribute('class') == "ar5iv-bibitem-preview") {
+        next.remove();
+        return; }
+      // Before adding a preview modal,
+      // cleanup older previews, in case they're still open
+      document.querySelectorAll('span.ar5iv-bibitem-preview').forEach(function(node) {
+        node.remove();
+      })
+
+      // Create the preview
+      preview = document.createElement('span');
+      preview.setAttribute('class','ar5iv-bibitem-preview');
+      let target = document.getElementById(this.getAttribute('href').slice(1));
+      target.childNodes.forEach(function (child) {
+        preview.append(child.cloneNode(true));
+      });
+      let close_x = document.createElement('button');
+      close_x.setAttribute("aria-label","Close modal for bibliography item preview");
+      close_x.textContent = "×";
+      close_x.setAttribute('class', 'ar5iv-button-close-preview');
+      close_x.setAttribute('onclick','this.parentNode.remove()');
+      preview.append(close_x);
+      preview.querySelectorAll('.ltx_tag_bibitem').forEach(function(node) {
+        node.remove();
+      });
+      cite.parentNode.insertBefore(preview, cite.nextSibling);
+      return;
+    }
+    // Global Document initialization:
+    // - assign the preview feature to all inline citation links
+    document.querySelectorAll(".ltx_cite .ltx_ref").forEach(function (link) {
+      link.addEventListener("click", clicked_cite);
+    });
+    </script>
+</body>
+</html>

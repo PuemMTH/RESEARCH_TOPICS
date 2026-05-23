@@ -1,0 +1,192 @@
+\begin{thebibliography}{37}
+\providecommand{\natexlab}[1]{#1}
+
+\bibitem[{Anantha~Ramakrishnan et~al.(2025)Anantha~Ramakrishnan, Anantha~Ramakrishnan, and Lee}]{Anantha-Ramakrishnan2025-je}
+Aashish Anantha~Ramakrishnan, Aadarsh Anantha~Ramakrishnan, and Dongwon Lee. 2025.
+\newblock {RONA}: Pragmatically diverse image captioning with coherence relations.
+\newblock In \emph{Proceedings of the Fourth Workshop on Intelligent and Interactive Writing Assistants (In2Writing 2025)}, pages 74--86. Association for Computational Linguistics.
+
+\bibitem[{Chen et~al.(2020)Chen, Zhang, Koh, Kim, Cohen, and Rossi}]{chen2020figure}
+Charles Chen, Ruiyi Zhang, Eunyee Koh, Sungchul Kim, Scott Cohen, and Ryan Rossi. 2020.
+\newblock Figure captioning with relation maps for reasoning.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision}, pages 1537--1545.
+
+\bibitem[{DeepMind(2024)}]{gemini25flash}
+Google DeepMind. 2024.
+\newblock Gemini 2.5 flash preview.
+\newblock \url{https://deepmind.google/technologies/gemini/}.
+\newblock Large language model preview by Google.
+
+\bibitem[{Farahani et~al.(2023)Farahani, Adibi, Ehsani, Hutter, and Darvishy}]{farahani2023automatic}
+Ali~Mazraeh Farahani, Peyman Adibi, Mohammad~Saeed Ehsani, Hans-Peter Hutter, and Alireza Darvishy. 2023.
+\newblock Automatic chart understanding: a review.
+\newblock \emph{IEEE Access}, 11:76202--76221.
+
+\bibitem[{Hsu et~al.(2021)Hsu, Giles, and Huang}]{hsu-etal-2021-scicap-generating}
+Ting-Yao Hsu, C~Lee Giles, and Ting-Hao Huang. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.findings-emnlp.277} {{S}ci{C}ap: Generating captions for scientific figures}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2021}, pages 3258--3264, Punta Cana, Dominican Republic. Association for Computational Linguistics.
+
+\bibitem[{Hsu et~al.(2024)Hsu, Huang, Huang, Rossi, Kim, Yu, Giles, and Huang}]{10.1145/3613905.3650738}
+Ting-Yao Hsu, Chieh-Yang Huang, Shih-Hong Huang, Ryan Rossi, Sungchul Kim, Tong Yu, C~Lee Giles, and Ting-Hao~Kenneth Huang. 2024.
+\newblock \href {https://doi.org/10.1145/3613905.3650738} {Scicapenter: Supporting caption composition for scientific figures with machine-generated captions and ratings}.
+\newblock In \emph{Extended Abstracts of the CHI Conference on Human Factors in Computing Systems}, CHI EA '24, New York, NY, USA. Association for Computing Machinery.
+
+\bibitem[{Hsu et~al.(2025)Hsu, Hsu, Rohatgi, Huang, Ng, Rossi, Kim, Yu, Ku, Giles et~al.}]{hsu2025large}
+Ting-Yao~E Hsu, Yi-Li Hsu, Shaurya Rohatgi, Chieh-Yang Huang, Ho~Yin~Sam Ng, Ryan Rossi, Sungchul Kim, Tong Yu, Lun-Wei Ku, C~Lee Giles, and 1 others. 2025.
+\newblock Do large multimodal models solve caption generation for scientific figures? lessons learned from scicap challenge 2023.
+\newblock \emph{arXiv preprint arXiv:2501.19353}.
+
+\bibitem[{Hu et~al.(2024)Hu, Shi, Xu, Ye, Ye, Yan, Li, Qian, Zhang, and Huang}]{hu2024mplug}
+Anwen Hu, Yaya Shi, Haiyang Xu, Jiabo Ye, Qinghao Ye, Ming Yan, Chenliang Li, Qi~Qian, Ji~Zhang, and Fei Huang. 2024.
+\newblock mplug-paperowl: Scientific diagram analysis with the multimodal large language model.
+\newblock In \emph{Proceedings of the 32nd ACM International Conference on Multimedia}, pages 6929--6938.
+
+\bibitem[{Huang et~al.(2023)Huang, Hsu, Rossi, Nenkova, Kim, Chan, Koh, Giles, and Huang}]{huang-etal-2023-summaries}
+Chieh-Yang Huang, Ting-Yao Hsu, Ryan Rossi, Ani Nenkova, Sungchul Kim, Gromit Yeuk-Yin Chan, Eunyee Koh, C~Lee Giles, and Ting-Hao Huang. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.inlg-main.6} {Summaries as captions: Generating figure captions for scientific documents with automated text summarization}.
+\newblock In \emph{Proceedings of the 16th International Natural Language Generation Conference}, pages 80--92, Prague, Czechia. Association for Computational Linguistics.
+
+\bibitem[{Hurst et~al.(2024)Hurst, Lerer, Goucher, Perelman, Ramesh, Clark, Ostrow, Welihinda, Hayes, Radford et~al.}]{hurst2024gpt}
+Aaron Hurst, Adam Lerer, Adam~P Goucher, Adam Perelman, Aditya Ramesh, Aidan Clark, AJ~Ostrow, Akila Welihinda, Alan Hayes, Alec Radford, and 1 others. 2024.
+\newblock Gpt-4o system card.
+\newblock \emph{arXiv preprint arXiv:2410.21276}.
+
+\bibitem[{Kantharaj et~al.(2022{\natexlab{a}})Kantharaj, Leong, Lin, Masry, Thakkar, Hoque, and Joty}]{kantharaj2022chart}
+Shankar Kantharaj, Rixie~Tiffany Leong, Xiang Lin, Ahmed Masry, Megh Thakkar, Enamul Hoque, and Shafiq Joty. 2022{\natexlab{a}}.
+\newblock Chart-to-text: A large-scale benchmark for chart summarization.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 4005--4023.
+
+\bibitem[{Kantharaj et~al.(2022{\natexlab{b}})Kantharaj, Leong, Lin, Masry, Thakkar, Hoque, and Joty}]{kantharaj-etal-2022-chart}
+Shankar Kantharaj, Rixie~Tiffany Leong, Xiang Lin, Ahmed Masry, Megh Thakkar, Enamul Hoque, and Shafiq Joty. 2022{\natexlab{b}}.
+\newblock \href {https://doi.org/10.18653/v1/2022.acl-long.277} {Chart-to-text: A large-scale benchmark for chart summarization}.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 4005--4023, Dublin, Ireland. Association for Computational Linguistics.
+
+\bibitem[{Kim et~al.(2021)Kim, Setlur, and Agrawala}]{kim2021towards}
+Dae~Hyun Kim, Vidya Setlur, and Maneesh Agrawala. 2021.
+\newblock Towards understanding how readers integrate charts and captions: A case study with line charts.
+\newblock In \emph{Proceedings of the 2021 CHI Conference on Human Factors in Computing Systems}, pages 1--11.
+
+\bibitem[{Kim et~al.(2025)Kim, Lee, Choi, Hsu, Huang, Kim, Rossi, Yu, Giles, Huang et~al.}]{kim2025multi}
+Jaeyoung Kim, Jongho Lee, Hong-Jun Choi, Ting-Yao Hsu, Chieh-Yang Huang, Sungchul Kim, Ryan Rossi, Tong Yu, Clyde~Lee Giles, Ting-Hao‘Kenneth’ Huang, and 1 others. 2025.
+\newblock Multi-llm collaborative caption generation in scientific documents.
+\newblock In \emph{International Workshop on AI for Transportation}, pages 142--160. Springer.
+
+\bibitem[{Kumar et~al.(2024)Kumar, Viswanathan, Yerra, Salemi, Rossi, Dernoncourt, Deilamsalehy, Chen, Zhang, Agarwal et~al.}]{kumar2024longlamp}
+Ishita Kumar, Snigdha Viswanathan, Sushrita Yerra, Alireza Salemi, Ryan~A Rossi, Franck Dernoncourt, Hanieh Deilamsalehy, Xiang Chen, Ruiyi Zhang, Shubham Agarwal, and 1 others. 2024.
+\newblock Longlamp: A benchmark for personalized long-form text generation.
+\newblock \emph{arXiv preprint arXiv:2407.11016}.
+
+\bibitem[{Lin(2004)}]{lin2004rouge}
+Chin-Yew Lin. 2004.
+\newblock \href {https://aclanthology.org/W04-1013/} {{ROUGE}: A package for automatic evaluation of summaries}.
+\newblock In \emph{Text Summarization Branches Out}, pages 74--81, Barcelona, Spain. Association for Computational Linguistics.
+
+\bibitem[{Liu et~al.(2023)Liu, Piccinno, Krichene, Pang, Lee, Joshi, Altun, Collier, and Eisenschlos}]{liu-etal-2023-matcha}
+Fangyu Liu, Francesco Piccinno, Syrine Krichene, Chenxi Pang, Kenton Lee, Mandar Joshi, Yasemin Altun, Nigel Collier, and Julian Eisenschlos. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.acl-long.714} {{M}at{C}ha: Enhancing visual language pretraining with math reasoning and chart derendering}.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 12756--12770, Toronto, Canada. Association for Computational Linguistics.
+
+\bibitem[{Masry et~al.(2023)Masry, Kavehzadeh, Do, Hoque, and Joty}]{masry2023unichart}
+Ahmed Masry, Parsa Kavehzadeh, Xuan~Long Do, Enamul Hoque, and Shafiq Joty. 2023.
+\newblock Unichart: A universal vision-language pretrained model for chart comprehension and reasoning.
+\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pages 14662--14684.
+
+\bibitem[{Meng et~al.(2024)Meng, Shao, Lu, Gao, Zhang, Qiao, and Luo}]{meng-etal-2024-chartassistant}
+Fanqing Meng, Wenqi Shao, Quanfeng Lu, Peng Gao, Kaipeng Zhang, Yu~Qiao, and Ping Luo. 2024.
+\newblock \href {https://doi.org/10.18653/v1/2024.findings-acl.463} {{C}hart{A}ssistant: A universal chart multimodal language model via chart-to-table pre-training and multitask instruction tuning}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: ACL 2024}, pages 7775--7803, Bangkok, Thailand. Association for Computational Linguistics.
+
+\bibitem[{MetaAI(2025)}]{meta2025llama4}
+MetaAI. 2025.
+\newblock The llama 4 herd: The beginning of a new era of natively multimodal ai innovation.
+\newblock \url{https://ai.meta.com/blog/llama-4-multimodal-intelligence/}.
+\newblock Accessed: May 2025.
+
+\bibitem[{Ng et~al.(2025{\natexlab{a}})Ng, Hsu, Min, Kim, Rossi, Yu, Jung, and Huang}]{ng2025understanding}
+Ho~Yin~Sam Ng, Ting-Yao Hsu, Jiyoo Min, Sungchul Kim, Ryan~A Rossi, Tong Yu, Hyunggu Jung, and Ting-Hao Huang. 2025{\natexlab{a}}.
+\newblock Understanding writing assistants for scientific figure captions: A thematic analysis.
+\newblock In \emph{Proceedings of the Fourth Workshop on Intelligent and Interactive Writing Assistants (In2Writing 2025)}, pages 1--10.
+
+\bibitem[{Ng et~al.(2025{\natexlab{b}})Ng, Hsu, Min, Kim, Rossi, Yu, Jung, and Huang}]{ngunderstanding}
+Ho~Yin~Sam Ng, Ting-Yao Hsu, Jiyoo Min, Sungchul Kim, Ryan~A Rossi, Tong Yu, Hyunggu Jung, and Ting-Hao~Kenneth Huang. 2025{\natexlab{b}}.
+\newblock Understanding how paper writers use ai-generated captions in figure caption writing.
+\newblock In \emph{2nd AI4Research Workshop: Towards a Knowledge-grounded Scientific Research Lifecycle}.
+
+\bibitem[{Obeid and Hoque(2020)}]{obeid-hoque-2020-chart}
+Jason Obeid and Enamul Hoque. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.inlg-1.20} {Chart-to-text: Generating natural language descriptions for charts by adapting the transformer model}.
+\newblock In \emph{Proceedings of the 13th International Conference on Natural Language Generation}, pages 138--147, Dublin, Ireland. Association for Computational Linguistics.
+
+\bibitem[{OpenAI(2024)}]{openai2024gpt41mini}
+OpenAI. 2024.
+\newblock Gpt-4.1 mini.
+\newblock \url{https://openai.com/index/gpt-4-1/}.
+\newblock Large language model.
+
+\bibitem[{Papineni et~al.(2002)Papineni, Roukos, Ward, and Zhu}]{papineni2002bleu}
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu. 2002.
+\newblock \href {https://doi.org/10.3115/1073083.1073135} {Bleu: a method for automatic evaluation of machine translation}.
+\newblock In \emph{Proceedings of the 40th Annual Meeting on Association for Computational Linguistics}, ACL '02, page 311–318, USA. Association for Computational Linguistics.
+
+\bibitem[{Salemi et~al.(2025)Salemi, Killingback, and Zamani}]{salemi2025expert}
+Alireza Salemi, Julian Killingback, and Hamed Zamani. 2025.
+\newblock \href {https://arxiv.org/abs/2501.14956} {Expert: Effective and explainable evaluation of personalized long-form text generation}.
+\newblock \emph{Preprint}, arXiv:2501.14956.
+
+\bibitem[{Salemi et~al.(2024)Salemi, Mysore, Bendersky, and Zamani}]{salemi-etal-2024-lamp}
+Alireza Salemi, Sheshera Mysore, Michael Bendersky, and Hamed Zamani. 2024.
+\newblock \href {https://doi.org/10.18653/v1/2024.acl-long.399} {{L}a{MP}: When large language models meet personalization}.
+\newblock In \emph{Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 7370--7392, Bangkok, Thailand. Association for Computational Linguistics.
+
+\bibitem[{Shuster et~al.(2019)Shuster, Humeau, Hu, Bordes, and Weston}]{Shuster2019-mi}
+Kurt Shuster, Samuel Humeau, Hexiang Hu, Antoine Bordes, and Jason Weston. 2019.
+\newblock Engaging image captioning via personality.
+\newblock In \emph{2019 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)}, pages 12508--12518. IEEE.
+
+\bibitem[{Stokes et~al.(2022)Stokes, Setlur, Cogley, Satyanarayan, and Hearst}]{stokes2022striking}
+Chase Stokes, Vidya Setlur, Bridget Cogley, Arvind Satyanarayan, and Marti~A Hearst. 2022.
+\newblock Striking a balance: Reader takeaways and preferences when integrating text and charts.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics}, 29(1):1233--1243.
+
+\bibitem[{Tan et~al.(2024)Tan, Zeng, Tian, Liu, Yin, and Jiang}]{tan2024democratizing}
+Zhaoxuan Tan, Qingkai Zeng, Yijun Tian, Zheyuan Liu, Bing Yin, and Meng Jiang. 2024.
+\newblock Democratizing large language models via personalized parameter-efficient fine-tuning.
+\newblock In \emph{Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing}, pages 6476--6491.
+
+\bibitem[{Tang et~al.(2023)Tang, Boggust, and Satyanarayan}]{tang2023vistext}
+Benny Tang, Angie Boggust, and Arvind Satyanarayan. 2023.
+\newblock Vistext: A benchmark for semantically rich chart captioning.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 7268--7298.
+
+\bibitem[{Wang et~al.(2024)Wang, Xia, He, Chen, Liu, Zhu, Liang, Wu, Liu, Malladi et~al.}]{wang2024charxiv}
+Zirui Wang, Mengzhou Xia, Luxi He, Howard Chen, Yitao Liu, Richard Zhu, Kaiqu Liang, Xindi Wu, Haotian Liu, Sadhika Malladi, and 1 others. 2024.
+\newblock Charxiv: Charting gaps in realistic chart understanding in multimodal llms.
+\newblock \emph{Advances in Neural Information Processing Systems}, 37:113569--113697.
+
+\bibitem[{Wo{\'z}niak et~al.(2024)Wo{\'z}niak, Koptyra, Janz, Kazienko, and Koco{\'n}}]{wozniak2024personalized}
+Stanis{\l}aw Wo{\'z}niak, Bart{\l}omiej Koptyra, Arkadiusz Janz, Przemys{\l}aw Kazienko, and Jan Koco{\'n}. 2024.
+\newblock Personalized large language models.
+\newblock In \emph{2024 IEEE International Conference on Data Mining Workshops (ICDMW)}, pages 511--520. IEEE.
+
+\bibitem[{Yang et~al.(2024)Yang, Dabre, Tanaka, and Okazaki}]{yang2024scicap+}
+Zhishen Yang, Raj Dabre, Hideki Tanaka, and Naoaki Okazaki. 2024.
+\newblock Scicap+: A knowledge augmented dataset to study the challenges of scientific figure captioning.
+\newblock \emph{Journal of Natural Language Processing}, 31(3):1140--1165.
+
+\bibitem[{Zhang et~al.(2020{\natexlab{a}})Zhang, Zhao, Saleh, and Liu}]{zhang2020pegasus}
+Jingqing Zhang, Yao Zhao, Mohammad Saleh, and Peter Liu. 2020{\natexlab{a}}.
+\newblock \href {https://proceedings.mlr.press/v119/zhang20ae.html} {{PEGASUS}: Pre-training with extracted gap-sentences for abstractive summarization}.
+\newblock In \emph{Proceedings of the 37th International Conference on Machine Learning}, volume 119 of \emph{Proceedings of Machine Learning Research}, pages 11328--11339. PMLR.
+
+\bibitem[{Zhang et~al.(2020{\natexlab{b}})Zhang, Kishore, Wu, Weinberger, and Artzi}]{zhang2019bertscore}
+Tianyi Zhang, Varsha Kishore, Felix Wu, Kilian~Q. Weinberger, and Yoav Artzi. 2020{\natexlab{b}}.
+\newblock \href {https://arxiv.org/abs/1904.09675} {Bertscore: Evaluating text generation with bert}.
+\newblock \emph{Preprint}, arXiv:1904.09675.
+
+\bibitem[{Zhang et~al.(2024)Zhang, Rossi, Kveton, Shao, Yang, Zamani, Dernoncourt, Barrow, Yu, Kim et~al.}]{zhang2024personalization}
+Zhehao Zhang, Ryan~A Rossi, Branislav Kveton, Yijia Shao, Diyi Yang, Hamed Zamani, Franck Dernoncourt, Joe Barrow, Tong Yu, Sungchul Kim, and 1 others. 2024.
+\newblock Personalization of large language models: A survey.
+\newblock \emph{arXiv preprint arXiv:2411.00027}.
+
+\end{thebibliography}

@@ -1,0 +1,20 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[t]
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{cccccccc}
+\hline
+\multirow{2}{*}{\textbf{Figure Type}} & \multicolumn{4}{c}{\textbf{BLEU}} & \multicolumn{3}{c}{\textbf{ROUGE}} \\ \cline{2-8} 
+ & \textbf{B-1} & \textbf{B-2} & \textbf{B-3} & \textbf{B-4} & \textbf{R-1} & \textbf{R-2} & \textbf{R-L} \\ \hline
+Graph Plot \\ (n=93,900) & .316 & .231 & .184 & .151 & .425 & .235 & .356 \\ \hline
+Node Diagram \\ (n=20,520) & .275 & .205 & .164 & .135 & .371 & .205 & .327 \\ \hline
+Scatterplot \\ (n=12,024) & .296 & .208 & .161 & .129 & .409 & .210 & .328 \\ \hline
+Bar Chart \\ (n=10,285) & .302 & .217 & .170 & .138 & .414 & .219 & .352 \\ \hline
+Equation \\ (n=8,772) & \multicolumn{1}{l}{.280} & \multicolumn{1}{l}{.211} & \multicolumn{1}{l}{.170} & \multicolumn{1}{l}{.141} & \multicolumn{1}{l}{.381} & \multicolumn{1}{l}{.214} & \multicolumn{1}{l}{.335} \\ \hline
+\end{tabular}
+\caption{Performance comparison of LLMs among different figure type as target figure.}
+\label{tab:main-result-byType}
+\end{table}

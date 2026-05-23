@@ -1,0 +1,68 @@
+\begin{table*}[t]
+\small
+\centering
+
+\begin{tabular}{l|l|l}
+\hline
+\textbf{Model and Config} & \textbf{Cases} & \textbf{Examples of Invalid Generations} \\ \hline
+Qwen\_All-Profile & 269 & Null output \\
+ &  & "\verb|---|" \\
+ &  & "Caption for Target Figure:", "**Caption for the Target Figure:**" \\
+ &  & "PLEASE, provide the image of the Target Figure, so that I can..." \\
+ &  & "Based on the analysis of the provided captions, images, and paragraphs, your task..." \\ \hline
+Qwen\_One-Profile & 102 & Null output \\
+ &  & "Could you give me the image of the Target Figure labeled 'Target Figure Image'?" \\
+ &  & "Your analysis shows us your own comprehensive and detailed interpretation..." \\ \hline
+Qwen\_No-Profile & 31 & Null output \\ \hline
+Gemini\_No-Profile & 24 & "The provided paragraphs do not mention the Target Figure." \\
+ &  & "nan", "None" \\
+ &  & "Sorry, I lack the necessary information to generate a caption..." \\
+ &  & "Please provide the Target Figure Image and the Target Figure Paragraph(s)..." \\
+ &  & "no caption found" \\
+ &  & "we are unable to generate a caption for this figure..." \\ \hline
+Gemini\_One-Profile & 9 & "image 1", "Target Figure Image" \\
+ &  & "there is no caption to extract" \\ \hline
+Gemini\_All-Profile & 9 & "image 1", "image" \\ \hline
+Llama\_No-Profile & 6 & "There is no caption provided in the text." \\ \hline
+Llama\_One-Profile & 8 & "target", "target figure" \\
+ &  & "There is no caption provided in the text." \\
+ &  & "Since the Target Figure Image does not contain any specific data or information..." \\ \hline
+Llama\_All-Profile & 4 & "target", "target figure" \\
+ &  & "not applicable" \\ \hline
+4.1 Mini\_One-Profile & 1 & "no caption provided" \\ \hline
+\end{tabular}
+
+
+\caption{Examples of invalid generation across different language models and profile configurations}
+\label{tab:generation-error}
+\end{table*}
+
+
+
+
+
+%------------------- dead kitten --------------
+\begin{comment}
+\begin{tabular}{lll}
+\hline
+\multicolumn{1}{l|}{\textbf{Model and Config}} & \multicolumn{1}{l|}{\textbf{Cases}} & \textbf{Examples of Invalid Generations} \\ \hline
+\multicolumn{1}{l|}{Gemini-No\_Profile} & \multicolumn{1}{l|}{24} & "The provided paragraphs do not mention the Target Figure." \\
+\multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & "nan", "None" \\
+\multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & "Sorry, I lack the necessary information to generate a caption..." \\
+\multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & "Please provide the Target Figure Image and the Target Figure Paragraph(s)..." \\
+\multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & "no caption found" \\
+\multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & "we are unable to generate a caption for this figure..." \\ \hline
+\multicolumn{1}{l|}{Gemini-One\_Profile} & \multicolumn{1}{l|}{9} & "image 1", "Target Figure Image" \\
+\multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & "there is no caption to extract" \\ \hline
+\multicolumn{1}{l|}{Gemini-All\_Profile} & \multicolumn{1}{l|}{9} & "image 1", "image" \\ \hline
+\multicolumn{1}{l|}{Llama-No\_Profile} & \multicolumn{1}{l|}{6} & {"There is no caption provided in the text."} \\ \hline
+\multicolumn{1}{l|}{Llama-One\_Profile} & \multicolumn{1}{l|}{8} & "target", "target figure" \\
+\multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & "There is no caption provided in the text." \\
+\multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & "Since the Target Figure Image does not contain any specific data or information..." \\ \hline
+\multicolumn{1}{l|}{Llama-All\_Profile} & \multicolumn{1}{l|}{4} & "target", "target figure" \\
+\multicolumn{1}{l|}{} & \multicolumn{1}{l|}{} & "not applicable" \\ \hline
+\multicolumn{1}{l|}{4.1 Mini-One\_Profile} & \multicolumn{1}{l|}{1} & "no caption provided" \\ \hline
+\end{tabular}
+    
+\end{comment}
+

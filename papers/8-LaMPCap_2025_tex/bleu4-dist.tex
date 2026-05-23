@@ -1,0 +1,37 @@
+% \renewcommand\thesubfigure{1\alph{subfigure}}
+
+
+\begin{figure*}[t]
+    \centering
+    % Top row
+    \begin{subfigure}{0.495\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig06_mainStudy-BLEU4-dist/01_bleu4_4o.png}
+        \vspace{-1.5pc}
+        \caption{BLEU-4 for GPT-4o}
+        \label{fig:top_left-bleu4}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.495\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig06_mainStudy-BLEU4-dist/02_bleu4_Llama.png}
+        \vspace{-1.5pc}
+        \caption{BLEU-4 for Llama-4 Scout}
+        \label{fig:top_right-bleu4}
+    \end{subfigure}
+    
+    % Bottom row
+    \begin{subfigure}{0.495\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig06_mainStudy-BLEU4-dist/03_bleu4_gemini.png}
+        \vspace{-1.5pc}
+        \caption{BLEU-4 for Gemini-2.5 Flash Preview}
+        \label{fig:bottom_left-bleu4}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.495\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig06_mainStudy-BLEU4-dist/04_bleu4_mini.png}
+        \vspace{-1.5pc}
+        \caption{BLEU-4 for GPT-4.1 Mini}
+        \label{fig:bottom_right-bleu4}
+    \end{subfigure}
+    \caption{Distribution of the BLEU-4 across different LLMs and profile configuration.}
+    \label{fig:dist-bleu4}
+\end{figure*}

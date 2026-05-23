@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<title>[2509.25817] Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer</title><meta content="We study personalized figure caption generation using author profile data from scientific papers. Our experiments demonstrate that rich author profile data, combined with relevant metadata, can improve the personalizat&hellip;" property="og:description">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="summary" name="twitter:card">
+<meta content="Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer" name="twitter:title">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" name="twitter:image:src">
+<meta content="ar5iv logo" name="twitter:image:alt">
+<meta content="Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer" property="og:title">
+<meta content="ar5iv" property="og:site_name">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" property="og:image">
+<meta content="article" property="og:type">
+<meta content="https://ar5iv.labs.arxiv.org/html/2509.25817" property="og:url">
+<link href="https://ar5iv.labs.arxiv.org/html/2509.25817" rel="canonical" target="_blank">
+<!--Generated on Mon Oct  6 23:51:25 2025 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<script>
+  function detectColorScheme(){
+    var theme="light";
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if(current_theme){
+      if(current_theme == "dark"){
+        theme = "dark";
+      } }
+    else if(!window.matchMedia) { return false; }
+    else if(window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      theme = "dark"; }
+    if (theme=="dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light"); } }
+
+  detectColorScheme();
+
+  function toggleColorScheme(){
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if (current_theme) {
+      if (current_theme == "light") {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+      else {
+        localStorage.setItem("ar5iv_theme", "light"); } }
+    else {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+    detectColorScheme(); }
+</script>
+<link href="/assets/ar5iv-fonts.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv-site.0.2.2.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Jaeyoung Kim , Jongho Lee & Hongjun Choi 
+<br class="ltx_break">Teamreboott Inc.
+<br class="ltx_break">Seoul, Korea 
+<br class="ltx_break"><span class="ltx_text ltx_font_typewriter">{jaeyoungkim,jongho.lee,hongjun.choi}@reboott.ai</span>
+<br class="ltx_break">
+</span><span class="ltx_author_notes"> Corresponding author.</span></span>
+<span class="ltx_author_before">&emsp;&emsp;</span><span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Sion Jang 
+<br class="ltx_break">MIRI D.I.H Inc. 
+<br class="ltx_break">Seoul, Korea 
+<br class="ltx_break"><span class="ltx_text ltx_font_typewriter">wayterren@gmail.com</span>
+<br class="ltx_break">
+</span></span>
+</div>
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+<p class="ltx_p">We study personalized figure caption generation using author profile data from scientific papers. Our experiments demonstrate that rich author profile data, combined with relevant metadata, can improve the personalization performance of multimodal large language models. However, we also reveal a fundamental trade-off between matching author style and maintaining caption quality. Our findings offer valuable insights and future directions for developing practical caption automation systems that balance both objectives. This work was conducted as part of the 3rd SciCap challenge.&nbsp;<span class="ltx_note ltx_role_footnote" id="footnote1"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup><span class="ltx_tag ltx_tag_note">1</span><a class="ltx_ref ltx_url ltx_font_typewriter" href="https://scicap.ai" target="_blank" title>https://scicap.ai</a></span></span></span></p>
+</div>
+<div class="ltx_para" id="p1">
+<p class="ltx_p ltx_align_center"><a class="ltx_ref ltx_href ltx_font_typewriter" href="https://github.com/teamreboott/rb-ai-3rd-scicap" target="_blank" title>https://github.com/teamreboott/rb-ai-3rd-scicap</a></p>
+</div>
+<figure class="ltx_figure" id="S0.F1"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="434" id="S0.F1.g1" src="../assets/papers/10-PersonalizedSciFigCap_2025/x1.png" width="599">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>Multimodal LLM architecture for the personalized figure caption generation task. The model receives two types of inputs: (1) target figure information including the figure itself (F), explanatory paragraphs (P), textual mentions (M), and OCR-extracted text (O), and (2) optional profile data from N related figures in the same paper (where N can be 0), each containing corresponding figures, paragraphs, mentions, OCR text, and captions (C).</figcaption>
+</figure>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Personalized Caption Generator</h2>
+<div class="ltx_para ltx_noindent" id="S1.p1">
+<p class="ltx_p">We propose a simple two-stage approach for personalized figure caption generation: first, we develop a quality evaluator to filter low-quality captions from training data, then we fine-tune a multimodal LLM with author-specific profile data to generate personalized captions.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p2">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Caption Quality Evaluator.</span>
+Previous study has demonstrated that over 50% of figure captions in arXiv papers fail to provide meaningful information to readers <cite class="ltx_cite ltx_citemacro_citep">(Huang et&nbsp;al., <a class="ltx_ref" href="#bib.bib3" title>2023</a>)</cite>. Moreover, filtering low-quality captions has been shown to improve model performance during fine-tuning <cite class="ltx_cite ltx_citemacro_citep">(Kim et&nbsp;al., <a class="ltx_ref" href="#bib.bib4" title>2025</a>)</cite>.</p>
+</div>
+<figure class="ltx_figure ltx_align_floatright" id="S1.F2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="499" id="S1.F2.g1" src="../assets/papers/10-PersonalizedSciFigCap_2025/analysis_quality_model_confusion_heatmap.png" width="598">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 2: </span>Confusion matrix showing the agreement between fine-tuned Qwen-2.5-VL-3B and GPT-4.1.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S1.p3">
+<p class="ltx_p">Following the methodology proposed by <cite class="ltx_cite ltx_citemacro_cite">Kim et&nbsp;al. (<a class="ltx_ref" href="#bib.bib4" title>2025</a>)</cite>, we develop a caption quality evaluator <math alttext="f_{quality}" class="ltx_Math" display="inline" id="S1.p3.m1" intent=":literal"><semantics><msub><mi>f</mi><mrow><mi>q</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>u</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>y</mi></mrow></msub><annotation encoding="application/x-tex">f_{quality}</annotation></semantics></math> to assess and filter caption quality. To train this evaluator, we first construct a synthetic quality assessment dataset using GPT-4.1&nbsp;<span class="ltx_note ltx_role_footnote" id="footnote2"><sup class="ltx_note_mark">2</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">2</sup><span class="ltx_tag ltx_tag_note">2</span><a class="ltx_ref ltx_url ltx_font_typewriter" href="https://openai.com/index/gpt-4-1" target="_blank" title>https://openai.com/index/gpt-4-1</a></span></span></span>. Specifically, we provide GPT-4.1 with figure-caption pairs and instruct it to assign quality scores ranging from 1 (low-quality) to 6 (high-quality) points.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p4">
+<p class="ltx_p">The validity of this scoring approach has been established in prior research, which showed that LLM-generated quality scores on SciCap-Eval&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Hsu et&nbsp;al., <a class="ltx_ref" href="#bib.bib2" title>2023</a>)</cite> achieved a correlation coefficient of 0.5 with doctoral student evaluations.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p5">
+<p class="ltx_p">We curated 3,000 synthetic training samples from LaMP-Cap train dataset&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Ng et&nbsp;al., <a class="ltx_ref" href="#bib.bib6" title>2025</a>)</cite> and fine-tuned Qwen-2.5-VL-3B&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Bai et&nbsp;al., <a class="ltx_ref" href="#bib.bib1" title>2025</a>)</cite> as <math alttext="f_{quality}" class="ltx_Math" display="inline" id="S1.p5.m1" intent=":literal"><semantics><msub><mi>f</mi><mrow><mi>q</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>u</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>y</mi></mrow></msub><annotation encoding="application/x-tex">f_{quality}</annotation></semantics></math>. The fine-tuned model achieves strong agreement with GPT-4.1-generated scores on a held-out validation set of 200 samples, yielding a Spearman&rsquo;s rank correlation coefficient of 0.759 and a Quadratic Weighted Kappa (QWK) score of 0.754. The confusion matrix visualizing the agreement between the models is presented in Figure&nbsp;<a class="ltx_ref" href="#S1.F2" title="Figure 2 ‣ 1 Personalized Caption Generator ‣ Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer"><span class="ltx_text ltx_ref_tag">2</span></a>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p6">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Multimodal Large Language Model.</span> We adopt Qwen-2.5-VL-7B&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Bai et&nbsp;al., <a class="ltx_ref" href="#bib.bib1" title>2025</a>)</cite> as our caption generator <math alttext="g_{caption}" class="ltx_Math" display="inline" id="S1.p6.m1" intent=":literal"><semantics><msub><mi>g</mi><mrow><mi>c</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>n</mi></mrow></msub><annotation encoding="application/x-tex">g_{caption}</annotation></semantics></math>. To enable personalized caption generation, we provide the model with two types of inputs: the target figure along with its associated information, and profile data extracted from the same source paper (see Figure&nbsp;<a class="ltx_ref" href="#S0.F1" title="Figure 1 ‣ Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer"><span class="ltx_text ltx_ref_tag">1</span></a>).
+The target figure <math alttext="F_{target}" class="ltx_Math" display="inline" id="S1.p6.m2" intent=":literal"><semantics><msub><mi>F</mi><mrow><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>g</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">F_{target}</annotation></semantics></math> is accompanied by: (1) paragraphs <math alttext="P_{target}" class="ltx_Math" display="inline" id="S1.p6.m3" intent=":literal"><semantics><msub><mi>P</mi><mrow><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>g</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">P_{target}</annotation></semantics></math> containing explanations of the target figure, (2) direct textual mentions <math alttext="M_{target}" class="ltx_Math" display="inline" id="S1.p6.m4" intent=":literal"><semantics><msub><mi>M</mi><mrow><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>g</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">M_{target}</annotation></semantics></math> that reference the target figure, and (3) OCR-extracted text <math alttext="O_{target}" class="ltx_Math" display="inline" id="S1.p6.m5" intent=":literal"><semantics><msub><mi>O</mi><mrow><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>g</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi></mrow></msub><annotation encoding="application/x-tex">O_{target}</annotation></semantics></math> from the target figure itself. Additionally, we augment this with <math alttext="N" class="ltx_Math" display="inline" id="S1.p6.m6" intent=":literal"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> profile data for personalization, which includes: (1) other related figures <math alttext="\{F_{profile}^{i}\}_{i=1}^{N}" class="ltx_Math" display="inline" id="S1.p6.m7" intent=":literal"><semantics><msubsup><mrow><mo stretchy="false">{</mo><msubsup><mi>F</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>f</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mi>i</mi></msubsup><mo stretchy="false">}</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><annotation encoding="application/x-tex">\{F_{profile}^{i}\}_{i=1}^{N}</annotation></semantics></math> from the same paper, (2) their corresponding explanatory paragraphs <math alttext="\{P_{profile}^{i}\}_{i=1}^{N}" class="ltx_Math" display="inline" id="S1.p6.m8" intent=":literal"><semantics><msubsup><mrow><mo stretchy="false">{</mo><msubsup><mi>P</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>f</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mi>i</mi></msubsup><mo stretchy="false">}</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><annotation encoding="application/x-tex">\{P_{profile}^{i}\}_{i=1}^{N}</annotation></semantics></math>, (3) their textual mentions <math alttext="\{M_{profile}^{i}\}_{i=1}^{N}" class="ltx_Math" display="inline" id="S1.p6.m9" intent=":literal"><semantics><msubsup><mrow><mo stretchy="false">{</mo><msubsup><mi>M</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>f</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mi>i</mi></msubsup><mo stretchy="false">}</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><annotation encoding="application/x-tex">\{M_{profile}^{i}\}_{i=1}^{N}</annotation></semantics></math>, and (4) their OCR-extracted text <math alttext="\{O_{profile}^{i}\}_{i=1}^{N}" class="ltx_Math" display="inline" id="S1.p6.m10" intent=":literal"><semantics><msubsup><mrow><mo stretchy="false">{</mo><msubsup><mi>O</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>f</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mi>i</mi></msubsup><mo stretchy="false">}</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><annotation encoding="application/x-tex">\{O_{profile}^{i}\}_{i=1}^{N}</annotation></semantics></math>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p7">
+<p class="ltx_p">For supervised fine-tuning, we used LaMP-Cap train dataset with quality scores of 3 or higher, as predicted by <math alttext="f_{quality}" class="ltx_Math" display="inline" id="S1.p7.m1" intent=":literal"><semantics><msub><mi>f</mi><mrow><mi>q</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>u</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>y</mi></mrow></msub><annotation encoding="application/x-tex">f_{quality}</annotation></semantics></math>. The <math alttext="g_{caption}" class="ltx_Math" display="inline" id="S1.p7.m2" intent=":literal"><semantics><msub><mi>g</mi><mrow><mi>c</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>n</mi></mrow></msub><annotation encoding="application/x-tex">g_{caption}</annotation></semantics></math> is fine-tuned for one epoch using the AdamW optimizer&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Loshchilov & Hutter, <a class="ltx_ref" href="#bib.bib5" title>2017</a>)</cite> with a learning rate of <math alttext="2e-5" class="ltx_Math" display="inline" id="S1.p7.m3" intent=":literal"><semantics><mrow><mrow><mn>2</mn><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mo>&minus;</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">2e-5</annotation></semantics></math> and a batch size of 2.</p>
+</div>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2 </span>Experimental Results</h2>
+<figure class="ltx_table" id="S2.T1">
+<div class="ltx_inline-block ltx_align_center ltx_transformed_outer" style="width:538.3pt;height:122.4pt;vertical-align:-58.7pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<p class="ltx_p">
+<span class="ltx_tabular ltx_guessed_headers ltx_align_middle">
+<span class="ltx_thead">
+<span class="ltx_tr">
+<span class="ltx_td ltx_th ltx_th_row ltx_border_tt" style="padding-top:1.5pt;padding-bottom:1.5pt;"></span>
+<span class="ltx_td ltx_th ltx_th_column ltx_border_tt" style="padding-top:1.5pt;padding-bottom:1.5pt;"></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt ltx_colspan ltx_colspan_4" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">BLEU</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt ltx_colspan ltx_colspan_3" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">Rouge</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">LLM</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold"># Profile</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">BLEU-1</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">BLEU-2</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">BLEU-3</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">BLEU-4</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">Rouge-1</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">Rouge-2</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;"><span class="ltx_text ltx_font_bold">Rouge-L</span></span></span>
+</span>
+<span class="ltx_tbody">
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t ltx_rowspan ltx_rowspan_4" style="padding-top:1.5pt;padding-bottom:1.5pt;">Gemini-2.5-flash</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">1 (n=5950)</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.423</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.346</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.287</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.250</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.574</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.388</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.515</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">2 (n=2896)</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.457</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.382</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.323</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.284</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.607</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.429</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.550</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">3 (n=3424)</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.494</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.420</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.362</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.322</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.632</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.460</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.576</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">All (n=12270)</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.451</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.375</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.316</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.278</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.598</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.418</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.540</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb ltx_border_t ltx_rowspan ltx_rowspan_4" style="padding-top:1.5pt;padding-bottom:1.5pt;">Qwen2.5-VL-7B</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">1 (n=5950)</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.441</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.372</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.317</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.281</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.589</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.416</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.539</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">2 (n=2896)</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.467</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.400</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.346</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.310</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.611</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.446</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.561</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">3 (n=3424)</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.494</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.428</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.376</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.339</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.629</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.469</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.580</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1.5pt;padding-bottom:1.5pt;">All (n=12270)</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.462</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.394</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.340</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.304</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.605</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.438</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1.5pt;padding-bottom:1.5pt;">0.555</span></span>
+</span>
+</span></p>
+</span></div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 1: </span>Performance comparison of different LLMs across multiple evaluation metrics.</figcaption>
+</figure>
+<figure class="ltx_table" id="S2.T2">
+<div class="ltx_inline-block ltx_align_center ltx_transformed_outer" style="width:570.3pt;height:73.6pt;vertical-align:-34.3pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<p class="ltx_p">
+<span class="ltx_tabular ltx_guessed_headers ltx_align_middle">
+<span class="ltx_thead">
+<span class="ltx_tr">
+<span class="ltx_td ltx_th ltx_th_row ltx_border_tt" style="padding-top:2.5pt;padding-bottom:2.5pt;"></span>
+<span class="ltx_td ltx_th ltx_th_column ltx_th_row ltx_border_tt" style="padding-top:2.5pt;padding-bottom:2.5pt;"></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt ltx_colspan ltx_colspan_4" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">BLEU</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt ltx_colspan ltx_colspan_3" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">Rouge</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">Profile</span></span>
+<span class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">Target</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">BLEU-1</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">BLEU-2</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">BLEU-3</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">BLEU-4</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">Rouge-1</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">Rouge-2</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">Rouge-L</span></span></span>
+</span>
+<span class="ltx_tbody">
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;">F + C</span>
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;">F</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.286</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.194</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.150</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.123</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.406</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.201</span>
+<span class="ltx_td ltx_nopad_r ltx_align_center ltx_border_t" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.355</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding-top:2.5pt;padding-bottom:2.5pt;">F + P + C</span>
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding-top:2.5pt;padding-bottom:2.5pt;">F + P</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.452</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.384</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.330</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.295</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.595</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.427</span>
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.545</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding-top:2.5pt;padding-bottom:2.5pt;">F + P + M + C</span>
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding-top:2.5pt;padding-bottom:2.5pt;">F + P + M</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.459</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.391</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.337</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.301</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.602</span>
+<span class="ltx_td ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.435</span>
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:2.5pt;padding-bottom:2.5pt;">0.553</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" style="padding-top:2.5pt;padding-bottom:2.5pt;">F + P + M + O + C</span>
+<span class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" style="padding-top:2.5pt;padding-bottom:2.5pt;">F + P + M + O</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">0.462</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">0.394</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">0.340</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">0.304</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">0.605</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">0.438</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_center ltx_border_bb" style="padding-top:2.5pt;padding-bottom:2.5pt;"><span class="ltx_text ltx_font_bold">0.555</span></span></span>
+</span>
+</span></p>
+</span></div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 2: </span>Performance evaluation of different input configurations.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S2.p1">
+<p class="ltx_p">We evaluate the caption generation model on the personalized Scicap test set to assess the impact of personalization through profile data integration. Our evaluation employs standard metrics for text generation: BLEU and ROUGE scores. The ROUGE scores reported in our experiments represent F1-scores. Unless otherwise specified, all experiments are evaluated on the LaMP-Cap test dataset.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p2">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Impact of Profile Data Quantity.</span> Table&nbsp;<a class="ltx_ref" href="#S2.T1" title="Table 1 ‣ 2 Experimental Results ‣ Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer"><span class="ltx_text ltx_ref_tag">1</span></a> shows the relationship between the number of profiles. We compare the fine-tuned Qwen2.5-VL-7B against Gemini-2.5-flash across test samples with varying numbers of available profile figures (1, 2, or 3). Both models show consistent performance improvements as more profile data becomes available. Notably, samples with 3 profile figures achieve the highest scores across all metrics, indicating that richer contextual information enables more accurate personalized caption generation. Interestingly, the fine-tuned Qwen2.5-VL-7B outperforms Gemini-2.5-flash on the complete test set, achieving BLEU-4 of 0.304 versus 0.278 and ROUGE-L of 0.555 versus 0.540.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p3">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Ablation Study on Input Components.</span> Table&nbsp;<a class="ltx_ref" href="#S2.T2" title="Table 2 ‣ 2 Experimental Results ‣ Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer"><span class="ltx_text ltx_ref_tag">2</span></a> presents an ablation study examining the contribution of each input component. Starting from a baseline configuration using only figures and captions (F+C), we progressively add paragraphs (P), mentions (M), and OCR text (O). The results reveal substantial improvements when incorporating contextual information: adding paragraphs increases BLEU-4 from 0.123 to 0.295 and ROUGE-L from 0.355 to 0.545. The addition of mentions and OCR text provides incremental but meaningful gains, with the complete configuration achieving BLEU-4 of 0.304 and ROUGE-L of 0.555. These findings validate our comprehensive approach to context integration, demonstrating that each component contributes to generating more accurate and author-centric captions.</p>
+</div>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3 </span>Discussion</h2>
+<div class="ltx_para ltx_noindent" id="S3.p1">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Trade-off Between Personalization and Caption Quality.</span> Our experiments demonstrate that author-specific profile data is effective for mimicking an author&rsquo;s writing style, as evidenced by consistent gains in BLEU and ROUGE metrics. However, these metrics inherently prioritize lexical overlap with ground-truth captions, which may inadvertently favor style imitation over informativeness. In real-world scenarios, users of automated caption generation systems require not only stylistic consistency but also high factual and descriptive quality. This observation suggests that style and quality may occupy partially orthogonal subspaces in the model&rsquo;s representation space. A model optimized solely for style matching may underrepresent quality-related features, while a model optimized purely for quality may neglect style fidelity.</p>
+</div>
+<figure class="ltx_figure" id="S3.F3">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_2">
+<figure class="ltx_figure ltx_figure_panel ltx_minipage ltx_align_center ltx_align_middle" id="S3.F3.fig1" style="width:159.0pt;"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="455" id="S3.F3.g1" src="../assets/papers/10-PersonalizedSciFigCap_2025/profile_quality_bar_v3.png" width="598">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 3: </span>Caption quality score comparing Gemini-2.5-flash and fine-tuned Qwen-2.5-VL-7B. Both models generate lower quality captions compared to author-written captions.</figcaption>
+</figure>
+</div>
+<div class="ltx_flex_cell ltx_flex_size_2">
+<figure class="ltx_figure ltx_figure_panel ltx_minipage ltx_align_center ltx_align_middle" id="S3.F3.fig2" style="width:218.6pt;">
+<div class="ltx_block">
+<div class="ltx_inline-block ltx_align_center ltx_transformed_outer" style="width:328.4pt;height:97.6pt;vertical-align:-46.3pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<p class="ltx_p">
+<span class="ltx_tabular ltx_guessed_headers ltx_align_middle">
+<span class="ltx_thead">
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_th_row ltx_border_tt" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">Target</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt ltx_colspan ltx_colspan_2" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">Quality Score</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt ltx_colspan ltx_colspan_2" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">ROUGE-L</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_th_row" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">Quality</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">Forced-Q6</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">Predicted-Q</span></span>
+<span class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">Forced-Q6</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_center ltx_th ltx_th_column ltx_border_t" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">Predicted-Q</span></span></span>
+</span>
+<span class="ltx_tbody">
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_t" style="padding-top:1pt;padding-bottom:1pt;">1</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">3.743</span></span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1pt;padding-bottom:1pt;">3.410</span>
+<span class="ltx_td ltx_align_center ltx_border_t" style="padding-top:1pt;padding-bottom:1pt;">0.469</span>
+<span class="ltx_td ltx_nopad_r ltx_align_center ltx_border_t" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">0.498</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding-top:1pt;padding-bottom:1pt;">2</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">3.423</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;">3.236</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;">0.535</span>
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">0.571</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding-top:1pt;padding-bottom:1pt;">3</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">3.582</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;">3.522</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;">0.571</span>
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">0.574</span></span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding-top:1pt;padding-bottom:1pt;">4</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">4.000</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;">3.962</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">0.553</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;">0.548</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding-top:1pt;padding-bottom:1pt;">5</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">4.435</span></span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;">4.406</span>
+<span class="ltx_td ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">0.530</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_center" style="padding-top:1pt;padding-bottom:1pt;">0.522</span></span>
+<span class="ltx_tr">
+<span class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_bb" style="padding-top:1pt;padding-bottom:1pt;">6</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">4.956</span></span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1pt;padding-bottom:1pt;">4.917</span>
+<span class="ltx_td ltx_align_center ltx_border_bb" style="padding-top:1pt;padding-bottom:1pt;"><span class="ltx_text ltx_font_bold">0.509</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_center ltx_border_bb" style="padding-top:1pt;padding-bottom:1pt;">0.502</span></span>
+</span>
+</span></p>
+</span></div>
+<figure class="ltx_table ltx_align_center" id="S3.T3">
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table">Table 3: </span>Comparison of quality-aware caption generation strategies. Forced-Q6 conditions the model on maximum quality score (6) during inference, while Predicted-Q uses the model&rsquo;s own quality predictions. Target Quality indicates the quality scores of original author-written captions as evaluated by GPT-4.1.</figcaption>
+</figure>
+</div>
+</figure>
+</div>
+</div>
+</figure>
+<div class="ltx_para ltx_noindent" id="S3.p2">
+<p class="ltx_p">To investigate this trade-off, we analyzed the quality score of generated captions using <math alttext="f_{quality}" class="ltx_Math" display="inline" id="S3.p2.m1" intent=":literal"><semantics><msub><mi>f</mi><mrow><mi>q</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>u</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>y</mi></mrow></msub><annotation encoding="application/x-tex">f_{quality}</annotation></semantics></math>. As shown in Figure&nbsp;<a class="ltx_ref" href="#S3.F3" title="Figure 3 ‣ 3 Discussion ‣ Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer"><span class="ltx_text ltx_ref_tag">3</span></a>, both Gemini-2.5-flash and the fine-tuned Qwen-2.5-VL-7B produce captions with moderate quality scores averaging around 3 points. Surprisingly, despite training Qwen-2.5-VL-7B without low-quality samples (quality score <math alttext="\leq" class="ltx_Math" display="inline" id="S3.p2.m2" intent=":literal"><semantics><mo>&le;</mo><annotation encoding="application/x-tex">\leq</annotation></semantics></math> 2), it generates slightly lower quality captions compared to Gemini-2.5-flash. This phenomenon suggests that the fine-tuning process optimizes primarily for matching target caption tokens rather than maintaining caption quality, revealing an inherent tension between personalization and quality objectives.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.p3">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Quality-Aware Caption Generation.</span> To address the identified trade-off, we introduce a quality-aware training paradigm inspired by multi-task learning principles, where the model is jointly trained to (1) predict the expected quality score of a target caption and (2) generate the caption itself (see Figure&nbsp;<a class="ltx_ref" href="#A1.F4" title="Figure 4 ‣ A.1 Quality-Aware Caption Generation ‣ Appendix A Appendix ‣ Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer"><span class="ltx_text ltx_ref_tag">4</span></a> in the Appendix). The hypothesis is that predicting quality before generation forces the model to encode quality-related signals into its latent representations, thereby creating a controllable generation process where style and quality can be jointly optimized.
+This setup enables us to control the quality&ndash;personalization balance at inference time: conditioning on a high quality score (e.g., Q=6) can steer the model toward producing more informative captions, while still leveraging profile-based style conditioning. In contrast, the baseline model without explicit quality prediction lacks a mechanism to adjust this balance post-training.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.p4">
+<p class="ltx_p">Table&nbsp;<a class="ltx_ref" href="#S3.T3" title="Table 3 ‣ Figure 3 ‣ 3 Discussion ‣ Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer"><span class="ltx_text ltx_ref_tag">3</span></a> compares two inference strategies: Predicted-Q, where the model generates captions conditioned on its internally predicted quality score, and Forced-Q6, where the quality score is fixed at the maximum value (6). Forced-Q6 consistently yields higher quality scores, validating that the model has learned a controllable quality dimension.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.p5">
+<p class="ltx_p">However, in cases where the ground-truth captions are themselves of low quality, ROUGE-L scores decrease under Forced-Q6. This may be an artifact of overlap-based metrics: if the ground-truth contains omissions or vague wording, producing a more informative caption necessarily reduces n-gram overlap, leading to lower ROUGE-L despite objectively higher quality. This finding underscores the limitation of relying solely on ROUGE/BLEU for personalized scientific text generation, and motivates the need for complementary evaluation metrics that separately measure style alignment and factual/semantic quality.</p>
+</div>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span>Conclusion</h2>
+<div class="ltx_para ltx_noindent" id="S4.p1">
+<p class="ltx_p">In this paper, we conducted an empirical study on personalized figure caption generation using author-specific profile data from scientific papers. Experimental results on the LaMP-Cap dataset demonstrate that increasing the amount of profile data consistently improves BLEU/ROUGE metrics, with the fine-tuned Qwen-2.5-VL-7B achieving competitive performance against larger models. However, our analysis reveals a trade-off between personalization and caption quality, highlighting that optimizing for author style matching alone may compromise the informativeness of generated captions. This work provides insights into personalized scientific text generation while identifying critical challenges that must be addressed to create truly practical caption automation systems that serve the dual goals of maintaining author voice and ensuring high-quality scientific communication.</p>
+</div>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+<ul class="ltx_biblist">
+<li class="ltx_bibitem" id="bib.bib1">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Bai et&nbsp;al. (2025)</span>
+<span class="ltx_bibblock">
+Shuai Bai, Keqin Chen, Xuejing Liu, Jialin Wang, Wenbin Ge, Sibo Song, Kai Dang, Peng Wang, Shijie Wang, Jun Tang, Humen Zhong, Yuanzhi Zhu, Mingkun Yang, Zhaohai Li, Jianqiang Wan, Pengfei Wang, Wei Ding, Zheren Fu, Yiheng Xu, Jiabo Ye, Xi&nbsp;Zhang, Tianbao Xie, Zesen Cheng, Hang Zhang, Zhibo Yang, Haiyang Xu, and Junyang Lin.
+
+</span>
+<span class="ltx_bibblock">Qwen2.5-vl technical report.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic">arXiv preprint arXiv:2502.13923</em>, 2025.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib2">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Hsu et&nbsp;al. (2023)</span>
+<span class="ltx_bibblock">
+Ting-Yao Hsu, Chieh-Yang Huang, Ryan Rossi, Sungchul Kim, C&nbsp;Lee Giles, and Ting-Hao&nbsp;K Huang.
+
+</span>
+<span class="ltx_bibblock">Gpt-4 as an effective zero-shot evaluator for scientific figure captions.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic">arXiv preprint arXiv:2310.15405</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib3">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Huang et&nbsp;al. (2023)</span>
+<span class="ltx_bibblock">
+Chieh-Yang Huang, Ting-Yao Hsu, Ryan Rossi, Ani Nenkova, Sungchul Kim, Gromit Yeuk-Yin Chan, Eunyee Koh, Clyde&nbsp;Lee Giles, and Ting-Hao&rsquo;Kenneth&rsquo; Huang.
+
+</span>
+<span class="ltx_bibblock">Summaries as captions: Generating figure captions for scientific documents with automated text summarization.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic">arXiv preprint arXiv:2302.12324</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib4">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kim et&nbsp;al. (2025)</span>
+<span class="ltx_bibblock">
+Jaeyoung Kim, Jongho Lee, Hong-Jun Choi, Ting-Yao Hsu, Chieh-Yang Huang, Sungchul Kim, Ryan Rossi, Tong Yu, Clyde&nbsp;Lee Giles, Ting-Hao&nbsp;&rsquo;Kenneth&rsquo; Huang, and Sungchul Choi.
+
+</span>
+<span class="ltx_bibblock">Multi-llm collaborative caption generation in scientific documents, 2025.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2501.02552" target="_blank" title>https://arxiv.org/abs/2501.02552</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib5">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Loshchilov & Hutter (2017)</span>
+<span class="ltx_bibblock">
+Ilya Loshchilov and Frank Hutter.
+
+</span>
+<span class="ltx_bibblock">Decoupled weight decay regularization.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic">arXiv preprint arXiv:1711.05101</em>, 2017.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib6">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Ng et&nbsp;al. (2025)</span>
+<span class="ltx_bibblock">
+Ho&nbsp;Yin&rsquo;Sam&rsquo; Ng, Ting-Yao Hsu, Aashish&nbsp;Anantha Ramakrishnan, Branislav Kveton, Nedim Lipka, Franck Dernoncourt, Dongwon Lee, Tong Yu, Sungchul Kim, Ryan&nbsp;A Rossi, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Lamp-cap: Personalized figure caption generation with multimodal figure profiles.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic">arXiv preprint arXiv:2506.06561</em>, 2025.
+
+</span>
+</li>
+</ul>
+</section>
+<section class="ltx_appendix" id="A1">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix A </span>Appendix</h2>
+<section class="ltx_subsection" id="A1.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">A.1 </span>Quality-Aware Caption Generation</h3>
+<figure class="ltx_figure" id="A1.F4"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="153" id="A1.F4.g1" src="../assets/papers/10-PersonalizedSciFigCap_2025/x2.png" width="763">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 4: </span>Quality-aware model architecture for personalized caption generation. (a) Training phase: The model predicts both the quality score (Q) and caption (C) from profile data and target figure information, learning to associate quality levels with caption characteristics. (b) Inference phase: The model can be conditioned on a specified quality score (e.g., Q=6 for maximum quality) to control the quality-personalization trade-off during generation. Profile data includes figures (F), paragraphs (P), mentions (M), OCR text (O), and captions (C) from related figures in the same paper.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p1">
+<p class="ltx_p">To address the inherent trade-off between personalization and caption quality identified in our main experiments, we developed a quality-aware training paradigm that enables the model to jointly learn caption quality assessment and generation. This approach modifies the standard fine-tuning procedure to incorporate explicit quality signals during both training and inference.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p2">
+<p class="ltx_p">During training, we augment the original task by requiring the model to first predict the quality score (ranging from 1 to 6) of the target caption before generating it. Specifically, given the profile data <math alttext="\{F_{profile}^{i},P_{profile}^{i},M_{profile}^{i},O_{profile}^{i},C_{profile}^{i}\}_{i=1}^{N}" class="ltx_Math" display="inline" id="A1.SS1.p2.m1" intent=":literal"><semantics><msubsup><mrow><mo stretchy="false">{</mo><msubsup><mi>F</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>f</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mi>i</mi></msubsup><mo>,</mo><msubsup><mi>P</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>f</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mi>i</mi></msubsup><mo>,</mo><msubsup><mi>M</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>f</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mi>i</mi></msubsup><mo>,</mo><msubsup><mi>O</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>f</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mi>i</mi></msubsup><mo>,</mo><msubsup><mi>C</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>o</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>f</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mi>i</mi></msubsup><mo stretchy="false">}</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><annotation encoding="application/x-tex">\{F_{profile}^{i},P_{profile}^{i},M_{profile}^{i},O_{profile}^{i},C_{profile}^{i}\}_{i=1}^{N}</annotation></semantics></math> and target figure information <math alttext="(F_{target},P_{target},M_{target},O_{target})" class="ltx_Math" display="inline" id="A1.SS1.p2.m2" intent=":literal"><semantics><mrow><mo stretchy="false">(</mo><msub><mi>F</mi><mrow><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>g</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi></mrow></msub><mo>,</mo><msub><mi>P</mi><mrow><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>g</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi></mrow></msub><mo>,</mo><msub><mi>M</mi><mrow><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>g</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi></mrow></msub><mo>,</mo><msub><mi>O</mi><mrow><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>g</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi></mrow></msub><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(F_{target},P_{target},M_{target},O_{target})</annotation></semantics></math>, the model is trained to: (1) Predict the quality score <math alttext="q_{pred}" class="ltx_Math" display="inline" id="A1.SS1.p2.m3" intent=":literal"><semantics><msub><mi>q</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>d</mi></mrow></msub><annotation encoding="application/x-tex">q_{pred}</annotation></semantics></math> of the ground-truth caption (2) Generate the caption <math alttext="C_{pred}" class="ltx_Math" display="inline" id="A1.SS1.p2.m4" intent=":literal"><semantics><msub><mi>C</mi><mrow><mi>p</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>r</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>d</mi></mrow></msub><annotation encoding="application/x-tex">C_{pred}</annotation></semantics></math> conditioned on the predicted quality.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p3">
+<p class="ltx_p">This dual-objective training encourages the model to develop internal representations that explicitly encode quality characteristics alongside author-specific style patterns. The quality scores used for training supervision are obtained from our quality evaluator <math alttext="f_{quality}" class="ltx_Math" display="inline" id="A1.SS1.p3.m1" intent=":literal"><semantics><msub><mi>f</mi><mrow><mi>q</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>u</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>a</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>l</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>i</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>t</mi><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>y</mi></mrow></msub><annotation encoding="application/x-tex">f_{quality}</annotation></semantics></math>, which was validated against GPT-4.1 assessments.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p4">
+<p class="ltx_p">The quality-aware model uses Qwen-2.5-VL-7B, fine-tuned for one epoch using AdamW with a learning rate of <math alttext="2e-5" class="ltx_Math" display="inline" id="A1.SS1.p4.m1" intent=":literal"><semantics><mrow><mrow><mn>2</mn><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi>e</mi></mrow><mo>&minus;</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">2e-5</annotation></semantics></math> and a batch size of 2.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A1.SS1.p5">
+<p class="ltx_p">At inference time, the quality-aware architecture enables two distinct generation strategies: (1) Predicted Quality (Predicted-Q): The model first predicts the likely quality score based on the input context, then generates a caption conditioned on this prediction. This approach maintains consistency with the training distribution.
+(2) Forced High Quality (Forced-Q6): We override the quality prediction and force the model to condition on the maximum quality score (6), instructing it to generate the highest quality caption possible given the profile constraints.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="A1.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">A.2 </span>Prompts</h3>
+<figure class="ltx_figure" id="A1.F5"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="307" id="A1.F5.g1" src="../assets/papers/10-PersonalizedSciFigCap_2025/x3.png" width="436">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 5: </span>The actual prompt for caption quality assessment we used in our experiments.</figcaption>
+</figure>
+<figure class="ltx_figure" id="A1.F6"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_portrait" height="725" id="A1.F6.g1" src="../assets/papers/10-PersonalizedSciFigCap_2025/x4.png" width="436">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 6: </span>The actual prompt for caption generation in our experiments.</figcaption>
+</figure>
+</section>
+</section>
+</article>
+</div>
+<div class="ar5iv-footer"><a class="ar5iv-nav-button ar5iv-nav-button-prev" href="/html/2509.25815">◄</a>
+<a class="ar5iv-home-button" href="/"><img alt="ar5iv homepage" height="40" src="/assets/ar5iv.png"></a>
+<a class="ar5iv-text-button" href="/feeling_lucky">Feeling<br>lucky?</a>
+<a aria-hidden="true" href="/land_of_honey_and_milk" rel="nofollow" tabindex="-1"></a>
+<a class="ar5iv-text-button ar5iv-severity-error" href="/log/2509.25817">Conversion<br>report</a>
+<a class="ar5iv-text-button" href="https://github.com/dginev/ar5iv/issues/new?template=improve-article--arxiv-id-.md&title=Improve+article+2509.25817" target="_blank">Report<br>an issue</a>
+<a class="ar5iv-text-button arxiv-ui-theme" href="https://arxiv.org/abs/2509.25817">View&nbsp;original<br>on&nbsp;arXiv</a><a class="ar5iv-nav-button ar5iv-nav-button-next" href="/html/2509.25818">►</a>
+</div><footer class="ltx_page_footer">
+<a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle ar5iv color scheme"><span class="color-scheme-icon"></span></a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/license" target="_blank">Copyright</a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/policies/privacy_policy" target="_blank">Privacy Policy</a>
+<div class="ltx_page_logo">Generated  on Mon Oct  6 23:51:25 2025 by <a class="ltx_LaTeXML_logo" href="http://dlmf.nist.gov/LaTeXML/" target="_blank"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img alt="Mascot Sammy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg=="></a>
+</div></footer>
+</div>
+<script>
+      var canMathML = typeof(MathMLElement) == "function";
+      if (!canMathML) {
+        var body = document.querySelector("body");
+        body.firstElementChild.setAttribute('style', 'opacity: 0;');
+        var loading = document.createElement("div");
+        loading.setAttribute("id", "mathjax-loading-spinner");
+        var message = document.createElement("div");
+        message.setAttribute("id", "mathjax-loading-message");
+        message.innerText = "Typesetting Equations...";
+        body.prepend(loading);
+        body.prepend(message);
+
+        var el = document.createElement("script");
+        el.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+        document.querySelector("head").appendChild(el);
+
+        window.MathJax = {
+          startup: {
+            pageReady: () => {
+              return MathJax.startup.defaultPageReady().then(() => {
+                body.removeChild(loading);
+                body.removeChild(message);
+                body.firstElementChild.removeAttribute('style');
+              }); } } };
+      }
+    </script>
+<script>
+    // Auxiliary function, building the preview feature when
+    // an inline citation is clicked
+    function clicked_cite(e) {
+      e.preventDefault();
+      let cite = this.closest('.ltx_cite');
+      let next = cite.nextSibling;
+      if (next && next.nodeType == Node.ELEMENT_NODE && next.getAttribute('class') == "ar5iv-bibitem-preview") {
+        next.remove();
+        return; }
+      // Before adding a preview modal,
+      // cleanup older previews, in case they're still open
+      document.querySelectorAll('span.ar5iv-bibitem-preview').forEach(function(node) {
+        node.remove();
+      })
+
+      // Create the preview
+      preview = document.createElement('span');
+      preview.setAttribute('class','ar5iv-bibitem-preview');
+      let target = document.getElementById(this.getAttribute('href').slice(1));
+      target.childNodes.forEach(function (child) {
+        preview.append(child.cloneNode(true));
+      });
+      let close_x = document.createElement('button');
+      close_x.setAttribute("aria-label","Close modal for bibliography item preview");
+      close_x.textContent = "×";
+      close_x.setAttribute('class', 'ar5iv-button-close-preview');
+      close_x.setAttribute('onclick','this.parentNode.remove()');
+      preview.append(close_x);
+      preview.querySelectorAll('.ltx_tag_bibitem').forEach(function(node) {
+        node.remove();
+      });
+      cite.parentNode.insertBefore(preview, cite.nextSibling);
+      return;
+    }
+    // Global Document initialization:
+    // - assign the preview feature to all inline citation links
+    document.querySelectorAll(".ltx_cite .ltx_ref").forEach(function (link) {
+      link.addEventListener("click", clicked_cite);
+    });
+    </script>
+</body>
+</html>

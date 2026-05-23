@@ -1,0 +1,57 @@
+We performed data output cleaning in three steps. 
+
+\begin{enumerate}
+\item We manually examined cases with BLEU or ROUGE scores of 0 to identify data issues. We identified 11 cases (out of 12,270) where the original captions were incorrectly captured due to parsing errors---either missing the real caption content or capturing the wrong text. In one instance, the parser mistakenly captured the paper authors name from the bottom-right corner instead of the caption beneath the figure on the same page. These cases were excluded from evaluation. 
+
+\item We used GPT-4o-mini to clean the generated captions, removing irrelevant text such as reasoning steps, figure indexes, or any pre- and suffix that did not belong to the actual caption. Our cleaning instructions explicitly specified not to add any additional text or explanations to the raw output. The following prompt was used:
+\begin{lstlisting}[basicstyle=\small\ttfamily, breaklines=true, frame=single]
+You are a helpful assistant that extracts the actual caption from text. Ignore any reasoning or explanation text and only return the actual caption content. Also, remove any prefix that indicates figure index such as 'Caption:', 'Fig.', 'Figure', or any numbering before the main caption text. Extract ONLY the actual caption from this text, without any additional text or explanation: [GENERATED-CAPTION]
+\end{lstlisting}
+
+Below is an example from arXiv paper 1105.0392, showing the response from the "Llama-4 Scout" model with "All-Profile" configuration, before and after cleaning:
+
+\paragraph{RAW OUTPUT}
+The following is the raw output before cleaning:
+\begin{Verbatim}[breaklines=true, frame=single, commandchars=\\\{\}]
+Based on the provided elements, I will generate a caption for the Target Figure. 
+
+Target Figure Caption: \textcolor{blue}{A deterministic algorithm for the 1-dimensional case chooses a good sensor at each step.}
+
+This caption maintains the same writing style as Caption 1: "Four similar rhombi form a set of regions for which no stateless algorithm can be competitive." It is concise, informative, and provides a brief description of the Target Figure.
+
+The tone and structure of the caption are consistent with the provided caption, and it effectively conveys the main idea of the Target Figure.
+
+Please let me know if you need further adjustments!
+\end{Verbatim}
+
+\paragraph{EXTRACTED CAPTION}
+The following is the extracted caption after cleaning:
+\begin{Verbatim}[breaklines=true, frame=single, commandchars=\\\{\}]
+\textcolor{blue}{A deterministic algorithm for the 1-dimensional case chooses a good sensor at each step.}
+\end{Verbatim}
+
+After GPT-4o cleaning, we randomly sampled 100 outputs for human evaluation. Using binary labels (GOOD/BAD), we assessed whether the extracted captions were correct. All 100 sampled extractions were labeled as GOOD, confirming the cleaning procedure's effectiveness.
+
+
+% \begin{enumerate}
+% \item We used GPT-4o-mini to clean the generated captions, removing irrelevant text such as reasoning steps, figure indexes, or any pre- and suffix that did not belong to the actual caption. 
+% \kenneth{(1) Add prompt here, (2) did you perform some human evaluation on the effectiveness of this prompt?}
+% %We used a standardized prompt for this cleaning process. 
+
+% \item
+% In the first round of cleaning, we identified 11 cases (out of 12,270) where the original captions were incorrectly captured due to parsing errors---either missing the real caption content or capturing the wrong text. 
+% These cases were excluded from evaluation. 
+
+% \item
+% In the second round, we filtered out failed generations, including blank responses. 
+% \end{enumerate}
+
+\item  We employed keyword filtering with manual verification to filtered out failed generation, including blank responses. Detailed examples of these error cases are documented in \autoref{tab:generation-error}. After cleaning, we identified a total of 56 unique problematic cases across all models and configurations (out of 12,259), which were excluded from further analysis.
+
+The Qwen-2.5-VL-7B-Instruct model was excluded from the main comparative analysis due to its high rate of generation failures, particularly when using the profile-based configurations. Specifically, this model failed in 2.19\% of All-Profile cases and 0.83\% of One-Profile cases, whereas the highest failure rate for any other model was just 0.07\%. For completeness, we nevertheless report its baseline performance in Table \autoref{tab:qwen}.
+
+\end{enumerate}
+
+\input{table/table_data_cleaning_example}
+
+\input{table/table_Qwen}

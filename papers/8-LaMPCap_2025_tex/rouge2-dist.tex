@@ -1,0 +1,36 @@
+% \renewcommand\thesubfigure{1\alph{subfigure}}
+
+\begin{figure*}[t]
+    \centering
+    % Top row
+    \begin{subfigure}{0.495\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig07_mainStudy-ROUGE2-dist/01_rouge2_4o.png}
+        \vspace{-1.5pc}
+        \caption{ROUGE-2 for GPT-4o}
+        \label{fig:top_left-rouge2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.495\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig07_mainStudy-ROUGE2-dist/02_rouge2_Llama.png}
+        \vspace{-1.5pc}
+        \caption{ROUGE-2 for Llama-4 Scout}
+        \label{fig:top_right-rouge2}
+    \end{subfigure}
+    
+    % Bottom row
+    \begin{subfigure}{0.495\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig07_mainStudy-ROUGE2-dist/03_rouge2_gemini.png}
+        \vspace{-1.5pc}
+        \caption{ROUGE-2 for Gemini-2.5 Flash Preview}
+        \label{fig:bottom_left-rouge2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.495\textwidth}
+        \includegraphics[width=\textwidth]{figures/fig07_mainStudy-ROUGE2-dist/04_rouge2_mini.png}
+        \vspace{-1.5pc}
+        \caption{ROUGE-2 for GPT-4.1 Mini}
+        \label{fig:bottom_right-rouge2}
+    \end{subfigure}
+    \caption{Distribution of the ROUGE-2 across different LLMs and profile configuration.}
+    \label{fig:dist-rouge2}
+\end{figure*}

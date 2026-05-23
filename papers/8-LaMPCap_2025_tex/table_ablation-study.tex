@@ -1,0 +1,23 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{2pt}
+\definecolor{darkred}{rgb}{0.95, 0.6, 0.6}
+\begin{tabular}{lccccccc}
+\toprule
+\multirow{2}{*}{\textbf{Elements}} & \multicolumn{4}{c}{\textbf{BLEU}} & \multicolumn{3}{c}{\textbf{ROUGE}} \\ 
+\cmidrule(lr){2-5} \cmidrule(lr){6-8}
+ & \textbf{B-1} & \textbf{B-2} & \textbf{B-3} & \textbf{B-4} & \textbf{R-1} & \textbf{R-2} & \textbf{R-L} \\ 
+\midrule
+No Paragraph & .299 & .199 & .146 & .110 & .393 & .184 & .314 \\ 
+\midrule
+No Image & .273 & .171 & .119 & .086 & .367 & .154 & .285 \\ 
+\midrule
+No Caption & .189 & .109 & .071 & .048 & .274 & .100 & .199 \\ 
+% No Caption & \cellcolor{darkred}.189 & \cellcolor{darkred}.109 & \cellcolor{darkred}.071 & \cellcolor{darkred}.048 & \cellcolor{darkred}.274 & \cellcolor{darkred}.100 & \cellcolor{darkred}.199 \\ 
+\bottomrule
+\end{tabular}
+\caption{Result from Ablation Study.}
+\label{tab:ablation-study-full}
+\end{table}

@@ -1,0 +1,282 @@
+
+%\lee{time permitting, things interesting to evaluate: (1) how personalized caption generation diffs per different domains--eg, CS vs. Bio papers; (2) how the types of target or profile figures affect the generation quality--eg line/bar/pie charts vs. other general illustration; (3) how the choice of profile figure affects the generation quality when there are multiple profile figures, or when target/profile figures are swapped, what happens?} \ed{I think we can calculate the first two?}\sam{calculated, but seems no big difference among them...}
+%\sam{changed from "four" to "several", included the footnote underneath}
+
+\paragraph{Experiment Setups.}\label{para:Experiment-Setups}
+%\paragraph{Models.}
+We evaluated four LLMs
+%\footnote{We also evaluated the smaller Qwen-2.5-VL-7B-Instruct model, but excluded it from our main analysis due to a significantly higher rate of generation failures (n=402) compared to the other LLMs.} 
+on personalized caption generation using \dataset:\footnote{Qwen-2.5-VL-7B-Instruct was excluded from our main analysis due to significantly higher failure rate (2.2\%, 269/12,259) compared to other models. See~\autoref{app:output-cleaning}.}
+%\kenneth{TODO: In Appendix: (1) Mention Qwen's detailed error rate *as compared to other LLMs*, (2) provide examples of the invalid output, and (3) Still report the LLM performance numbers (do we have this?).}\sam{the Qwen one we only have the basic one with no profile, 1-profile, all-profile, but no "Other", also added the table there.}
+{\em (i)} GPT-4o~\cite{hurst2024gpt}, 
+{\em (ii)} Llama 4 Scout~\cite{meta2025llama4}, 
+{\em (iii)} Gemini 2.5 Flash Preview~\cite{gemini25flash}, and 
+{\em (iv)} GPT-4.1 Mini~\cite{openai2024gpt41mini}.
+%\kenneth{TODO: Mention Qwen in the footnote ONLY.}
+%\kenneth{TODO: Add citations to all.}
+The first three are larger models, while the last one is smaller.
+%We used OpenRouter (openrouter.ai), a unified API providing access to multiple AI models via a single endpoint, to prompt these models in a few-shot manner. 
+We used OpenAI's API for GPT-4o and OpenRouter (openrouter.ai) for the others. 
+We focused on LLMs because large-scale human evaluations from the \textsc{SciCap} Challenge showed a clear performance gap between model classes~\cite{hsu2025large}: only LLMs like GPT-4V consistently generate captions matching or exceeding those by human authors, while smaller or specialized models such as PEGASUS~\cite{zhang2020pegasus} and UniChart~\cite{masry2023unichart} perform poorly.
+%\kenneth{TODO: Cite PEGASUS and UniChart}\sam{added}
+
+
+
+
+%\sam{ADD-START}
+%Recent large-scale human evaluations from the \textsc{SciCap} Challenge reveal a clear performance gap between model classes~\cite{hsu2025large}. These studies, judged by professional editors and PhD students, show that only state-of-the-art LLMs (\eg, GPT-4V) can generate captions that match or exceed the quality of those written by human authors. In contrast, smaller or more specialized models like PEGASUS and UniChart have performed poorly in such evaluations. This finding motivates our focus on the unique capabilities of modern LLMs for this task.
+%\sam{ADD-END}
+
+
+
+
+
+%\paragraph{Profile Setups.}
+%All models were prompted in a zero-shot setting.
+%Each model generated captions based on the target figure's image and figure-mentioning paragraphs, while also considering the profile figures' source-caption pairs for personalization.
+%\tong{Might I ask why we focus on the three settings? Might it be helpful to cite some papers using similar settings?} 
+%Building on findings that the amount of profile information affects performance~\cite{tan2024democratizing}, we tested three settings for caption generation for each model:
+Building on prior work showing that more profile information improves performance~\cite{tan2024democratizing}, we tested four caption generation settings with varying amounts and sources of profile input:
+\textbf{(1) No Profile:} The model generated captions using only the target figure's image and figure-mentioning paragraphs.
+\textbf{(2) One Profile:} The model used the same source as in (1) but additionally used \textit{one} randomly selected profile figure from the \textit{same} paper
+for personalization.
+\textbf{(3) All Profile:} The model used the same source as in (1) but additionally used \textit{all} profile figures from the \textit{same} paper for personalization.
+%\kenneth{My bad. Let's use ``Other Profile'' here. It's more direct.}
+\textbf{(4) Other Profile:} 
+The model used the same source as in (1) but additionally used
+%Same as (1) plus 
+one or three randomly selected profile figure(s) from random \textit{other} papers. 
+The setup (4) tests whether performance gains come from paper-specific context 
+%(personalization) 
+or generic in-domain examples.
+See~\autoref{app:prompts} for the full prompt.
+%\kenneth{TODO: Add Unrelated profile prompts to the Appnedix.} \sam{indeed the prompt is the same as "prompt with profile", the process is just different when do the sampling of the papers and the profile figures}
+%\footnote{We avoid naming our approach as ``zero-shot'' or ``few-shot'' because profile figures and captions serve as implicit examples.}
+%\sam{ADD-START}
+%To isolate the effect of personalization, we established a control condition using profile figures from randomly selected papers. This experiment tests whether performance gains stem from paper-specific context (personalization) or from generic, in-domain examples. By comparing results from same-paper versus cross-paper profiles, we can measure the impact of document-level style.
+%\sam{ADD-END}
+
+%\paragraph{Output \& Evaluation.}
+%Following generation, 
+We cleaned the output by removing unnecessary reasoning steps or explanations. 
+%that were not part of the actual caption.
+We also removed cases (56 out of 12,259) where models failed to generate valid output. 
+%(\eg, ``I'm sorry, I can't assist with that request.'').
+See \autoref{app:output-cleaning} and %shows data cleaning procedures.
+\autoref{app:text-evaluation} for details.
+%shows the evaluation packages used.
+
+\input{table/table_main_study}
+
+
+\paragraph{Using profile information (from the same paper) makes captions more similar to ground truth, especially with all profile figures.}\label{para:profile-result}
+\autoref{tab:llm_comparison} shows the personalized caption generation results of four LLMs, evaluated using BLEU~\cite{papineni2002bleu} and ROUGE~\cite{lin2004rouge}.\footnote{We also explored BERTScore~\cite{zhang2019bertscore}, which correlated highly with BLEU and ROUGE. See \autoref{app:main-study-full}.}
+%\kenneth{TODOs: (1) Add ref, (2) Add BERTScore results to Appendix.}\sam{Done!}
+We used reference-based metrics to measure how closely the generated captions matched the original author-written captions, following a standard evaluation approach for personalized text generation used in well-known work like LongLaMP~\cite{kumar2024longlamp}.
+The results show that incorporating profile information consistently improves caption quality across all four models.
+Additionally, using all profile figures provides better results than using just one.
+%\sam{The detailed distribution of the performance of BLEU-4 and ROUGE-2 across different models and profile configurations can be found in \autoref{app:main-study-full}.}
+%See detailed  performance distributions across models and profile settings in \autoref{app:main-study-full}.
+See \autoref{app:main-study-full} for details.
+%Detailed performance distributions across models and profile configurations are in \autoref{app:main-study-full}.
+
+
+\input{figures/fig04_easyHard/easyHard-subfigure-layout}
+
+%\kenneth{The following is newly added. Please read.}
+\paragraph{Using profiles from other papers often lowered BLEU and ROUGE scores, though there were exceptions.} 
+\autoref{tab:llm_comparison} suggests that performance gains primarily came from paper-specific context, rather than generic in-domain examples. 
+Profiles from other papers generally hurt performance, but some models, such as GPT-4.1 Mini, showed slight improvements. 
+%In general, 
+Furthermore, using more \textit{other} profiles tended to reduce the performance drop or, occasionally, provide minor gains.
+
+
+
+\input{table/table_main_study-sameType}
+
+
+
+\paragraph{When profile figures shared the same type as the target figure, personalization works better.}
+To examine how figure type affects personalization, we analyzed cases with a single profile figure, splitting them into two groups: those where the profile and target figure types matched (n=8,083) and those where they did not (n=4,120). \autoref{tab:main-result-sameType} shows that matching the figure type resulted in captions that were significantly closer to the gold caption.
+
+% The \textsc{SciCap} Challenge dataset provided figure types (\eg, graph plot, scatterplot), allowing us to examine how figure types affect personalized caption generation. 
+% We focused on cases where a target figure had only one profile figure, dividing them into two groups: those where the profile figure type matched the target figure (Yes) (n=8,083) and those where it did not (No) (n=4,120). 
+% \autoref{tab:main-result-sameType} shows that captions were closer to the ground-truths when the profile figure shared the same type as the target figure.
+
+
+\paragraph{Personalization is more effective when profile captions are highly similar to the target caption.}\label{para:context-alignment}
+
+To test if personalization is more effective when profiles are similar to the target, we split our test set into two groups. We calculated the similarity (using BERTScore and ROUGE-L) between each target caption and its available profile captions. The top 25\% of examples with the most similar profiles formed our Context-Aligned set (n=2,513); the remainder formed the Context-Misaligned set. The results in \autoref{fig:all_figures} confirm our hypothesis. Performance gains from using profiles were substantially larger for the Context-Aligned group~(Figures~\ref{fig:top_left} and~\ref{fig:bottom_left}), while the impact was noticeably smaller for the Context-Misaligned set~((Figures~\ref{fig:top_right} and~\ref{fig:bottom_right}). 
+(See \autoref{app:easy-hard}.)
+
+
+
+
+% Inspired by the figure type study (\autoref{tab:main-result-sameType}), we investigated whether profile captions similar to the target caption improve personalization. 
+% For each target figure in the test set, we calculated the semantic similarity using BERTScore~\cite{Zhang*2020-xq} and lexical similarity using ROUGE-L~\cite{Lin2004-ox} between profile captions and the target caption.
+% (\autoref{app:easy-hard} shows detailed score distributions.)
+% %\sam{(\autoref{fig:profile_target_distribtions})}\sam{just wonder should I add the figure directly from appendix to here? Or I should always refer to Appendix}.
+% We then sorted the test set by the highest similarity score for each target figure and selected the top 25\% of data points with high similarity in both metrics, creating the Context-Aligned set with 2,513 target figures.
+% The remaining 9,690 target figures in the test set formed the Context-Misaligned set.
+% \autoref{fig:all_figures} shows that personalization is more effective when at least one profile caption is highly similar to the ground-truth caption (Figures~\ref{fig:top_left} and~\ref{fig:bottom_left}).
+% While profiles still help in the Context-Misaligned set (Figures~\ref{fig:top_right} and~\ref{fig:bottom_right}), their impact is noticeably smaller. 
+% The detailed results can be found in \autoref{app:easy-hard}.
+\input{table/table_4o-Num-of-profile}
+
+
+
+
+\paragraph{Adding more profile figures consistently improved performance, but the largest gain came from the first profile.}
+We examined how the number of profiles affected caption quality using GPT-4o. 
+A subset figure with exactly three profiles from the same paper was used (n=3,424). 
+For the 1-Profile and 2-Profile settings, profiles were randomly sampled. 
+\autoref{tab:4o_profile-number} showed clear diminishing returns as more profiles were added.
+
+
+% \sam{ADD-END}
+
+
+
+%\tong{Ablation Study seems to be Section 4.1. Might it be helpful to create some subsections for the above content?}
+\subsection{Ablation Study\label{sec:ablation}}
+\input{sections/4-1-ablation-study}
+
+\input{figures/fig01/fig01_ablation_study}
+
+%\sam{added for camera-ready}
+%\kenneth{NEWLY ADDED!}
+
+%\subsection{Impact of Profile Quantity\label{sec:quantity}}
+%\input{sections/4-2-selection-strategy} 
+
+\subsection{Human Evaluation\label{sec:humanEval}}
+\input{sections/4-3-human-evaluation} 
+
+
+
+
+
+
+
+%\sam{ADD-START}
+%A semantic similarity analysis using BERTScore between gold caption and the generated captions confirmed these trends from additional profiles.\kenneth{What does this respond to?}\sam{This part is added in the rebuttal that we did BERTScore analysis and show correlation to the BLEU and ROUGE score}
+%\sam{ADD-END}
+
+% \sam{ADD-START}
+% \paragraph{BERTScore results correlate well with our existing metrics.}
+% We also report BERTScore in \autoref{tab:BERTScore_LLM} to evaluate semantic similarity between the generated and gold captions. The results correlate strongly with our BLEU and ROUGE metrics, confirming the same performance trends. The \textbf{All-Profile} setting achieves the highest score, followed closely by \textbf{1-Profile}. Notably, this analysis reveals a pattern of diminishing returns. The performance leap from No-Profile to 1-Profile is substantially larger than the subsequent gain from 1-Profile to All-Profile, indicating that while the first profile provides a significant semantic boost, the marginal benefit of additional profiles is less substantial.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%----------dead kitten--------------
+\begin{comment}
+
+
+Inspired by the figure type study (\autoref{tab:main-result-sameType}), we investigated whether profile captions similar to the target caption improve personalization. 
+For each target figure in the test set, we calculated the semantic similarity using BERTScore~\cite{Zhang*2020-xq} and lexical similarity using ROUGE-L~\cite{Lin2004-ox} between profile captions and the target caption.
+(\autoref{app:easy-hard} shows detailed score distributions.)
+%\sam{(\autoref{fig:profile_target_distribtions})}\sam{just wonder should I add the figure directly from appendix to here? Or I should always refer to Appendix}.
+We then sorted the test set by the highest similarity score for each target figure and selected the top 25\% of data points with high similarity in both metrics, creating the Context-Aligned set with 2,513 target figures.
+The remaining 9,690 target figures in the test set formed the Context-Misaligned set.
+\autoref{fig:all_figures} shows that personalization is more effective when at least one profile caption is highly similar to the ground-truth caption (Figures~\ref{fig:top_left} and~\ref{fig:bottom_left}).
+While profiles still help in the Context-Misaligned set (Figures~\ref{fig:top_right} and~\ref{fig:bottom_right}), their impact is noticeably smaller. 
+The detailed results can be found in \autoref{app:easy-hard}.
+
+
+
+
+
+Graph plot show the best result, also with plenty of sample. Bar chart and scatterplot very similar. Scatterplot is the wrost one(Table \ref{tab:main-result-byType})
+\input{table/table_main_study-byType}
+
+
+Economic seems work best, but the sample is also the least.(Table \ref{tab:main-result-byCategory})
+\input{table/table_main_study-byCategory}
+
+
+\paragraph{Using Profile is the best!}
+
+\paragraph{Personalization worked better for the easy data portion.}
+\kenneth{TODO Aashish: Please write how you selected the data here. Distribution charts might need to go to Appendix.}
+%\kenneth{TODO: (Avg, Max) x (BLEU, BertScore, ROUGE) scores + distribution}
+
+% \tong{to}
+\paragraph{Task Difficulty Analysis}
+In order to understand how variations in content and vocabulary between the profile captions and target caption affect personalization, we construct 2 subsets: {\dataset} Easy and {\dataset} Hard. For each datapoint present in our test set, we calculate the semantic and lexical similarity of profile captions with the target caption using BERTScore \cite{Zhang*2020-xq} and ROUGE-L \cite{Lin2004-ox} respectively as presented in Figure \ref{fig:profile_target_distribtions}. The test set sorted by the max scores observed between the target caption and any of its profile captions, followed by the sampling of the top 25\% of datapoints exhibiting the highest similarity in each of the 2 metrics. Finally, we select the intersection of datapoints between sets as {\dataset} Easy with the rest constituting {\dataset} Hard. Across both subsets, we observe a consistent increase in caption alignment with the addition of more profiles as presented in Tables \ref{tab:main-result-easy}, \ref{tab:main-result-hard}. However, the improvements found with profile captions on the {\dataset} Hard subset are much more limited. This indicates the challenging nature of this task in utilizing style features to improve figure caption personalization.
+
+
+
+Seems 4o the score is similar, while other LLM experience poor result (Table \ref{tab:main-result-hard})
+
+
+
+
+More fair comparison between 1 profile vs all profile if only consider data with 2 or more available profiles (Table \ref{tab:main-result-2more})
+\input{table/table_main_study_2orMoreProfiles}
+
+
+Under same 1 profile configuration, when target figure type is same as profile figure type, the performance is better (Table \ref{tab:main-result-sameType})
+
+
+
+---standard reference-based metrics that measure how closely the generated captions match the original author-written captions. 
+The results show that incorporating profile information consistently improves caption quality across all four models. Additionally, using all profile figures provides better results than using just one.
+
+
+
+
+\kenneth{--------------------KENNETH IS WORKING HERE--------------------}
+
+%\kenneth{probably need to use a smaller model}
+For our caption generation task, we selected four models with varying capabilities: (1) GPT-4o, (2) Llama 4 Scout, (3) Gemini 2.5 Flash Preview, and (4) GPT-4.1 Mini. \ed{add model citation.} \ed{ Specifically, we utilize OpenRouter\footnote{\url{https://openrouter.ai}}, a unified API that grants access to a wide range of AI models via a single endpoint, while automatically managing fallback mechanisms and optimizing for cost-effectiveness}. This diverse selection allowed us to test whether our proposed profile configuration produces consistent improvements across different model architectures, thereby validating that the personalized approach enhances scientific figure caption generation regardless of the underlying model used.
+
+
+\paragraph{Experiment Setups.}
+\kenneth{explain why use automatic and why we didn't normalized}
+
+For each model, we have 3 different configurations to generate captions: (1) No Profile, (2) One Profile, (3) All Profile. 
+%The detailed of the input difference can checked the Table~\ref{tab:config}
+%\lee{what are inputs exactly? Unclear to me. Do you use a target figure and profile figures (and their captions) to generate the caption of the target figure? If so, spell out what are inputs and outputs}
+%\sam{I just add the table to illustrate, see if helps} \ed{add some explanations for the three settings}
+
+\input{table/table_profile_config}
+For the data output cleaning, here are the steps:
+1. Use GPT-4o-mini to clean the output (e.g. clean the reasoning steps and irrelevant pre- and suf-fix of the "real context" caption from the response of GPT such as figure index included in the output) --> may include the prompts used to clean the output 
+
+2. First round of cleaning we found that there was 11 case (out of 12,270) with the issue of the original caption as there was some cases such as parsing error such as capturing the figure caption without real context (just figure index) or capturing the wrong caption, so the comparison between the generated output with these case would be invalid 
+
+3. Second round, we filtered out the response that the generation was failed (Appedix table?), including the blank cases. Unique case clean across all model and configuration: 56 (out of 12,259)
+
+For the evaluation, we adopted automatic evaluation by calculating BLEU and ROUGE score to compare the similarity of generated caption to the original captions of the target figures.
+    
+\end{comment}

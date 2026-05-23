@@ -1,0 +1,3 @@
+For text normalization before evaluation, we implemented a custom preprocessing pipeline using standard Python libraries that: (1) converts text to lowercase, (2) removes all punctuation, and (3) normalizes whitespace.
+
+For evaluation, we used standard NLP metrics implemented in Python packages: \texttt{NLTK} (version 3.9.1) for BLEU scores (with \texttt{SmoothingFunction} for smoothing) and Google's \texttt{rouge\_scorer} (version 0.1.2) for ROUGE metrics. We used the default parameters for both packages. The specific implementations were imported directly from \texttt{nltk.translate.bleu\_score} and \texttt{rouge\_score} modules.

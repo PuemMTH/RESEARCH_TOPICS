@@ -1,0 +1,36 @@
+\begin{table}
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{2pt}
+\definecolor{lightgreen}{rgb}{0.9, 1.0, 0.9}
+\definecolor{darkgreen}{rgb}{0.7, 0.9, 0.7}
+\begin{tabular}{lcccccccc}
+\toprule
+\multirow{2}{*}{\textbf{LLM}} & \multirow{2}{*}{\textbf{Same}} & \multicolumn{4}{c}{\textbf{BLEU}} & \multicolumn{3}{c}{\textbf{ROUGE}} \\ 
+\cmidrule(lr){3-6} \cmidrule(lr){7-9}
+ & \textbf{Type} & \textbf{B-1} & \textbf{B-2} & \textbf{B-3} & \textbf{B-4} & \textbf{R-1} & \textbf{R-2} & \textbf{R-L} \\ 
+\midrule
+\multirow{2}{*}{GPT-4o} 
+ & No & .233 & .142 & .097 & .069 & .340 & .134 & .270 \\ 
+ & \cellcolor{darkgreen}Yes & \cellcolor{darkgreen}.302 & \cellcolor{darkgreen}.208 & \cellcolor{darkgreen}.157 & \cellcolor{darkgreen}.121 & \cellcolor{darkgreen}.406 & \cellcolor{darkgreen}.201 & \cellcolor{darkgreen}.336 \\ 
+\midrule
+\multirow{2}{*}{Llama-4 Scout}
+ & No & .325 & .245 & .199 & .167 & .436 & .250 & .377 \\ 
+ & \cellcolor{darkgreen}Yes & \cellcolor{darkgreen}.396 & \cellcolor{darkgreen}.317 & \cellcolor{darkgreen}.269 & \cellcolor{darkgreen}.233 & \cellcolor{darkgreen}.504 & \cellcolor{darkgreen}.325 & \cellcolor{darkgreen}.447 \\ 
+\midrule
+\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Gemini-2.5\\Flash Preview\end{tabular}} 
+ & No & .326 & .246 & .201 & .169 & .440 & .254 & .384 \\ 
+ & \cellcolor{darkgreen}Yes & \cellcolor{darkgreen}.393 & \cellcolor{darkgreen}.314 & \cellcolor{darkgreen}.266 & \cellcolor{darkgreen}.229 & \cellcolor{darkgreen}.503 & \cellcolor{darkgreen}.325 & \cellcolor{darkgreen}.447 \\ 
+\midrule
+\multirow{2}{*}{GPT-4.1 Mini}  
+ & No & .237 & .154 & .109 & .079 & .349 & .155 & .276 \\ 
+ & \cellcolor{darkgreen}Yes & \cellcolor{darkgreen}.311 & \cellcolor{darkgreen}.227 & \cellcolor{darkgreen}.178 & \cellcolor{darkgreen}.142 & \cellcolor{darkgreen}.422 & \cellcolor{darkgreen}.234 & \cellcolor{darkgreen}.351 \\ 
+\bottomrule
+\end{tabular}
+%\caption{Performance comparison of LLMs with 1 profile settings. Comparing the data with same figure type (n=8083) and different figure type (n=4120). When profile figures shared the same type as the target figure, personalization works better.}
+\vspace{-.5pc}
+\caption{LLM performance on figures with one profile figure. Personalization is more effective when the single profile figure shares the same type as the target.}
+\vspace{-1pc}
+\label{tab:main-result-sameType}
+\end{table}

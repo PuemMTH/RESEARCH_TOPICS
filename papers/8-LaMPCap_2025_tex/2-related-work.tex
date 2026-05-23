@@ -1,0 +1,54 @@
+\paragraph{Figure Caption Generation.}
+Figure caption generation requires models to understand both the visual content and the broader context~\cite{kantharaj-etal-2022-chart,wang2024charxiv,hu2024mplug,obeid-hoque-2020-chart}.
+%\kenneth{TODO Edward: Cite a few older work and a few 2024/2025 VLM for Chart work.}
+Early approaches, like \textsc{FigCAP} and the initial version of \textsc{SciCap}, relied solely on figure images as input~\cite{chen2020figure,hsu-etal-2021-scicap-generating}.
+%\kenneth{TODO Edward: Add citations}
+Researchers soon realized this was insufficient and began incorporating additional context, such as figure-mentioning paragraphs and even the document's title or abstract~\cite{huang-etal-2023-summaries,yang2024scicap+,stokes2022striking}.
+%\kenneth{TODO Edward: Cite INLG, SciCaP++, and maybe some more work}
+Despite this progress, prior work often overlooked personalization. 
+%\aashish{I'm adding another citation for creative personalization of image captions without additional context as another past research direction}\sam{I wonder if this part should be moved to 'Personalized LLMs'?}
+Although studies noted that users often need captions tailored to their style or domain~\cite{hsu2025large,huang-etal-2023-summaries},
+%\kenneth{TODO Edward: Cite our TACL and INLG paper} 
+none of these approaches explicitly provided source-target pairs %---(image+paragraph, caption)---
+that capture the specific generation context needed for models to learn personalized styles. %and domains.
+%There have been studies looking into creative personalization of image captions for different domains such as social media \cite{Shuster2019-mi, Anantha-Ramakrishnan2025-je}, however they require explicit inputs describing the style traits for accomplishing this task.
+A few studies have explored creative personalization of image captions~\cite{Shuster2019-mi, Anantha-Ramakrishnan2025-je}, but these approaches relied on explicit style inputs, making them dependent on user-provided style descriptions.
+
+
+
+
+
+
+
+%\ryan{essentially, there is a lot of work, none of it has focused on personalization.}
+
+\paragraph{Personalized LLMs.}
+Personalization of LLMs has gained attention~\cite{zhang2024personalization}, primarily in two directions: 
+{\em (i)} personalized text generation (tailoring generated text for specific contexts) and 
+{\em (ii)} downstream task personalization (enhancing targeted applications like recommendation systems).
+We focus on the first direction, defining the personalization target as a \textit{group} of users---all co-authors of a paper---rather than individuals. 
+Prior work, such as the LaMP-5 task~\cite{salemi-etal-2024-lamp} on Personalized Scholarly Title Generation, has also treated a paper's author group as a single entity for personalization.
+%Prior work, such as the LaMP-5 benchmark~\cite{salemi-etal-2024-lamp}, has also treated a paper's author group as a single entity for personalization.
+%using LLM capabilities. 
+%Our work focuses on the first direction. 
+%\sam{ADD-START}
+%Within this area, some prior work defines the personalization target as a group of users. For instance, ~\cite{zhang2024personalization} discuss this concept, and the LaMP-5 benchmark~\cite{salemi-etal-2024-lamp} operationalizes it by treating a paper's co-author group as a single entity for personalization.
+%\sam{ADD-END}
+Most prior work in this space has been centered on text-only settings (\S\ref{sec:intro}).
+For example, \textsc{LaMP} included tasks such as news headline generation and email subject creation---relying exclusively on text-based inputs and profiles~\cite{salemi-etal-2024-lamp}.
+%Similarly, personalized Question-Answering approaches leverage uni-modal conversation histories as seed inputs to dynamically construct user profiles~\cite{Zollo2025-qn,Wu2025-yr,Richardson2023-fr}. 
+%Apart from In-context Learning, personalization has also been implemented through the Soft Prompt tuning \cite{Li2024-sl, Pandey2024-qw} and Retrieval Augmented Generation approaches \cite{Li2023-pr, Mysore2024-ns}. 
+%Multi-modal personalization is still relatively unexplored, with initial efforts being focused on personalized image generation for dialogues~\cite{Shen2024-th}. 
+% \kenneth{TODO Aashish: Maybe need one more on personalized QA}
+How these approaches extend to multimodal scenarios remains an open question. 
+
+%\tong{One main paper contribution is related to the multimodal data. Might it be helpful to discuss some related works about the previous multimodal datasets or papers?}
+
+
+
+
+
+
+
+
+%\ryan{overall idea: lots of work also on personalized LLMs, but no such work exists for \textbf{personalized figure-caption generation}}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaMP-Cap — Paper Analysis</title>
+<link rel="stylesheet" href="../../assets/summary.css">
+</head>
+<body>
+<nav class="top-nav"><div class="container"><a class="nav-brand" href="#">Research Notes</a><ul class="nav-links"><li><a href="#overview">Overview</a></li><li><a href="#methodology">Methodology</a></li><li><a href="#results">Results</a></li><li><a href="#thesis">Thesis</a></li></ul></div></nav>
+<section class="hero"><div class="container">
+<h1>LaMP-Cap: Personalized Figure Caption Generation With Multimodal Figure Profiles</h1>
+<p class="subtitle">Paper นี้สำคัญกับ thesis เพราะเปลี่ยนโจทย์ figure captioning จากการดูเฉพาะ target figure ไปสู่การใช้ profile figures จาก paper เดียวกันเป็นบริบท multimodal เพื่อสร้าง caption ที่ใกล้ author-written caption มากขึ้น</p>
+<div class="hero-meta"><span class="badge">Ng, Hsu, Ramakrishnan et al.</span><span class="badge coral">arXiv 2025</span><span class="badge"><a href="https://arxiv.org/abs/2506.06561" style="color:inherit">arXiv:2506.06561</a></span></div>
+</div></section>
+<section class="section" id="overview"><div class="container">
+<div class="section-header"><span class="overline">Abstract & Contributions</span><h2>ภาพรวม</h2></div>
+<div class="detail-block"><div class="detail-header"><span class="num">!</span><h3>ปัญหาที่ Paper นี้แก้</h3></div><div class="detail-body"><div class="key-box"><ul>
+<li>งาน personalization ส่วนใหญ่เป็น text-only แต่ scientific figure captioning ต้องใช้ image, figure-mentioning paragraph และ caption style จาก paper เดียวกัน</li>
+<li>caption ที่ generate แบบ generic มักต้องถูกแก้โดยผู้เขียนเพื่อให้เข้ากับ domain และ writing style</li>
+<li>ยังขาด benchmark ที่ออกแบบมาให้ทดสอบ multimodal profile สำหรับ personalized scientific caption generation โดยตรง</li>
+</ul></div></div></div>
+<div class="detail-block"><div class="detail-header"><span class="num">*</span><h3>Key Contributions</h3></div><div class="detail-body"><ul>
+<li><strong>LaMP-Cap dataset:</strong> สร้างจาก SciCap Challenge โดยให้ target figure พร้อม multimodal source และ profile figures สูงสุด 3 รูปจาก paper เดียวกัน</li>
+<li><strong>Context profile formulation:</strong> profile แต่ละชุดมี image, caption และ figure-mentioning paragraph เพื่อแทนทั้งเนื้อหาและ style</li>
+<li><strong>Empirical finding:</strong> profile information ช่วยให้ caption ใกล้ ground-truth มากขึ้น และ profile image มีประโยชน์มากกว่า paragraph ใน ablation</li>
+</ul></div></div>
+</div></section>
+<section class="section section-alt" id="methodology"><div class="container">
+<div class="section-header"><span class="overline">How It Works</span><h2>Methodology</h2></div>
+<div class="detail-block"><div class="detail-header"><span class="num">1</span><h3>Dataset Construction</h3></div><div class="detail-body"><p>LaMP-Cap curate จาก SciCap Challenge Dataset ซึ่งมี figures จาก arXiv papers จำนวนมาก แล้วเลือกหนึ่งรูปเป็น target figure และใช้รูปอื่นใน paper เดียวกันเป็น profile context โดยตัด paper ที่มีรูปเดียวออก เพราะไม่สามารถสร้าง target-profile pair ได้</p><div class="key-box teal"><ul><li>110,828 target figures</li><li>307,903 total figures รวม target และ profile</li><li>profile สูงสุด 3 รูปต่อ target figure</li><li>split เป็น train/validation/test แบบ 80/10/10</li></ul></div></div></div>
+<div class="detail-block"><div class="detail-header"><span class="num">2</span><h3>Input Format</h3></div><div class="detail-body"><p>โมเดลได้รับ target image และ figure-mentioning paragraph เป็น source จากนั้นเพิ่ม profile figures จาก paper เดียวกันเพื่อช่วยเรื่อง context, domain vocabulary และ author style การทดลองเปรียบเทียบ No-Profile, One-Profile และ All-Profile</p></div></div>
+</div></section>
+<section class="section" id="results"><div class="container">
+<div class="section-header"><span class="overline">Experiments</span><h2>Results & Benchmarks</h2></div>
+<div class="detail-block"><div class="detail-body">
+<table class="comparison-table"><thead><tr><th>Finding</th><th>Implication</th></tr></thead><tbody>
+<tr><td>All-Profile ได้คะแนนสูงสุดในหลาย model</td><td>context จาก paper เดียวกันช่วย caption generation จริง</td></tr>
+<tr><td>gain จาก No-Profile ไป One-Profile ใหญ่กว่าการเพิ่ม profile หลังจากนั้น</td><td>retrieval ควรเลือก profile/context ที่ relevant มากกว่าส่งทุกอย่าง</td></tr>
+<tr><td>Ablation hierarchy: caption > image > paragraph</td><td>context extraction สำหรับ thesis ไม่ควรพึ่ง text paragraph อย่างเดียว</td></tr>
+<tr><td>Qwen-2.5-VL-7B มี generation failure สูงในบาง profile setting</td><td>open-source VLM ต้องมี fallback/validation layer</td></tr>
+</tbody></table>
+</div></div>
+</div></section>
+<section class="section section-alt" id="limitations"><div class="container">
+<div class="section-header"><span class="overline">Gaps & Future Work</span><h2>ข้อจำกัดและทิศทางต่อไป</h2></div>
+<div class="detail-block"><div class="detail-body"><div class="key-box amber"><ul>
+<li>dataset จำกัด profile ไม่เกิน 3 รูป จึงยังไม่ครอบคลุม long-document context เต็ม paper</li>
+<li>evaluation ยังพึ่ง lexical metrics เช่น BLEU/ROUGE เป็นหลัก ซึ่งอาจไม่วัด faithfulness หรือ informativeness ได้ดี</li>
+<li>context ถูกนิยามเป็น profile figures มากกว่า retrieval จาก abstract, methodology, results หรือ cross-reference อื่น ๆ</li>
+</ul></div></div></div>
+</div></section>
+<section class="section section-dark" id="thesis"><div class="container">
+<div class="section-header"><span class="overline">Connection to My Research</span><h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2></div>
+<div class="synthesis-grid">
+<div class="synthesis-card"><h4>What I Borrow</h4><p>ใช้แนวคิด multimodal profile เป็นหลักฐานว่า context จาก paper เดียวกันช่วย scientific figure captioning ได้</p></div>
+<div class="synthesis-card"><h4>Where I Diverge</h4><p>thesis สามารถขยายจาก profile figures ไปเป็น multi-level document context retrieval เช่น section, mention paragraph, abstract และ table/figure cross-reference</p></div>
+<div class="synthesis-card"><h4>Open Questions</h4><p>ต้องวัดว่า context แบบ RAG ที่ retrieve จากเอกสารทั้งฉบับดีกว่า fixed profile figures หรือไม่ และช่วยลด hallucination ได้แค่ไหน</p></div>
+</div></div></section>
+<footer class="footer"><div class="container"><p>Analysis generated 2026-05-24 · arXiv:2506.06561</p></div></footer>
+</body>
+</html>

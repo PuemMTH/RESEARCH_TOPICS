@@ -1,0 +1,30 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{2pt}
+\definecolor{lightgreen}{rgb}{0.9, 1.0, 0.9}
+\definecolor{darkgreen}{rgb}{0.7, 0.9, 0.7}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+
+\begin{tabular}{@{}clllllll@{}}
+\toprule
+\multirow{2}{*}{\begin{tabular}[c]{@{}c@{}}Profile\\ \#\end{tabular}} & \multicolumn{4}{c}{BLEU}                                                                              & \multicolumn{3}{c}{ROUGE}                                                   \\ \cmidrule(l){2-8} 
+                                                                      & \multicolumn{1}{c}{B-1} & \multicolumn{1}{c}{B-2} & \multicolumn{1}{c}{B-3} & \multicolumn{1}{c}{B-4} & \multicolumn{1}{c}{R-1} & \multicolumn{1}{c}{R-2} & \multicolumn{1}{c}{R-L} \\ \midrule
+0                                                                     & .212                    & .124                    & .082                     & .055                    & .302                    & .113                    & .223                    \\
+1                                                                     & .289                    & .198                    & .145                    & .109                    & .390                    & .181                    & .312                    \\
+2                                                                     & .319                    & .215                    & .159                    & .121                    & .411                    & .198                    & .331                    \\
+3                                                                     & .332                    & .231                    & .175                    & .136                    & .424                    & .215                    & .345                    \\ \bottomrule
+\end{tabular}
+
+%\caption{Performance of LLMs on caption generation using different profile settings. The results show that using profile figures (especially all available ones) consistently improves performance across all models.}
+\vspace{-.5pc}
+%\caption{Performance of GPT-4o on caption generation with varying number of profile figures used.}
+\caption{GPT-4o performance with varying numbers of profile figures. Scores improve as more profiles are added, with the largest gain from 0 to 1 profile.}
+\vspace{-1pc}
+\label{tab:4o_profile-number}
+\end{table}
+

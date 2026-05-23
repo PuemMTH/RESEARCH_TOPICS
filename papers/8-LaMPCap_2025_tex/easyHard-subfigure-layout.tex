@@ -1,0 +1,51 @@
+% \renewcommand\thesubfigure{1\alph{subfigure}}
+
+
+\begin{figure*}[t]
+    \centering
+    % Top row
+    \begin{subfigure}{0.495\textwidth}
+        \renewcommand\thesubfigure{a-1}
+        \includegraphics[width=\textwidth]{figures/fig04_easyHard/01_easy_bleu4-v2.png}
+        \vspace{-1.7pc}
+        \caption{BLEU-4 (Context-Aligned Subset)}
+        \label{fig:top_left}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.495\textwidth}
+        \renewcommand\thesubfigure{b-1}
+        \includegraphics[width=\textwidth]{figures/fig04_easyHard/03_hard_bleu4-v2.png}
+        \vspace{-1.7pc}
+        \caption{BLEU-4 (Context-Misaligned Subset)}
+        \label{fig:top_right}
+    \end{subfigure}
+    
+    % Bottom row
+    \begin{subfigure}{0.495\textwidth}
+         \renewcommand\thesubfigure{a-2}
+        \includegraphics[width=\textwidth]{figures/fig04_easyHard/02_easy_rouge2-v4.png}
+        \vspace{-1.7pc}
+        \caption{ROUGE-2 (Context-Misaligned Subset)}
+        \label{fig:bottom_left}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.495\textwidth}
+        \renewcommand\thesubfigure{b-2}
+        \includegraphics[width=\textwidth]{figures/fig04_easyHard/04_hard_rouge2-v4.png}
+        \vspace{-1.7pc}
+        \caption{ROUGE-2 (Context-Misaligned Subset)}
+        \label{fig:bottom_right}
+    \end{subfigure}
+    %\caption{Comparison of the BLEU-4 and ROUGE-2 metrics on \dataset Context-Aligned and Context-Misaligned Subset across LLMs and profile configurations. Personalization is more effective when profile captions are highly similar to the target caption.
+    %\kenneth{(1) The subfigure on the bottom row might not need labels, (2) ROUGE-2's figures can reduce heights, (3) can we also reduce the padding empty space on the left/right of each subfigure.}\sam{updated!}
+    %}
+    \vspace{-1.5pc}
+    \caption{BLEU-4 and ROUGE-2 scores on \dataset's Context-Aligned and Context-Misaligned subsets, showing that personalization is most effective when profile caption are similar to the target (a-1, a-2).}
+    \vspace{-1pc}
+    \label{fig:all_figures}
+    %\vspace{-3mm}  % Reduce space
+\end{figure*}
+
+
+
+%    \caption{BLEU-4 and ROUGE-2 scores on \dataset's Context-Aligned and Context-Misaligned subsets across LLMs and profile settings. Personalization is more effective when at least one profile caption closely matches the target caption (a-1, a-2).}

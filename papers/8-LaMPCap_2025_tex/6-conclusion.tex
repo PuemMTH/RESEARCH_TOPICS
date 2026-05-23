@@ -1,0 +1,29 @@
+
+
+We introduced \dataset, a new dataset for personalized caption generation for scientific figures
+using multimodal profiles, and showed that profiles make captions more personalized across four language models. 
+Future work includes expanding profile components, exploring cross-domain generalization, and developing writer-centric evaluation metrics.
+We are also developing a caption writing assistant that generates personalized captions by analyzing users' local document context.
+
+%------------------- dead kitten --------------
+\begin{comment}
+
+%conducting human evaluations that focus on the writer's perspective.
+
+In conclusion, this paper proposes leveraging additional figure data (images, mentioning paragraphs, captions) from the same paper as a 'personalization profile' to enhance caption generation for target figures. Our automatic evaluation comparing generated outputs with original captions demonstrates that across four language models, performance improves with even a single profile figure's information, with further gains when additional profiles are provided. 
+
+We tried to conduct further analysis by comparing different settings, and we found that in the same type
+
+Through ablation studies, we identified that captions from profile figures contribute most significantly to generating captions similar to the original ones. This suggests commonalities in context and writing style across captions within the same paper, supporting the effectiveness of personalization profiles for scientific figure caption generation.
+
+\sam{Future work part not sure if we should write some ongoing project like "publishing the dataset", "developing the personalized caption writing system"}
+Future work could explore expanding the profile components, investigating cross-domain generalization, and conducting human evaluations to assess qualitative aspects beyond BLEU scores.
+
+We plan to release our \textbf{\dataset} dataset as the \textsc{SciCap} Challenge Dataset, inviting researchers to investigate methods for fine-tuning models that improve caption generation using our personalization approach.
+
+We are also developing a scientific figure caption writing system that implements our profile personalization approach. This system will allow researchers to upload their working papers, generating caption suggestions based on the context from their own documents, thereby providing AI assistance tailored to their specific writing style and research content.
+    
+\end{comment}
+
+
+

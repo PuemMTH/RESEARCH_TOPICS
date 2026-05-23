@@ -1,0 +1,27 @@
+In this section, we provide the prompt we used in \autoref{para:Experiment-Setups}. [IMG-TARGET] and [PARA-TARGET] represent encoded images and figure-mentioning paragraphs from target figures. [num\_profiles] indicates the number of profiles used, while [profile\_index] denotes a specific profile's index. [IMG-PROFILE], [PARA-PROFILE], and [CAP-PROFILE] correspond to encoded images, figure-mentioning paragraphs, and captions from profile figures, respectively.
+
+\paragraph{Prompt with No Profile.}
+The following prompt was used for the baseline condition without profile information:
+\begin{lstlisting}[basicstyle=\small\ttfamily, breaklines=true, frame=single]
+Your task is to generate a caption for the Target Figure. We will provide you with the image of the Target Figure, labeled as 'Target Figure Image', and the paragraphs that mention the Target Figure, labeled as 'Target Figure Paragraph(s)', from the same paper. 
+
+The elements for the Target Figure will be labeled as follows:
+- Target Figure Image:[IMG-TARGET], 
+- Target Figure Paragraph(s): [PARA-TARGET].
+\end{lstlisting}
+
+
+\paragraph{Prompt with Profile.}
+The following prompt was used with profile information:
+\begin{lstlisting}[basicstyle=\small\ttfamily, breaklines=true, frame=single]
+
+We will present you with the captions, images, and paragraphs referencing [num_profiles] scientific figures from the same paper. These elements will be labeled as follows: 
+- Profile Figure [profile_index]:
+-- Image [profile_index]: [IMG-PROFILE], 
+-- Paragraph [profile_index]: [PARA-PROFILE], 
+-- Caption [profile_index]: [CAP-PROFILE].
+
+Your task is to carefully analyze the content, tone, structure, and stylistic elements of these captions and associated text. Based on this analysis, generate a caption for the Target Figure, maintaining the same writing style. We will provide you with the image of the Target Figure, labeled as 'Target Figure Image', and the paragraphs that mention the Target Figure, labeled as 'Target Figure Paragraph(s)', from the same paper. The elements for the Target Figure will be labeled as follows:
+- Target Figure Image:[IMG-TARGET],
+- Target Figure Paragraph(s): [PARA-TARGET].
+\end{lstlisting}

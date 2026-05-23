@@ -1,0 +1,108 @@
+Figure captions are crucial for helping readers understand and remember a figure's key message. 
+Many models have been developed to generate these captions, helping authors compose better quality captions more easily.
+Yet, authors almost always need to revise generic AI-generated captions to match their writing style and the domain's style, highlighting the need for personalization.
+Despite language models' personalization (LaMP) advances, these technologies often focus on text-only settings and rarely address scenarios where both inputs and profiles are multimodal.
+This paper introduces \textbf{\dataset},\footnote{Data:~\href{https://github.com/Crowd-AI-Lab/lamp-cap}{https://github.com/Crowd-AI-Lab/lamp-cap}} a dataset for personalized figure caption generation with multimodal figure profiles.
+%\tong{Might it be helpful to briefly discuss why the above is non-trivial?}
+For each target figure, \dataset provides not only the needed inputs, such as figure images, but also up to three other figures from the same document---each with its image, caption, and figure-mentioning paragraphs---as a \textit{profile} to characterize the context.
+Experiments with four LLMs show that using profile information consistently helps generate captions closer to the original author-written ones.
+Ablation studies reveal that images in the profile are more helpful than figure-mentioning paragraphs, highlighting the advantage of using multimodal profiles over text-only ones.
+
+
+
+
+
+
+
+
+
+%Ablation studies show that images in the profile are more important than figure-mentioning paragraphs, highlighting the effectiveness of using multimodal profiles.
+%Ablation studies reveal that images in the profile are more important than figure-mentioning paragraphs, highlighting the effectiveness of using multimodal profiles.
+
+
+
+
+
+
+
+
+
+
+
+
+%--------------- dead kitten ----------------------
+\begin{comment}
+
+%that images in the profile play an important role in this performance boost. 
+%This work establishes a foundation for future research on personalized multimodal generation.
+
+
+
+
+
+
+
+
+
+
+Experiments with four LLMs show that using profile information consistently helps generate captions closer to the original author-written ones.
+Finally, this work establishes a foundation for personalized multimodal generation in scientific authoring.
+
+%The more profile information used, the more similar the generated outcome.
+
+
+
+
+
+
+
+
+
+
+More profile information further boosts this similarity.
+
+%Experiments across four large language models (LLMs) show that using profile information robustly helps LLMs generate captions closer to the original author-written captions.
+%More profile information further increases this similarity.
+
+
+
+
+
+
+
+
+
+
+A figure caption is crucial for helping readers understand and remember the figure's key message.
+Many NLP models have been developed to automatically generate captions, helping figure authors create better captions more easily.
+Yet, authors almost always need to revise AI-generated captions to match their writing style or the domain's style, motivating the need for personalization.
+Despite advances in language model personalization (LaMP), these technologies mainly focused on text-only settings and rarely addressed scenarios where both inputs and profiles are multimodal.
+This paper introduces \textbf{\dataset}, a dataset for personalized figure caption generation with multimodal figure profiles.
+
+
+
+
+
+
+
+
+
+
+\kenneth{------------------------KENNETH IS WORKING HERE---------------------}
+
+Personalization in large language models (LLMs) has become increasingly important, yet most efforts have centered on generic tasks like text generation or recommendation. In contrast, we study the novel and fundamentally important task of personalized figure-caption generation, that is a core challenge in scientific writing where existing models often produce generic captions misaligned with a users style. These generated captions often require significant manual rewriting, limiting their utility.
+To address these limitations, we develop new methods for user-specific personalized caption generation grounded in multimodal in-context learning and fine-tuning. 
+To support this important problem, we introduce the first benchmark for personalization figure-caption generation.
+% consisting of pairs with author-specific style supervision, sourced from scientific papers on arXiv.
+Our techniques leverage prior captions and contextual text from an author’s own work to generate personalized captions for new figures. 
+The experimental results demonstrate the effectiveness of our approach as it significantly improves stylistic alignment and reduces post-editing effort. 
+Finally, this work establishes a foundation for personalized multimodal generation in scientific authoring.
+
+\dataset
+
+% \begin{abstract}
+% Personalization of Large Language Models (LLMs) has recently become increasingly important with a wide range of text generation and recommendation applications. Despite the importance and recent progress, most existing works on personalized LLMs focus on simple tasks like short and long-form text generation or recommendation. Existing work on figure-caption generation have mainly focused on leveraging such large generative models for evaluation and generation of captions. Such generated captions are often very different in coherence and style from how the specific user typically writes captions in their papers, making them not very useful to the user, and often requiring a lot of editing or rewriting. In this work, we develop and study techniques for personalized figure-caption generation. We will investigate and develop novel multimodal in-context learning and fine-tuning techniques for generating user-specific captions for a figure created by a specific user. The first step will be to curate a benchmark dataset to support this task, and then use it for evaluation of our proposed techniques and state-of-the-art methods. We have a lot of experience collecting and curating figure-captions from papers on ArXiv, and can begin by curating such data for this new task of personalization figure-caption generation. For instance, since individuals often write captions in a certain style that is specific to that user, we can leverage the figure-captions in a paper written by the individual, and also investigate using the text in the paper that is associated to the figure-caption pair, which often goes into further detail. Then we can leverage our approach to generate a caption for a held-out test example for that specific individual. 
+% We can also explore approaches that leverage figure-caption pairs written by that individual from other papers they wrote, e.g., to learn the writing style of that user better to enhance personalized generation.
+% \end{abstract}
+    
+\end{comment}

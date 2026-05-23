@@ -1,0 +1,129 @@
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=.99\columnwidth]{figures/overview-figure-v202509182115.png}
+    \vspace{-1.5pc}
+    \caption{Overview of \dataset. For each target figure, the dataset provides multimodal \textit{inputs}---the figure image and figure-mentioning paragraphs---and a multimodal \textit{profile} of up to three other figures (\ie, profile figures) from the same paper, each with its image, caption, and related paragraphs. The model generates a caption for the target figure using the inputs and profile.}
+    \vspace{-1pc}
+    %Everything, including the new artrile, in \dataset is CC-licensed and releasable.
+    \label{fig:overview}
+\end{figure}
+
+Figures like bar charts or line charts are widely used by scientists, companies, and governments to communicate key insights~\cite{kim2021towards,farahani2023automatic}.
+Captions---text placed next to these figures---are known to be crucial for helping readers understand and remember the figure's message~\cite{tang2023vistext,kantharaj2022chart,meng-etal-2024-chartassistant}.
+%\kenneth{TODO Edward: Add citations}
+Many models have been developed to generate high-quality captions to help authors compose captions more easily~\cite{hsu-etal-2021-scicap-generating,huang-etal-2023-summaries,liu-etal-2023-matcha,masry2023unichart}.
+%\kenneth{TODO: Cite SciCap paper, INLG paper, and maybe more or two more recent SciCap paper}
+For example, the \textsc{SciCap} Challenges in 2023 and 2024 invited global teams to generate captions for scientific figures in arXiv papers~\cite{hsu2025large,kim2025multi}.
+%\kenneth{TODO: Cite our TACL paper and maybe 2024's Korean team's paper}
+Systems like \textsc{SciCapenter} also emerged to assist authors by providing AI-generated captions~\cite{10.1145/3613905.3650738}.
+Despite these advances, studies show that authors almost always need to revise generic AI-generated captions to match their style and the domain's style, with one participant noting, ``I need to revise the facade because this is \textit{not the right way} to present (the concept)''~\cite{ng2025understanding,ngunderstanding}.
+This highlights the need for personalized caption generation.
+
+
+
+Meanwhile, the rise of large language models (LLMs) has recently fueled interest in personalized text generation~\cite{zhang2024personalization,wozniak2024personalized}. 
+Benchmarks like \textsc{LaMP}~\cite{salemi-etal-2024-lamp} (\ul{\textsc{La}}nguage \ul{\textsc{M}}odels \ul{\textsc{P}}ersonalization) and \textsc{LongLaMP}~\cite{kumar2024longlamp} were created to study how LLMs can tailor text for specific contexts.
+%to push the boundaries tailor general-purpose text to specific contexts.
+However, most of these explorations focused on text-only settings, where both the input (used for generation) and profile (used for personalization) were text-based.
+%For example, \textsc{LaMP} covered tasks like news headline generation, email subject generation, and tweet paraphrasing---all using text-only inputs and profiles. 
+%\tong{Might it be helpful to mention a concrete real-world use case or example to motivate the multimodal case?} 
+How these text-only approaches apply to multimodal scenarios---such as figure caption generation---remains unclear.
+
+This paper introduces \textbf{\dataset}, a dataset for \textbf{personalized figure caption generation with multimodal figure profiles} (\S\ref{sec:dataset}).
+%\kenneth{TODO Kenneth: Maybe explain what does LaMP mean}
+%\dataset contains 123,456 scientific figures, each from a distinct arXiv paper.
+\dataset includes 110,828 target figures---scientific figures for which models aim to generate captions for---each from a distinct arXiv paper.
+%\tong{Might it be helpful to discuss why the above is non-trivial?}\kenneth{TODO Sam: update the number of target figures (of the whole dataset)}\sam{updated!}
+For each target figure, \dataset provides the needed inputs (\textit{source})---figure images and figure-mentioning paragraphs (\eg, ``Figure 3 shows...'')---along with up to three other figures from the same paper, each with its image, caption, and figure-mentioning paragraphs, as a \textit{profile} to capture context.
+%We task models with generating captions for a target figure using its image and figure-mentioning paragraphs (multimodal source) and a figure profile of source-caption pairs from the same arXiv paper (multimodal profile for personalization).
+Models are then tasked with generating captions for the target figure using its image and figure-mentioning paragraphs (multimodal \textit{source}), given a figure profile of source-caption pairs from the same paper (multimodal \textit{profile} for personalization).
+%\kenneth{TODO Kenneth: To fit in the personalized generation story, maybe emphasize that these are source-target pairs?}
+%\kenneth{``In this task, we require language 
+%Models generate captions for a target figure, given a profile of historical article-title pairs for an author.
+%For each target figure, \dataset provides the figure image and its figure-mentioning paragraphs (\eg, ``Figure 3 shows...''), along with a profile of up to three other figures from the same paper. Each profile figure includes its image, caption, and figure-mentioning paragraphs.
+%The profile captures the authors' writing style and the paper's domain, guiding caption generation.
+%Using \dataset, we tested zero-shot caption generation with four LLMs. 
+%Results showed that profile information consistently improved caption quality, making them closer to ground-truth captions (Section~\ref{sec:results}).
+%zero-shot --> hard to say
+We used \dataset to test caption generation with four LLMs and found that profile information consistently improved the similarity of generated captions to ground-truth captions (\S\ref{sec:results}).
+Ablation studies revealed that captions are the most critical profile element, followed by images, with figure-mentioning paragraphs being the least important (\S\ref{sec:ablation}).
+Our work provides a new benchmark for personalized text generation and demonstrates the effectiveness of using multimodal profiles beyond text-only approaches.
+
+
+
+
+
+
+
+%------------------ dead kitten ------------------
+\begin{comment}
+
+
+
+Using \dataset, we ran zero-shot caption generation experiments with four LLMs and found that profile information consistently improved caption quality, making them closer to the ground-truth captions (Section~\ref{sec:results}). 
+More profile information led to even closer matches. 
+Ablation studies show that among all profile elements, captions are the most important, while images are more important than figure-mentioning paragraphs (Section~\ref{sec:ablation}).
+Our results suggest that using multimodal profile information is a promising direction for personalized multimodal generation.\kenneth{TODO Kenneth: Needs some bigger closing.}
+
+
+
+%Ablation studies further showed that captions in the profile were the most important information--unsurprisingly, since captions are the target. 
+%More interestingly, images were more important than figure-mentioning paragraphs. 
+%Our results highlight the value of multimodal profile information, where visual context can enhance caption generation.
+
+
+
+
+
+
+
+
+
+%It is unclear how these approaches can be generalized to multimodal scenarios like figure caption generation.
+
+%\textsc{LaMP} included tasks like news headline generation, email subject generation, and tweet paraphrasing, where both inputs and profiles are purely text.
+%This text-only focus limits their ability to handle scenarios like figure captioning, where multimodal inputs (images and text) are essential.
+
+
+%highlighting the need for personalized caption generation.
+
+
+\kenneth{----------------KENNETH IS WORKING HERE-------------------------}
+
+Many models have been developed to generate captions, helping figure authors compose better captions more easily.
+Yet, authors almost always need to revise generic AI-generated captions to match their writing style and the domain's style, highlighting the need for personalization.
+Despite language model personalization (LaMP) advances, these technologies often focus on text-only settings and rarely address scenarios where both inputs and profiles are multimodal.
+This paper introduces \textbf{\dataset}, a dataset for personalized figure caption generation with multimodal figure profiles. 
+For each target figure, \dataset provides not only the needed inputs, such as figure images, but also up to three other figures from the same document---each with its image, caption, and figure-mentioning paragraphs---as a \textit{profile} to characterize the context.
+Experiments with four LLMs show that using profile information consistently helps generate captions closer to the original author-written ones.
+Ablation studies show that images in the profile are more helpful than figure-mentioning paragraphs, highlighting the advantage of using multimodal profiles over text-only ones.
+
+
+
+\cite{hsu-etal-2021-scicap-generating}
+
+\cite{ngunderstanding} %motivating paper
+
+Personalization of large language models (LLMs) has become increasingly critical across diverse applications in text generation and recommendation~\cite{zhang2024personalization,wozniak2024personalized}. However, prior work on personalized LLMs has predominantly focused on relatively simple tasks such as general-purpose text generation or content recommendation. In contrast, the task of personalized figure-caption generation \lee{as this is the key task, need to define it more precisely. what exactly do you consider "personalized" here? it's personalized as you use other figures/captions from the same paper to generate the caption?} that is fundamental to writing high-quality scientific papers, remains largely unexplored. Existing figure-captioning systems often fail to reflect the idiosyncratic writing style and preferences of individual users, generating captions that lack coherence and stylistic alignment with the user. This mismatch leads to significant post-editing overhead, limiting their practical utility.
+
+In this work, we introduce and investigate the novel problem of personalized figure-caption generation. In this problem, our goal is to generate captions that are stylistically aligned with how a given user typically describes figures in their scientific papers. \aashish{Since we only measure text similarity metrics, should we just reframe this as "utilizing stylistic alignemnt as a feature to improve overall caption quality"?}. We propose a framework of personalization methods grounded in multimodal in-context learning and fine-tuning technique (\ed{we didn't finetune, right?}) for this novel task. To support systematic study and future research in this fundamentally important problem, we construct the first benchmark dataset for personalized figure-caption generation, curated from scientific papers on arXiv. This dataset includes figure-caption pairs and their corresponding contextual text, linked to specific authors, enabling both user-level modeling and evaluation. \ed{This dataset comprises figure-caption pairs accompanied by their corresponding contextual text from the same paper, with each instance linked to individual authors, facilitating both user-specific generation and evaluation tasks.}
+
+Our approach conditions generation on prior captions and associated textual contexts written by the same author, allowing us to learn user-specific linguistic and stylistic patterns. We further explore retrieval-augmented strategies that utilize figure-caption pairs from the author’s previous publications to inform caption generation for new figures. Through rigorous experiments, we demonstrate the effectiveness of our techniques in generating coherent, personalized captions that significantly reduce the need for manual rewriting. This work opens a new direction in personalized multimodal generation and provides strong baselines for future research in this area.
+
+
+\paragraph{Summary of Main Contributions.} 
+The key contributions of this work are as follows:
+
+\begin{itemize}
+    \item \textbf{Problem:} We formalize the problem \lee{but no problem formulation presented?}of personalized figure-caption generation, and systematically investigate different approaches to solve it. \ed{Given figure caption pairs F and C ....}
+    
+    \item \textbf{Benchmark:} We introduce the NAME benchmark that consists of personalized figure-caption generation tasks. Our benchmark provides a comprehensive and diverse evaluation framework for personalized figure-caption generation. It is designed to be easily extended with new models, tasks, and evaluation metrics, among others. We make our benchmark environment publicly available for others to use and extend in their own research: 
+    [Link removed for anonymity].
+
+    
+    \item \textbf{Effectiveness:} We systematically investigate a wide variety of techniques for personalized figure-caption generation. The results highlight the importance of personalization for this task.
+\end{itemize}
+
+
+    
+\end{comment}

@@ -1,0 +1,57 @@
+% % Please add the following required packages to your document preamble:
+% % \usepackage{multirow}
+% \begin{table}
+% \footnotesize
+% \setlength{\tabcolsep}{2pt}
+% \centering
+% \begin{tabular}{@{}l@{\hspace{1pt}}l@{\hspace{1pt}}cccc@{\hspace{2pt}}ccc@{}}
+% \toprule
+% \multirow{2}{*}{\textbf{LLM}} & \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}Profile\\ Used\end{tabular}}} & \multicolumn{4}{c}{\textbf{BLEU}} & \multicolumn{3}{c}{\textbf{ROUGE}} \\ \cline{3-9} 
+%  &  & \textbf{B-1} & \textbf{B-2} & \textbf{B-3} & \textbf{B-4} & \textbf{R-1} & \textbf{R-2} & \textbf{R-L} \\ \hline
+% \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}GPT-\\ 4o\end{tabular}}} & \textbf{One} & .281 & .189 & .139 & .105 & .386 & .181 & .315 \\ \cline{2-9} 
+%  & \textbf{All} & .309 & .215 & .163 & .126 & .413 & .209 & .342 \\ \hline
+% \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}Llama \\ 4 Scout\end{tabular}}} & \textbf{One} & .373 & .295 & .248 & .212 & .482 & .303 & .425 \\ \cline{2-9} 
+%  & \textbf{All} & .419 & .343 & .294 & .258 & .524 & .349 & .468 \\ \hline
+% \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}Gemini\\ 2.5 Flash\end{tabular}}} & \textbf{One} & .372 & .293 & .245 & .211 & .483 & .303 & .426 \\ \cline{2-9} 
+%  & \textbf{All} & .419 & .342 & .294 & .257 & .526 & .354 & .473 \\ \hline
+% \multirow{2}{*}{\textbf{\begin{tabular}[c]{@{}l@{}}GPT-\\ 4o mini\end{tabular}}} & \textbf{One} & .287 & .204 & .157 & .123 & .399 & .209 & .328 \\ \cline{2-9} 
+%  & \textbf{All} & .318 & .236 & .188 & .153 & .430 & .245 & .360 \\ \hline
+% \end{tabular}
+% \caption{Performance comparison of LLMs with different profile settings. On data only with 2 or more profiles available (n=6284)}
+% \label{tab:main-result-2more}
+% \end{table}
+
+
+\begin{table}
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{2pt}
+\definecolor{lightgreen}{rgb}{0.9, 1.0, 0.9}
+\definecolor{darkgreen}{rgb}{0.7, 0.9, 0.7}
+\begin{tabular}{lcccccccc}
+\toprule
+\multirow{2}{*}{\textbf{LLM}} & \multirow{2}{*}{\textbf{Profile}} & \multicolumn{4}{c}{\textbf{BLEU}} & \multicolumn{3}{c}{\textbf{ROUGE}} \\ 
+\cmidrule(lr){3-6} \cmidrule(lr){7-9}
+ & \textbf{Used} & \textbf{B-1} & \textbf{B-2} & \textbf{B-3} & \textbf{B-4} & \textbf{R-1} & \textbf{R-2} & \textbf{R-L} \\ 
+\midrule
+\multirow{2}{*}{GPT-4o} 
+ & \cellcolor{lightgreen}One & \cellcolor{lightgreen}.281 & \cellcolor{lightgreen}.189 & \cellcolor{lightgreen}.139 & \cellcolor{lightgreen}.105 & \cellcolor{lightgreen}.386 & \cellcolor{lightgreen}.181 & \cellcolor{lightgreen}.315 \\ 
+ & \cellcolor{darkgreen}All & \cellcolor{darkgreen}.309 & \cellcolor{darkgreen}.215 & \cellcolor{darkgreen}.163 & \cellcolor{darkgreen}.126 & \cellcolor{darkgreen}.413 & \cellcolor{darkgreen}.209 & \cellcolor{darkgreen}.342 \\ 
+\midrule
+\multirow{2}{*}{Llama-4 Scout}
+ &  \cellcolor{lightgreen}One & \cellcolor{lightgreen}.373 & \cellcolor{lightgreen}.295 & \cellcolor{lightgreen}.248 & \cellcolor{lightgreen}.212 & \cellcolor{lightgreen}.482 & \cellcolor{lightgreen}.303 & \cellcolor{lightgreen}.425 \\ 
+ & \cellcolor{darkgreen}All & \cellcolor{darkgreen}.419 & \cellcolor{darkgreen}.343 & \cellcolor{darkgreen}.294 & \cellcolor{darkgreen}.258 & \cellcolor{darkgreen}.524 & \cellcolor{darkgreen}.349 & \cellcolor{darkgreen}.468 \\ 
+\midrule
+\multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Gemini-2.5\\Flash Preview\end{tabular}} 
+ & \cellcolor{lightgreen}One & \cellcolor{lightgreen}.372 & \cellcolor{lightgreen}.293 & \cellcolor{lightgreen}.245 & \cellcolor{lightgreen}.211 & \cellcolor{lightgreen}.483 & \cellcolor{lightgreen}.303 & \cellcolor{lightgreen}.426 \\ 
+ & \cellcolor{darkgreen}All & \cellcolor{darkgreen}.419 & \cellcolor{darkgreen}.342 & \cellcolor{darkgreen}.294 & \cellcolor{darkgreen}.257 & \cellcolor{darkgreen}.526 & \cellcolor{darkgreen}.354 & \cellcolor{darkgreen}.473 \\ 
+\midrule
+\multirow{2}{*}{GPT-4.1 Mini}  
+ & \cellcolor{lightgreen}One & \cellcolor{lightgreen}.287 & \cellcolor{lightgreen}.204 & \cellcolor{lightgreen}.157 & \cellcolor{lightgreen}.123 & \cellcolor{lightgreen}.399 & \cellcolor{lightgreen}.209 & \cellcolor{lightgreen}.328 \\ 
+ & \cellcolor{darkgreen}All & \cellcolor{darkgreen}.318 & \cellcolor{darkgreen}.236 & \cellcolor{darkgreen}.188 & \cellcolor{darkgreen}.153 & \cellcolor{darkgreen}.430 & \cellcolor{darkgreen}.245 & \cellcolor{darkgreen}.360 \\ 
+\bottomrule
+\end{tabular}
+\caption{Performance comparison of LLMs with different profile settings. On data only with 2 or more profiles available (n=6284)}
+\label{tab:main-result-2more}
+\end{table}

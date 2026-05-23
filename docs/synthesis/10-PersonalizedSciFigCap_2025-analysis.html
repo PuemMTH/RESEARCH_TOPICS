@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personalized Scientific Figure Caption Generation — Paper Analysis</title>
+<link rel="stylesheet" href="../../assets/summary.css">
+</head>
+<body>
+<nav class="top-nav"><div class="container"><a class="nav-brand" href="#">Research Notes</a><ul class="nav-links"><li><a href="#overview">Overview</a></li><li><a href="#methodology">Methodology</a></li><li><a href="#results">Results</a></li><li><a href="#thesis">Thesis</a></li></ul></div></nav>
+<section class="hero"><div class="container">
+<h1>Personalized Scientific Figure Caption Generation: An Empirical Study on Author-Specific Writing Style Transfer</h1>
+<p class="subtitle">Paper นี้ชี้ gap สำคัญมากสำหรับ thesis: profile/context ช่วยให้ caption เหมือน author style มากขึ้น แต่การ optimize เพื่อ style overlap อาจลด caption quality และ informativeness</p>
+<div class="hero-meta"><span class="badge">Kim, Lee, Choi, Jang</span><span class="badge coral">arXiv 2025</span><span class="badge"><a href="https://arxiv.org/abs/2509.25817" style="color:inherit">arXiv:2509.25817</a></span></div>
+</div></section>
+<section class="section" id="overview"><div class="container">
+<div class="section-header"><span class="overline">Abstract & Contributions</span><h2>ภาพรวม</h2></div>
+<div class="detail-block"><div class="detail-header"><span class="num">!</span><h3>ปัญหาที่ Paper นี้แก้</h3></div><div class="detail-body"><div class="key-box"><ul>
+<li>personalized figure captioning ต้องใช้ author profile data แต่ยังไม่ชัดว่าช่วย quality หรือแค่ทำให้ text คล้าย ground-truth</li>
+<li>caption จาก arXiv มีปัญหา low quality มากกว่า 50% ในงานก่อนหน้า จึงต้องมี quality filtering</li>
+<li>BLEU/ROUGE อาจวัด style imitation ได้ แต่ไม่พอสำหรับ informativeness และ factual quality</li>
+</ul></div></div></div>
+<div class="detail-block"><div class="detail-header"><span class="num">*</span><h3>Key Contributions</h3></div><div class="detail-body"><ul>
+<li><strong>Quality evaluator:</strong> fine-tune Qwen-2.5-VL-3B ให้ประเมิน caption quality จาก score 1-6 โดยเทียบกับ GPT-4.1 labels</li>
+<li><strong>Personalized generator:</strong> fine-tune Qwen-2.5-VL-7B ด้วย target figure + paragraph + mention + OCR + profile data</li>
+<li><strong>Quality-aware generation:</strong> ทดลองให้โมเดล predict quality score ก่อนสร้าง caption เพื่อควบคุม trade-off ระหว่าง style กับ quality</li>
+</ul></div></div>
+</div></section>
+<section class="section section-alt" id="methodology"><div class="container">
+<div class="section-header"><span class="overline">How It Works</span><h2>Methodology</h2></div>
+<div class="detail-block"><div class="detail-header"><span class="num">1</span><h3>Quality Filtering</h3></div><div class="detail-body"><p>ผู้เขียนใช้ GPT-4.1 สร้าง synthetic quality assessment labels จำนวน 3,000 ตัวอย่าง จากนั้น fine-tune Qwen-2.5-VL-3B เป็น quality evaluator ได้ Spearman correlation 0.759 และ QWK 0.754 บน validation set</p></div></div>
+<div class="detail-block"><div class="detail-header"><span class="num">2</span><h3>Personalized Caption Generator</h3></div><div class="detail-body"><p>generator คือ Qwen-2.5-VL-7B รับ target figure, explanatory paragraph, textual mentions, OCR tokens และ profile data จาก paper เดียวกัน แล้ว fine-tune บน LaMP-Cap โดยใช้เฉพาะ sample ที่ quality score >= 3</p></div></div>
+</div></section>
+<section class="section" id="results"><div class="container">
+<div class="section-header"><span class="overline">Experiments</span><h2>Results & Benchmarks</h2></div>
+<div class="detail-block"><div class="detail-body">
+<table class="comparison-table"><thead><tr><th>Finding</th><th>Key Number</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Qwen2.5-VL-7B fine-tuned ชนะ Gemini-2.5-flash บน full test</td><td>BLEU-4 0.304 vs 0.278, ROUGE-L 0.555 vs 0.540</td><td>open-source VLM fine-tuning feasible สำหรับ thesis</td></tr>
+<tr><td>เพิ่ม paragraph จาก F+C baseline</td><td>BLEU-4 0.123 เป็น 0.295, ROUGE-L 0.355 เป็น 0.545</td><td>document text context สำคัญมากกว่าที่ image-only baseline ให้ได้</td></tr>
+<tr><td>mentions และ OCR เพิ่มผลอีกเล็กน้อย</td><td>full config ได้ BLEU-4 0.304, ROUGE-L 0.555</td><td>context extraction ควรรวม mention/OCR ไม่ใช่ paragraph อย่างเดียว</td></tr>
+<tr><td>Forced-Q6 เพิ่ม quality score แต่ ROUGE-L อาจลด</td><td>ชี้ metric conflict</td><td>ต้องมี evaluation แยก style, quality, faithfulness</td></tr>
+</tbody></table>
+</div></div>
+</div></section>
+<section class="section section-alt" id="limitations"><div class="container">
+<div class="section-header"><span class="overline">Gaps & Future Work</span><h2>ข้อจำกัดและทิศทางต่อไป</h2></div>
+<div class="detail-block"><div class="detail-body"><div class="key-box amber"><ul>
+<li>การ optimize BLEU/ROUGE กับ author captions อาจทำให้โมเดลเลียนแบบ caption ที่ไม่ informative</li>
+<li>quality evaluator พึ่ง synthetic labels จาก GPT-4.1 จึงต้องระวัง bias ของ judge model</li>
+<li>ยังไม่ใช่ end-to-end PDF pipeline เพราะใช้ metadata/context จาก LaMP-Cap มากกว่าการ parse เอกสารเอง</li>
+</ul></div></div></div>
+</div></section>
+<section class="section section-dark" id="thesis"><div class="container">
+<div class="section-header"><span class="overline">Connection to My Research</span><h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2></div>
+<div class="synthesis-grid">
+<div class="synthesis-card"><h4>What I Borrow</h4><p>ใช้ component set เป็น baseline: image, paragraph, mention, OCR, profile context และ quality filtering ก่อน generation</p></div>
+<div class="synthesis-card"><h4>Where I Diverge</h4><p>thesis สามารถเพิ่ม document-layout parsing และ RAG เพื่อหา context เองจาก PDF แทนการพึ่ง dataset fields ที่ curated แล้ว</p></div>
+<div class="synthesis-card"><h4>Open Questions</h4><p>ควรออกแบบ metric ที่แยก context relevance, visual faithfulness และ academic informativeness เพื่อไม่ให้ ROUGE/BLEU บิดเป้าหมาย</p></div>
+</div></div></section>
+<footer class="footer"><div class="container"><p>Analysis generated 2026-05-24 · arXiv:2509.25817</p></div></footer>
+</body>
+</html>

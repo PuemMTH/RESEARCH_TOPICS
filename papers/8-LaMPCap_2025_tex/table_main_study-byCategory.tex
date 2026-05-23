@@ -1,0 +1,23 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[t]
+\centering
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{2pt}
+\begin{tabular}{cccccccc}
+\hline
+\multirow{2}{*}{\textbf{Paper Category}} & \multicolumn{4}{c}{\textbf{BLEU}} & \multicolumn{3}{c}{\textbf{ROUGE}} \\ \cline{2-8} 
+ & \textbf{B-1} & \textbf{B-2} & \textbf{B-3} & \textbf{B-4} & \textbf{R-1} & \textbf{R-2} & \textbf{R-L} \\ \hline
+\begin{tabular}[c]{@{}c@{}}Physics \\ (n=73,452)\end{tabular} & .300 & .212 & .164 & .132 & .414 & .215 & .333 \\ \hline
+\begin{tabular}[c]{@{}c@{}}Comp Sci\\ (n=56,988)\end{tabular} & .312 & .236 & .192 & .160 & .413 & .238 & .365 \\ \hline
+\begin{tabular}[c]{@{}c@{}}Maths\\ (n=6,120)\end{tabular} & .310 & .236 & .195 & .163 & .405 & .238 & .361 \\ \hline
+\begin{tabular}[c]{@{}c@{}}EE and SS\\ (n = 4,092)\end{tabular} & .326 & .249 & .205 & .172 & .425 & .253 & .378 \\ \hline
+\begin{tabular}[c]{@{}c@{}}Stats\\ (n=3,228)\end{tabular} & \multicolumn{1}{l}{.302} & \multicolumn{1}{l}{.224} & \multicolumn{1}{l}{.181} & \multicolumn{1}{l}{.151} & \multicolumn{1}{l}{.414} & \multicolumn{1}{l}{.231} & \multicolumn{1}{l}{.349} \\ \hline
+\begin{tabular}[c]{@{}c@{}}Quant Bio \\ (n=1,500)\end{tabular} & \multicolumn{1}{l}{.289} & \multicolumn{1}{l}{.208} & \multicolumn{1}{l}{.166} & \multicolumn{1}{l}{.135} & \multicolumn{1}{l}{.403} & \multicolumn{1}{l}{.215} & \multicolumn{1}{l}{.329} \\ \hline
+\begin{tabular}[c]{@{}c@{}}Quant Fina \\ (n=900)\end{tabular} & \multicolumn{1}{l}{.333} & \multicolumn{1}{l}{.255} & \multicolumn{1}{l}{.210} & \multicolumn{1}{l}{.176} & \multicolumn{1}{l}{.433} & \multicolumn{1}{l}{.256} & \multicolumn{1}{l}{.376} \\ \hline
+Econ (n=169) & \multicolumn{1}{l}{.376} & \multicolumn{1}{l}{.293} & \multicolumn{1}{l}{.244} & \multicolumn{1}{l}{.203} & \multicolumn{1}{l}{.488} & \multicolumn{1}{l}{.302} & \multicolumn{1}{l}{.425} \\ \hline
+\end{tabular}
+\caption{Performance comparison of LLMs among different paper categories.}
+\label{tab:main-result-byCategory}
+\end{table}

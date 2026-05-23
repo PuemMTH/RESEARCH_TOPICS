@@ -1,0 +1,21 @@
+\begin{table}[t]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{1pt}
+\definecolor{lightgreen}{rgb}{0.9, 1.0, 0.9}
+\definecolor{darkgreen}{rgb}{0.7, 0.9, 0.7}
+
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Model}                                                      & \textbf{No-Profile} & \cellcolor{lightgreen}\textbf{1-Profile} & \cellcolor{darkgreen}\textbf{All-Profile} \\ \midrule
+GPT-4o                                                              & .844                & \cellcolor{lightgreen}.860               & \cellcolor{darkgreen}.863                 \\ \midrule
+Llama-4 Scout                                                       & .856                & \cellcolor{lightgreen}.873               & \cellcolor{darkgreen}.876                 \\ \midrule
+\begin{tabular}[c]{@{}l@{}}Gemini-2.5 \\ Flash Preview\end{tabular} & .865                & \cellcolor{lightgreen}.874               & \cellcolor{darkgreen}.877                 \\ \midrule
+GPT-4.1 Mini                                                        & .844                & \cellcolor{lightgreen}.860               & \cellcolor{darkgreen}.863                 \\ \bottomrule
+\end{tabular}
+
+
+\caption{Performance of various LLMs on figure caption generation, as measured by BERTScore.}
+\label{tab:BERTScore_LLM}
+\end{table}

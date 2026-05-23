@@ -1,0 +1,85 @@
+We acknowledge several limitations in this work.
+
+\begin{itemize}
+
+\item 
+First, our approach assumes that each figure has profile figures from the same arXiv paper, but this is not always true, especially for papers with only one figure, which we excluded.
+This assumption also limits the method's usefulness in early-stage writing, when context for personalization is sparse---a classic example of the ``cold start'' problem in personalization.
+%, which depends on prior user input.
+However, because authors often write captions late in the process~\cite{ng2025understanding}, our method is well-suited to assist at this critical stage.
+
+
+%This assumption also limits practical use in early-stage paper writing, where context for personalization may be sparse. 
+%\sam{ADD-START}
+%Still, since authors often write captions late in the process~\cite{ng2025understanding}, our method can assist at this critical stage. 
+%This limitation reflects the well-known 'cold start' problem in personalization, which requires prior user input.
+%\sam{ADD-END}
+
+\item 
+%\sam{ADD-START}
+Second, our work only used basic figure selection strategies, such as random choice or matching by the same type, rather than more advanced strategies to further optimize the outcomes.
+Our primary goal was to introduce the concept of the dataset and to encourage further research on personalized text generation with multi-modal profiles by demonstrating that even basic strategies yield promising results.
+%\sam{ADD-END}
+
+\item 
+Third, we did not include individual author information in personalization profiles because most papers are co-authored, and different figures and captions may be written by different authors.
+Although author-based personalization could be explored using their past works, the collaborative nature of academic writing makes this difficult.
+
+\item 
+Fourth, we recognize the risk of data contamination when testing LLMs on public datasets. 
+Personalized text generation tasks, including our own, have historically relied on existing datasets as their data source. 
+For this study, we built \dataset on the well-established and widely used \textsc{SciCap} Challenge dataset for figure caption generation. 
+Because this dataset is derived from publicly available arXiv papers, eliminating contamination risks entirely is difficult.
+That said, our work is the first to explore multimodal profiles for scientific figure captioning, and we believe the trade-off is justified. 
+Supporting this view, the \textsc{SciCap} Challenge's human evaluation paper~\cite{hsu2025large} ran a small study on newly published arXiv papers to test contamination effects. 
+Their findings showed that model preference rankings remained consistent on unseen data, suggesting contamination does not undermine the validity of results.
+
+
+\item 
+%Finally, our automatic evaluation focused on caption similarity to original captions, which does not guarantee caption quality. 
+%High similarity suggests profiles capture context and style, but it does not ensure the captions are useful for readers. 
+%Future work should include human evaluation to assess caption quality and usefulness.
+Finally, our automatic evaluation focused on caption similarity to original captions, which does not guarantee caption quality.
+As suggested by our human evaluation results (\S\ref{sec:humanEval}),
+high similarity indicates that profiles capture context and style, but it does not ensure the captions are useful for readers.
+Future work could additionally explore automatic evaluation approaches, such as LLMs-as-judges methods, to assess caption quality and usefulness more meaningfully.
+Scaling the reliable but expensive human evaluation is also an interesting direction.
+
+\end{itemize}
+
+%----------------- dead kitten ------------
+\begin{comment}
+
+
+%\sam{ADD-START}
+Fourth, we acknowledge the risk of data contamination when testing LLMs on public datasets.
+We chose to build on the well-established \textsc{SciCap} Challenge dataset because it is still valued dataset when working on this caption generation task. 
+We also note that personalization tasks often inherently rely on public data; for example, LaMP-5 requires an author's previous papers as input~\cite{salemi2023lamp}.
+Given that academic work is widely accessible, distinguishing a model's "true generative" ability from its capacity to "recall" training data remains a difficult.
+Since this is the first study using multi-modal profiles for scientific figure captioning, we believe the trade-off is justified. 
+To address data contamination concerns, the \textsc{SciCap} Challenge's human evaluation paper~\cite{hsu2025large} included a small study using newly published arXiv papers. 
+Their results showed that model preference rankings from the dataset still held for the unseen data.
+%\sam{ADD-END}
+
+
+
+Fourth, despite using a smaller LLM (GPT-4.1 Mini) to reduce data contamination risks, the use of published data (\textsc{SciCap} Challenge dataset) means some risk remains.
+
+
+%\kenneth{1. Did not use author information; also don't know who wrote this. make this harder to use for newer papers 2. when used this technology, we assume you have some profile, which is not always true (echo to data) 3. data comtamidation---user this is always hard. BUt we did try small models.}
+%\ryan{agree!! let's check how LaMP wrote this, to help with it, the previous version as just a template}
+
+In this paper, we acknowledged several limitations. 
+First, we did not incorporate author information in our personalization profiles. In reality, most papers were wrote by multiple authors, and it may be true that in the same paper different figures could be created by different authors, and also the accompany captions and paragraphs could be wrote by not same authors.
+
+Also, in our personalization profile, it assume that each paper must have profile available, but it might not be always case for the paper without profile (for example, as mentioned in~\autoref{sec:dataset}, we cleaned out ample amount of papers that with only 1 figure in the dataset)
+
+Third, we created the \textbf{\dataset} while we attempted to mitigate data contamination concerns by including smaller language models in our experiments, this remains a challenge for any generation task using pre-trained models on scientific literature.
+
+
+Our evaluation focused on similarity to original captions rather than caption quality. While high similarity suggests the profiles capture relevant context and writing style, it does not necessarily indicate improved caption utility for readers. A comprehensive human evaluation assessing caption quality and helpfulness would complement our automatic metrics and represents an important direction for future work.
+
+
+% Since December 2023, a "Limitations" section has been required for all papers submitted to ACL Rolling Review (ARR). This section should be placed at the end of the paper, before the references. The "Limitations" section (along with, optionally, a section for ethical considerations) may be up to one page and will not count toward the final page limit. Note that these files may be used by venues that do not rely on ARR so it is recommended to verify the requirement of a "Limitations" section and other criteria with the venue in question.
+    
+\end{comment}

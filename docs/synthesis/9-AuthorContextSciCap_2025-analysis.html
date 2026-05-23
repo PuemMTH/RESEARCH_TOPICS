@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Author-Specific Context for Scientific Figure Caption Generation — Paper Analysis</title>
+<link rel="stylesheet" href="../../assets/summary.css">
+</head>
+<body>
+<nav class="top-nav"><div class="container"><a class="nav-brand" href="#">Research Notes</a><ul class="nav-links"><li><a href="#overview">Overview</a></li><li><a href="#methodology">Methodology</a></li><li><a href="#results">Results</a></li><li><a href="#thesis">Thesis</a></li></ul></div></nav>
+<section class="hero"><div class="container">
+<h1>Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge</h1>
+<p class="subtitle">งานนี้เป็นตัวอย่างล่าสุดที่เอา LaMP-Cap ไปใช้จริงใน challenge โดยผสม context filtering, prompt optimization และ profile-informed refinement เพื่อแก้ปัญหา caption ที่ยาว หลุดบริบท หรือไม่ตรง writing style</p>
+<div class="hero-meta"><span class="badge">Timklaypachara, Chiewhawan, Lekuthai, Achakulvisut</span><span class="badge coral">arXiv 2025</span><span class="badge"><a href="https://arxiv.org/abs/2510.07993" style="color:inherit">arXiv:2510.07993</a></span></div>
+</div></section>
+<section class="section" id="overview"><div class="container">
+<div class="section-header"><span class="overline">Abstract & Contributions</span><h2>ภาพรวม</h2></div>
+<div class="detail-block"><div class="detail-header"><span class="num">!</span><h3>ปัญหาที่ Paper นี้แก้</h3></div><div class="detail-body"><div class="key-box"><ul>
+<li>zero-shot prompting ด้วย paragraph information สร้าง caption ที่มี irrelevant content และ hallucination</li>
+<li>scientific caption ต้อง balance ระหว่าง factual accuracy, conciseness และ author-specific style</li>
+<li>paper หลาย domain ต้องใช้ prompt ที่ปรับตาม category ไม่ใช่ template เดียวสำหรับทุก field</li>
+</ul></div></div></div>
+<div class="detail-block"><div class="detail-header"><span class="num">*</span><h3>Key Contributions</h3></div><div class="detail-body"><ul>
+<li><strong>Two-stage pipeline:</strong> Stage 1 ทำ content-grounded caption generation, Stage 2 ทำ profile-informed stylistic refinement</li>
+<li><strong>Prompt optimization:</strong> ใช้ DSPy MIPROv2 และ SIMBA สร้าง category-focused prompts</li>
+<li><strong>Candidate selection:</strong> ใช้ Gemini-2.5-flash เป็น reranker เพื่อเลือก caption ที่ precision และ style ดีขึ้น</li>
+</ul></div></div>
+</div></section>
+<section class="section section-alt" id="methodology"><div class="container">
+<div class="section-header"><span class="overline">How It Works</span><h2>Methodology</h2></div>
+<div class="detail-block"><div class="detail-header"><span class="num">1</span><h3>Stage 1: Content-Grounded Generation</h3></div><div class="detail-body"><p>เริ่มจาก sentence-level filtering เพื่อลด noise ใน paragraph จากนั้นใช้ category-focused prompt optimization สำหรับ paper category ต่าง ๆ เช่น CS, Math, Physics, Statistics และใช้ candidate selection เมื่อ paper มีหลาย category</p></div></div>
+<div class="detail-block"><div class="detail-header"><span class="num">2</span><h3>Stage 2: Profile-Informed Refinement</h3></div><div class="detail-body"><p>นำ caption จาก Stage 1 ไปปรับด้วย few-shot prompting จาก profile figures โดย enforce ความยาวประมาณ ±15% เพื่อให้ caption กระชับ และใช้ profile captions เป็น structural/style reference</p></div></div>
+</div></section>
+<section class="section" id="results"><div class="container">
+<div class="section-header"><span class="overline">Experiments</span><h2>Results & Benchmarks</h2></div>
+<div class="detail-block"><div class="detail-body">
+<table class="comparison-table"><thead><tr><th>Experiment</th><th>Result</th><th>Interpretation</th></tr></thead><tbody>
+<tr><td>Filtered paragraph + prompt optimization</td><td>ROUGE recall เพิ่มขึ้น เช่น ROUGE-1 จาก 0.4867 เป็น 0.5443</td><td>filtering ช่วยเก็บ content coverage แต่ต้องระวัง precision ลด</td></tr>
+<tr><td>Category-focused prompt</td><td>ROUGE-1 recall +8.3% และ BLEU-4 ลดน้อยกว่า non-category-focused</td><td>domain/category prompt ควบคุม verbosity ได้ดีกว่า prompt ทั่วไป</td></tr>
+<tr><td>Gemini reranking</td><td>ROUGE precision เพิ่มประมาณ 3.46-4.43%</td><td>reranker ช่วยเลือก caption ที่ precise และ stylistically consistent</td></tr>
+<tr><td>Profile refinement</td><td>BLEU เพิ่ม 40-48% และ ROUGE precision เพิ่ม 25-27%</td><td>author-specific context มีผลชัดกับ style และความกระชับ</td></tr>
+</tbody></table>
+</div></div>
+</div></section>
+<section class="section section-alt" id="limitations"><div class="container">
+<div class="section-header"><span class="overline">Gaps & Future Work</span><h2>ข้อจำกัดและทิศทางต่อไป</h2></div>
+<div class="detail-block"><div class="detail-body"><div class="key-box amber"><ul>
+<li>pipeline พึ่งหลาย component เช่น DSPy optimizer, Gemini reranker และ profile prompting ทำให้ reproducibility/cost เป็นประเด็น</li>
+<li>metric หลักยังเป็น BLEU/ROUGE ซึ่งอาจให้รางวัลกับ style overlap มากกว่าความถูกต้องเชิงภาพ</li>
+<li>context filtering ยังเน้น paragraph/profile มากกว่า layout-aware document context จาก PDF ทั้งฉบับ</li>
+</ul></div></div></div>
+</div></section>
+<section class="section section-dark" id="thesis"><div class="container">
+<div class="section-header"><span class="overline">Connection to My Research</span><h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2></div>
+<div class="synthesis-grid">
+<div class="synthesis-card"><h4>What I Borrow</h4><p>แนวคิด staged pipeline: filter context ก่อน generate แล้วค่อย refine/evaluate เป็น pattern ที่เหมาะกับ thesis</p></div>
+<div class="synthesis-card"><h4>Where I Diverge</h4><p>thesis ควรแทน manual/category prompt pipeline ด้วย retrieval module ที่เลือก context จากเอกสารอัตโนมัติและอธิบายเหตุผลได้</p></div>
+<div class="synthesis-card"><h4>Open Questions</h4><p>จะวัด hallucination และ faithfulness ต่อภาพจริงได้อย่างไร ถ้า BLEU/ROUGE เพิ่มแต่ caption อาจยังมี content ที่ผิด</p></div>
+</div></div></section>
+<footer class="footer"><div class="container"><p>Analysis generated 2026-05-24 · arXiv:2510.07993</p></div></footer>
+</body>
+</html>
