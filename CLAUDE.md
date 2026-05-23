@@ -53,14 +53,7 @@ Never place content files in the project root (only `CLAUDE.md`, `AGENTS.md`, `.
 
 Use lowercase, hyphenated names for documentation files and directories (e.g., `research-summary.md`). Keep files focused: one topic per file.
 
-## Build & Test
-
-No tooling configured yet. When a language runtime is added, document commands here. Prefer `make test`, `make lint`, `make build` from the repo root.
-
 ## Commit Style
 
 Concise imperative messages: `Add topic index`, `Document dataset workflow`. Commit directly to `main`.
 
-## Security
-
-Do not commit secrets, tokens, private keys, large raw datasets, or local machine paths. Use `.gitignore` for caches, virtual environments, and generated outputs.
