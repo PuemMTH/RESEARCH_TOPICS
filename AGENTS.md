@@ -2,15 +2,28 @@
 
 ## Project Structure & Module Organization
 
-This repository is currently a fresh scaffold. Keep the structure simple and predictable as content is added:
-
-- `src/` for source code, scripts, or reusable modules.
-- `tests/` for automated tests that mirror `src/` layout.
-- `docs/` for research notes, design decisions, and contributor-facing documentation.
-- `data/` for small sample inputs only. Do not commit large datasets or generated bulk artifacts.
-- `assets/` for static images, diagrams, or other media used by documentation or demos.
+- `papers/` — academic papers and HTML summaries. Naming: `<N>-<ShortTitle>_<Year>.<ext>` (PDF + HTML pairs).
+- `docs/` — research notes, design decisions, and contributor-facing documentation.
+- `src/` — source code, scripts, or reusable modules.
+- `tests/` — automated tests that mirror `src/` layout.
+- `data/` — small sample inputs only. Do not commit large datasets or generated bulk artifacts.
+- `assets/` — static images, diagrams, or other media used by documentation or demos.
 
 When adding a new subsystem, include a short `README.md` in that directory if setup or usage is not obvious.
+
+## File Placement Rules
+
+Before creating or saving any file, identify its purpose and route it to the correct folder:
+
+| Purpose | Folder |
+|---|---|
+| Academic paper (PDF, HTML summary) | `papers/` |
+| Research notes, literature reviews, synthesis | `docs/` |
+| Scripts, tools, automation | `src/` |
+| Images, diagrams, static media | `assets/` |
+| Sample datasets, reference inputs | `data/` |
+
+If the target folder does not exist, create it before writing the file. Never place content files in the project root.
 
 ## Build, Test, and Development Commands
 
