@@ -1,0 +1,227 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{ink}{HTML}{141413}
+\definecolor{muted}{HTML}{6c6a64}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{สรุปงานวิจัยที่เกี่ยวข้อง}}\\[6pt]
+  {\large การสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการ}\\[4pt]
+  {\color{muted}\small Figure \& Chart Captioning in Scientific Documents}
+\end{center}
+
+\noindent\rule{\textwidth}{1.5pt}
+
+\vspace{16pt}
+
+%% ─────────────────────────────────────────────────────────────────
+\section*{ภาพรวม (Overview)}
+
+งานวิจัยที่รวบรวมไว้ครอบคลุมพัฒนาการของการสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการ
+ตั้งแต่การสร้างชุดข้อมูล (2021) จนถึงการใช้ Multimodal LLM แบบร่วมมือ (2025)
+โดยสามารถจัดกลุ่มได้เป็น 3 แนวทางหลัก:
+\textbf{(1)} การสร้างชุดข้อมูลขนาดใหญ่,
+\textbf{(2)} การแปลง plot เป็นข้อความเพื่อ reasoning, และ
+\textbf{(3)} การใช้ LLM แบบหลายตัวร่วมกัน
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.5pt}
+
+%% ─────────────────────────────────────────────────────────────────
+\section*{Paper 1 — SciCap (2021)}
+
+\noindent{\color{coral}\textbf{ชื่อ:}} Generating Captions for Scientific Figures\\
+\noindent{\color{muted}\small Hsu, Giles, Huang · Pennsylvania State University · arXiv:2110.11624}
+
+\vspace{8pt}
+\setlength{\parindent}{2em}
+งานนี้เสนอ \textbf{SciCap} ซึ่งเป็นชุดข้อมูลขนาดใหญ่สำหรับการสร้างคำอธิบาย
+รูปภาพในบทความวิชาการ โดยดึงข้อมูลจากบทความ arXiv สาขา Computer Science
+ที่ตีพิมพ์ระหว่างปี 2010--2020 รวมกว่า 290,000 บทความ
+ผ่านกระบวนการ pre-processing ได้แก่
+การจำแนกประเภทรูปภาพ, การระบุ sub-figure, การ normalize ข้อความ
+และการเลือก caption text ทำให้ได้รูปภาพกว่า \textbf{2 ล้านรูป}
+
+\vspace{6pt}
+\noindent\textbf{จุดเด่น:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item ชุดข้อมูลแรกในระดับ large-scale สำหรับ scientific figure captioning
+  \item มีระบบจำแนก figure type — graph plot เป็น type หลัก (19.2\%)
+  \item สร้าง baseline model สำหรับ graph plot captioning
+  \item เปิดเผยทั้งโอกาสและความท้าทายของงานนี้
+\end{itemize}
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─────────────────────────────────────────────────────────────────
+\section*{Paper 2 — SciCap+ (2023)}
+
+\noindent{\color{coral}\textbf{ชื่อ:}} A Knowledge Augmented Dataset to Study the Challenges of Scientific Figure Captioning\\
+\noindent{\color{muted}\small arXiv:2306.03491}
+
+\vspace{8pt}
+\setlength{\parindent}{2em}
+\textbf{SciCap+} ต่อยอดจาก SciCap โดยเพิ่ม \textbf{knowledge augmentation}
+เข้าไปในชุดข้อมูล เพื่อศึกษาความท้าทายของการสร้างคำอธิบาย
+รูปภาพวิทยาศาสตร์ให้ลึกขึ้น งานนี้ขยายขอบเขตการเข้าใจเอกสารวิชาการ
+ออกไปเกินกว่าการวิเคราะห์ข้อความล้วน โดยรวมบริบทจากเนื้อหาของบทความเข้ามาด้วย
+
+\vspace{6pt}
+\noindent\textbf{จุดเด่น:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item เพิ่ม knowledge context จากเนื้อหาบทความให้แต่ละรูปภาพ
+  \item ศึกษาความท้าทายที่ชุดข้อมูลดั้งเดิม (SciCap) ยังไม่ครอบคลุม
+  \item เหมาะสำหรับการพัฒนา context-aware captioning
+\end{itemize}
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─────────────────────────────────────────────────────────────────
+\section*{Paper 3 — DePlot (2023)}
+
+\noindent{\color{coral}\textbf{ชื่อ:}} One-shot Visual Language Reasoning by Plot-to-Table Translation\\
+\noindent{\color{muted}\small Liu et al. · Google DeepMind · arXiv:2212.10505}
+
+\vspace{8pt}
+\setlength{\parindent}{2em}
+\textbf{DePlot} นำเสนอแนวทาง few-shot สำหรับ visual language reasoning
+โดยแยกปัญหาออกเป็น 2 ขั้นตอน: \textbf{(1)} แปลง plot/chart เป็นตารางข้อความ
+(plot-to-table translation) และ \textbf{(2)} ใช้ LLM reasoning บนข้อความที่ได้
+โมดูล DePlot ทำหน้าที่แปลง modality โดยเฉพาะ
+แล้วส่งผลลัพธ์ไปยัง LLM ใด ๆ แบบ plug-and-play
+
+\vspace{6pt}
+\noindent\textbf{ผลลัพธ์:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item DePlot + LLM (one-shot) ดีกว่า SOTA ที่ fine-tune บนข้อมูลหลายพัน samples
+  \item \textbf{+29.4\%} บน ChartQA (human-written queries)
+  \item ไม่ต้องการ fine-tuning บน downstream task — ใช้ได้ทันที
+\end{itemize}
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─────────────────────────────────────────────────────────────────
+\section*{Paper 4 — MLBCAP (2025)}
+
+\noindent{\color{coral}\textbf{ชื่อ:}} Multi-LLM Collaborative Caption Generation in Scientific Documents\\
+\noindent{\color{muted}\small Kim, Lee, Choi, Hsu et al. · Teamreboott / Penn State / Adobe Research · arXiv:2501.02552}
+
+\vspace{8pt}
+\setlength{\parindent}{2em}
+\textbf{MLBCAP} เสนอ framework ที่ใช้ LLM หลายตัวทำงานร่วมกัน
+เพื่อสร้าง caption สำหรับรูปภาพในเอกสารวิชาการ
+แก้ปัญหาของวิธีการเดิมที่ใช้ข้อมูลไม่ครบถ้วน
+และมองงาน captioning แบบ isolated โดยไม่คำนึงถึงบริบทรอบข้าง
+
+\vspace{6pt}
+\noindent\textbf{จุดเด่น:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item ใช้ LLM หลายตัวร่วมมือกัน (collaborative multi-LLM)
+  \item รวมข้อมูลที่หลากหลายเข้าด้วยกัน ไม่ใช่แค่ภาพเดียว
+  \item ต่อยอดจากงานของ SciCap series (Hsu et al.)
+\end{itemize}
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─────────────────────────────────────────────────────────────────
+\section*{Paper 5 — Survey: Chart Understanding with MLLMs (2025)}
+
+\noindent{\color{coral}\textbf{ชื่อ:}} Multimodal Information Fusion for Chart Understanding: A Survey of MLLMs\\
+\noindent{\color{muted}\small arXiv:2602.10138}
+
+\vspace{8pt}
+\setlength{\parindent}{2em}
+งาน survey นี้รวบรวมพัฒนาการของ Multimodal LLM (MLLM) สำหรับ
+chart understanding โดยครอบคลุมการผสานข้อมูลหลาย modality
+(กราฟิกและข้อความ) เพื่อดึงความหมาย พร้อมวิเคราะห์ข้อจำกัด
+และแนวทางการปรับปรุงด้วย cognitive enhancement
+
+\vspace{6pt}
+\noindent\textbf{ประเด็นที่ครอบคลุม:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item วิวัฒนาการของ MLLM สำหรับ chart understanding
+  \item ข้อจำกัดของโมเดลปัจจุบัน
+  \item แนวทาง cognitive enhancement เพื่อเพิ่มความสามารถในการ reasoning
+\end{itemize}
+
+\vspace{16pt}
+\noindent\rule{\textwidth}{1.5pt}
+
+%% ─────────────────────────────────────────────────────────────────
+\section*{ตารางเปรียบเทียบ}
+
+\vspace{8pt}
+\noindent
+\begin{tabular}{@{}lllp{5.5cm}@{}}
+  \toprule
+  \textbf{Paper} & \textbf{ปี} & \textbf{แนวทาง} & \textbf{จุดเด่น} \\
+  \midrule
+  SciCap     & 2021 & Dataset       & 2M+ figures จาก 290K papers \\
+  SciCap+    & 2023 & Dataset+      & Knowledge augmentation \\
+  DePlot     & 2023 & Plot→Table→LLM & +29.4\% บน ChartQA (one-shot) \\
+  MLBCAP     & 2025 & Multi-LLM     & Collaborative captioning \\
+  Survey     & 2025 & Survey        & MLLM evolution \& limitations \\
+  \bottomrule
+\end{tabular}
+
+\vspace{16pt}
+\noindent\rule{\textwidth}{1.5pt}
+\vspace{6pt}
+
+\noindent{\color{muted}\small สรุปโดย Claude Sonnet 4.6 · \today}
+
+\end{document}
