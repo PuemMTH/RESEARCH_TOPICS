@@ -10,9 +10,24 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 
+%% ─── Design system tokens (@docs/design/design.md) ──────────
+\definecolor{primary}{HTML}{cc785c}
 \definecolor{coral}{HTML}{cc785c}
+\definecolor{primary-active}{HTML}{a9583e}
 \definecolor{ink}{HTML}{141413}
+\definecolor{body-strong}{HTML}{252523}
+\definecolor{body}{HTML}{3d3d3a}
 \definecolor{muted}{HTML}{6c6a64}
+\definecolor{muted-soft}{HTML}{8e8b82}
+\definecolor{canvas}{HTML}{faf9f5}
+\definecolor{surface-soft}{HTML}{f5f0e8}
+\definecolor{surface-card}{HTML}{efe9de}
+\definecolor{surface-dark}{HTML}{181715}
+\definecolor{hairline}{HTML}{e6dfd8}
+\definecolor{on-dark}{HTML}{faf9f5}
+\definecolor{accent-teal}{HTML}{5db8a6}
+\definecolor{accent-amber}{HTML}{e8a55a}
+\definecolor{success}{HTML}{5db872}
 
 \hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
 
@@ -56,8 +71,9 @@
 
 \begin{center}
   {\LARGE \textbf{สรุปงานวิจัยที่เกี่ยวข้อง}}\\[6pt]
-  {\large การสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการ}\\[4pt]
-  {\color{muted}\small Figure \& Chart Captioning in Scientific Documents}
+  {\large การสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการ}\\[2pt]
+  {\large และ Retrieval Augmented Generation (RAG)}\\[4pt]
+  {\color{muted}\small Figure \& Chart Captioning · RAG: Naïve to Agentic}
 \end{center}
 
 \noindent\rule{\textwidth}{1.5pt}
@@ -69,10 +85,13 @@
 
 งานวิจัยที่รวบรวมไว้ครอบคลุมพัฒนาการของการสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการ
 ตั้งแต่การสร้างชุดข้อมูล (2021) จนถึงการใช้ Multimodal LLM แบบร่วมมือ (2025)
-โดยสามารถจัดกลุ่มได้เป็น 3 แนวทางหลัก:
+รวมถึงเทคนิค Retrieval Augmented Generation (RAG) ที่เสริม LLM
+ด้วยความรู้จากแหล่งข้อมูลภายนอก
+โดยสามารถจัดกลุ่มได้เป็น 4 แนวทางหลัก:
 \textbf{(1)} การสร้างชุดข้อมูลขนาดใหญ่,
-\textbf{(2)} การแปลง plot เป็นข้อความเพื่อ reasoning, และ
-\textbf{(3)} การใช้ LLM แบบหลายตัวร่วมกัน
+\textbf{(2)} การแปลง plot เป็นข้อความเพื่อ reasoning,
+\textbf{(3)} การใช้ LLM แบบหลายตัวร่วมกัน, และ
+\textbf{(4)} RAG แบบ Naive จนถึง Agentic
 
 \vspace{12pt}
 \noindent\rule{\textwidth}{0.5pt}
@@ -198,6 +217,37 @@ chart understanding โดยครอบคลุมการผสานข้
   \item แนวทาง cognitive enhancement เพื่อเพิ่มความสามารถในการ reasoning
 \end{itemize}
 
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─────────────────────────────────────────────────────────────────
+\section*{Paper 6 — RAG: Naïve to Agentic (2026)}
+
+\noindent{\color{coral}\textbf{ชื่อ:}} RAG: Naïve to Agentic\\
+\noindent{\color{muted}\small Sirapakit Lim (Tony) · IPU, NECTEC · Knowledge Sharing \#3 · เมษายน 2026}
+
+\vspace{8pt}
+\setlength{\parindent}{2em}
+เอกสารนี้เป็น slide deck สำหรับ knowledge sharing ที่ครอบคลุมเทคนิค
+\textbf{Retrieval Augmented Generation (RAG)} ตั้งแต่รูปแบบพื้นฐาน
+จนถึงระดับ Agentic โดยมีเนื้อหา 4 ส่วนหลัก:
+\textbf{(1)} ข้อจำกัดของ LLM ที่ RAG แก้ไข (knowledge cutoff, hallucination, private data),
+\textbf{(2)} Basic RAG — retriever + knowledge base + augmented prompt,
+\textbf{(3)} RAG Improvement — chunking strategies, query parsing (HyDE, NER, rewriting), reranking (bi-encoders, cross-encoders, ColBERT),
+และ \textbf{(4)} Agentic RAG ที่ LLM ทำหน้าที่ตัดสินใจเลือกเครื่องมือเอง
+มีการกล่าวถึงการรองรับภาษาไทยด้วยการใช้ \texttt{pythainlp: attacut}
+สำหรับ tokenization ในขั้นตอน chunking
+
+\vspace{6pt}
+\noindent\textbf{จุดเด่น:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item ครอบคลุม RAG ทั้งสาย: Basic $\to$ Improvement $\to$ Agentic
+  \item เปรียบเทียบ Keyword Search (TF-IDF, BM25) กับ Semantic Search (Vector)
+  \item กล่าวถึง Thai NLP — ใช้ \texttt{pythainlp: attacut} tokenize ก่อน chunk
+  \item แนะนำ RAGAS library สำหรับ evaluation และ LangGraph สำหรับ Agentic RAG
+  \item เหมาะเป็น foundation สำหรับ context-aware scientific figure retrieval
+\end{itemize}
+
 \vspace{16pt}
 \noindent\rule{\textwidth}{1.5pt}
 
@@ -210,11 +260,12 @@ chart understanding โดยครอบคลุมการผสานข้
   \toprule
   \textbf{Paper} & \textbf{ปี} & \textbf{แนวทาง} & \textbf{จุดเด่น} \\
   \midrule
-  SciCap     & 2021 & Dataset       & 2M+ figures จาก 290K papers \\
-  SciCap+    & 2023 & Dataset+      & Knowledge augmentation \\
+  SciCap     & 2021 & Dataset        & 2M+ figures จาก 290K papers \\
+  SciCap+    & 2023 & Dataset+       & Knowledge augmentation \\
   DePlot     & 2023 & Plot→Table→LLM & +29.4\% บน ChartQA (one-shot) \\
-  MLBCAP     & 2025 & Multi-LLM     & Collaborative captioning \\
-  Survey     & 2025 & Survey        & MLLM evolution \& limitations \\
+  MLBCAP     & 2025 & Multi-LLM      & Collaborative captioning \\
+  Survey     & 2025 & Survey         & MLLM evolution \& limitations \\
+  RAG (Tony) & 2026 & RAG Tutorial   & Naïve→Agentic, Thai NLP support \\
   \bottomrule
 \end{tabular}
 
