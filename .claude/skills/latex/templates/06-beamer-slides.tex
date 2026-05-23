@@ -1,0 +1,175 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{ink}{HTML}{141413}
+\definecolor{cream}{HTML}{faf9f5}
+\definecolor{muted}{HTML}{6c6a64}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+%% ─── Beamer theme ─────────────────────────────────────────────
+\usetheme{default}
+\usecolortheme{default}
+
+\setbeamercolor{frametitle}{fg=ink, bg=cream}
+\setbeamercolor{title}{fg=ink}
+\setbeamercolor{normal text}{fg=ink}
+\setbeamercolor{structure}{fg=coral}
+\setbeamercolor{block title}{bg=coral!20, fg=ink}
+\setbeamercolor{block body}{bg=coral!5}
+\setbeamercolor{footline}{fg=muted}
+\setbeamercolor{background canvas}{bg=cream}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{frametitle}[default][left]
+\setbeamerfont{frametitle}{size=\large, series=\bfseries}
+
+\setbeamertemplate{footline}{%
+  \hfill\color{muted}\small\insertframenumber/\inserttotalframenumber\hspace{8pt}\vspace{4pt}
+}
+
+\setbeamertemplate{itemize item}{\color{coral}\textbullet}
+\setbeamertemplate{itemize subitem}{\color{muted}--}
+
+%% ─── Title info ───────────────────────────────────────────────
+\title{\textbf{ชื่องานนำเสนอ}}
+\subtitle{Subtitle in English}
+\author{ชื่อผู้นำเสนอ}
+\institute{มหาวิทยาลัย · ภาควิชา}
+\date{\today}
+
+\begin{document}
+
+%% ─── Title slide ──────────────────────────────────────────────
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%% ─── Outline ──────────────────────────────────────────────────
+\begin{frame}{สารบัญ}
+  \tableofcontents
+\end{frame}
+
+%% ─── Section 1 ────────────────────────────────────────────────
+\section{บทนำ}
+
+\begin{frame}{ปัญหาและแรงจูงใจ}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \begin{itemize}
+        \item ประเด็นที่ 1
+        \item ประเด็นที่ 2
+        \item ประเด็นที่ 3
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \begin{block}{จุดสำคัญ}
+        ข้อความเน้น
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ─── Section 2 ────────────────────────────────────────────────
+\section{วิธีการ}
+
+\begin{frame}{แนวทางที่นำเสนอ}
+  \begin{enumerate}
+    \item ขั้นตอนที่ 1
+    \item ขั้นตอนที่ 2
+    \item ขั้นตอนที่ 3
+  \end{enumerate}
+
+  \vspace{12pt}
+  \begin{alertblock}{สิ่งที่แตกต่างจากงานก่อนหน้า}
+    อธิบายความแตกต่างหลัก
+  \end{alertblock}
+\end{frame}
+
+%% ─── Section 3 ────────────────────────────────────────────────
+\section{ผลการทดลอง}
+
+\begin{frame}{ผลลัพธ์หลัก}
+  \centering
+  \begin{tabular}{@{}lccc@{}}
+    \toprule
+    \textbf{Method} & \textbf{Metric 1} & \textbf{Metric 2} & \textbf{Metric 3} \\
+    \midrule
+    Baseline A  & 00.0 & 00.0 & 00.0 \\
+    Baseline B  & 00.0 & 00.0 & 00.0 \\
+    \textbf{Ours} & \textbf{00.0} & \textbf{00.0} & \textbf{00.0} \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+%% ─── Section 4 ────────────────────────────────────────────────
+\section{สรุป}
+
+\begin{frame}{สรุปและงานต่อไป}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \textbf{สรุปผล}
+      \begin{itemize}
+        \item ผลสรุปที่ 1
+        \item ผลสรุปที่ 2
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \textbf{งานต่อไป (Future Work)}
+      \begin{itemize}
+        \item ทิศทางที่ 1
+        \item ทิศทางที่ 2
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%% ─── Thank you ────────────────────────────────────────────────
+\begin{frame}
+  \centering
+  \vspace{1cm}
+  {\Huge \textbf{ขอบคุณครับ/ค่ะ}}\\[12pt]
+  {\large Thank You}\\[24pt]
+  {\color{muted} ชื่อ · อีเมล}
+\end{frame}
+
+\end{document}

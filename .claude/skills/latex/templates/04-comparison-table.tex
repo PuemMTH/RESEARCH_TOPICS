@@ -1,0 +1,168 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2cm, landscape]{geometry}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{ink}{HTML}{141413}
+\definecolor{muted}{HTML}{6c6a64}
+\definecolor{rowA}{HTML}{faf9f5}
+\definecolor{rowB}{HTML}{ffffff}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{ตารางเปรียบเทียบงานวิจัย}}\\[6pt]
+  {\large หัวข้อเปรียบเทียบ}\\[4pt]
+  {\color{muted}\small Comparative Analysis of Related Work}
+\end{center}
+
+\noindent\rule{\linewidth}{1.5pt}
+\vspace{12pt}
+
+%% ─── Main comparison table ────────────────────────────────────
+\noindent
+\begin{longtable}{@{}L{3.5cm}C{2cm}L{3.5cm}L{3.5cm}L{3.5cm}L{3.5cm}@{}}
+  \toprule
+  \textbf{Paper} &
+  \textbf{ปี} &
+  \textbf{แนวทาง} &
+  \textbf{ข้อมูล / Scale} &
+  \textbf{จุดเด่น} &
+  \textbf{ข้อจำกัด} \\
+  \midrule
+  \endfirsthead
+
+  \multicolumn{6}{l}{\color{muted}\small (ต่อ)} \\
+  \toprule
+  \textbf{Paper} & \textbf{ปี} & \textbf{แนวทาง} & \textbf{ข้อมูล / Scale} & \textbf{จุดเด่น} & \textbf{ข้อจำกัด} \\
+  \midrule
+  \endhead
+
+  \midrule
+  \multicolumn{6}{r}{\color{muted}\small (มีต่อ)} \\
+  \endfoot
+
+  \bottomrule
+  \endlastfoot
+
+  %% Row 1
+  \rowcolor{rowA}
+  Paper Name 1 &
+  2021 &
+  อธิบายแนวทาง &
+  dataset / scale ที่ใช้ &
+  จุดเด่นหลัก &
+  ข้อจำกัดหลัก \\[4pt]
+
+  %% Row 2
+  \rowcolor{rowB}
+  Paper Name 2 &
+  2022 &
+  อธิบายแนวทาง &
+  dataset / scale ที่ใช้ &
+  จุดเด่นหลัก &
+  ข้อจำกัดหลัก \\[4pt]
+
+  %% Row 3
+  \rowcolor{rowA}
+  Paper Name 3 &
+  2023 &
+  อธิบายแนวทาง &
+  dataset / scale ที่ใช้ &
+  จุดเด่นหลัก &
+  ข้อจำกัดหลัก \\[4pt]
+
+  %% Row 4
+  \rowcolor{rowB}
+  Paper Name 4 &
+  2024 &
+  อธิบายแนวทาง &
+  dataset / scale ที่ใช้ &
+  จุดเด่นหลัก &
+  ข้อจำกัดหลัก \\[4pt]
+
+  %% Row 5 — our work
+  \rowcolor{coral!15}
+  \textbf{งานของเรา} &
+  2025 &
+  \textbf{อธิบายแนวทาง} &
+  \textbf{dataset / scale} &
+  \textbf{จุดเด่น} &
+  — \\
+
+\end{longtable}
+
+\noindent\rule{\linewidth}{0.5pt}
+\vspace{12pt}
+
+%% ─── Dimension comparison ─────────────────────────────────────
+\section*{เปรียบเทียบตามมิติสำคัญ}
+
+\vspace{8pt}
+\noindent
+\begin{tabular}{@{}L{4cm}C{2.5cm}C{2.5cm}C{2.5cm}C{2.5cm}@{}}
+  \toprule
+  \textbf{มิติ} & \textbf{Paper 1} & \textbf{Paper 2} & \textbf{Paper 3} & \textbf{งานเรา} \\
+  \midrule
+  Thai language support  & \checkmark & — & — & \checkmark \\
+  Multimodal             & —          & \checkmark & \checkmark & \checkmark \\
+  End-to-end training    & \checkmark & — & \checkmark & — \\
+  Open source            & \checkmark & \checkmark & — & \checkmark \\
+  Context-aware          & — & — & \checkmark & \checkmark \\
+  \bottomrule
+\end{tabular}
+
+\vspace{16pt}
+\noindent\rule{\linewidth}{1.5pt}
+\noindent{\color{muted}\small สรุปโดย Claude Sonnet 4.6 · \today}
+
+\end{document}

@@ -1,0 +1,163 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{pgffor}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{ink}{HTML}{141413}
+\definecolor{muted}{HTML}{6c6a64}
+\definecolor{done}{HTML}{4caf50}
+\definecolor{wip}{HTML}{ff9800}
+\definecolor{todo}{HTML}{9e9e9e}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+%% ─── Progress bar macro ───────────────────────────────────────
+\newcommand{\progressbar}[1]{%
+  \begin{tikzpicture}[baseline=-0.5ex]
+    \fill[muted!20] (0,0) rectangle (4,0.35);
+    \fill[coral]    (0,0) rectangle ({4*#1/100},0.35);
+    \node[right] at (4.1,0.175) {\small\color{muted}#1\%};
+  \end{tikzpicture}%
+}
+
+%% ─── Status badge macros ──────────────────────────────────────
+\newcommand{\done}{\textcolor{done}{\textbf{[เสร็จ]}}}
+\newcommand{\wip}{\textcolor{wip}{\textbf{[กำลังทำ]}}}
+\newcommand{\todo}{\textcolor{todo}{[รอ]}}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{รายงานความคืบหน้า}}\\[6pt]
+  {\large ชื่อโครงการ / Thesis Title}\\[4pt]
+  {\color{muted}\small Progress Report · \today}
+\end{center}
+
+\noindent\rule{\textwidth}{1.5pt}
+\vspace{8pt}
+
+%% ─── Overview ─────────────────────────────────────────────────
+\section*{ภาพรวม}
+
+\noindent
+\begin{tabular}{@{}ll@{}}
+  \textbf{นักศึกษา}    & ชื่อ-นามสกุล \\[3pt]
+  \textbf{อาจารย์ที่ปรึกษา} & ชื่ออาจารย์ \\[3pt]
+  \textbf{สถาบัน}      & มหาวิทยาลัย / ภาควิชา \\[3pt]
+  \textbf{ช่วงเวลา}    & เดือน ปี -- เดือน ปี \\[3pt]
+\end{tabular}
+
+\vspace{10pt}
+\noindent\textbf{ความคืบหน้าโดยรวม:} \progressbar{35}
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─── Work done ────────────────────────────────────────────────
+\section*{งานที่ทำเสร็จแล้ว (ช่วงนี้)}
+
+\begin{itemize}[nosep, leftmargin=2em]
+  \item[\done] งานที่ 1: อธิบายสั้น ๆ
+  \item[\done] งานที่ 2: อธิบายสั้น ๆ
+  \item[\done] งานที่ 3: อธิบายสั้น ๆ
+\end{itemize}
+
+%% ─── In progress ──────────────────────────────────────────────
+\section*{งานที่กำลังดำเนินการ}
+
+\begin{itemize}[nosep, leftmargin=2em]
+  \item[\wip] งานที่ A: อธิบาย — \progressbar{60}
+  \item[\wip] งานที่ B: อธิบาย — \progressbar{30}
+\end{itemize}
+
+%% ─── Upcoming ─────────────────────────────────────────────────
+\section*{แผนงานต่อไป}
+
+\begin{itemize}[nosep, leftmargin=2em]
+  \item[\todo] งานที่ X: กำหนด [วันที่]
+  \item[\todo] งานที่ Y: กำหนด [วันที่]
+  \item[\todo] งานที่ Z: กำหนด [วันที่]
+\end{itemize}
+
+%% ─── Milestone table ──────────────────────────────────────────
+\section*{ตาราง Milestone}
+
+\vspace{6pt}
+\noindent
+\begin{tabular}{@{}lllc@{}}
+  \toprule
+  \textbf{Milestone} & \textbf{กำหนดส่ง} & \textbf{สถานะ} & \textbf{\%} \\
+  \midrule
+  Chapter 1 (Introduction)      & มี.ค. 2025  & \done  & 100 \\
+  Chapter 2 (Literature Review) & พ.ค. 2025  & \wip   & 60  \\
+  Chapter 3 (Methodology)       & ก.ค. 2025  & \todo  & 0   \\
+  Chapter 4 (Experiments)       & ก.ย. 2025  & \todo  & 0   \\
+  Chapter 5 (Conclusion)        & ต.ค. 2025  & \todo  & 0   \\
+  \bottomrule
+\end{tabular}
+
+%% ─── Blockers ─────────────────────────────────────────────────
+\section*{ปัญหาและอุปสรรค}
+
+\begin{itemize}[nosep, leftmargin=2em]
+  \item อุปสรรคที่ 1 — แนวทางแก้ไข
+  \item อุปสรรคที่ 2 — แนวทางแก้ไข
+\end{itemize}
+
+%% ─── Questions for advisor ────────────────────────────────────
+\section*{คำถามสำหรับอาจารย์ที่ปรึกษา}
+
+\begin{enumerate}[nosep, leftmargin=2em]
+  \item คำถามที่ 1
+  \item คำถามที่ 2
+\end{enumerate}
+
+\vspace{16pt}
+\noindent\rule{\textwidth}{1.5pt}
+\noindent{\color{muted}\small สรุปโดย Claude Sonnet 4.6 · \today}
+
+\end{document}

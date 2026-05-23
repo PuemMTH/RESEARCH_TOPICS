@@ -1,0 +1,149 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{mdframed}
+
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{ink}{HTML}{141413}
+\definecolor{muted}{HTML}{6c6a64}
+\definecolor{lightbg}{HTML}{f5f4f0}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+\newmdenv[
+  backgroundcolor=lightbg,
+  linecolor=coral,
+  linewidth=2pt,
+  topline=false, rightline=false, bottomline=false,
+  innerleftmargin=12pt, innerrightmargin=8pt,
+  innertopmargin=8pt, innerbottommargin=8pt,
+]{highlight}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{สรุปบทความ}}\\[6pt]
+  {\color{muted}\small Paper Reading Note}
+\end{center}
+
+\noindent\rule{\textwidth}{1.5pt}
+
+%% ─── Metadata ─────────────────────────────────────────────────
+\vspace{12pt}
+\noindent
+\begin{tabular}{@{}ll@{}}
+  \textbf{ชื่อบทความ}  & ชื่อเต็มของบทความ \\[4pt]
+  \textbf{ผู้เขียน}    & Author1, Author2, Author3 \\[4pt]
+  \textbf{ปี / สถานที่} & 2024 · Conference/Journal Name \\[4pt]
+  \textbf{arXiv / DOI}  & arXiv:XXXX.XXXXX \\[4pt]
+  \textbf{อ่านเมื่อ}   & \today \\
+\end{tabular}
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─── Problem ──────────────────────────────────────────────────
+\section*{ปัญหาที่แก้ไข}
+
+อธิบายปัญหาหลักที่บทความนี้แก้ไข ทำไมปัญหานี้จึงสำคัญ
+และทำไมวิธีเดิมยังไม่เพียงพอ
+
+%% ─── Contribution ─────────────────────────────────────────────
+\section*{ผลงานสำคัญ (Contribution)}
+
+\begin{enumerate}[nosep, leftmargin=2em]
+  \item Contribution ที่ 1
+  \item Contribution ที่ 2
+  \item Contribution ที่ 3
+\end{enumerate}
+
+%% ─── Method ───────────────────────────────────────────────────
+\section*{วิธีการ}
+
+อธิบายแนวทางหลักของบทความนี้ รวมถึงสถาปัตยกรรม
+หรือกระบวนการสำคัญ
+
+%% ─── Key Results ──────────────────────────────────────────────
+\section*{ผลลัพธ์สำคัญ}
+
+\begin{highlight}
+\textbf{ตัวเลขสำคัญ:}
+\begin{itemize}[nosep]
+  \item Dataset X: +XX\% over baseline (metric)
+  \item Dataset Y: +XX\% over baseline (metric)
+\end{itemize}
+\end{highlight}
+
+%% ─── Strength / Weakness ──────────────────────────────────────
+\section*{จุดแข็ง / จุดอ่อน}
+
+\noindent\textbf{จุดแข็ง:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item จุดแข็งที่ 1
+  \item จุดแข็งที่ 2
+\end{itemize}
+
+\vspace{6pt}
+\noindent\textbf{จุดอ่อน / ข้อจำกัด:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item ข้อจำกัดที่ 1
+  \item ข้อจำกัดที่ 2
+\end{itemize}
+
+%% ─── Relevance ────────────────────────────────────────────────
+\section*{ความเกี่ยวข้องกับงานของเรา}
+
+อธิบายว่าบทความนี้เกี่ยวข้องกับ thesis ของเราอย่างไร
+จะนำแนวคิดใดไปใช้ และต้องระวังอะไร
+
+%% ─── Notes ────────────────────────────────────────────────────
+\section*{บันทึกเพิ่มเติม}
+
+หมายเหตุ คำถาม หรือสิ่งที่ต้องติดตามเพิ่มเติม
+
+\vspace{16pt}
+\noindent\rule{\textwidth}{1pt}
+\noindent{\color{muted}\small สรุปโดย Claude Sonnet 4.6 · \today}
+
+\end{document}

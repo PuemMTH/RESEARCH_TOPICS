@@ -1,0 +1,147 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{abstract}
+
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{ink}{HTML}{141413}
+\definecolor{muted}{HTML}{6c6a64}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral, citecolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+%% ─── Title metadata ───────────────────────────────────────────
+\title{\textbf{ชื่อบทความ}\\[6pt]
+  {\large Subtitle in English}}
+\author{ชื่อผู้เขียน\\
+  {\small สถาบัน · อีเมล}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+บทคัดย่อภาษาไทย (150--200 คำ) อธิบายปัญหา วิธีการ และผลลัพธ์หลัก
+ของงานวิจัยนี้อย่างกระชับ
+\end{abstract}
+
+\noindent\rule{\textwidth}{0.5pt}
+\vspace{8pt}
+
+%% ─── 1. Introduction ──────────────────────────────────────────
+\section{บทนำ}
+
+อธิบายที่มาและความสำคัญของปัญหา บอกว่างานนี้แก้ปัญหาอะไร
+และมีส่วนสนับสนุนต่อองค์ความรู้อย่างไร
+
+\subsection{แรงจูงใจ}
+
+อธิบายว่าทำไมปัญหานี้จึงสำคัญ
+
+\subsection{วัตถุประสงค์}
+
+\begin{enumerate}[nosep]
+  \item วัตถุประสงค์ที่ 1
+  \item วัตถุประสงค์ที่ 2
+  \item วัตถุประสงค์ที่ 3
+\end{enumerate}
+
+%% ─── 2. Related Work ──────────────────────────────────────────
+\section{งานวิจัยที่เกี่ยวข้อง}
+
+สรุปงานวิจัยก่อนหน้าที่เกี่ยวข้อง จัดกลุ่มตามแนวทาง
+และชี้ให้เห็นช่องว่างที่งานนี้เติมเต็ม
+
+%% ─── 3. Methodology ───────────────────────────────────────────
+\section{วิธีการ}
+
+\subsection{ภาพรวมระบบ}
+
+อธิบายสถาปัตยกรรมหรือวิธีการโดยรวม
+
+\subsection{รายละเอียดวิธีการ}
+
+อธิบายขั้นตอนหรือองค์ประกอบแต่ละส่วน
+
+%% ─── 4. Experiments ───────────────────────────────────────────
+\section{การทดลองและผลลัพธ์}
+
+\subsection{การตั้งค่าการทดลอง}
+
+\begin{itemize}[nosep]
+  \item Dataset: ชื่อและขนาดชุดข้อมูล
+  \item Baseline: วิธีการเปรียบเทียบ
+  \item Metric: ตัวชี้วัด
+\end{itemize}
+
+\subsection{ผลลัพธ์หลัก}
+
+\vspace{8pt}
+\noindent
+\begin{tabular}{@{}llll@{}}
+  \toprule
+  \textbf{Method} & \textbf{Metric 1} & \textbf{Metric 2} & \textbf{Metric 3} \\
+  \midrule
+  Baseline A   & 0.00 & 0.00 & 0.00 \\
+  Baseline B   & 0.00 & 0.00 & 0.00 \\
+  Ours         & \textbf{0.00} & \textbf{0.00} & \textbf{0.00} \\
+  \bottomrule
+\end{tabular}
+\vspace{8pt}
+
+%% ─── 5. Discussion ────────────────────────────────────────────
+\section{อภิปราย}
+
+วิเคราะห์ผลลัพธ์ อธิบายสาเหตุที่วิธีของเราดีกว่า
+และชี้ข้อจำกัดหรือกรณีที่ล้มเหลว
+
+%% ─── 6. Conclusion ────────────────────────────────────────────
+\section{สรุป}
+
+สรุปผลสำคัญและทิศทางวิจัยในอนาคต
+
+\end{document}
