@@ -1,0 +1,84 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\pdfoutput=1
+\documentclass{article}
+
+\usepackage{arxiv}
+\usepackage{amsmath}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{tabularx}
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}		% Can be removed after putting your text content
+\usepackage{graphicx}
+\graphicspath{{./contents/images/}}
+
+% \usepackage{natbib}
+\usepackage{doi}
+
+\usepackage{enumitem}
+
+% \usepackage{ifthen}
+\usepackage{mfirstuc} % for sentence style upper case
+\usepackage{stringstrings} % for title style upper case
+
+\usepackage{schemata}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\captionsetup[table]{skip=5pt}
+
+\usetikzlibrary{trees,decorations.text,math,calc, positioning, arrows.meta}
+
+% Uncomment to remove the date
+\date{}
+
+% Uncomment to override  the `A preprint' in the header
+% \renewcommand{\headeright}{}
+% \renewcommand{\undertitle}{Technical Report}
+\renewcommand{\shorttitle}{\textit{arXiv} Template}
+
+%%% Add PDF metadata to help others organize their library
+%%% Once the PDF is generated, you can check the metadata with
+%%% $ pdfinfo template.pdf
+% \hypersetup{
+% pdftitle={A template for the arxiv style},
+% pdfsubject={q-bio.NC, q-bio.QM},
+% pdfauthor={David S.~Hippocampus, Elias D.~Striatum},
+% pdfkeywords={First keyword, Second keyword, More},
+% }
+
+\begin{document}
+% \title{Title of the Manuscript}
+\input{contents/0_0_meta}
+%
+\maketitle
+%
+\input{contents/1_intro}
+\input{contents/2_level_1}
+\input{contents/3_level_2}
+\input{contents/4_level_3}
+\input{contents/5_level_4}
+\input{contents/6_Conclusion}
+% \input{contents/3_design}
+
+\bibliographystyle{unsrt}
+\bibliography{contents/references}
+% \bibliography{ref_citedrive}
+
+\clearpage
+\appendix
+% \input{9_appendix.tex}
+
+\end{document}

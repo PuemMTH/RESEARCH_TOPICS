@@ -1,0 +1,19 @@
+{
+  "arxiv_id": null,
+  "title": "Visualizing the web search results with web search visualization using scatter plot",
+  "authors": [
+    "Anwar Alhenshiri",
+    "Stephen Brooks",
+    "C. Watters",
+    "M. Shepherd"
+  ],
+  "abstract": "Web search visualization using scatter plot provides users with both a traditional list-based representation and a scatter plot visualization of search results according to the documents' last modification date and document type. The paper addresses the limitation that list-based representation is not very user-friendly: users cannot easily compare documents, find relevant results, or filter according to their needs. The proposed scatter plot view allows users to visually explore the result space along temporal and document-type dimensions, enabling more efficient information seeking.",
+  "year": "2010",
+  "venue": "2010 IEEE 2nd Symposium on Web Society",
+  "doi": "10.1109/SWS.2010.5607488",
+  "figure_count": 0,
+  "figure_captions": [],
+  "paper_number": 13,
+  "slug": "WebSearchViz",
+  "base_name": "13-WebSearchViz_2010"
+}

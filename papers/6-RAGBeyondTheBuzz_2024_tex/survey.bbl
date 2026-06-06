@@ -1,0 +1,970 @@
+\begin{thebibliography}{100}
+
+\bibitem{nie2024survey}
+Yuqi Nie, Yaxuan Kong, Xiaowen Dong, John~M Mulvey, H~Vincent Poor, Qingsong Wen, and Stefan Zohren.
+\newblock A survey of large language models for financial applications: Progress, prospects and challenges.
+\newblock {\em arXiv preprint arXiv:2406.11903}, 2024.
+
+\bibitem{huang2024comprehensive}
+Yining Huang, Keke Tang, and Meilian Chen.
+\newblock A comprehensive survey on evaluating large language model applications in the medical industry.
+\newblock {\em arXiv preprint arXiv:2404.15777}, 2024.
+
+\bibitem{yang2024large}
+Xiaoxian Yang, Zhifeng Wang, Qi~Wang, Ke~Wei, Kaiqi Zhang, and Jiangang Shi.
+\newblock Large language models for automated q\&a involving legal documents: a survey on algorithms, frameworks and applications.
+\newblock {\em International Journal of Web Information Systems}, 2024.
+
+\bibitem{ahn2024large}
+Janice Ahn, Rishu Verma, Renze Lou, Di~Liu, Rui Zhang, and Wenpeng Yin.
+\newblock Large language models for mathematical reasoning: Progresses and challenges.
+\newblock {\em arXiv preprint arXiv:2402.00157}, 2024.
+
+\bibitem{wang2024large}
+Xinyi Wang, Wanrong Zhu, Michael Saxon, Mark Steyvers, and William~Yang Wang.
+\newblock Large language models are latent variable models: Explaining and finding good demonstrations for in-context learning.
+\newblock {\em Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem{rag_survey_23_1}
+Yunfan Gao, Yun Xiong, Xinyu Gao, Kangxiang Jia, Jinliu Pan, Yuxi Bi, Yi~Dai, Jiawei Sun, Meng Wang, and Haofen Wang.
+\newblock Retrieval-augmented generation for large language models: A survey, 2023.
+
+\bibitem{rag_survey_24_2}
+Penghao Zhao, Hailin Zhang, Qinhan Yu, Zhengren Wang, Yunteng Geng, Fangcheng Fu, Ling Yang, Wentao Zhang, Jie Jiang, and Bin Cui.
+\newblock Retrieval-augmented generation for ai-generated content: A survey, 2024.
+
+\bibitem{rag_survey_24_3}
+Yujuan Ding, Wenqi Fan, Liangbo Ning, Shijie Wang, Hengyun Li, Dawei Yin, Tat-Seng Chua, and Qing Li.
+\newblock A survey on rag meets llms: Towards retrieval-augmented large language models.
+\newblock {\em arXiv preprint arXiv:2405.06211}, 2024.
+
+\bibitem{rag_survey_24_4}
+Xiaoxi Li, Jiajie Jin, Yujia Zhou, Yuyao Zhang, Peitian Zhang, Yutao Zhu, and Zhicheng Dou.
+\newblock From matching to generation: A survey on generative information retrieval.
+\newblock {\em arXiv preprint arXiv:2404.14851}, 2024.
+
+\bibitem{rag_survey_24_5}
+Penghao Zhao, Hailin Zhang, Qinhan Yu, Zhengren Wang, Yunteng Geng, Fangcheng Fu, Ling Yang, Wentao Zhang, and Bin Cui.
+\newblock Retrieval-augmented generation for ai-generated content: A survey.
+\newblock {\em arXiv preprint arXiv:2402.19473}, 2024.
+
+\bibitem{finetune_survey_24_1}
+Zeyu Han, Chao Gao, Jinyang Liu, Sai~Qian Zhang, et~al.
+\newblock Parameter-efficient fine-tuning for large models: A comprehensive survey.
+\newblock {\em arXiv preprint arXiv:2403.14608}, 2024.
+
+\bibitem{finetune_survey_23_2}
+Hongling Zheng, Li~Shen, Anke Tang, Yong Luo, Han Hu, Bo~Du, and Dacheng Tao.
+\newblock Learn from model beyond fine-tuning: A survey.
+\newblock {\em arXiv preprint arXiv:2310.08184}, 2023.
+
+\bibitem{finetune_survey_23_3}
+Shengyu Zhang, Linfeng Dong, Xiaoya Li, Sen Zhang, Xiaofei Sun, Shuhe Wang, Jiwei Li, Runyi Hu, Tianwei Zhang, Fei Wu, et~al.
+\newblock Instruction tuning for large language models: A survey.
+\newblock {\em arXiv preprint arXiv:2308.10792}, 2023.
+
+\bibitem{gruettner2012clinical}
+J~Gruettner, T~Henzler, T~Sueselbeck, C~Fink, M~Borggrefe, and T~Walter.
+\newblock Clinical assessment of chest pain and guidelines for imaging.
+\newblock {\em European Journal of Radiology}, 81(12):3663--3668, 2012.
+
+\bibitem{kwiatkowski2019natural}
+Tom Kwiatkowski, Jennimaria Palomaki, Olivia Redfield, Michael Collins, Ankur Parikh, Chris Alberti, Danielle Epstein, Illia Polosukhin, Jacob Devlin, Kenton Lee, et~al.
+\newblock Natural questions: a benchmark for question answering research.
+\newblock {\em Transactions of the Association for Computational Linguistics}, 7:453--466, 2019.
+
+\bibitem{bajaj2016ms}
+Payal Bajaj, Daniel Campos, Nick Craswell, Li~Deng, Jianfeng Gao, Xiaodong Liu, Rangan Majumder, Andrew McNamara, Bhaskar Mitra, Tri Nguyen, et~al.
+\newblock Ms marco: A human generated machine reading comprehension dataset.
+\newblock {\em arXiv preprint arXiv:1611.09268}, 2016.
+
+\bibitem{2017arXivtriviaqa}
+Mandar {Joshi}, Eunsol {Choi}, Daniel {Weld}, and Luke {Zettlemoyer}.
+\newblock {triviaqa: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension}.
+\newblock {\em arXiv e-prints}, page arXiv:1705.03551, 2017.
+
+\bibitem{rajpurkar2016squad}
+Pranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and Percy Liang.
+\newblock Squad: 100,000+ questions for machine comprehension of text.
+\newblock {\em arXiv preprint arXiv:1606.05250}, 2016.
+
+\bibitem{stelmakh2022asqa}
+Ivan Stelmakh, Yi~Luan, Bhuwan Dhingra, and Ming-Wei Chang.
+\newblock Asqa: Factoid questions meet long-form answers.
+\newblock {\em arXiv preprint arXiv:2204.06092}, 2022.
+
+\bibitem{webqsp_dataset}
+Wen-tau Yih, Matthew Richardson, Chris Meek, Ming-Wei Chang, and Jina Suh.
+\newblock The value of semantic parse labeling for knowledge base question answering.
+\newblock In Katrin Erk and Noah~A. Smith, editors, {\em Proceedings of the 54th Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)}, pages 201--206, Berlin, Germany, August 2016. Association for Computational Linguistics.
+
+\bibitem{yang2018hotpotqa}
+Zhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio, William~W Cohen, Ruslan Salakhutdinov, and Christopher~D Manning.
+\newblock Hotpotqa: A dataset for diverse, explainable multi-hop question answering.
+\newblock {\em arXiv preprint arXiv:1809.09600}, 2018.
+
+\bibitem{ho2020constructing}
+Xanh Ho, Anh-Khoa~Duong Nguyen, Saku Sugawara, and Akiko Aizawa.
+\newblock Constructing a multi-hop qa dataset for comprehensive evaluation of reasoning steps.
+\newblock {\em arXiv preprint arXiv:2011.01060}, 2020.
+
+\bibitem{trivedi2022musique}
+Harsh Trivedi, Niranjan Balasubramanian, Tushar Khot, and Ashish Sabharwal.
+\newblock Musique: Multihop questions via single-hop question composition.
+\newblock {\em Transactions of the Association for Computational Linguistics}, 10:539--554, 2022.
+
+\bibitem{press2022measuring}
+Ofir Press, Muru Zhang, Sewon Min, Ludwig Schmidt, Noah~A Smith, and Mike Lewis.
+\newblock Measuring and narrowing the compositionality gap in language models.
+\newblock {\em arXiv preprint arXiv:2210.03350}, 2022.
+
+\bibitem{geva2021did}
+Mor Geva, Daniel Khashabi, Elad Segal, Tushar Khot, Dan Roth, and Jonathan Berant.
+\newblock Did aristotle use a laptop? a question answering benchmark with implicit reasoning strategies.
+\newblock {\em Transactions of the Association for Computational Linguistics}, 9:346--361, 2021.
+
+\bibitem{ComplexWebQuestions_dataset}
+Alon Talmor and Jonathan Berant.
+\newblock The web as a knowledge-base for answering complex questions.
+\newblock In Marilyn Walker, Heng Ji, and Amanda Stent, editors, {\em Proceedings of the 2018 Conference of the North {A}merican Chapter of the Association for Computational Linguistics: Human Language Technologies, Volume 1 (Long Papers)}, pages 641--651, New Orleans, Louisiana, June 2018. Association for Computational Linguistics.
+
+\bibitem{webquestion_dataset}
+Jonathan Berant, Andrew Chou, Roy Frostig, and Percy Liang.
+\newblock Semantic parsing on freebase from question-answer pairs.
+\newblock In {\em Proceedings of the 2013 conference on empirical methods in natural language processing}, pages 1533--1544, 2013.
+
+\bibitem{sen2022mintaka}
+Priyanka Sen, Alham~Fikri Aji, and Amir Saffari.
+\newblock Mintaka: A complex, natural, and multilingual dataset for end-to-end question answering.
+\newblock {\em arXiv preprint arXiv:2210.01613}, 2022.
+
+\bibitem{metaqa_dataset}
+Yuyu Zhang, Hanjun Dai, Zornitsa Kozareva, Alexander~J Smola, and Le~Song.
+\newblock Variational reasoning for question answering with knowledge graph.
+\newblock In {\em AAAI}, 2018.
+
+\bibitem{Dasigi2021ADO}
+Pradeep Dasigi, Kyle Lo, Iz~Beltagy, Arman Cohan, Noah~A. Smith, and Matt Gardner.
+\newblock A dataset of information-seeking questions and answers anchored in research papers.
+\newblock 2021.
+
+\bibitem{dua2019drop}
+Dheeru Dua, Yizhong Wang, Pradeep Dasigi, Gabriel Stanovsky, Sameer Singh, and Matt Gardner.
+\newblock Drop: A reading comprehension benchmark requiring discrete reasoning over paragraphs.
+\newblock {\em arXiv preprint arXiv:1903.00161}, 2019.
+
+\bibitem{pang2021quality}
+Richard~Yuanzhe Pang, Alicia Parrish, Nitish Joshi, Nikita Nangia, Jason Phang, Angelica Chen, Vishakh Padmakumar, Johnny Ma, Jana Thompson, He~He, et~al.
+\newblock Quality: Question answering with long input texts, yes!
+\newblock {\em arXiv preprint arXiv:2112.08608}, 2021.
+
+\bibitem{aly2021feverous}
+Rami Aly, Zhijiang Guo, Michael Schlichtkrull, James Thorne, Andreas Vlachos, Christos Christodoulopoulos, Oana Cocarascu, and Arpit Mittal.
+\newblock Feverous: Fact extraction and verification over unstructured and structured information.
+\newblock {\em arXiv preprint arXiv:2106.05707}, 2021.
+
+\bibitem{min2024exploring}
+Dehai Min, Nan Hu, Rihui Jin, Nuo Lin, Jiaoyan Chen, Yongrui Chen, Yu~Li, Guilin Qi, Yun Li, Nijun Li, and Qianren Wang.
+\newblock Exploring the impact of table-to-text methods on augmenting llm-based question answering with domain hybrid data, 2024.
+
+\bibitem{suris2023vipergpt}
+D{\'\i}dac Sur{\'\i}s, Sachit Menon, and Carl Vondrick.
+\newblock Vipergpt: Visual inference via python execution for reasoning.
+\newblock In {\em Proceedings of the IEEE/CVF International Conference on Computer Vision}, pages 11888--11898, 2023.
+
+\bibitem{gao2023assistgpt}
+Difei Gao, Lei Ji, Luowei Zhou, Kevin~Qinghong Lin, Joya Chen, Zihan Fan, and Mike~Zheng Shou.
+\newblock Assistgpt: A general multi-modal assistant that can plan, execute, inspect, and learn.
+\newblock {\em arXiv preprint arXiv:2306.08640}, 2023.
+
+\bibitem{hu2023reveal}
+Ziniu Hu, Ahmet Iscen, Chen Sun, Zirui Wang, Kai-Wei Chang, Yizhou Sun, Cordelia Schmid, David~A Ross, and Alireza Fathi.
+\newblock Reveal: Retrieval-augmented visual-language pre-training with multi-source multimodal knowledge memory.
+\newblock In {\em Proceedings of the IEEE/CVF conference on computer vision and pattern recognition}, pages 23369--23379, 2023.
+
+\bibitem{li2022blip}
+Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi.
+\newblock Blip: Bootstrapping language-image pre-training for unified vision-language understanding and generation.
+\newblock In {\em International conference on machine learning}, pages 12888--12900. PMLR, 2022.
+
+\bibitem{long2024generative}
+Xinwei Long, Jiali Zeng, Fandong Meng, Zhiyuan Ma, Kaiyan Zhang, Bowen Zhou, and Jie Zhou.
+\newblock Generative multi-modal knowledge retrieval with large language models.
+\newblock In {\em Proceedings of the AAAI Conference on Artificial Intelligence}, volume~38, pages 18733--18741, 2024.
+
+\bibitem{liu2024lost}
+Nelson~F Liu, Kevin Lin, John Hewitt, Ashwin Paranjape, Michele Bevilacqua, Fabio Petroni, and Percy Liang.
+\newblock Lost in the middle: How language models use long contexts.
+\newblock {\em Transactions of the Association for Computational Linguistics}, 12:157--173, 2024.
+
+\bibitem{langchain_chunk}
+LangChain.
+\newblock Text splitter.
+\newblock \url{https://python.langchain.com/v0.1/docs/modules/data_connection/document_transformers/}, 2023.
+
+\bibitem{llamaindex_chunk}
+LlamaIndex.
+\newblock Semantic splitter.
+\newblock \url{https://docs.llamaindex.ai/en/stable/api_reference/node_parsers/semantic_splitter/}, 2023.
+
+\bibitem{sarthi2024raptor}
+Parth Sarthi, Salman Abdullah, Aditi Tuli, Shubh Khanna, Anna Goldie, and Christopher~D Manning.
+\newblock Raptor: Recursive abstractive processing for tree-organized retrieval.
+\newblock {\em arXiv preprint arXiv:2401.18059}, 2024.
+
+\bibitem{zhong2024mix}
+Zijie Zhong, Hanwen Liu, Xiaoya Cui, Xiaofan Zhang, and Zengchang Qin.
+\newblock Mix-of-granularity: Optimize the chunking granularity for retrieval-augmented generation.
+\newblock {\em arXiv preprint arXiv:2406.00456}, 2024.
+
+\bibitem{chen2023dense}
+Tong Chen, Hongwei Wang, Sihao Chen, Wenhao Yu, Kaixin Ma, Xinran Zhao, Dong Yu, and Hongming Zhang.
+\newblock Dense x retrieval: What retrieval granularity should we use?
+\newblock {\em arXiv preprint arXiv:2312.06648}, 2023.
+
+\bibitem{yepes2024financial}
+Antonio~Jimeno Yepes, Yao You, Jan Milczek, Sebastian Laverde, and Leah Li.
+\newblock Financial report chunking for effective retrieval augmented generation.
+\newblock {\em arXiv preprint arXiv:2402.05131}, 2024.
+
+\bibitem{sparck1972statistical}
+Karen Sparck~Jones.
+\newblock A statistical interpretation of term specificity and its application in retrieval.
+\newblock {\em Journal of documentation}, 28(1):11--21, 1972.
+
+\bibitem{robertson1995okapi}
+Stephen~E Robertson, Steve Walker, Susan Jones, Micheline~M Hancock-Beaulieu, Mike Gatford, et~al.
+\newblock Okapi at trec-3.
+\newblock {\em Nist Special Publication Sp}, 109:109, 1995.
+
+\bibitem{ram2023context}
+Ori Ram, Yoav Levine, Itay Dalmedigos, Dor Muhlgay, Amnon Shashua, Kevin Leyton-Brown, and Yoav Shoham.
+\newblock In-context retrieval-augmented language models.
+\newblock {\em Transactions of the Association for Computational Linguistics}, 11:1316--1331, 2023.
+
+\bibitem{jiang2023active}
+Zhengbao Jiang, Frank~F Xu, Luyu Gao, Zhiqing Sun, Qian Liu, Jane Dwivedi-Yu, Yiming Yang, Jamie Callan, and Graham Neubig.
+\newblock Active retrieval augmented generation.
+\newblock {\em arXiv preprint arXiv:2305.06983}, 2023.
+
+\bibitem{xu2024recomp}
+Fangyuan Xu, Weijia Shi, and Eunsol Choi.
+\newblock Recomp: Improving retrieval-augmented lms with context compression and selective augmentation.
+\newblock In {\em The Twelfth International Conference on Learning Representations}, 2024.
+
+\bibitem{boytsov2016off}
+Leonid Boytsov, David Novak, Yury Malkov, and Eric Nyberg.
+\newblock Off the beaten path: Let's replace term-based retrieval with k-nn search.
+\newblock In {\em Proceedings of the 25th ACM international on conference on information and knowledge management}, pages 1099--1108, 2016.
+
+\bibitem{zhuang2021tilde}
+Shengyao Zhuang and Guido Zuccon.
+\newblock Tilde: Term independent likelihood model for passage re-ranking.
+\newblock In {\em Proceedings of the 44th International ACM SIGIR Conference on Research and Development in Information Retrieval}, pages 1483--1492, 2021.
+
+\bibitem{zhuang2021fast}
+Shengyao Zhuang and Guido Zuccon.
+\newblock Fast passage re-ranking with contextualized exact term matching and efficient passage expansion.
+\newblock {\em arXiv preprint arXiv:2108.08513}, 2021.
+
+\bibitem{devlin2018bert}
+Jacob Devlin.
+\newblock Bert: Pre-training of deep bidirectional transformers for language understanding.
+\newblock {\em arXiv preprint arXiv:1810.04805}, 2018.
+
+\bibitem{karpukhin2020dense}
+Vladimir Karpukhin, Barlas O{\u{g}}uz, Sewon Min, Patrick Lewis, Ledell Wu, Sergey Edunov, Danqi Chen, and Wen-tau Yih.
+\newblock Dense passage retrieval for open-domain question answering.
+\newblock {\em arXiv preprint arXiv:2004.04906}, 2020.
+
+\bibitem{xiong2020approximate}
+Lee Xiong, Chenyan Xiong, Ye~Li, Kwok-Fung Tang, Jialin Liu, Paul Bennett, Junaid Ahmed, and Arnold Overwijk.
+\newblock Approximate nearest neighbor negative contrastive learning for dense text retrieval.
+\newblock {\em arXiv preprint arXiv:2007.00808}, 2020.
+
+\bibitem{gao2021simcse}
+Tianyu Gao, Xingcheng Yao, and Danqi Chen.
+\newblock Simcse: Simple contrastive learning of sentence embeddings.
+\newblock {\em arXiv preprint arXiv:2104.08821}, 2021.
+
+\bibitem{hofstatter2021efficiently}
+Sebastian Hofst{\"a}tter, Sheng-Chieh Lin, Jheng-Hong Yang, Jimmy Lin, and Allan Hanbury.
+\newblock Efficiently teaching an effective dense retriever with balanced topic aware sampling.
+\newblock In {\em Proceedings of the 44th International ACM SIGIR Conference on Research and Development in Information Retrieval}, pages 113--122, 2021.
+
+\bibitem{izacard2021unsupervised}
+Gautier Izacard, Mathilde Caron, Lucas Hosseini, Sebastian Riedel, Piotr Bojanowski, Armand Joulin, and Edouard Grave.
+\newblock Unsupervised dense information retrieval with contrastive learning.
+\newblock {\em arXiv preprint arXiv:2112.09118}, 2021.
+
+\bibitem{zhang2023retrieve}
+Peitian Zhang, Shitao Xiao, Zheng Liu, Zhicheng Dou, and Jian-Yun Nie.
+\newblock Retrieve anything to augment large language models.
+\newblock {\em arXiv preprint arXiv:2310.07554}, 2023.
+
+\bibitem{ma2023fine}
+Xueguang Ma, Liang Wang, Nan Yang, Furu Wei, and Jimmy Lin.
+\newblock Fine-tuning llama for multi-stage text retrieval.
+\newblock {\em arXiv preprint arXiv:2310.08319}, 2023.
+
+\bibitem{borgeaud2022improving}
+Sebastian Borgeaud, Arthur Mensch, Jordan Hoffmann, Trevor Cai, Eliza Rutherford, Katie Millican, George~Bm Van Den~Driessche, Jean-Baptiste Lespiau, Bogdan Damoc, Aidan Clark, et~al.
+\newblock Improving language models by retrieving from trillions of tokens.
+\newblock In {\em International conference on machine learning}, pages 2206--2240. PMLR, 2022.
+
+\bibitem{ni2021large}
+Jianmo Ni, Chen Qu, Jing Lu, Zhuyun Dai, Gustavo~Hern{\'a}ndez {\'A}brego, Ji~Ma, Vincent~Y Zhao, Yi~Luan, Keith~B Hall, Ming-Wei Chang, et~al.
+\newblock Large dual encoders are generalizable retrievers.
+\newblock {\em arXiv preprint arXiv:2112.07899}, 2021.
+
+\bibitem{behnamghader2024llm2vec}
+Parishad BehnamGhader, Vaibhav Adlakha, Marius Mosbach, Dzmitry Bahdanau, Nicolas Chapados, and Siva Reddy.
+\newblock Llm2vec: Large language models are secretly powerful text encoders.
+\newblock {\em arXiv preprint arXiv:2404.05961}, 2024.
+
+\bibitem{li2024llama2vec}
+Chaofan Li, Zheng Liu, Shitao Xiao, Yingxia Shao, and Defu Lian.
+\newblock Llama2vec: Unsupervised adaptation of large language models for dense retrieval.
+\newblock In {\em Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 3490--3500, 2024.
+
+\bibitem{touvron2023llama}
+Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, et~al.
+\newblock Llama 2: Open foundation and fine-tuned chat models.
+\newblock {\em arXiv preprint arXiv:2307.09288}, 2023.
+
+\bibitem{feng2023knowledge}
+Shangbin Feng, Weijia Shi, Yuyang Bai, Vidhisha Balachandran, Tianxing He, and Yulia Tsvetkov.
+\newblock Knowledge card: Filling llms' knowledge gaps with plug-in specialized language models.
+\newblock {\em arXiv preprint arXiv:2305.09955}, 2023.
+
+\bibitem{sawarkar2024blended}
+Kunal Sawarkar, Abhilasha Mangal, and Shivam~Raj Solanki.
+\newblock Blended rag: Improving rag (retriever-augmented generation) accuracy with semantic search and hybrid query-based retrievers.
+\newblock {\em arXiv preprint arXiv:2404.07220}, 2024.
+
+\bibitem{chen2024bge}
+Jianlv Chen, Shitao Xiao, Peitian Zhang, Kun Luo, Defu Lian, and Zheng Liu.
+\newblock Bge m3-embedding: Multi-lingual, multi-functionality, multi-granularity text embeddings through self-knowledge distillation.
+\newblock {\em arXiv preprint arXiv:2402.03216}, 2024.
+
+\bibitem{luan2021sparse}
+Yi~Luan, Jacob Eisenstein, Kristina Toutanova, and Michael Collins.
+\newblock Sparse, dense, and attentional representations for text retrieval.
+\newblock {\em Transactions of the Association for Computational Linguistics}, 9:329--345, 2021.
+
+\bibitem{tang2024self}
+Qiaoyu Tang, Jiawei Chen, Bowen Yu, Yaojie Lu, Cheng Fu, Haiyang Yu, Hongyu Lin, Fei Huang, Ben He, Xianpei Han, et~al.
+\newblock Self-retrieval: Building an information retrieval system with one large language model.
+\newblock {\em arXiv preprint arXiv:2403.00801}, 2024.
+
+\bibitem{cheng2024lift}
+Xin Cheng, Di~Luo, Xiuying Chen, Lemao Liu, Dongyan Zhao, and Rui Yan.
+\newblock Lift yourself up: Retrieval-augmented text generation with self-memory.
+\newblock {\em Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem{ma2023query}
+Xinbei Ma, Yeyun Gong, Pengcheng He, Hai Zhao, and Nan Duan.
+\newblock Query rewriting for retrieval-augmented large language models.
+\newblock {\em arXiv preprint arXiv:2305.14283}, 2023.
+
+\bibitem{gao2022precise}
+Luyu Gao, Xueguang Ma, Jimmy Lin, and Jamie Callan.
+\newblock Precise zero-shot dense retrieval without relevance labels.
+\newblock {\em arXiv preprint arXiv:2212.10496}, 2022.
+
+\bibitem{raina2024question}
+Vatsal Raina and Mark Gales.
+\newblock Question-based retrieval using atomic units for enterprise rag.
+\newblock {\em arXiv preprint arXiv:2405.12363}, 2024.
+
+\bibitem{tan2024small}
+Jiejun Tan, Zhicheng Dou, Yutao Zhu, Peidong Guo, Kun Fang, and Ji-Rong Wen.
+\newblock Small models, big insights: Leveraging slim proxy models to decide when and what to retrieve for llms.
+\newblock {\em arXiv preprint arXiv:2402.12052}, 2024.
+
+\bibitem{jiang2023llmlingua}
+Huiqiang Jiang, Qianhui Wu, Chin-Yew Lin, Yuqing Yang, and Lili Qiu.
+\newblock Llmlingua: Compressing prompts for accelerated inference of large language models.
+\newblock {\em arXiv preprint arXiv:2310.05736}, 2023.
+
+\bibitem{jiang2023longllmlingua}
+Huiqiang Jiang, Qianhui Wu, Xufang Luo, Dongsheng Li, Chin-Yew Lin, Yuqing Yang, and Lili Qiu.
+\newblock Longllmlingua: Accelerating and enhancing llms in long context scenarios via prompt compression.
+\newblock {\em arXiv preprint arXiv:2310.06839}, 2023.
+
+\bibitem{yang2023prca}
+Haoyan Yang, Zhitao Li, Yong Zhang, Jianzong Wang, Ning Cheng, Ming Li, and Jing Xiao.
+\newblock Prca: Fitting black-box large language models for retrieval question answering via pluggable reward-driven contextual adapter.
+\newblock {\em arXiv preprint arXiv:2310.18347}, 2023.
+
+\bibitem{yan2024corrective}
+Shi-Qi Yan, Jia-Chen Gu, Yun Zhu, and Zhen-Hua Ling.
+\newblock Corrective retrieval augmented generation.
+\newblock {\em arXiv preprint arXiv:2401.15884}, 2024.
+
+\bibitem{kim2023tree}
+Gangwoo Kim, Sungdong Kim, Byeongguk Jeon, Joonsuk Park, and Jaewoo Kang.
+\newblock Tree of clarifications: Answering ambiguous questions with retrieval-augmented large language models.
+\newblock {\em arXiv preprint arXiv:2310.14696}, 2023.
+
+\bibitem{si2023generative}
+Zihua Si, Zhongxiang Sun, Jiale Chen, Guozhang Chen, Xiaoxue Zang, Kai Zheng, Yang Song, Xiao Zhang, and Jun Xu.
+\newblock Generative retrieval with semantic tree-structured item identifiers via contrastive learning.
+\newblock {\em arXiv preprint arXiv:2309.13375}, 2023.
+
+\bibitem{wu2024faithful}
+Kevin Wu, Eric Wu, and James Zou.
+\newblock How faithful are rag models? quantifying the tug-of-war between rag and llms' internal prior, 2024.
+
+\bibitem{ding2024retrieve}
+Hanxing Ding, Liang Pang, Zihao Wei, Huawei Shen, and Xueqi Cheng.
+\newblock Retrieve only when it needs: Adaptive retrieval augmentation for hallucination mitigation in large language models.
+\newblock {\em arXiv preprint arXiv:2402.10612}, 2024.
+
+\bibitem{tan2024blinded}
+Hexiang Tan, Fei Sun, Wanli Yang, Yuanzhuo Wang, Qi~Cao, and Xueqi Cheng.
+\newblock Blinded by generated contexts: How language models merge generated and retrieved contexts for open-domain qa?
+\newblock {\em arXiv preprint arXiv:2401.11911}, 2024.
+
+\bibitem{wang2023instructretro}
+Boxin Wang, Wei Ping, Lawrence McAfee, Peng Xu, Bo~Li, Mohammad Shoeybi, and Bryan Catanzaro.
+\newblock Instructretro: Instruction tuning post retrieval-augmented pretraining.
+\newblock {\em arXiv preprint arXiv:2310.07713}, 2023.
+
+\bibitem{yoran2023making}
+Ori Yoran, Tomer Wolfson, Ori Ram, and Jonathan Berant.
+\newblock Making retrieval-augmented language models robust to irrelevant context.
+\newblock {\em arXiv preprint arXiv:2310.01558}, 2023.
+
+\bibitem{fang2024enhancing}
+Feiteng Fang, Yuelin Bai, Shiwen Ni, Min Yang, Xiaojun Chen, and Ruifeng Xu.
+\newblock Enhancing noise robustness of retrieval-augmented language models with adaptive adversarial training.
+\newblock {\em arXiv preprint arXiv:2405.20978}, 2024.
+
+\bibitem{lin2023ra}
+Xi~Victoria Lin, Xilun Chen, Mingda Chen, Weijia Shi, Maria Lomeli, Rich James, Pedro Rodriguez, Jacob Kahn, Gergely Szilvasy, Mike Lewis, et~al.
+\newblock Ra-dit: Retrieval-augmented dual instruction tuning.
+\newblock {\em arXiv preprint arXiv:2310.01352}, 2023.
+
+\bibitem{hofstatter2023fid}
+Sebastian Hofst{\"a}tter, Jiecao Chen, Karthik Raman, and Hamed Zamani.
+\newblock Fid-light: Efficient and effective retrieval-augmented text generation.
+\newblock In {\em Proceedings of the 46th International ACM SIGIR Conference on Research and Development in Information Retrieval}, pages 1437--1447, 2023.
+
+\bibitem{asai2023self}
+Akari Asai, Zeqiu Wu, Yizhong Wang, Avirup Sil, and Hannaneh Hajishirzi.
+\newblock Self-rag: Learning to retrieve, generate, and critique through self-reflection.
+\newblock {\em arXiv preprint arXiv:2310.11511}, 2023.
+
+\bibitem{yao2022react}
+Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao.
+\newblock React: Synergizing reasoning and acting in language models.
+\newblock {\em arXiv preprint arXiv:2210.03629}, 2022.
+
+\bibitem{trivedi-etal-2023-ircot}
+Harsh Trivedi, Niranjan Balasubramanian, Tushar Khot, and Ashish Sabharwal.
+\newblock Interleaving retrieval with chain-of-thought reasoning for knowledge-intensive multi-step questions.
+\newblock In Anna Rogers, Jordan Boyd-Graber, and Naoaki Okazaki, editors, {\em Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 10014--10037, Toronto, Canada, July 2023. Association for Computational Linguistics.
+
+\bibitem{wang2024rat}
+Zihao Wang, Anji Liu, Haowei Lin, Jiaqi Li, Xiaojian Ma, and Yitao Liang.
+\newblock Rat: Retrieval augmented thoughts elicit context-aware reasoning in long-horizon generation.
+\newblock {\em arXiv preprint arXiv:2403.05313}, 2024.
+
+\bibitem{shi2024generate}
+Zhengliang Shi, Shuo Zhang, Weiwei Sun, Shen Gao, Pengjie Ren, Zhumin Chen, and Zhaochun Ren.
+\newblock Generate-then-ground in retrieval-augmented generation for multi-hop question answering.
+\newblock {\em arXiv preprint arXiv:2406.14891}, 2024.
+
+\bibitem{feng2024retrieval}
+Zhangyin Feng, Xiaocheng Feng, Dezhi Zhao, Maojin Yang, and Bing Qin.
+\newblock Retrieval-generation synergy augmented large language models.
+\newblock In {\em ICASSP 2024-2024 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, pages 11661--11665. IEEE, 2024.
+
+\bibitem{Pan2023UnifyingLL}
+Shirui Pan, Linhao Luo, Yufei Wang, Chen Chen, Jiapu Wang, and Xindong Wu.
+\newblock Unifying large language models and knowledge graphs: A roadmap.
+\newblock {\em ArXiv}, abs/2306.08302, 2023.
+
+\bibitem{sen-etal-2023-knowledge}
+Priyanka Sen, Sandeep Mavadia, and Amir Saffari.
+\newblock Knowledge graph-augmented language models for complex question answering.
+\newblock In Bhavana Dalvi~Mishra, Greg Durrett, Peter Jansen, Danilo Neves~Ribeiro, and Jason Wei, editors, {\em Proceedings of the 1st Workshop on Natural Language Reasoning and Structured Explanations (NLRSE)}, pages 1--8, Toronto, Canada, June 2023. Association for Computational Linguistics.
+
+\bibitem{sun2023thinkongraph}
+Jiashuo Sun, Chengjin Xu, Lumingyuan Tang, Saizhuo Wang, Chen Lin, Yeyun Gong, Lionel~M. Ni, Heung-Yeung Shum, and Jian Guo.
+\newblock Think-on-graph: Deep and responsible reasoning of large language model on knowledge graph, 2023.
+
+\bibitem{guo2023knowledgenavigator}
+Tiezheng Guo, Qingwen Yang, Chen Wang, Yanyi Liu, Pan Li, Jiawei Tang, Dapeng Li, and Yingyou Wen.
+\newblock Knowledgenavigator: Leveraging large language models for enhanced reasoning over knowledge graph.
+\newblock {\em arXiv preprint arXiv:2312.15880}, 2023.
+
+\bibitem{r3}
+Armin Toroghi, Willis Guo, Mohammad Mahdi~Abdollah Pour, and Scott Sanner.
+\newblock Right for right reasons: Large language models for verifiable commonsense knowledge graph question answering, 2024.
+
+\bibitem{23_kg_prompting}
+Yu~Wang, Nedim Lipka, Ryan~A. Rossi, Alexa~F. Siu, Ruiyi Zhang, and Tyler Derr.
+\newblock Knowledge graph prompting for multi-document question answering.
+\newblock {\em AAAI Conference on Artificial Intelligence}.
+
+\bibitem{24_graph_rag}
+Darren Edge, Ha~Trinh, Newman Cheng, Joshua Bradley, Alex Chao, Apurva Mody, Steven Truitt, and Jonathan Larson.
+\newblock From local to global: A graph rag approach to query-focused summarization.
+\newblock {\em arXiv.org}.
+
+\bibitem{shi2022xricl}
+Peng Shi, Rui Zhang, He~Bai, and Jimmy Lin.
+\newblock Xricl: Cross-lingual retrieval-augmented in-context learning for cross-lingual text-to-sql semantic parsing.
+\newblock {\em arXiv preprint arXiv:2210.13693}, 2022.
+
+\bibitem{li2023resdsql}
+Haoyang Li, Jing Zhang, Cuiping Li, and Hong Chen.
+\newblock Resdsql: Decoupling schema linking and skeleton parsing for text-to-sql.
+\newblock In {\em Proceedings of the AAAI Conference on Artificial Intelligence}, volume~37, pages 13067--13075, 2023.
+
+\bibitem{poesia2022synchromesh}
+Gabriel Poesia, Oleksandr Polozov, Vu~Le, Ashish Tiwari, Gustavo Soares, Christopher Meek, and Sumit Gulwani.
+\newblock Synchromesh: Reliable code generation from pre-trained language models.
+\newblock {\em arXiv preprint arXiv:2201.11227}, 2022.
+
+\bibitem{lin2020bridging}
+Xi~Victoria Lin, Richard Socher, and Caiming Xiong.
+\newblock Bridging textual and tabular data for cross-domain text-to-sql semantic parsing.
+\newblock {\em arXiv preprint arXiv:2012.12627}, 2020.
+
+\bibitem{biswal2024text2sql}
+Asim Biswal, Liana Patel, Siddarth Jha, Amog Kamsetty, Shu Liu, Joseph~E Gonzalez, Carlos Guestrin, and Matei Zaharia.
+\newblock Text2sql is not enough: Unifying ai and databases with tag.
+\newblock {\em arXiv preprint arXiv:2408.14717}, 2024.
+
+\bibitem{fine_tune_new_24}
+Zorik Gekhman, Gal Yona, Roee Aharoni, Matan Eyal, Amir Feder, Roi Reichart, and Jonathan Herzig.
+\newblock Does fine-tuning llms on new knowledge encourage hallucinations?, 2024.
+
+\bibitem{berglund2023reversal}
+Lukas Berglund, Meg Tong, Max Kaufmann, Mikita Balesni, Asa~Cooper Stickland, Tomasz Korbak, and Owain Evans.
+\newblock The reversal curse: Llms trained on" a is b" fail to learn" b is a".
+\newblock {\em arXiv preprint arXiv:2309.12288}, 2023.
+
+\bibitem{zhu2024text2mdt}
+Wei Zhu, Wenfeng Li, Xing Tian, Pengfei Wang, Xiaoling Wang, Jin Chen, Yuanbin Wu, Yuan Ni, and Guotong Xie.
+\newblock Text2mdt: extracting medical decision trees from medical texts.
+\newblock {\em arXiv preprint arXiv:2401.02034}, 2024.
+
+\bibitem{li2023meddm}
+Binbin Li, Tianxin Meng, Xiaoming Shi, Jie Zhai, and Tong Ruan.
+\newblock Meddm: Llm-executable clinical guidance tree for clinical decision-making.
+\newblock {\em arXiv preprint arXiv:2312.02441}, 2023.
+
+\bibitem{zhang2023recommendation}
+Junjie Zhang, Ruobing Xie, Yupeng Hou, Wayne~Xin Zhao, Leyu Lin, and Ji-Rong Wen.
+\newblock Recommendation as instruction following: A large language model empowered recommendation approach.
+\newblock {\em arXiv preprint arXiv:2305.07001}, 2023.
+
+\bibitem{zhang2022tempera}
+Tianjun Zhang, Xuezhi Wang, Denny Zhou, Dale Schuurmans, and Joseph~E Gonzalez.
+\newblock Tempera: Test-time prompting via reinforcement learning.
+\newblock {\em arXiv preprint arXiv:2211.11890}, 2022.
+
+\bibitem{deng2022rlprompt}
+Mingkai Deng, Jianyu Wang, Cheng-Ping Hsieh, Yihan Wang, Han Guo, Tianmin Shu, Meng Song, Eric~P Xing, and Zhiting Hu.
+\newblock Rlprompt: Optimizing discrete text prompts with reinforcement learning.
+\newblock {\em arXiv preprint arXiv:2205.12548}, 2022.
+
+\bibitem{prasad2022grips}
+Archiki Prasad, Peter Hase, Xiang Zhou, and Mohit Bansal.
+\newblock Grips: Gradient-free, edit-based instruction search for prompting large language models.
+\newblock {\em arXiv preprint arXiv:2203.07281}, 2022.
+
+\bibitem{zhou2022large}
+Yongchao Zhou, Andrei~Ioan Muresanu, Ziwen Han, Keiran Paster, Silviu Pitis, Harris Chan, and Jimmy Ba.
+\newblock Large language models are human-level prompt engineers.
+\newblock {\em arXiv preprint arXiv:2211.01910}, 2022.
+
+\bibitem{pryzant2023automatic}
+Reid Pryzant, Dan Iter, Jerry Li, Yin~Tat Lee, Chenguang Zhu, and Michael Zeng.
+\newblock Automatic prompt optimization with" gradient descent" and beam search.
+\newblock {\em arXiv preprint arXiv:2305.03495}, 2023.
+
+\bibitem{yang2024large_1}
+Chengrun Yang, Xuezhi Wang, Yifeng Lu, Hanxiao Liu, Quoc~V Le, Denny Zhou, and Xinyun Chen.
+\newblock Large language models as optimizers.
+\newblock In {\em The Twelfth International Conference on Learning Representations}, 2024.
+
+\bibitem{shinn2024reflexion}
+Noah Shinn, Federico Cassano, Ashwin Gopinath, Karthik Narasimhan, and Shunyu Yao.
+\newblock Reflexion: Language agents with verbal reinforcement learning.
+\newblock {\em Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem{wei2022chain}
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed~Chi, Quoc~V Le, Denny Zhou, et~al.
+\newblock Chain-of-thought prompting elicits reasoning in large language models.
+\newblock {\em Advances in neural information processing systems}, 35:24824--24837, 2022.
+
+\bibitem{yao2024tree}
+Shunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Tom Griffiths, Yuan Cao, and Karthik Narasimhan.
+\newblock Tree of thoughts: Deliberate problem solving with large language models.
+\newblock {\em Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem{yao2023beyond}
+Yao Yao, Zuchao Li, and Hai Zhao.
+\newblock Beyond chain-of-thought, effective graph-of-thought reasoning in language models.
+\newblock {\em arXiv preprint arXiv:2305.16582}, 2023.
+
+\bibitem{ji2023towards}
+Ziwei Ji, Tiezheng Yu, Yan Xu, Nayeon Lee, Etsuko Ishii, and Pascale Fung.
+\newblock Towards mitigating llm hallucination via self reflection.
+\newblock In {\em Findings of the Association for Computational Linguistics: EMNLP 2023}, pages 1827--1843, 2023.
+
+\bibitem{wu2024chain}
+Zhaolong Wu, Abul Hasan, Jinge Wu, Yunsoo Kim, Jason~PY Cheung, Teng Zhang, and Honghan Wu.
+\newblock Chain-of-though (cot) prompting strategies for medical error detection and correction.
+\newblock {\em arXiv preprint arXiv:2406.09103}, 2024.
+
+\bibitem{achiam2023gpt}
+Josh Achiam, Steven Adler, Sandhini Agarwal, Lama Ahmad, Ilge Akkaya, Florencia~Leoni Aleman, Diogo Almeida, Janko Altenschmidt, Sam Altman, Shyamal Anadkat, et~al.
+\newblock Gpt-4 technical report.
+\newblock {\em arXiv preprint arXiv:2303.08774}, 2023.
+
+\bibitem{shum2023automatic}
+KaShun Shum, Shizhe Diao, and Tong Zhang.
+\newblock Automatic prompt augmentation and selection with chain-of-thought from labeled data.
+\newblock {\em arXiv preprint arXiv:2302.12822}, 2023.
+
+\bibitem{wang2024survey}
+Lei Wang, Chen Ma, Xueyang Feng, Zeyu Zhang, Hao Yang, Jingsen Zhang, Zhiyuan Chen, Jiakai Tang, Xu~Chen, Yankai Lin, et~al.
+\newblock A survey on large language model based autonomous agents.
+\newblock {\em Frontiers of Computer Science}, 18(6):186345, 2024.
+
+\bibitem{hao2024llm}
+Shibo Hao, Yi~Gu, Haotian Luo, Tianyang Liu, Xiyan Shao, Xinyuan Wang, Shuhua Xie, Haodi Ma, Adithya Samavedhi, Qiyue Gao, et~al.
+\newblock Llm reasoners: New evaluation, library, and analysis of step-by-step reasoning with large language models.
+\newblock {\em arXiv preprint arXiv:2404.05221}, 2024.
+
+\bibitem{he2024socreval}
+Hangfeng He, Hongming Zhang, and Dan Roth.
+\newblock Socreval: Large language models with the socratic method for reference-free reasoning evaluation.
+\newblock In {\em Findings of the Association for Computational Linguistics: NAACL 2024}, pages 2736--2764, 2024.
+
+\bibitem{zhang-etal-2024-mlcopilot}
+Lei Zhang, Yuge Zhang, Kan Ren, Dongsheng Li, and Yuqing Yang.
+\newblock {MLC}opilot: Unleashing the power of large language models in solving machine learning tasks.
+\newblock In Yvette Graham and Matthew Purver, editors, {\em Proceedings of the 18th Conference of the European Chapter of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 2931--2959, St. Julian{'}s, Malta, March 2024. Association for Computational Linguistics.
+
+\bibitem{hong2023metagpt}
+Sirui Hong, Xiawu Zheng, Jonathan Chen, Yuheng Cheng, Jinlin Wang, Ceyao Zhang, Zili Wang, Steven Ka~Shing Yau, Zijuan Lin, Liyang Zhou, et~al.
+\newblock Metagpt: Meta programming for multi-agent collaborative framework.
+\newblock {\em arXiv preprint arXiv:2308.00352}, 2023.
+
+\bibitem{abbasian2023conversational}
+Mahyar Abbasian, Iman Azimi, Amir~M Rahmani, and Ramesh Jain.
+\newblock Conversational health agents: A personalized llm-powered agent framework.
+\newblock {\em arXiv preprint arXiv:2310.02374}, 2023.
+
+\bibitem{tang2023medagents}
+Xiangru Tang, Anni Zou, Zhuosheng Zhang, Yilun Zhao, Xingyao Zhang, Arman Cohan, and Mark Gerstein.
+\newblock Medagents: Large language models as collaborators for zero-shot medical reasoning.
+\newblock {\em arXiv preprint arXiv:2311.10537}, 2023.
+
+\bibitem{guha2024legalbench}
+Neel Guha, Julian Nyarko, Daniel Ho, Christopher R{\'e}, Adam Chilton, Alex Chohlas-Wood, Austin Peters, Brandon Waldon, Daniel Rockmore, Diego Zambrano, et~al.
+\newblock Legalbench: A collaboratively built benchmark for measuring legal reasoning in large language models.
+\newblock {\em Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem{zelikman2022star}
+Eric Zelikman, Yuhuai Wu, Jesse Mu, and Noah Goodman.
+\newblock Star: Bootstrapping reasoning with reasoning.
+\newblock {\em Advances in Neural Information Processing Systems}, 35:15476--15488, 2022.
+
+\bibitem{stammer2023learning}
+Wolfgang Stammer, Felix Friedrich, David Steinmann, Hikaru Shindo, and Kristian Kersting.
+\newblock Learning by self-explaining.
+\newblock {\em arXiv preprint arXiv:2309.08395}, 2023.
+
+\bibitem{pang2023guideline}
+Chaoxu Pang, Yixuan Cao, Qiang Ding, and Ping Luo.
+\newblock Guideline learning for in-context information extraction.
+\newblock {\em arXiv preprint arXiv:2310.05066}, 2023.
+
+\bibitem{zhang2024context}
+Tianjun Zhang, Aman Madaan, Luyu Gao, Steven Zheng, Swaroop Mishra, Yiming Yang, Niket Tandon, and Uri Alon.
+\newblock In-context principle learning from mistakes.
+\newblock {\em arXiv preprint arXiv:2402.05403}, 2024.
+
+\bibitem{sun2024retrieved}
+Hao Sun, Yong Jiang, Bo~Wang, Yingyan Hou, Yan Zhang, Pengjun Xie, and Fei Huang.
+\newblock Retrieved in-context principles from previous mistakes.
+\newblock {\em arXiv preprint arXiv:2407.05682}, 2024.
+
+\bibitem{yang2024buffer}
+Ling Yang, Zhaochen Yu, Tianjun Zhang, Shiyi Cao, Minkai Xu, Wentao Zhang, Joseph~E. Gonzalez, and Bin Cui.
+\newblock Buffer of thoughts: Thought-augmented reasoning with large language models, 2024.
+
+\bibitem{nori2023can}
+Harsha Nori, Yin~Tat Lee, Sheng Zhang, Dean Carignan, Richard Edgar, Nicolo Fusi, Nicholas King, Jonathan Larson, Yuanzhi Li, Weishung Liu, et~al.
+\newblock Can generalist foundation models outcompete special-purpose tuning? case study in medicine.
+\newblock {\em arXiv preprint arXiv:2311.16452}, 2023.
+
+\bibitem{li2024agent}
+Junkai Li, Siyu Wang, Meng Zhang, Weitao Li, Yunghwei Lai, Xinhui Kang, Weizhi Ma, and Yang Liu.
+\newblock Agent hospital: A simulacrum of hospital with evolvable medical agents.
+\newblock {\em arXiv preprint arXiv:2405.02957}, 2024.
+
+\bibitem{liu2021makes}
+Jiachang Liu, Dinghan Shen, Yizhe Zhang, Bill Dolan, Lawrence Carin, and Weizhu Chen.
+\newblock What makes good in-context examples for gpt-$3 $?
+\newblock {\em arXiv preprint arXiv:2101.06804}, 2021.
+
+\bibitem{brown2020language}
+Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared~D Kaplan, Prafulla Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, et~al.
+\newblock Language models are few-shot learners.
+\newblock {\em Advances in neural information processing systems}, 33:1877--1901, 2020.
+
+\bibitem{shi2023large}
+Freda Shi, Xinyun Chen, Kanishka Misra, Nathan Scales, David Dohan, Ed~H Chi, Nathanael Sch{\"a}rli, and Denny Zhou.
+\newblock Large language models can be easily distracted by irrelevant context.
+\newblock In {\em International Conference on Machine Learning}, pages 31210--31227. PMLR, 2023.
+
+\bibitem{chen2023many}
+Jiuhai Chen, Lichang Chen, Chen Zhu, and Tianyi Zhou.
+\newblock How many demonstrations do you need for in-context learning?
+\newblock {\em arXiv preprint arXiv:2303.08119}, 2023.
+
+\bibitem{wu2023openicl}
+Zhenyu Wu, YaoXiang Wang, Jiacheng Ye, Jiangtao Feng, Jingjing Xu, Yu~Qiao, and Zhiyong Wu.
+\newblock Openicl: An open-source framework for in-context learning.
+\newblock {\em arXiv preprint arXiv:2303.02913}, 2023.
+
+\bibitem{li2023unified}
+Xiaonan Li, Kai Lv, Hang Yan, Tianyang Lin, Wei Zhu, Yuan Ni, Guotong Xie, Xiaoling Wang, and Xipeng Qiu.
+\newblock Unified demonstration retriever for in-context learning.
+\newblock {\em arXiv preprint arXiv:2305.04320}, 2023.
+
+\bibitem{ye2023compositional}
+Jiacheng Ye, Zhiyong Wu, Jiangtao Feng, Tao Yu, and Lingpeng Kong.
+\newblock Compositional exemplars for in-context learning.
+\newblock In {\em International Conference on Machine Learning}, pages 39818--39833. PMLR, 2023.
+
+\bibitem{su2022selective}
+Hongjin Su, Jungo Kasai, Chen~Henry Wu, Weijia Shi, Tianlu Wang, Jiayi Xin, Rui Zhang, Mari Ostendorf, Luke Zettlemoyer, Noah~A Smith, et~al.
+\newblock Selective annotation makes language models better few-shot learners.
+\newblock {\em arXiv preprint arXiv:2209.01975}, 2022.
+
+\bibitem{zhang2022automatic}
+Zhuosheng Zhang, Aston Zhang, Mu~Li, and Alex Smola.
+\newblock Automatic chain of thought prompting in large language models.
+\newblock {\em arXiv preprint arXiv:2210.03493}, 2022.
+
+\bibitem{wang2022self}
+Xuezhi Wang, Jason Wei, Dale Schuurmans, Quoc Le, Ed~Chi, Sharan Narang, Aakanksha Chowdhery, and Denny Zhou.
+\newblock Self-consistency improves chain of thought reasoning in language models.
+\newblock {\em arXiv preprint arXiv:2203.11171}, 2022.
+
+\bibitem{agarwal2024many}
+Rishabh Agarwal, Avi Singh, Lei~M Zhang, Bernd Bohnet, Stephanie Chan, Ankesh Anand, Zaheer Abbas, Azade Nova, John~D Co-Reyes, Eric Chu, et~al.
+\newblock Many-shot in-context learning.
+\newblock {\em arXiv preprint arXiv:2404.11018}, 2024.
+
+\bibitem{pourreza2024din}
+Mohammadreza Pourreza and Davood Rafiei.
+\newblock Din-sql: Decomposed in-context learning of text-to-sql with self-correction.
+\newblock {\em Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem{zhong2024achieving}
+Qihuang Zhong, Kang Wang, Ziyang Xu, Juhua Liu, Liang Ding, Bo~Du, and Dacheng Tao.
+\newblock Achieving> 97\% on gsm8k: Deeply understanding the problems makes llms perfect reasoners.
+\newblock {\em arXiv preprint arXiv:2404.14963}, 2024.
+
+\bibitem{schumacher2024team}
+Dan Schumacher and Anthony Rios.
+\newblock Team utsa-nlp at semeval 2024 task 5: Prompt ensembling for argument reasoning in civil procedures with gpt4.
+\newblock {\em arXiv preprint arXiv:2404.01961}, 2024.
+
+\bibitem{dou2023plugmed}
+Chengfeng Dou, Zhi Jin, Wenping Jiao, Haiyan Zhao, Zhenwei Tao, and Yongqiang Zhao.
+\newblock Plugmed: Improving specificity in patient-centered medical dialogue generation using in-context learning.
+\newblock {\em arXiv preprint arXiv:2305.11508}, 2023.
+
+\bibitem{li2023large}
+Yinheng Li, Shaofei Wang, Han Ding, and Hang Chen.
+\newblock Large language models in finance: A survey.
+\newblock In {\em Proceedings of the fourth ACM international conference on AI in finance}, pages 374--382, 2023.
+
+\bibitem{longpre2023flan}
+Shayne Longpre, Le~Hou, Tu~Vu, Albert Webson, Hyung~Won Chung, Yi~Tay, Denny Zhou, Quoc~V Le, Barret Zoph, Jason Wei, et~al.
+\newblock The flan collection: Designing data and methods for effective instruction tuning.
+\newblock In {\em International Conference on Machine Learning}, pages 22631--22648. PMLR, 2023.
+
+\bibitem{sanh2021multitask}
+Victor Sanh, Albert Webson, Colin Raffel, Stephen~H Bach, Lintang Sutawika, Zaid Alyafeai, Antoine Chaffin, Arnaud Stiegler, Teven~Le Scao, Arun Raja, et~al.
+\newblock Multitask prompted training enables zero-shot task generalization.
+\newblock {\em arXiv preprint arXiv:2110.08207}, 2021.
+
+\bibitem{ouyang2022training}
+Long Ouyang, Jeffrey Wu, Xu~Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin, Chong Zhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et~al.
+\newblock Training language models to follow instructions with human feedback.
+\newblock {\em Advances in neural information processing systems}, 35:27730--27744, 2022.
+
+\bibitem{conover2023free}
+Mike Conover, Matt Hayes, Ankit Mathur, Jianwei Xie, Jun Wan, Sam Shah, Ali Ghodsi, Patrick Wendell, Matei Zaharia, and Reynold Xin.
+\newblock Free dolly: Introducing the world’s first truly open instruction-tuned llm.
+\newblock {\em Company Blog of Databricks}, 2023.
+
+\bibitem{kopf2024openassistant}
+Andreas K{\"o}pf, Yannic Kilcher, Dimitri von R{\"u}tte, Sotiris Anagnostidis, Zhi~Rui Tam, Keith Stevens, Abdullah Barhoum, Duc Nguyen, Oliver Stanley, Rich{\'a}rd Nagyfi, et~al.
+\newblock Openassistant conversations-democratizing large language model alignment.
+\newblock {\em Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem{xu2023wizardlm}
+Can Xu, Qingfeng Sun, Kai Zheng, Xiubo Geng, Pu~Zhao, Jiazhan Feng, Chongyang Tao, and Daxin Jiang.
+\newblock Wizardlm: Empowering large language models to follow complex instructions.
+\newblock {\em arXiv preprint arXiv:2304.12244}, 2023.
+
+\bibitem{raffel2020exploring}
+Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter~J Liu.
+\newblock Exploring the limits of transfer learning with a unified text-to-text transformer.
+\newblock {\em Journal of machine learning research}, 21(140):1--67, 2020.
+
+\bibitem{iyer2022opt}
+Srinivasan Iyer, Xi~Victoria Lin, Ramakanth Pasunuru, Todor Mihaylov, Daniel Simig, Ping Yu, Kurt Shuster, Tianlu Wang, Qing Liu, Punit~Singh Koura, et~al.
+\newblock Opt-iml: Scaling language model instruction meta learning through the lens of generalization.
+\newblock {\em arXiv preprint arXiv:2212.12017}, 2022.
+
+\bibitem{wang2023far}
+Yizhong Wang, Hamish Ivison, Pradeep Dasigi, Jack Hessel, Tushar Khot, Khyathi Chandu, David Wadden, Kelsey MacMillan, Noah~A Smith, Iz~Beltagy, et~al.
+\newblock How far can camels go? exploring the state of instruction tuning on open resources.
+\newblock {\em Advances in Neural Information Processing Systems}, 36:74764--74786, 2023.
+
+\bibitem{houlsby2019parameter}
+Neil Houlsby, Andrei Giurgiu, Stanislaw Jastrzebski, Bruna Morrone, Quentin De~Laroussilhe, Andrea Gesmundo, Mona Attariyan, and Sylvain Gelly.
+\newblock Parameter-efficient transfer learning for nlp.
+\newblock In {\em International conference on machine learning}, pages 2790--2799. PMLR, 2019.
+
+\bibitem{he2021towards}
+Junxian He, Chunting Zhou, Xuezhe Ma, Taylor Berg-Kirkpatrick, and Graham Neubig.
+\newblock Towards a unified view of parameter-efficient transfer learning.
+\newblock {\em arXiv preprint arXiv:2110.04366}, 2021.
+
+\bibitem{lei2023conditional}
+Tao Lei, Junwen Bai, Siddhartha Brahma, Joshua Ainslie, Kenton Lee, Yanqi Zhou, Nan Du, Vincent Zhao, Yuexin Wu, Bo~Li, et~al.
+\newblock Conditional adapters: Parameter-efficient transfer learning with fast inference.
+\newblock {\em Advances in Neural Information Processing Systems}, 36:8152--8172, 2023.
+
+\bibitem{chronopoulou2023adaptersoup}
+Alexandra Chronopoulou, Matthew~E Peters, Alexander Fraser, and Jesse Dodge.
+\newblock Adaptersoup: Weight averaging to improve generalization of pretrained language models.
+\newblock {\em arXiv preprint arXiv:2302.07027}, 2023.
+
+\bibitem{petrov2023prompting}
+Aleksandar Petrov, Philip~HS Torr, and Adel Bibi.
+\newblock When do prompting and prefix-tuning work? a theory of capabilities and limitations.
+\newblock {\em arXiv preprint arXiv:2310.19698}, 2023.
+
+\bibitem{mahabadi2021parameter}
+Rabeeh~Karimi Mahabadi, Sebastian Ruder, Mostafa Dehghani, and James Henderson.
+\newblock Parameter-efficient multi-task fine-tuning for transformers via shared hypernetworks.
+\newblock {\em arXiv preprint arXiv:2106.04489}, 2021.
+
+\bibitem{zhu2023spt}
+Wei Zhu and Ming Tan.
+\newblock Spt: learning to selectively insert prompts for better prompt tuning.
+\newblock In {\em Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pages 11862--11878, 2023.
+
+\bibitem{wang2023aprompt}
+Qifan Wang, Yuning Mao, Jingang Wang, Hanchao Yu, Shaoliang Nie, Sinong Wang, Fuli Feng, Lifu Huang, Xiaojun Quan, Zenglin Xu, et~al.
+\newblock Aprompt: Attention prompt tuning for efficient adaptation of pre-trained language models.
+\newblock In {\em Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pages 9147--9160, 2023.
+
+\bibitem{choi2023smop}
+Joon-Young Choi, Junho Kim, Jun-Hyung Park, Wing-Lam Mok, and SangKeun Lee.
+\newblock Smop: Towards efficient and effective prompt tuning with sparse mixture-of-prompts.
+\newblock In {\em Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pages 14306--14316, 2023.
+
+\bibitem{hu2021lora}
+Edward~J Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, Shean Wang, Lu~Wang, and Weizhu Chen.
+\newblock Lora: Low-rank adaptation of large language models.
+\newblock {\em arXiv preprint arXiv:2106.09685}, 2021.
+
+\bibitem{valipour2022dylora}
+Mojtaba Valipour, Mehdi Rezagholizadeh, Ivan Kobyzev, and Ali Ghodsi.
+\newblock Dylora: Parameter efficient tuning of pre-trained models using dynamic search-free low-rank adaptation.
+\newblock {\em arXiv preprint arXiv:2210.07558}, 2022.
+
+\bibitem{zhang2023adalora}
+Qingru Zhang, Minshuo Chen, Alexander Bukharin, Nikos Karampatziakis, Pengcheng He, Yu~Cheng, Weizhu Chen, and Tuo Zhao.
+\newblock Adalora: Adaptive budget allocation for parameter-efficient fine-tuning.
+\newblock {\em arXiv preprint arXiv:2303.10512}, 2023.
+
+\bibitem{ding2023sparse}
+Ning Ding, Xingtai Lv, Qiaosen Wang, Yulin Chen, Bowen Zhou, Zhiyuan Liu, and Maosong Sun.
+\newblock Sparse low-rank adaptation of pre-trained language models.
+\newblock {\em arXiv preprint arXiv:2311.11696}, 2023.
+
+\bibitem{liu2024dora}
+Shih-Yang Liu, Chien-Yi Wang, Hongxu Yin, Pavlo Molchanov, Yu-Chiang~Frank Wang, Kwang-Ting Cheng, and Min-Hung Chen.
+\newblock Dora: Weight-decomposed low-rank adaptation.
+\newblock {\em arXiv preprint arXiv:2402.09353}, 2024.
+
+\bibitem{yu2022alert}
+Ping Yu, Tianlu Wang, Olga Golovneva, Badr AlKhamissi, Siddharth Verma, Zhijing Jin, Gargi Ghosh, Mona Diab, and Asli Celikyilmaz.
+\newblock Alert: Adapting language models to reasoning tasks.
+\newblock {\em arXiv preprint arXiv:2212.08286}, 2022.
+
+\bibitem{zong2023solving}
+Mingyu Zong and Bhaskar Krishnamachari.
+\newblock Solving math word problems concerning systems of equations with gpt-3.
+\newblock In {\em Proceedings of the AAAI Conference on Artificial Intelligence}, volume~37, pages 15972--15979, 2023.
+
+\bibitem{yang2024leandojo}
+Kaiyu Yang, Aidan Swope, Alex Gu, Rahul Chalamala, Peiyang Song, Shixing Yu, Saad Godil, Ryan~J Prenger, and Animashree Anandkumar.
+\newblock Leandojo: Theorem proving with retrieval-augmented language models.
+\newblock {\em Advances in Neural Information Processing Systems}, 36, 2024.
+
+\bibitem{yuan2024back}
+Chenhan Yuan, Qianqian Xie, Jimin Huang, and Sophia Ananiadou.
+\newblock Back to the future: Towards explainable temporal reasoning with large language models.
+\newblock In {\em Proceedings of the ACM on Web Conference 2024}, pages 1963--1974, 2024.
+
+\bibitem{touvron2023llama1}
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timoth{\'e}e Lacroix, Baptiste Rozi{\`e}re, Naman Goyal, Eric Hambro, Faisal Azhar, et~al.
+\newblock Llama: Open and efficient foundation language models.
+\newblock {\em arXiv preprint arXiv:2302.13971}, 2023.
+
+\bibitem{lai2024lisa}
+Xin Lai, Zhuotao Tian, Yukang Chen, Yanwei Li, Yuhui Yuan, Shu Liu, and Jiaya Jia.
+\newblock Lisa: Reasoning segmentation via large language model.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 9579--9589, 2024.
+
+\bibitem{yue2023mammoth}
+Xiang Yue, Xingwei Qu, Ge~Zhang, Yao Fu, Wenhao Huang, Huan Sun, Yu~Su, and Wenhu Chen.
+\newblock Mammoth: Building math generalist models through hybrid instruction tuning.
+\newblock {\em arXiv preprint arXiv:2309.05653}, 2023.
+
+\bibitem{trung2024reft}
+Luong Trung, Xinbo Zhang, Zhanming Jie, Peng Sun, Xiaoran Jin, and Hang Li.
+\newblock Reft: Reasoning with reinforced fine-tuning.
+\newblock In {\em Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 7601--7614, 2024.
+
+\bibitem{li2023chatdoctor}
+Yunxiang Li, Zihan Li, Kai Zhang, Ruilong Dan, Steve Jiang, and You Zhang.
+\newblock Chatdoctor: A medical chat model fine-tuned on a large language model meta-ai (llama) using medical domain knowledge.
+\newblock {\em Cureus}, 15(6), 2023.
+
+\bibitem{yang2023fingpt}
+Hongyang Yang, Xiao-Yang Liu, and Christina~Dan Wang.
+\newblock Fingpt: Open-source financial large language models.
+\newblock {\em arXiv preprint arXiv:2306.06031}, 2023.
+
+\bibitem{yue2023disc}
+Shengbin Yue, Wei Chen, Siyuan Wang, Bingxuan Li, Chenchen Shen, Shujun Liu, Yuxuan Zhou, Yao Xiao, Song Yun, Wei Lin, et~al.
+\newblock Disc-lawllm: Fine-tuning large language models for intelligent legal services.
+\newblock {\em arXiv preprint arXiv:2309.11325}, 2023.
+
+\bibitem{sun2024amuro}
+Kaiser Sun and Mark Dredze.
+\newblock Amuro \& char: Analyzing the relationship between pre-training and fine-tuning of large language models.
+\newblock {\em arXiv preprint arXiv:2408.06663}, 2024.
+
+\end{thebibliography}

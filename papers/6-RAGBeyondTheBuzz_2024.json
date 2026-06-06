@@ -1,0 +1,45 @@
+{
+  "arxiv_id": "2409.14924",
+  "title": "Retrieval Augmented Generation (RAG) and Beyond: A Comprehensive Survey on How to Make your LLMs use External Data More Wisely",
+  "authors": [
+    "Siyun Zhao , Yuqing Yang , Zilong Wang, Zhiyuan He, Luna K. Qiu, Lili QiuMicrosoft Research Asia{siyunzhao,yuqing.yang,wangzilong,zhiyuan.he,lunaqiu,liliqiu}@microsoft.com"
+  ],
+  "abstract": "Large language models (LLMs) augmented with external data have demonstrated remarkable capabilities in completing real-world tasks. External data not only bolsters the models’ domain-specific expertise and temporal relevance but also diminishes incidences of hallucination, thereby enhancing both the controllability and interpretability of outputs. Techniques for integrating external data into LLMs, such as Retrieval-Augmented Generation (RAG) and fine-tuning, are gaining increasing attention and widespread application. Nonetheless, the effective deployment of data-augmented LLMs across various specialized fields presents substantial challenges. These challenges encompass a wide range of issues, from retrieving relevant data and accurately interpreting user intent to fully harnessing the reasoning capabilities of LLMs for complex tasks. We believe that there is no one-size-fits-all solution for data-augmented LLM applications. In practice, underperformance often arises from a failure to correctly identify the core focus of a task or because the task inherently requires a blend of multiple capabilities that must be disentangled for better resolution. In this survey, we propose a RAG task categorization method, classifying user queries into four levels based on the type of external data required and the task’s primary focus: explicit fact queries, implicit fact queries, interpretable rationale queries, and hidden rationale queries. We define these levels of queries, provide relevant datasets, and summarize the key challenges and most effective techniques for addressing these challenges. Finally, we discuss three main forms of integrating external data into LLMs: context, small model, and fine-tuning, highlighting their respective strengths, limitations, and the types of problems they are suited to solve. This work aims to help readers thoroughly understand and decompose the data requirements and key bottlenecks in building LLM applications, offering solutions to the different challenges and serving as a guide to systematically developing such applications.",
+  "year": "2024",
+  "figure_count": 6,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:Main Focus of Four Level Queries",
+      "src": "/html/2409.14924/assets/contents/images/four_level_main_focus.png"
+    },
+    {
+      "id": "S2.F2",
+      "caption": "Figure 2:Summary of Query Levels in\\MFUsentencecasedata augmented LLM applications",
+      "src": "/html/2409.14924/assets/contents/images/overall_level_examples_fishbone.png"
+    },
+    {
+      "id": "S3.F3",
+      "caption": "Figure 3:Three Types of Query-Document Alignment",
+      "src": "/html/2409.14924/assets/contents/images/three_type_alignment.png"
+    },
+    {
+      "id": "S5.F4",
+      "caption": "Figure 4:Demonstration of Rationale Queries",
+      "src": "/html/2409.14924/assets/contents/images/level34.png"
+    },
+    {
+      "id": "S6.F5",
+      "caption": "Figure 5:Summary of Main Techniques for Different Query Levels in\\MFUsentencecasedata augmented LLM applications",
+      "src": "/html/2409.14924/assets/contents/images/solution_conclusion4.png"
+    },
+    {
+      "id": "S7.F6",
+      "caption": "Figure 6:Three ways to inject specific domain data into an LLM: a) extracting part of the domain data based on the query as context input for the LLM, b) training a smaller model with specific domain data, which then guides the integration of external information subsequently input into the LLM, and c) directly using external domain knowledge to fine-tune a general large language model to become a domain-expert model.",
+      "src": "/html/2409.14924/assets/contents/images/three_type_input.png"
+    }
+  ],
+  "paper_number": 6,
+  "slug": "RAGBeyondTheBuzz",
+  "base_name": "6-RAGBeyondTheBuzz_2024"
+}

@@ -1,0 +1,14 @@
+{
+  "arxiv_id": null,
+  "title": "Natural Language Interface for Queries on Databases with Sensitive Information",
+  "authors": [],
+  "abstract": "Analyzing large datasets is challenging for users unfamiliar with structured query languages such as SQL or Cypher, particularly users from fields like social sciences or law enforcement who need secure access to databases containing sensitive information such as criminal justice, healthcare, and education data. We propose a privacy-preserving natural language interface for querying graph databases. The framework integrates Optical Character Recognition (OCR) techniques to extract structured data from scanned and unstructured documents, storing it in a Neo4j graph database to model entity relationships. An LLM-powered query translation module converts natural language queries into Cypher, eliminating the need for technical expertise while preserving data privacy.",
+  "year": "2025",
+  "venue": "IEEE Conference (ITNG 2025)",
+  "doi": "10.1109/ITNG63569.2025.11114052",
+  "figure_count": 0,
+  "figure_captions": [],
+  "paper_number": 12,
+  "slug": "NLIDBSensitive",
+  "base_name": "12-NLIDBSensitive_2025"
+}

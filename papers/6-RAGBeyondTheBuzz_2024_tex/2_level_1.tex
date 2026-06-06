@@ -1,0 +1,102 @@
+\section{Explicit Fact Queries (L1)}
+
+\subsection{Overview}
+
+\MFUsentencecase{\firstlevel}, represent the most straightforward type of data-augmented queries. Queries at this level can be answered by directly accessing specific domain documents or document snippets within the collection. The answers to these questions are often in plain text within the documents, requiring minimal reasoning or simple rationale in the response generation.
+
+
+%找子龙要个医疗指南 for 3
+The defining characteristic of this level is the clear and direct dependency on specific pieces of external data. 
+
+\subsubsection{Data Dependency}
+
+The dataset $\mathcal{D}$ can be segmented into documents or segments, denoted as $D_1, D_2, \ldots, D_n$, in various ways:
+\begin{equation}
+    \mathcal{D} = \left\{ D_1, D_2, \ldots, D_n \right\}
+\end{equation}
+Each segment $D_i$ is considered relatively short and contains content that is more focused and specific\footnote{In some most recent advancements, the segment size may be as large as a whole document or even larger}. 
+
+For a given query \(q \in \mathcal{Q}\), not every segment within $\mathcal{D}$ is requisite for formulating a response. Let $\delta: \mathcal{Q} \times \mathcal{D} \rightarrow \{0,1\}$ denote the necessity of data segment \(d \in \mathcal{D}\) for a specific query \(q\), where $\delta(q,d) = 1$ means that data segment \(d\) is required to answer the query \(q\), and $\delta(q,d) = 0$ otherwise. Then the data dependency of query \(q\), characterized by the subset of segments indispensable for addressing query \(q\), is defined as:
+\begin{equation}
+    Dep(q) = \{d \mid d \in \mathcal{D} \text{ and } \delta(q,d) = 1\} 
+\end{equation}
+It's easy to understand that $Dep(q) \in \mathcal{P}(\mathcal{D})$, where $\mathcal{P}(\mathcal{D})$ is the power set\footnote{The power set (or powerset) of a set $S$ is the set of all subsets of $S$, including the empty set and $S$ itself.} of $\mathcal{D}$.
+
+\subsubsection{Definition}
+\MFUsentencecase{\firstlevel}, denoted as \(\mathcal{Q}_1\), are characterized by the direct retrievability of answers from specific data segments within the dataset \(\mathcal{D}\). These queries can be formally defined in the context of a data-augmented LLM system as follows:
+
+For any query \( q \) and its corresponding answer \( a \), an explicit fact query is one where there exists:
+\begin{itemize}
+    \item A retrieval component \( r_{\mathcal{D}}: \mathcal{Q} \rightarrow \mathcal{P}(\mathcal{D}) \) that identifies the relevant data segments from \(\mathcal{D}\) necessary to answer \( q \). This component ensures that \( r_{\mathcal{D}}(q) \) closely matches \( Dep(q) \), the minimal subset of \(\mathcal{D}\) required to respond to \( q \).
+    \item A response generator \( \theta \), typically a prompted LLM inference, that constructs the answer \( a \) based solely on the information retrieved by \( r_{\mathcal{D}} \). The response \( \theta(r_{\mathcal{D}}(q)) \) should be equal to or approximate \( a \), demonstrating the query's reliance on explicit, directly accessible facts.
+\end{itemize}
+This definition underscores the reliance of \firstlevel on direct data retrieval without the need for complex reasoning or inference beyond the scope of the identified data segments.
+
+Here are some examples of queries at this level:
+\begin{itemize}
+    \item \textit{What method was used in Paper X to solve problem Y?} (given a collection of academic papers)
+    \item \textit{What's the AI strategy of company X?} (given a series of the latest news and articles about company X)
+\end{itemize}
+
+\subsection{Challenges and Solutions}
+Queries at this level primarily necessitate the correct retrieval of data for LLMs to provide accurate responses. RAG~\cite{rag_survey_23_1}, due to its effectiveness, flexibility, and relatively low costs, is the most commonly adopted technical solution for handling this level of queries. However, even with RAG, there are significant challenges in constructing a robust and high-quality system. These challenges include:
+
+\begin{itemize}
+    \item \textbf{Data Processing Difficulties}: External data is often highly unstructured and contains multi-modal components such as tables, images, videos, and more. Additionally, the process of segmenting or "chunking" this data presents challenges in maintaining the original context and meaning.
+    
+    \item \textbf{Data Retrieval Difficulties}: The retrieval of relevant data segments from a large, unstructured dataset can be computationally intensive and prone to errors. The challenge lies in developing efficient and accurate retrieval mechanisms.
+    
+    \item \textbf{Evaluation Difficulties}: Evaluating the performance of a RAG system, particularly at a component level, is a complex task. It requires the development of robust metrics that can accurately assess the quality of data retrieval and response generation.
+\end{itemize}
+
+Given the popularity of RAG, a wealth of literature and tools have been developed to address these challenges. In the remainder of this section, we will highlight some of the most practical and impactful enhancements to RAG. Additionally, we will discuss alternative technical solutions that may be employed beyond RAG.
+
+\subsection{Retrieval-augmented Generation (RAG)}
+
+Retrieval-Augmented Generation refers to a methodology where a language model augments its natural language generation capabilities by dynamically retrieving external information during the generation process. This technique blends the generative capabilities of LLMs with the information retrieval from extensive databases or documents. The process is typically implemented as data index construction, retrieval system construction and answer generation.
+
+\subsubsection{Data Processing Enhancement}
+
+Document parsing at this level often involves extracting information from text, tables, and figures in a coherent manner, ensuring that the relevant snippets are accurately identified and retrieved.
+
+\textit{\textbf{Multi-modal Documents Parsing}} Addressing multi-modal content in source documents, such as charts, tables, or even videos (e.g. meeting recordings), is one of the most frequently asked questions. Broadly, two approaches are employed to tackle this issue. The first approach involves converting multi-modal content into textual form. For instance, Table-to-Text methods~\cite{min2024exploring} translate tables into text, while other techniques convert visual content into textual or attribute-based descriptions~\cite{suris2023vipergpt, gao2023assistgpt}, which are subsequently processed by large language models. The second approach leverages multi-modal embedding techniques~\cite{hu2023reveal, li2022blip, long2024generative}, utilizing the retrieved embeddings from multi-modal data as soft prompts for input.
+
+
+\textit{\textbf{Chunking Optimization}} For long texts, segmenting documents into text chunks is a common and necessary operation. Larger text chunks can preserve more of the semantic coherence of the context, but they also tend to contain more noise within each chunk\cite{liu2024lost}. Commonly-used chunking strategies~\cite{langchain_chunk, llamaindex_chunk} include fixed size chunking, recursive chunking, sliding window chunking, paragraph-based chunking ,semantic chunking, etc. Certain methods are designed to ascertain the level of detail a query demands and, based on this identification, select text chunks of appropriate granularity for retrieval\cite{sarthi2024raptor, zhong2024mix}. Alternatively, some methods opt to process and refine the text into smaller segments that maintain a high degree of information completeness\cite{chen2023dense}. Additionally, there are approaches that employ vision models to segment text in accordance with the original document structure\cite{yepes2024financial}.
+
+
+\textit{\textbf{}} 
+\subsubsection{Data Retrieval Enhancement}
+Information Retrieval (IR) techniques can be smoothly transferred into RAG applicaitons. The primary steps involved include establishing data indexes, processing queries, retrieving and matching, re-ranking, and evaluation. 
+
+
+\textit{\textbf{Indexing}} The purpose of this step is to establish mappings from search terms to text segments, determining the logic by which the retrieval system operates. Indexing methods are broadly classified into three types: sparse, dense, and hybrid retrieval. Sparse retrieval uses specific words to index text segments. In contrast, dense retrieval maps text segments into a dense vector space of features. Hybrid retrieval combines elements of both sparse and dense techniques.
+
+\begin{itemize}
+    \item \textit{Sparse Retrieval}: This was the first indexing method to be widely adopted due to its simplicity and intuitiveness. Techniques like TF-IDF and BM25\cite{sparck1972statistical, robertson1995okapi} are designed to identify the most representative keywords of each text segment based on their relative frequency. These methods are still prevalent in many RAG projects\cite{ram2023context, jiang2023active, xu2024recomp}. However, word matching methods can lead to retrieval losses due to their inability to recognize synonyms. To address this issue, methods like KNN can be used for similarity-based matching of keywords \cite{boytsov2016off}. Alternatively, indices like keywords can be changed into the prediction of the probabilities of query tokens for the corresponding text segment\cite{zhuang2021tilde, zhuang2021fast}.
+    \item  \textit{Dense Retrieval}: This approach often involves using pre-trained or fine-tuned text encoders to map texts to a dense vector space that aligns with query requirements. BERT-based encoders~\cite{devlin2018bert} are commonly to be fine-tuned as dense retriever on unsupervised data using methods such as DPR\cite{karpukhin2020dense}, ANCE\cite{xiong2020approximate}, SimCSE\cite{gao2021simcse} and TAS-B\cite{hofstatter2021efficiently}. Others employ unsupervised contrastive learning for fine-tuning, such as  Contriever\cite{izacard2021unsupervised}. Using feedback from LLMs to guide the training objectives of retrievers can also effectively enhance the retriever's suitability for LLMs \cite{zhang2023retrieve, ma2023fine, borgeaud2022improving}. Given the powerful capabilities and expressive potential of LLMs, LLM-based dense retrieval has recently emerged as a key area of interest and exploration~\cite{ni2021large}. LLM2vec~\cite{behnamghader2024llm2vec} modifies the attention mechanism of a pre-trained LLM to a bidirectional one and employs the masked next-token prediction method for unsupervised training, resulting in an LLM-based dense retrieval embedder. Similarly, Llama2Vec~\cite{li2024llama2vec} leverages two pretext tasks—Embedding-Based Auto-Encoding and Embedding-Based Auto-Regression—to train an unsupervised dense retrieval encoder based on the LLaMA architecture~\cite{touvron2023llama}, leading to significant improvements in retrieval task performance.
+    \item \textit{Others}: Combining sparse retrieval and dense retrieval is an effective method to focus simultaneously on the central theme of text segments and global features. Feng et al. (2023) propose initially determining the knowledge domain needed to answer a query as a fixed area of expertise, and then using dense retrieval to recall supplementary information within this domain \cite{feng2023knowledge}. Numerous studies have explored various methods of blending dense vector indexing with sparse encoder indexing to better capture the semantic information of text blocks and enhance the precision of targeted paragraph retrieval \cite{sawarkar2024blended, chen2024bge, luan2021sparse}. On the other hand, Tang et al. (2024) have enhanced the capabilities of a LLM by fine-tuning it for indexing and retrieving, effectively integrating these abilities directly into the LLM. This allows the LLM to autonomously generate data indices and text segments for each query \cite{tang2024self, cheng2024lift}.
+\end{itemize}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{contents/images/three_type_alignment.png}
+    \caption{Three Types of Query-Document Alignment}
+    \label{fig:three-alignments}
+\end{figure}
+
+
+
+% \comment{also include haystack-style}
+\textit{\textbf{Query Document Alignment}}  The goal of this step is to align the query with document segments in external data to identify the best document segment that can assist in answering the query. As Figure~\ref{fig:three-alignments} illustrated, there are primarily three approaches to this alignment: traditional alignment, document domain alignment, and query domain alignment. Traditional alignment involves mapping both document segments and the query into the same encoding space. For instance, many dense retrieval architectures based on dual encoders feature specialized query encoders~\cite{karpukhin2020dense, xiong2020approximate, hofstatter2021efficiently}. Conversely, if a system like RAG employs sparse retrieval, it is necessary to extract keywords from the query for the search. Further refinement can be achieved through query rewriting techniques, which enhance search accuracy by mitigating issues related to user terminological inaccuracies or vague descriptions, effectively improving the precision of the search results~\cite{ma2023query}. Document domain alignment involves generating synthetic answers first, then using these answers to recall relevant data, effectively addressing the issue of queries and retrieved data not being in the same distribution space. A notable work in this area is HyDE~\cite{gao2022precise}. Query domain alignment~\cite{raina2024question} involves generating a set of synthetic questions for each atomic unit of text, mapping text segments into the query space, and then retrieving the synthetic questions closest to the original query along with their corresponding text segments. This method ensures that the most relevant and contextually appropriate segments are selected for responding to the query. SlimPLM~\cite{tan2024small} employs a small proxy model to generate heuristic answers, which are then used to predict the knowledge needed to answer the question. This approach also provides an effective method for aligning queries to the document space.
+
+\textit{\textbf{Re-ranking and Correction}} 
+After retrieving the top k text blocks, RAG systems must filter and reorder these segments. Most RAG systems use the relevance scores provided by the retriever as the basis for ranking, while some studies employ specific metrics such as perplexity or perplexity gain as ranking criteria \cite{jiang2023llmlingua, jiang2023longllmlingua}. Other efforts involve using LLMs to evaluate the credibility and utility of retrieved text blocks, training a pluggable reward-driven contextual adapter to refine the output of retriever\cite{yang2023prca}. Additionally, some research focuses on pre-training a small language model dedicated to fact verification, which is used to filter out incorrect retrieved text chunks, thus improving the quality of the recalled text\cite{yan2024corrective}.
+
+\textit{\textbf{Recursive Retrieval or Iterative Retrieval}}
+Considering the inherent limitations in the accuracy of a single retrieval attempt, an effective mitigation strategy is to perform multiple retrievals to progressively address any omissions. Kim et al. (2023) introduced a tree-like recursive retrieval method, incorporating pruning strategies to incrementally break down ambiguous questions into disambiguated ones, ultimately arriving at the closest correct answer \cite{kim2023tree}. Similarly, SEATER uses the k-means algorithm to construct a hierarchical tree structure of items to be retrieved, and iteratively recalls nodes within the tree structure \cite{si2023generative}.
+
+
+
+\subsubsection{Response Generation Enhancement}
+Generating responses requires determining if the retrieved information is sufficient or if additional external data is needed. Handling conflicts between retrieved knowledge and the model's internal prior knowledge is also essential \cite{wu2024faithful, ding2024retrieve, tan2024blinded}. Supervised fine-tuning is an effective method to enhance the generation performance in RAG systems. When faced with irrelevant or erroneous information as the retrieved context, pre-trained large language models are often easily misled, resulting in incorrect responses. Many studies have shown that by subtly designing training data for RAG systems, fine-tuning or pretraining can effectively mitigate this issue \cite{wang2023instructretro, yoran2023making, fang2024enhancing}. Through experimental analysis, RAAT~\cite{fang2024enhancing}, demonstrated that the detrimental effects of irrelevant retrieval noise, relevant retrieval noise, and counterfactual retrieval noise on RAG models increase progressively. By incorporating with these training process, these methods enables the LLM to internally recognize noisy contexts, leading to significant improvements in response generation quality even in the presence of noisy retrievals. Furthermore, to ensure more consistent performance between the retriever and generator within the RAG system, some studies employ joint training of both retriever and generator during the training phase \cite{lin2023ra, hofstatter2023fid, asai2023self}.

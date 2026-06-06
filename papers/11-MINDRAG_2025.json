@@ -1,0 +1,21 @@
+{
+  "arxiv_id": null,
+  "title": "MIND-RAG: Multimodal Context-Aware and Intent-Aware Retrieval-Augmented Generation for Educational Publications",
+  "authors": [
+    "Jiayang Yu",
+    "Yuxi Xie",
+    "Guixuan Zhang",
+    "Jie Liu",
+    "Zhi Zeng",
+    "Ying Huang",
+    "Shuwu Zhang"
+  ],
+  "abstract": "We address limitations in multimodal Retrieval-Augmented Generation (RAG) systems when applied to domain-specific corpora such as educational scientific publications, which contain dense domain-specific vocabulary and are richly structured with figures and tables. Existing systems fail to adequately capture complex semantic structures in figures and cannot fully model user intent in multimodal queries. We propose MIND-RAG, a framework with two key innovations: (1) Context-Aware Image Summarization that generates semantic text summaries from images using surrounding textual context, and (2) Multimodal Intent-Aware Reranking that analyzes user needs across different content modalities and educational categories. On the MEED-QA benchmark, MIND-RAG achieves 84.29% accuracy on complex QA tasks and 93.5% Mean Reciprocal Rank (MRR) for multimodal retrieval.",
+  "year": "2025",
+  "venue": "IEEE/CVF International Conference on Computer Vision Workshops (ICCVW 2025)",
+  "figure_count": 0,
+  "figure_captions": [],
+  "paper_number": 11,
+  "slug": "MINDRAG",
+  "base_name": "11-MINDRAG_2025"
+}

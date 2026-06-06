@@ -1,0 +1,112 @@
+
+
+\begin{abstract}
+    % \comment{it's great if we can add best practices from our perspective}
+Large language models (LLMs) augmented with external data have demonstrated remarkable capabilities in completing real-world tasks. External data not only bolsters the models' domain-specific expertise and temporal relevance but also diminishes incidences of hallucination, thereby enhancing both the controllability and interpretability of outputs. Techniques for integrating external data into LLMs, such as Retrieval-Augmented Generation (RAG) and fine-tuning, are gaining increasing attention and widespread application. Nonetheless, the effective deployment of data-augmented LLMs across various specialized fields presents substantial challenges. These challenges encompass a wide range of issues, from retrieving relevant data and accurately interpreting user intent to fully harnessing the reasoning capabilities of LLMs for complex tasks. We believe that there is no one-size-fits-all solution for data-augmented LLM applications. In practice, underperformance often arises from a failure to correctly identify the core focus of a task or because the task inherently requires a blend of multiple capabilities that must be disentangled for better resolution. In this survey, we propose a RAG task categorization method, classifying user queries into four levels based on the type of external data required and the task’s primary focus: explicit fact queries, implicit fact queries, interpretable rationale queries, and hidden rationale queries. We define these levels of queries, provide relevant datasets, and summarize the key challenges and most effective techniques for addressing these challenges. Finally, we discuss three main forms of integrating external data into LLMs: context, small model, and fine-tuning, highlighting their respective strengths, limitations, and the types of problems they are suited to solve. This work aims to help readers thoroughly understand and decompose the data requirements and key bottlenecks in building LLM applications, offering solutions to the different challenges and serving as a guide to systematically developing such applications.
+\end{abstract}
+
+
+\section{Introduction}
+
+Large Language Models (LLMs) have demonstrated remarkable capabilities, including extensive world knowledge and sophisticated reasoning skills. Despite these advancements, there are significant challenges in effectively deploying them across various specialized fields. These challenges include issues like model hallucinations, misalignment with domain-specific knowledge, among others. Incorporating domain-specific data, particularly private or on-premise data that could not be included in their initial training corpus, is crucial for tailoring LLM applications to meet specific industry needs. 
+Through techniques like RAG and fine tuning, \app{} have demonstrated advantages over applications built solely on generic LLMs, in several aspects:
+
+\begin{itemize}
+    % \setlength\itemsep{\jot}
+    \item \textbf{Enhanced Professionalism and Timeliness:} The data used to train LLMs often lags in timeliness and may not cover all domains comprehensively, especially proprietary data owned by users. \MFUsentencecase{\app} address this issue by providing more detailed and accurate answers for complex questions, allowing for data updates and customization.
+    
+    \item \textbf{Alignment with Domain Experts:} Through the use of and learning from domain-specific data, \app{} can exhibit capabilities more like domain experts, such as doctors and lawyers.
+    
+    \item \textbf{Reduction in Model Hallucination:} \MFUsentencecase{\app} generate responses based on real data, grounding their reactions in facts and significantly minimizing the possibility of hallucinations.
+    
+    \item \textbf{Improved Controllability and Explainability:} The data used can serve as a reference for the model's predictions, enhancing both controllability and explainability.
+\end{itemize}
+
+Despite the enthusiasm for these advancements, developers often struggle and have to invest a significant amount of human labor to meet its expectations (\eg achieving a high success rate in question answering). Numerous studies~\cite{nie2024survey, huang2024comprehensive, yang2024large, ahn2024large, wang2024large} highlight the challenges and frustrations involved in constructing a \app{} based on technologies like RAG and fine-tuning, particularly in specialized domains such as the legal field, healthcare, manufacturing, and others. 
+
+These challenges span a wide range, from constructing data pipelines (\eg data processing and indexing) to leveraging LLMs' capabilities to achieve complex intelligent reasoning. For example, in applications of finance, there is a frequent need to understand and utilize high-dimensional time series data, whereas in healthcare, medical images or time-series medical records are often essential. Enabling LLMs to comprehend these varied forms of data represents a recurring challenge. On the other hand, in legal and mathematical applications, LLMs typically struggle to grasp long-distance dependencies between different structures. Additionally, depending on the specific application domain, there are increased demands for the interpretability and consistency of LLM responses. The inherent nature of LLMs tends to be characterized by low interpretability and high uncertainty, which poses significant challenges. Enhancing the transparency of LLMs and reducing their uncertainty are critical for increasing trust and reliability in their outputs, especially in fields where precision and accountability are paramount.
+
+Through extensive discussions with domain experts and developers, and by carefully analyzing the challenges they face, we have gained a deep understanding that \app is not a one-size-fits-all solution. The real-world demands, particularly in expert domains, are highly complex and can vary significantly in their relationship with given data and the reasoning difficulties they require. However, developers often do not realize these distinctions and end up with a solution full of performance pitfalls (akin to a house with leaks everywhere). In contrast, if we could fully understand the demands at different levels and their unique challenges, we could build applications accordingly and make the application steadily improve (like constructing a solid and reliable house step by step).
+
+
+
+Yet, research efforts and existing relevant surveys~\cite{rag_survey_23_1, rag_survey_24_2, rag_survey_24_3, rag_survey_24_4, rag_survey_24_5, finetune_survey_24_1, finetune_survey_23_2, finetune_survey_23_3} frequently focus on only one of these levels or a particular topic of technologies. This has motivated us to compile this comprehensive survey, which aims to clearly define these different levels of queries, identify the unique challenges associated with each(Figure~\ref{fig:four-level-main-focus}) , and list related works and efforts addressing them. This survey is intended to help readers construct a bird's-eye view of \app{} and also serve as a handbook on how to approach the development of such applications systematically. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{contents/images/four_level_main_focus.png}
+    \caption{Main Focus of Four Level Queries}
+    \label{fig:four-level-main-focus}
+\end{figure}
+
+
+\section{Problem Definition}
+Data-augmented LLM applications can take many forms, ranging from the frequently seen Question-Answering bots based on domain-specific data, to semantic processing operators within complex data pipelines, or even agents handling specific steps in a multi-agent system. However, in general, a data-augmented LLM application can be formulated as follows:
+\begin{equation}
+    f: \mathcal{Q} \xrightarrow{\mathcal{D}} \mathcal{A}
+    \label{eq:da-app-def}
+\end{equation}
+where $\mathcal{Q}$, $\mathcal{A}$, and $\mathcal{D}$ represent the user's input (Query), the expected response (Answer), and the given data, respectively. The task of the application $f$ is to establish the mapping from $\mathcal{Q}$ to $\mathcal{A}$ based on $\mathcal{D}$.
+
+In contrast to standalone LLM systems that rely solely on pre-existing knowledge, \app{} are characterized by their reliance on external data ($\mathcal{D}$) to accurately address the posed queries ($\mathcal{Q}$).
+The incorporation of external data $\mathcal{D}$ can significantly bolster the capabilities of LLMs, granting them the ability to tap into current, domain-specific knowledge and to understand expert rationales. Queries can be stratified into various levels of complexity based on the extent and manner in which they utilize external data, reflecting the depth and nature of engagement required by the queries.
+
+\subsection{Stratification of Queries}
+In the landscape of data-augmented LLM applications, queries can be stratified based on their complexity and the depth of data interaction required. This stratification helps in understanding the varying levels of cognitive processing that an LLM must perform to generate accurate and relevant responses. From straightforward fact retrieval to the nuanced interpretation of implicit knowledge, each level represents a step up in the sophistication of the tasks that LLMs are expected to handle. Below, we delineate these levels, providing insights into the unique challenges and capabilities necessitated at each stage.
+
+\begin{figure}
+    \centering
+    % \includegraphics[width=0.8\textwidth]{contents/images/overall_level_examples.png}
+    \includegraphics[width=\textwidth]{contents/images/overall_level_examples_fishbone.png}
+    \caption{Summary of Query Levels in \MFUsentencecase{\app}}
+    \label{fig:levels-examples}
+\end{figure}
+
+
+\begin{enumerate}[label=\textbf{Level-\arabic*}]
+    
+    \item \textbf{Explicit Facts}: These queries are asking about \textbf{explicit facts} directly present in the given data without requiring any additional reasoning. This is the simplest form of query, where the model's task is primarily to locate and extract the relevant information. For example, \textit{"Where will the 2024 Summer Olympics be held?"} targets a fact contained in the external data.
+    
+    \item \textbf{Implicit Facts}: These queries ask about \textbf{implicit facts} in the data, which are not immediately obvious and may require some level of common sense reasoning or basic logical deductions. The necessary information might be spread across multiple segments or require simple inferencing. For instance, the question \textit{"What is the majority party now in the country where Canberra is located?"} can be answered by combining the fact that Canberra is in Australia with the information about the current majority party in Australia.
+    
+    \item \textbf{Interpretable Rationales}: These queries demand not only a grasp of the factual content but also the capacity to comprehend and apply domain-specific \textbf{rationales} that are integral to the data's context. These rationales are often explicitly provided in external resources and is typically not present or rarely encountered during the pre-training phase of a general large language model. For example, in the realm of pharmaceuticals, an LLM must interpret FDA Guidance\footnote{\url{https://www.fda.gov/industry/fda-basics-industry/guidances}} documents—which represent the FDA's current thinking—to evaluate whether a specific drug application adheres to regulatory requirements. Similarly, in customer support scenarios, the LLM must navigate the intricacies of a predefined workflow to process user inquiries effectively. In the medical field, many diagnostic manuals provide authoritative and standardized diagnostic criteria, such as management guidelines for patients with acute chest pain~\cite{gruettner2012clinical}. By effectively following these external rationales, it is possible to develop a specialized LLM expert system for managing chest pain. This involves understanding the procedural steps and decision trees that guide a support agent's interactions with customers, ensuring responses are not only accurate but also comply with the company's service standards and protocols. 
+    
+    \item \textbf{Hidden Rationales}: This category of queries delves into the more challenging realm where the rationales are not explicitly documented but must be inferred from patterns and outcomes observed in external data. The hidden rationales here refer not only to the implicit reasoning chains and logical relationships, but also to the inherently challenging and non-trivial task of identifying and extracting the external rationales required for each specific query. In IT operational scenarios, for example, a cloud operations team may have addressed numerous incidents in the past, each with its own unique set of circumstances and resolutions. The LLM must be adept at mining this rich repository of tacit knowledge to discern the implicit strategies and decision-making processes that were successful. Similarly, in software development, the debugging history of previous bugs can provide a wealth of implicit insights. While the step-by-step rationale for each debugging decision may not be systematically recorded, the LLM must be capable of extracting the underlying principles that guided those decisions. By synthesizing these hidden rationales, the LLM can generate responses that are not only accurate but also reflective of the unspoken expertise and problem-solving approaches that have been honed over time by experienced professionals.
+
+\end{enumerate}
+
+
+
+In summary, the classification of queries into levels reflects a gradient of complexity and the type of understanding required from the LLM. As shown in Figure~\ref{fig:four-level-main-focus} and exampled by Figure~\ref{fig:levels-examples}, the first two levels, \textbf{Explicit Facts} and \textbf{Implicit Facts}, focus on the retrieval of factual information, whether directly stated or requiring basic inferencing. These levels challenge the LLM's ability to extract and synthesize data into coherent facts.
+Conversely, the latter two levels, \textbf{Interpretable Rationales} and \textbf{Hidden Rationales}, shift the focus towards the LLM's capacity to learn and apply the rationales behind the data. These levels demand a deeper cognitive engagement, where the LLM must align with expert thinking or extract wisdom from unstructured historical data, respectively. The classification of common factual querying datasets according to this standard is depicted in Table ~\ref{tab: dataset_categorization}.
+
+\begin{table}[]
+\centering
+\begin{tabular}{cccc}
+\hline
+Task   Categorization & \rule{0pt}{1.2em} Datasets   \vspace{0.2em}                              & levels             & Mutiple References \\ \hline
+\multirow{17}{*}{QA} & \rule{0pt}{1em} NQ(Natural Questions)\cite{kwiatkowski2019natural}     & 1 - Explicit Facts & False \\
+                      & \rule{0pt}{1em}MS MARCO \cite{bajaj2016ms}              & 1 - Explicit Facts & False              \\
+                      & \rule{0pt}{1em}TriviaQA\cite{2017arXivtriviaqa}         & 1 - Explicit Facts & False              \\
+                      & \rule{0pt}{1em}SQuAD~\cite{rajpurkar2016squad}          & 1 - Explicit Facts & False              \\
+                      & \rule{0pt}{1em}ASQA~\cite{stelmakh2022asqa}             & 1 - Explicit Facts & False              \\
+                      & \rule{0pt}{1em}WebQSP~\cite{webqsp_dataset}             & 1 - Explicit Facts & False              \\
+                      & \rule{0pt}{1em}HotPotQA\cite{yang2018hotpotqa}          & 2 - Implicit Facts & True               \\
+                      & \rule{0pt}{1em}2WikiMultiHopQA\cite{ho2020constructing} & 2 - Implicit Facts & True               \\
+                      & \rule{0pt}{1em}MuSiQue\cite{trivedi2022musique}         & 2 - Implicit Facts & True               \\
+                      & \rule{0pt}{1em}Bamboogle\cite{press2022measuring}       & 2 - Implicit Facts & True               \\
+                      & \rule{0pt}{1em}StrategyQA\cite{geva2021did}             & 2 - Implicit Facts & True               \\
+                      & \rule{0pt}{1em}ComplexWebQuestions~\cite{ComplexWebQuestions_dataset} & 2 - Implicit Facts & True  \\
+                      & \rule{0pt}{1em}WebQuestions~\cite{webquestion_dataset}  & 2 - Implicit Facts & True               \\
+                      & \rule{0pt}{1em}Mintaka~\cite{sen2022mintaka}            & 2 - Implicit Facts & True               \\
+                      & \rule{0pt}{1em}MetaQA~\cite{metaqa_dataset}             & 2 - Implicit Facts & True               \\
+                      & \rule{0pt}{1em}qasper~\cite{Dasigi2021ADO}              & 2 - Implicit Facts & True               \\
+                      & \rule{0pt}{1em}DROP~\cite{dua2019drop}                  & 2 - Implicit Facts & True               \\
+Multi-Choice          & \rule{0pt}{1em}QuALITY~\cite{pang2021quality}           & 2 - Implicit Facts & True               \\
+Fact Checking         & \rule{0pt}{1em} Feverous\cite{aly2021feverous} \vspace{0.2em}          & 2 - Implicit Facts & True               \\ \hline
+\end{tabular}
+\caption{Stratification of Common Datasets Providing Facts}
+\label{tab: dataset_categorization}
+\end{table}
+
+Each level presents its unique set of challenges and, consequently, necessitates tailored solutions to effectively address them. As we delve into the intricacies of these levels in the following sections, we will explore the specific strategies and methodologies that enable LLMs to navigate the complexities of data-augmented applications across these varied spectrums of query types. This exploration will not only highlight the current capabilities of LLMs but also shed light on the ongoing advancements and potential future developments in the field.

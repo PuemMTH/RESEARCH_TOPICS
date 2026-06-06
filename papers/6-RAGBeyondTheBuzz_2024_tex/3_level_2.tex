@@ -1,0 +1,78 @@
+\section{Implicit Fact Queries (L2)}
+
+\subsection{Overview}
+These queries involve data dependencies that are not immediately obvious and may require some level of common sense reasoning or basic logical deductions. The necessary information might be spread across multiple segments or require simple inferencing.
+(Example in Figure~\ref{fig:levels-examples})
+
+
+Queries at this level require gathering and processing information from multiple documents within the collection. The collection of required information may exceed the ability of a single retrieval request, necessitating the decomposition of the original query into multiple retrieval operations and the aggregation of results into a comprehensive answer. This level often involves common-sense reasoning without requiring domain-specific expertise. This type of queries may include statistical queries, descriptive analysis queries, and basic aggregation queries. For example, operations such as counting, comparison, trend analysis, and selective summarization are common in "how many" and "what's the most" type queries, while multi-hop reasoning is frequently used. Therefore, we can define the level-2 queries, $\mathcal{Q}_2$ as follows:
+
+For any query $q$ and its corresponding answer $a$, a $\mathcal{Q}_2$ fact query is one where:
+\begin{itemize}
+    \item There exists a set of \firstlevel \( \{q_1, q_2, \ldots, q_m\} \subset \mathcal{Q}_1 \), each of which can be directly retrieved from specific data segments within the dataset \( D \), such that:
+    \[
+    r_D(q) = \bigcup_{i=1}^{m} r_D(q_i)
+    \]
+    where \( r_D(q_i) \) identifies the relevant data segments from \( D \) necessary to answer \( q_i \), and the union of these segments provides the information necessary to answer \( q \).
+    
+    \item A response generator \( \theta \), typically a prompted LLM inference, constructs the answer \( a \) to \( q \) by aggregating the responses \( \{\theta(r_D(q_1)), \theta(r_D(q_2)), \ldots, \theta(r_D(q_m))\} \) and applying common-sense reasoning to derive an answer that is not explicitly stated in the data. The response \( \theta(r_D(q)) \) should approximate the correct answer \( a \), demonstrating that the query \( q \) can be effectively answered through the aggregation of responses to the \( \mathcal{Q}_1 \) queries.
+\end{itemize}
+
+This definition underscores the reliance of $\mathcal{Q}_2$ queries on the ability to decompose complex queries into a set of simpler, \firstlevel \( \mathcal{Q}_1 \), whose answers can then be combined to generate the correct response to the original query \( \mathcal{Q}_2 \).
+
+Here are some examples of queries at this level:
+\begin{itemize}
+    \item \textit{How many experiments have sample sizes greater than 1000?} (given a collection of experimental records)
+    \item \textit{What are the top 3 most frequently mentioned symptoms?} (given a collection of medical records)
+    \item \textit{What's the difference between the AI strategies of company X and company Y?} (given a series of the latest news and articles about companies X and Y)
+\end{itemize}
+
+
+
+
+\subsection{Challenges and Solutions}
+At this level, queries still revolve around factual questions, but the answers are not explicitly presented in any single text passage. Instead, they require combining multiple facts through common-sense reasoning to arrive at a conclusion. The challenges of a level-2 query primarily include:
+
+\begin{itemize}
+    \item \textbf{Adaptive retrieval volumes}: Different questions may require varying numbers of retrieved contexts, and the specific number of retrieved contexts can depend on both the question and the dataset. A fixed number of retrievals may result in either information noise or insufficient information.
+    \item  \textbf{Coordination between reasoning and retrieval}: Reasoning can guide the focus of what needs to be retrieved,  while the insights gained from retrieved information can iteratively refine reasoning strategies. Addressing these complexities calls for an intelligent integration and selective harnessing of external data, capitalizing on the inherent reasoning prowess of LLMs.
+\end{itemize}
+
+Methods to address challenges at this level include iterative RAG, RAG on graph/tree, and RAG with SQL, among others.
+
+% \subsection{Multi-Hop RAG}
+\subsection{Iterative RAG}
+
+% \comment{recursive / iterative retrieval is listed above, here mainly focus on prior-retrieval (routing) and post-retrieval (response gen)}
+
+% \outline{relationship with multi-hop RAG} \comment{difficult to separate iterative RAG from multi-hop RAG}
+\MFUsentencecase{\secondlevel} is similar to multi-hop RAG tasks. This category of methods dynamically controls multi-step RAG processes, iteratively gathering or correcting information until the correct answer is achieved.
+
+
+\begin{itemize}
+    \item \textit{Planning-based}: Generating a stepwise retrieval plan during the prior-retrieval stage or dynamically within the retrieval process can refine the focus of each retrieval, efficiently guiding the iterative RAG system. For example, ReAct \cite{yao2022react} progressively updates the target of each step, reducing the knowledge gap required to answer the question. IRCoT \cite{trivedi-etal-2023-ircot} and RAT\cite{wang2024rat} uses a Chain of Thought to guide the RAG pipeline, making decisions about the current retrieval target based on previously recalled information. GenGround~\cite{shi2024generate} enables LLMs to alternate between two stages until arriving at the final answer: (1) generating a simpler single-step question and producing a direct answer, and (2) tracing the question-answer pair back to the retrieved documents to verify and correct any inaccuracies in the predictions. This iterative process ensures more reliable and accurate responses.
+    \item \textit{Information Gap Filling Based}: ITRG \cite{feng2024retrieval} introduces an iterative retrieval-generation collaboration framework, generating answers based on existing knowledge and then continuing to retrieve and generate for the unknown parts of the response in subsequent rounds. Similarly, FLARE \cite{jiang2023active} revisits and modifies low-probability tokens in answers generated in each iteration. On the other hand, Self-RAG \cite{asai2023self} fine-tunes a large model to autonomously decide when to search and when to stop searching and start answering questions.
+\end{itemize}
+
+
+
+\subsection{Graph/ Tree Question Answering}
+
+Addressing \secondlevel requires synthesizing information from multiple references. Graphs or trees, whether knowledge-based or data-structured, naturally express the relational structure among texts, making them highly suitable for this type of data retrieval problem.
+
+\begin{itemize}
+    \item \textbf{Traditional Knowledge Graph}: One of the initial structures considered for enhancing the efficacy of LLMs is the traditional knowledge graph, where each node represents an entity and edges between nodes signify the relationships between these entities. 
+    
+    \cite{Pan2023UnifyingLL} proposed a forward-looking development roadmap for LLMs and Knowledge Graphs (KGs) comprising: 1) KG-enhanced LLMs, which integrate KGs during the pre-training and inference phases of LLMs to deepen the models' understanding of acquired knowledge; 2) LLM-enhanced KGs, which employ LLMs for various KG tasks such as embedding, completion, construction, graph-to-text generation, and question answering; and 3) collaborative LLMs+KGs approaches, where both LLMs and KGs play complementary roles, enhancing each other through bidirectional inference driven by data and knowledge. The Rigel-KQGA model~\cite{sen-etal-2023-knowledge}, is an end-to-end KGQA model that predicts the necessary knowledge graph nodes based on a query and combines this with an LLM to derive answers. Works like Think-on-Graph~\cite{sun2023thinkongraph}  and KnowledgeNavigator~\cite{guo2023knowledgenavigator} extract entities involved in a query and then perform iterative BFS searches on the graph, using the LLM as a thinking machine to determine the optimal exploration path and perform pruning. The $R^3$~\cite{r3}introduces several possible commonsense axioms via an LLM that could address a query, sequentially searching related knowledge subgraphs to assess if the current information suffices to answer the query, continuing until the question is resolved.
+    
+    \item \textbf{Data Chunk Graph/ Tree}: The impressive reading comprehension capabilities of LLMs enable them to effectively grasp text without needing to break it down into the finest granularities of entities and relationships. In this context, researchers have begun experimenting with using text chunks or data chunks as nodes on graphs or trees, employing edges to represent either high-level or more intricately designed relations. Knowledge-Graph-Prompting~\cite{23_kg_prompting} discusses three popular kinds of questions that require mining implicit facts from (a) bridging questions rely on sequential reasoning while (b) comparing questions rely on parallel reasoning over different passages. (c) structural questions rely on fetching contents in the corresponding document structures. To tackle these questions, Knowledge-Graph-Prompting utilizes entity recognition, TF-IDF, KNN, and document structure hierarchies to construct document graphs and extract subgraphs for answering questions. MoGG~\cite{zhong2024mix} treats one or two sentences as the smallest semantic units, using these as nodes and building edges based on semantic similarity between nodes. It also trains a predictor to determine the textual granularity required for answering a query by deciding how large a sub-graph is needed. To capture more high-level semantic relationships between text blocks, RAPTOR~\cite{sarthi2024raptor}, employs clustering algorithms to hierarchically cluster the finest granularity of text blocks. It summarizes new semantic information at each hierarchical level, recalling the most necessary information within a collapsed tree of nodes. Similarly, GraphRAG~\cite{24_graph_rag}, adopts a clustering approach. It initially connects the smallest text blocks based on semantic similarity, then uses community detection algorithms to group nodes. Finally, it summarizes the global answer to a query by analyzing responses within each node community.
+\end{itemize}
+
+\subsection{Natural Language to SQL Queries}
+% \outline{special type when data is structured: chat2db or nl2sql}
+When dealing with structured data, converting natural language queries to SQL (NL2SQL) can be an effective approach. Tools like Chat2DB facilitate this process by translating user queries into database queries. In the era of large language models, there has been significant progress in the area of text-to-SQL\cite{shi2022xricl, li2023resdsql, poesia2022synchromesh, lin2020bridging}, which allows us to utilize these tools to retrieve information from structured databases. This capability serves as a valuable external data source to augment the generation capabilities of LLMs. By integrating text-to-SQL tools~\cite{biswal2024text2sql}, LLMs can access and incorporate structured data, enhancing their ability to generate more accurate and contextually relevant responses. This integration not only improves the depth and quality of the generated content but also expands the scope of LLM applications, enabling them to perform more complex tasks that require interaction with and interpretation of database content.
+
+\subsection{Discussion on Fact Queries}
+\textit{Whether to Use Fine-tuning}. Some works~\cite{fine_tune_new_24} have demonstrated the hardness of LLMs to acquire new factual knowledge during fine tuning. This process can lead to a deterioration in the overall performance of the LLMs in generating accurate responses, and it often results in the generation of more hallucinations. Furthermore, study~\cite{berglund2023reversal} suggests that fine-tuning LLMs with new factual data may cause the models to mechanically memorize fact statements. Interestingly, altering the phrasing of these memorized facts can render the recently learned knowledge ineffective, indicating a superficial level of understanding and retention by the LLMs. This points to limitations in the current fine-tuning processes and the need for more sophisticated methods to integrate and adapt new information effectively.
+
+\textit{Whether to Separate Different Levels of Fact Queries}.  Both \firstlevel and \secondlevel are fact-based, and it is crucial to determine which level these queries belong before constructing \app. Misclassifying \firstlevel as \secondlevel can lead to the retrieval of an abundance of superficial information that is seemingly relevant but ultimately unhelpful for answering the question, which can mislead the LLM and waste computational resources. Conversely, mistaking \secondlevel for \firstlevel can prevent the use of appropriate methods to retrieve a sufficient and comprehensive set of external auxiliary data. \MFUsentencecase{\secondlevel} often require dynamically integrating information specific to the context of the queries, whereas \firstlevel generally need only a single data snippet, leading to the retrieval of a fixed amount of external data. This can result in suboptimal performance of the LLM. Therefore, it is advantageous to preliminarily distinguish the level of queries based on a thorough understanding of the target task. Additionally, considerable effort has been directed towards training models to autonomously assess whether the information retrieved is sufficient, exemplified by approaches such as self-RAG~\cite{asai2023self}.
