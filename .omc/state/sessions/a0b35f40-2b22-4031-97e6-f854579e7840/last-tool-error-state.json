@@ -1,0 +1,7 @@
+{
+  "tool_name": "Read",
+  "tool_input_preview": "{\"file_path\":\"C:\\\\Users\\\\admin\\\\Desktop\\\\RESEARCH_TOPICS\\\\papers\\\\11-MINDRAG_2025.pdf\",\"pages\":\"1-5\"}",
+  "error": "pdftoppm failed:",
+  "timestamp": "2026-06-06T18:45:24.876Z",
+  "retry_count": 1
+}

@@ -1,0 +1,162 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1780772627367,
+  "projectRoot": "C:\\Users\\admin\\Desktop\\RESEARCH_TOPICS",
+  "techStack": {
+    "languages": [],
+    "frameworks": [],
+    "packageManager": null,
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": null,
+    "lintCommand": null,
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": "snake_case",
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "assets",
+      "docs",
+      "src"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "assets": {
+      "path": "assets",
+      "purpose": "Static assets",
+      "fileCount": 2,
+      "lastAccessed": 1780772627351,
+      "keyFiles": [
+        "summary.css",
+        "translations.js"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 0,
+      "lastAccessed": 1780772627352,
+      "keyFiles": []
+    },
+    "papers": {
+      "path": "papers",
+      "purpose": null,
+      "fileCount": 31,
+      "lastAccessed": 1780772627353,
+      "keyFiles": [
+        "1-SciCap_2021.html",
+        "1-SciCap_2021.pdf",
+        "10-PersonalizedSciFigCap_2025.html",
+        "10-PersonalizedSciFigCap_2025.json",
+        "10-PersonalizedSciFigCap_2025.pdf"
+      ]
+    },
+    "src": {
+      "path": "src",
+      "purpose": "Source code",
+      "fileCount": 3,
+      "lastAccessed": 1780772627353,
+      "keyFiles": [
+        "fetch_paper.py",
+        "README.md",
+        "requirements.txt"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "docs\\synthesis\\8-LaMPCap_2025-reader.html",
+      "accessCount": 7,
+      "lastAccessed": 1780773391733,
+      "type": "file"
+    },
+    {
+      "path": "docs\\synthesis\\6-RAGBeyondTheBuzz_2024-reader.html",
+      "accessCount": 6,
+      "lastAccessed": 1780773375093,
+      "type": "directory"
+    },
+    {
+      "path": "docs\\synthesis\\7-LLMJudge_2023-reader.html",
+      "accessCount": 5,
+      "lastAccessed": 1780773377985,
+      "type": "directory"
+    },
+    {
+      "path": "docs\\synthesis\\11-MINDRAG_2025-reader.html",
+      "accessCount": 5,
+      "lastAccessed": 1780773394575,
+      "type": "file"
+    },
+    {
+      "path": "docs\\synthesis\\9-AuthorContextSciCap_2025-reader.html",
+      "accessCount": 4,
+      "lastAccessed": 1780773380709,
+      "type": "file"
+    },
+    {
+      "path": "docs\\synthesis\\10-PersonalizedSciFigCap_2025-reader.html",
+      "accessCount": 4,
+      "lastAccessed": 1780773383449,
+      "type": "file"
+    },
+    {
+      "path": "docs\\synthesis\\12-NLIDBSensitive_2025-reader.html",
+      "accessCount": 4,
+      "lastAccessed": 1780773386177,
+      "type": "file"
+    },
+    {
+      "path": "docs\\synthesis",
+      "accessCount": 3,
+      "lastAccessed": 1780773142173,
+      "type": "directory"
+    },
+    {
+      "path": ".claude\\skills\\paper-reader\\SKILL.md",
+      "accessCount": 3,
+      "lastAccessed": 1780774424075,
+      "type": "file"
+    },
+    {
+      "path": "assets\\translations.js",
+      "accessCount": 2,
+      "lastAccessed": 1780772905291,
+      "type": "file"
+    },
+    {
+      "path": "docs\\synthesis\\13-WebSearchViz_2010-reader.html",
+      "accessCount": 2,
+      "lastAccessed": 1780773388959,
+      "type": "file"
+    },
+    {
+      "path": "papers\\13-WebSearchViz_2010.json",
+      "accessCount": 1,
+      "lastAccessed": 1780772635787,
+      "type": "file"
+    },
+    {
+      "path": "docs\\synthesis\\13-WebSearchViz_2010-analysis.html",
+      "accessCount": 1,
+      "lastAccessed": 1780772670366,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
