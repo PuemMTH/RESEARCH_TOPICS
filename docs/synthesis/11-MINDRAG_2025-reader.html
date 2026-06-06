@@ -39,7 +39,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   background: var(--bg); color: var(--ink);
-  font-family: var(--sans); font-size: 18px; line-height: 1.85;
+  font-family: var(--sans); font-size: 16px; line-height: 1.85;
   transition: background .2s, color .2s;
 }
 
@@ -195,7 +195,7 @@ footer { text-align: center; font-size: 13px; color: var(--ink3); padding: 24px 
 <div id="toolbar">
   <button onclick="toggleToc()">☰ TOC</button>
   <button onclick="changeFont(-1)">A−</button>
-  <span id="font-size-val">18px</span>
+  <span id="font-size-val">16px</span>
   <button onclick="changeFont(1)">A+</button>
   <button onclick="toggleTheme()">◐ Theme</button>
 </div>
@@ -411,7 +411,7 @@ function updateToc() {
 }
 window.addEventListener('scroll', () => { updateProgress(); updateToc(); }, { passive: true });
 
-let fontSize = 18;
+let fontSize = 16;
 function changeFont(d) {
   fontSize = Math.min(24, Math.max(14, fontSize + d));
   document.body.style.fontSize = fontSize + 'px';
