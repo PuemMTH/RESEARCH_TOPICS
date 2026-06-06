@@ -1,0 +1,186 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{mdframed}
+
+%% ─── Design system tokens (@docs/design/design.md) ──────────
+\definecolor{primary}{HTML}{cc785c}
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{primary-active}{HTML}{a9583e}
+\definecolor{primary-disabled}{HTML}{e6dfd8}
+\definecolor{ink}{HTML}{141413}
+\definecolor{body-strong}{HTML}{252523}
+\definecolor{body}{HTML}{3d3d3a}
+\definecolor{muted}{HTML}{6c6a64}
+\definecolor{muted-soft}{HTML}{8e8b82}
+\definecolor{canvas}{HTML}{faf9f5}
+\definecolor{surface-soft}{HTML}{f5f0e8}
+\definecolor{surface-card}{HTML}{efe9de}
+\definecolor{surface-cream-strong}{HTML}{e8e0d2}
+\definecolor{surface-dark}{HTML}{181715}
+\definecolor{surface-dark-elevated}{HTML}{252320}
+\definecolor{surface-dark-soft}{HTML}{1f1e1b}
+\definecolor{hairline}{HTML}{e6dfd8}
+\definecolor{on-dark}{HTML}{faf9f5}
+\definecolor{on-dark-soft}{HTML}{a09d96}
+\definecolor{accent-teal}{HTML}{5db8a6}
+\definecolor{accent-amber}{HTML}{e8a55a}
+\definecolor{success}{HTML}{5db872}
+\definecolor{warning}{HTML}{d4a017}
+\definecolor{error}{HTML}{c64545}
+%% alias for mdframed highlight
+\definecolor{lightbg}{HTML}{f5f0e8}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+\newmdenv[
+  backgroundcolor=lightbg,
+  linecolor=coral,
+  linewidth=2pt,
+  topline=false, rightline=false, bottomline=false,
+  innerleftmargin=12pt, innerrightmargin=8pt,
+  innertopmargin=8pt, innerbottommargin=8pt,
+]{highlight}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE \textbf{สรุปบทความวิจัย}}\\[6pt]
+  {\color{muted}\small Paper Reading Note · วิทยานิพนธ์}
+\end{center}
+
+\noindent\rule{\textwidth}{1.5pt}
+
+%% ─── Metadata ─────────────────────────────────────────────────
+\vspace{12pt}
+\noindent
+\begin{tabular}{@{}ll@{}}
+  \textbf{ชื่อบทความ}  & MIND-RAG: Multimodal Context-Aware and Intent-Aware Retrieval-Augmented Generation\\
+                      & for Educational Publications \\[4pt]
+  \textbf{ผู้เขียน}    & Jiayang Yu, Yuxi Xie, Guixuan Zhang, Jie Liu, Zhi Zeng, Ying Huang, Shuwu Zhang \\[4pt]
+  \textbf{ปี / สถานที่} & 2025 · IEEE/CVF International Conference on Computer Vision Workshops (ICCVW) \\[4pt]
+  \textbf{arXiv / DOI}  & DOI: 10.1109/ICCVW69036.2025.00438 \\[4pt]
+  \textbf{อ่านเมื่อ}   & \today \\
+\end{tabular}
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─── Problem ──────────────────────────────────────────────────
+\section*{ปัญหาที่แก้ไข}
+
+การประยุกต์ใช้ระบบ Multimodal Retrieval-Augmented Generation (RAG) สำหรับเอกสารวิชาการเฉพาะทาง (Domain-Specific Scientific Journals) เช่น วารสารทางวิทยาศาสตร์เชิงการศึกษา มีปัญหาใหญ่ 2 ประการที่ทำให้ประสิทธิภาพลดลง:
+\begin{enumerate}
+  \item \textbf{ข้อจำกัดในการเข้าใจรูปภาพ (Limited Image Interpretability)}: รูปภาพประกอบในเอกสารวิชาการ (Scientific Figures) มักมีโครงสร้างความหมายและคำศัพท์เฉพาะทางที่ซับซ้อนสูง ทำให้ตัวเข้ารหัสภาพ (Vision Encoders) หรือระบบสร้างคำอธิบายภาพทั่วไป (Off-the-shelf Image Captioning) ไม่สามารถทำความเข้าใจรายละเอียดและถ่ายทอดความหมายที่แท้จริงได้
+  \item \textbf{ความคลาดเคลื่อนในการสืบค้นข้อมูลตามความต้องการจริง (Limited Retrieval Performance)}: ระบบสืบค้นข้อมูลแบบดั้งเดิมยังขาดการพิจารณาถึงความเจตนาของผู้ใช้ (User Intent) ว่าในการตอบคำถามนั้นต้องการผลลัพธ์ในรูปแบบข้อมูลแบบใด (Modality เช่น ข้อความ รูปภาพ หรือตาราง) หรือจัดอยู่ในศาสตร์วิชาใด ส่งผลให้การค้นคืนเกิดความเบี่ยงเบนเชิงความหมาย (Semantic Drift) หรือได้ข้อมูลที่ไม่สอดคล้องกับคิวรีของผู้ใช้
+\end{enumerate}
+
+%% ─── Contribution ─────────────────────────────────────────────
+\section*{ผลงานสำคัญ (Contribution)}
+
+\begin{enumerate}[nosep, leftmargin=2em]
+  \item \textbf{Context-Aware Image Summarization}: แนวทางการดึงข้อมูลบริบทเชิงข้อความรอบข้างรูปภาพ (เช่น Caption, Heading และย่อหน้าข้างเคียง) นำมาป้อนเป็นพรอพต์ร่วมกับภาพเข้าสู่ Multimodal Large Language Model (Gemini 2.0 Flash) เพื่อประมวลผลและแปลงรูปภาพให้อยู่ในรูปคำอธิบายความหมายเชิงข้อความที่มีความหนาแน่นสูง (Semantic Summary) ทำให้สามารถค้นคืนภาพผ่านการค้นหาข้อความได้
+  \item \textbf{Multimodal Intent-Aware Reranking}: โมดูลจัดอันดับผลลัพธ์ใหม่หลังการสืบค้น โดยทำหน้าที่ทำนายความเจตนาข้าม modalities (Text-only, Image-only, Multimodal) และทำนายหมวดหมู่โดเมนการเรียนรู้ เพื่อนำมาปรับเปลี่ยนคะแนนและลำดับผลลัพธ์การค้นคืนให้ตรงกับวัตถุประสงค์
+  \item \textbf{MEED-QA Benchmark}: การพัฒนาชุดข้อมูลทดสอบประสิทธิภาพ Multimodal QA สำหรับแวดวงการศึกษาเฉพาะทาง รวบรวมจากบทความวารสารการศึกษาในประเทศจีนระยะเวลา 10 ปี เพื่อประเมินผลสืบค้นและตอบคำถาม
+\end{enumerate}
+
+%% ─── Method ───────────────────────────────────────────────────
+\section*{วิธีการ}
+
+ระบบของ MIND-RAG ทำงานร่วมกัน 3 ขั้นตอนหลัก ดังนี้:
+\begin{itemize}
+  \item \textbf{Multimodal Data Processing \& Database Construction}: แยกเอกสาร PDF ออกเป็น ข้อความ รูปภาพ และตาราง. ข้อความจะถูกนำมาสร้าง Knowledge Graph ด้วย GPT-4o เก็บใน Neo4j และฝังเวกเตอร์ด้วย BGE-M3. สำหรับรูปภาพจะทำ \textit{Context-Aware Image Summarization} โดยวิเคราะห์ Caption และย่อหน้าข้างเคียง (อย่างน้อย 1 ย่อหน้าก่อนและหลัง หรือย่อหน้าที่อ้างอิงภาพ) นำมารวมเป็นพรอพต์ให้ Gemini 2.0 Flash เจเนอเรตคำสรุป จากนั้นฝังเวกเตอร์เพื่อสืบค้นแบบ Text-Image Aligned Pairs
+  \item \textbf{Multimodal \& Domain Intent Detection}: ตรวจจับความเจตนาของผู้ใช้จากคิวรี ($q$) โดย LLM ทำการทำนายเจตนารูปแบบผลลัพธ์ $m \in \{text, image, multimodal\}$ และทำนายโดเมนวิชา $d$ เพื่อชี้วัดว่าควรค้นคืนจากฐานข้อมูล Modality ใด
+  \item \textbf{Retrieval Post-processing with Intent-Aware Reranking}: จัดอันดับผู้สมัครค้นคืนใหม่ โดยหากแหล่งข้อมูลนั้นสอดคล้องกับโดเมน $d$ จะได้รับการคูณคะแนนบูสต์ ($w = 1.1$). และหากคิวรีมี Timestamp ชัดเจน ผลลัพธ์ที่มีช่วงเวลาขัดแย้งจะถูกลงโทษคะแนนโดยคูณดรอปเอาต์ ($\delta = 0.5$)
+\end{itemize}
+
+%% ─── Key Results ──────────────────────────────────────────────
+\section*{ผลลัพธ์สำคัญ}
+
+\begin{highlight}
+\textbf{ตัวเลขสำคัญจากการทดลองบน MEED-QA:}
+\begin{itemize}[nosep]
+  \item \textbf{QA Accuracy}: บรรลุความถูกต้องสูงถึง \textbf{84.29\%} ในคำถามระดับซับซ้อนที่ต้องอาศัยข้อมูลภาพประกอบ
+  \item \textbf{MRR (Mean Reciprocal Rank)}: ได้คะแนนการค้นคืนแบบ Multimodal สูงถึง \textbf{93.5\%} (0.935)
+  \item \textbf{Single-hop QA Metrics}: MIND-RAG บรรลุ Recall@3 = \textbf{91.7\%}, Recall@5 = \textbf{94.3\%}, และ Recall@all = \textbf{97.5\%}
+  \item \textbf{Comparison over Baselines}: ประสิทธิภาพเหนือกว่าระบบ RAG ทั่วไปที่ไม่มี Caption Grounding (MRR 0.848) และระบบที่อิง CLIP แบบเพียวภาพ (MRR 0.358) อย่างชัดเจน
+  \item \textbf{Comparison over Graph-RAG}: ประสิทธิภาพด้าน Answer Relevancy สูงกว่าระบบ Graph-RAG (0.8672 vs. 0.8280) และระบบ RAG ดั้งเดิม (0.8261)
+\end{itemize}
+\end{highlight}
+
+%% ─── Strength / Weakness ──────────────────────────────────────
+\section*{จุดแข็ง / จุดอ่อน}
+
+\noindent\textbf{จุดแข็ง:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item การใช้ Surrounding Text Context ร่วมกับ MLLM ช่วยแก้ปัญหาคอขวดด้านประสิทธิภาพของ Vision Models สำหรับรูปภาพวิชาการที่อัดแน่นไปด้วยสัญลักษณ์และข้อความเชิงเทคนิค
+  \item ระบบจัดอันดับใหม่ (Reranker) ปรับปรุงคุณภาพการดึงข้อมูลโดยลดเสียงรบกวน (Noise) และป้องกันข้อผิดพลาดเชิงเวลา (Timestamp mismatch)
+  \item ให้ผลการทดสอบการค้นคืนและตอบคำถามที่เหนือกว่าทั้งแบบ RAG ดั้งเดิม และ Graph-RAG
+\end{itemize}
+
+\vspace{6pt}
+\noindent\textbf{จุดอ่อน / ข้อจำกัด:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item คุณภาพของการสืบค้นรูปภาพยังคงขึ้นอยู่กับความหนาแน่นของบริบทเชิงข้อความที่อ้างอิงถึง หากรูปภาพใดมีข้อความกล่าวถึงน้อยหรือไม่มีเลย คุณภาพการสรุปและค้นหาจะลดลงอย่างมาก
+  \item การประเมินผลทดสอบหลักถูกจำกัดอยู่เพียงบนข้อมูลเฉพาะโดเมน MEED-QA (ด้านการศึกษา) และยังไม่ได้นำไปเปรียบเทียบในโดเมนวิชาการอื่นหรือชุดข้อมูลสากลหลากหลายภาษา
+\end{itemize}
+
+%% ─── Relevance ────────────────────────────────────────────────
+\section*{ความเกี่ยวข้องกับงานของเรา}
+
+บทความนี้ให้หลักฐานเชิงประจักษ์ (Empirical Evidence) ที่แข็งแกร่งมากในการนำแนวคิด Multimodal Author Context หรือ Figure Profiles จากงาน LaMPCap และ AuthorContextSciCap มาขยายผล. โดยสำหรับวิทยานิพนธ์ของเรา:
+\begin{itemize}
+  \item สามารถนำแนวคิดการสกัด Surrounding Text Context มาประยุกต์ร่วมกับ RAG ข้ามส่วนต่างๆ ในเอกสารเพื่อทำ Figure Captioning
+  \item การนำโมดูล Intent-Aware Reranking มาปรับใช้เพื่อระบุชนิดของส่วนนำทาง เช่น ดึงบริบทเฉพาะจากส่วนระเบียบวิธีวิจัย (Methodology) หรือผลการทดลอง (Results) เพื่อช่วยคัดสรรคำศัพท์เฉพาะทางสำหรับการสร้างคำอธิบายภาพที่ตรงรูปแบบ
+\end{itemize}
+
+%% ─── Notes ────────────────────────────────────────────────────
+\section*{บันทึกเพิ่มเติม}
+ความสำเร็จของกระบวนการขึ้นอยู่กับตัวแปรถ่วงน้ำหนัก ($w$ และ $\delta$) และพรอพต์ในการสกัดข้อมูล ซึ่งต้องนำมาวิเคราะห์และปรับแต่งอย่างละเอียดเมื่อประยุกต์ใช้กับโจทย์การเจเนอเรต (Generation) แทนที่จะเป็นเพียงการตอบคำถาม (QA)
+
+\vspace{16pt}
+\noindent\rule{\textwidth}{1pt}
+\noindent{\color{muted}\small สรุปโดย Antigravity (Gemini 3.5 Flash) · \today}
+
+\end{document}
