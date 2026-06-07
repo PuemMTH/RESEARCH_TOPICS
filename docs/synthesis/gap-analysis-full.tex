@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{fontspec}
@@ -231,7 +231,7 @@ $\underbrace{\text{Chart VLM}}_{\text{Group B}} + \underbrace{\text{RAG context}
 
 \begin{infobox}
 \textbf{ปัญหาที่แก้:} Pix2Struct ไม่เข้าใจ mathematical/numerical relationships ใน charts\\
-\textbf{แนวทาง:} เพิ่ม 2 objectives ใน finetuning บน Pix2Struct: (1) Math reasoning (arithmetic, counting); (2) Chart derendering (chart→table)\\
+\textbf{แนวทาง:} เพิ่ม 2 objectives ใน finetuning บน Pix2Struct: (1) Math reasoning (arithmetic, counting); (2) Chart derendering (chart$\rightarrow$table)\\
 \textbf{ผลลัพธ์:} PlotQA +20\%, ChartQA human +2.4\%, ChartQA augmented +4.2\% over prior SoTA\\
 \textbf{ข้อจำกัด:} ยังเป็น image-only; ไม่มี chart summarization/captioning objective; scientific figures ยังไม่ครอบคลุม
 \end{infobox}
@@ -264,7 +264,7 @@ $\underbrace{\text{Chart VLM}}_{\text{Group B}} + \underbrace{\text{RAG context}
 
 \begin{infobox}
 \textbf{ปัญหาที่แก้:} Visual reasoning บน charts ต้องการ fine-tuning บน data จำนวนมาก\\
-\textbf{แนวทาง:} แยกเป็น 2 module: DePlot (chart→table, fine-tuned) + LLM (table→answer, one-shot)\\
+\textbf{แนวทาง:} แยกเป็น 2 module: DePlot (chart$ightarrow$table, fine-tuned) + LLM (table$ightarrow$answer, one-shot)\\
 \textbf{ผลลัพธ์:} +29.4\% บน ChartQA human-written; ไม่ต้องการ downstream fine-tuning\\
 \textbf{ข้อจำกัด:} Plot-to-table translation อาจสูญเสียข้อมูล visual; ไม่รวม caption generation
 \end{infobox}
@@ -361,7 +361,7 @@ $\underbrace{\text{Chart VLM}}_{\text{Group B}} + \underbrace{\text{RAG context}
 
   \rowcolor{rowA}1 & SciCap & 2021 & Large-scale dataset & 2M+ figs, arXiv CS & ไม่มีบริบท, ไม่มี personalization & \checkmark & — & — \\
   \rowcolor{rowB}2 & SciCap+ & 2023 & Knowledge augmentation & Context-aware dataset & Text-only context, ไม่มี retrieval & \checkmark & — & — \\
-  \rowcolor{rowA}3 & DePlot & 2023 & Plot→Table→LLM & +29.4\% ChartQA one-shot & QA-only, ไม่ใช่ captioning & — & — & — \\
+  \rowcolor{rowA}3 & DePlot & 2023 & Plot$ightarrow$Table$ightarrow$LLM & +29.4\% ChartQA one-shot & QA-only, ไม่ใช่ captioning & — & — & — \\
   \rowcolor{rowB}4 & MLBCAP & 2025 & Multi-LLM collaborative & ชนะ SciCap Challenge & ไม่มี personalization, ไม่มี retrieval & \checkmark & — & — \\
   \rowcolor{rowA}5 & MLLM Survey & 2025 & Survey & Chart MLLM evolution & — & — & — & — \\
   \rowcolor{rowB}6 & RAGBeyondTheBuzz & 2024 & RAG Survey & 4-level query taxonomy & Text-only, ไม่ใช่ multimodal & — & \checkmark & — \\
@@ -392,7 +392,7 @@ $\underbrace{\text{Chart VLM}}_{\text{Group B}} + \underbrace{\text{RAG context}
 งานด้าน chart VLM (Pix2Struct, MatCha, UniChart) เน้น QA บน general/business charts
 งานด้าน scientific captioning (LaMPCap, MLBCAP) ไม่ใช้ retrieved external knowledge
 งานด้าน RAG (MIND-RAG, RAGBeyondTheBuzz) ไม่ได้ออกแบบสำหรับ figure generation
-\textbf{→ โอกาสวิจัย: ระบบที่รับ scientific figure image + retrieved paper context → สร้าง caption ที่ match author style}
+\textbf{$ightarrow$ โอกาสวิจัย: ระบบที่รับ scientific figure image + retrieved paper context $ightarrow$ สร้าง caption ที่ match author style}
 \end{gapbox}
 
 \vspace{6pt}
@@ -400,7 +400,7 @@ $\underbrace{\text{Chart VLM}}_{\text{Group B}} + \underbrace{\text{RAG context}
 LaMPCap (\#8), AuthorContextSciCap (\#9), PersonalizedSciFigCap (\#10) ทั้งหมดใช้ profile เฉพาะ
 รูปภาพอื่นในบทความเดียวกัน (within-paper profile) ยังไม่มีงานใดที่ retrieve author's previous papers
 หรือ domain-specific figure patterns จาก external corpus
-\textbf{→ โอกาสวิจัย: Cross-paper author profile ด้วย RAG ที่ retrieve ผลงานที่ผ่านมาของ author คนเดียวกัน}
+\textbf{$ightarrow$ โอกาสวิจัย: Cross-paper author profile ด้วย RAG ที่ retrieve ผลงานที่ผ่านมาของ author คนเดียวกัน}
 \end{gapbox}
 
 \vspace{6pt}
@@ -408,7 +408,7 @@ LaMPCap (\#8), AuthorContextSciCap (\#9), PersonalizedSciFigCap (\#10) ทั้
 Pix2Struct pretrain บน web screenshots; MatCha/UniChart ใช้ general charts (Statista, Pew Research etc.)
 Scientific figures มีลักษณะต่างออกไป: axis labels ซับซ้อน, error bars, multi-panel, specialized notation
 ยังไม่มี VLM ที่ pretrain บน scientific figure corpus (arXiv/PubMed figures) โดยเฉพาะ
-\textbf{→ โอกาสวิจัย: Fine-tune chart VLM ด้วย scientific figure data หรือใช้ domain adaptation}
+\textbf{$ightarrow$ โอกาสวิจัย: Fine-tune chart VLM ด้วย scientific figure data หรือใช้ domain adaptation}
 \end{gapbox}
 
 \vspace{6pt}
@@ -416,7 +416,7 @@ Scientific figures มีลักษณะต่างออกไป: axis lab
 Metrics ปัจจุบัน (BLEU, ROUGE, BERTScore) วัด surface-level similarity ไม่ใช่ style fidelity หรือ scientific accuracy
 LLM-as-Judge (\#7) ยังไม่ถูกนำมาใช้ใน scientific figure captioning evaluation
 PersonalizedSciFigCap (\#10) ชี้ถึง tradeoff ระหว่าง style overlap กับ caption quality แต่ยังขาด formal evaluation framework
-\textbf{→ โอกาสวิจัย: Multi-dimensional evaluation: (1) scientific accuracy, (2) style fidelity, (3) informativeness}
+\textbf{$ightarrow$ โอกาสวิจัย: Multi-dimensional evaluation: (1) scientific accuracy, (2) style fidelity, (3) informativeness}
 \end{gapbox}
 
 \vspace{6pt}
@@ -424,7 +424,7 @@ PersonalizedSciFigCap (\#10) ชี้ถึง tradeoff ระหว่าง s
 MIND-RAG (\#11) แสดงให้เห็นว่า multimodal context-aware RAG ทำงานได้บน educational publications
 แต่ใช้ text QA เป็น downstream task ไม่ใช่ generation
 RAGBeyondTheBuzz (\#6) ยังเป็น text-only framework; ไม่ครอบคลุม image-as-query scenario
-\textbf{→ โอกาสวิจัย: Multimodal RAG ที่รับ figure image เป็น query และ retrieve paper sections/related figures}
+\textbf{$ightarrow$ โอกาสวิจัย: Multimodal RAG ที่รับ figure image เป็น query และ retrieve paper sections/related figures}
 \end{gapbox}
 
 \noindent\rule{\linewidth}{1.5pt}
