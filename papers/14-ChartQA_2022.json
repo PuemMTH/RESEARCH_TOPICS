@@ -1,0 +1,115 @@
+{
+  "arxiv_id": "2203.10244",
+  "title": "ChartQA: A Benchmark for Question Answering about Charts with Visual and Logical Reasoning",
+  "authors": [
+    "Ahmed Masry♣,   Do Xuan Long♠,  Jia Qing Tan♠,  Shafiq Joty♠​\\vardiamondsuit♠\\vardiamondsuit{}^{\\spadesuit\\vardiamondsuit},  Enamul Hoque♣♣York University, Canada♠Nanyang Technological University, Singapore,\\vardiamondsuit\\vardiamondsuit{}^{\\vardiamondsuit}Salesforce Research♣{masry20, enamulh}@yorku.ca♠{xuanlong001@e.ntu, C190022@e.ntu, srjoty@ntu}.edu.sg"
+  ],
+  "abstract": "Charts are very popular for analyzing data. When exploring charts, people often ask a variety of complex reasoning questions that involve several logical and arithmetic operations. They also commonly refer to visual features of a chart in their questions. However, most existing datasets do not focus on such\ncomplex reasoning questions as their questions are template-based and answers come from a fixed-vocabulary. In this work, we present a large-scale benchmark covering 9.6K human-written questions as well as 23.1K questions generated from human-written chart summaries. To address the unique challenges in our benchmark involving visual and logical reasoning over charts, we present two transformer-based models that combine visual features and the data table of the chart in a unified way to answer questions. While our models achieve the state-of-the-art results on the previous datasets as well as on our benchmark, the evaluation also reveals several challenges in answering complex reasoning questions.",
+  "year": "2022",
+  "figure_count": 20,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:Sample\nquestions in our benchmark.",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/figure1.png"
+    },
+    {
+      "id": "S3.F2",
+      "caption": "Figure 2:Our approach for question answering over charts.\nIf not provided,\nthe underlying data table is first extracted from the chart image using ChartOCR.\nWe then pass the extracted data table in addition to the question and the image features to the ChartQA model where the ChartQA model represents one of the following: TaPas, VisionTaPas, T5, and VL-T5.",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/models/initial_pipeline_6.png"
+    },
+    {
+      "id": "S4.F3",
+      "caption": "(a)TaPas",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/models/initial_tapas_3.png"
+    },
+    {
+      "id": "S4.F3.sf1",
+      "caption": "(a)TaPas",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/models/initial_tapas_3.png"
+    },
+    {
+      "id": "S4.F3.sf2",
+      "caption": "(b)VisionTaPas",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/models/initial_VisionTapas_6.png"
+    },
+    {
+      "id": "S5.F4",
+      "caption": "Figure 4:Example of errors from VisionTaPas",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/figure4_two_v2.png"
+    },
+    {
+      "id": "A1.F5",
+      "caption": "Figure 5:The user interface for the annotation task",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/interface_statista.png"
+    },
+    {
+      "id": "A1.F6",
+      "caption": "(a)Statista",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/statista_topic.png"
+    },
+    {
+      "id": "A1.F6.sf1",
+      "caption": "(a)Statista",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/statista_topic.png"
+    },
+    {
+      "id": "A1.F6.sf2",
+      "caption": "(b)Pew",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/pew_topic.png"
+    },
+    {
+      "id": "A1.F6.sf3",
+      "caption": "(c)OECD",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/OECD_topic.png"
+    },
+    {
+      "id": "A1.F6.sf4",
+      "caption": "(d)OWID",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/OWID_topic.png"
+    },
+    {
+      "id": "A1.F7",
+      "caption": "Figure 7:Data Extraction Process",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/figure1_extracted.png"
+    },
+    {
+      "id": "A1.F8",
+      "caption": "(a)OWID Line Chart",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/figure2_extracted.png"
+    },
+    {
+      "id": "A1.F8.sf1",
+      "caption": "(a)OWID Line Chart",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/figure2_extracted.png"
+    },
+    {
+      "id": "A1.F8.sf2",
+      "caption": "(b)Pew Bar Chart",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/figure3_extracted.png"
+    },
+    {
+      "id": "A1.F9",
+      "caption": "(a)T5 fine-tuning",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/models/initial_T5_3.png"
+    },
+    {
+      "id": "A1.F9.sf1",
+      "caption": "(a)T5 fine-tuning",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/models/initial_T5_3.png"
+    },
+    {
+      "id": "A1.F9.sf2",
+      "caption": "(b)VL-T5 fine-tuning",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/models/initial_VLT5_3.png"
+    },
+    {
+      "id": "A1.F10",
+      "caption": "Figure 10:Sample outputs of our model VisionTaPas on our new ChartQA test set. Answers in green are correct and answers in red are incorrect.",
+      "src": "/html/2203.10244/assets/emnlp2020-templates/imgs/examples_figure_app.png"
+    }
+  ],
+  "paper_number": 14,
+  "slug": "ChartQA",
+  "base_name": "14-ChartQA_2022"
+}

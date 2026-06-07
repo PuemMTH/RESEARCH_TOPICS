@@ -1,0 +1,140 @@
+\begin{table*}[t]
+ \setlength\extrarowheight{2pt}
+ \centering
+ 
+ 
+ \scalebox{0.73}{\begin{tabular}{l|cccccccc}
+  
+  \toprule
+  
+  \multirow{3}{*}{} & \multicolumn{3}{c}{ChartQA} & 
+  OpenCQA & \multicolumn{2}{c}{Chart-to-Text} & \multicolumn{2}{c}{Chart-to-Table}   \\ 
+  \multirow{3}{*}{} & \multicolumn{3}{c}{\small ($RA$)} & \small ($BLEU$) & \multicolumn{2}{c}{\small ($BLEU$)} & \multicolumn{2}{c}{\small ($RNSS$ | $RMS_{F1}$)} \\
+  \cmidrule(lr){2-4} \cmidrule(lr){6-7} \cmidrule(lr){8-9}
+  
+   Model & aug. & human & avg. & OpenCQA & Pew & Statista & ChartQA & WebCharts \\
+                                             
+  
+  \midrule
+
+  % \rowcolor{gray!30}
+  % VisionTaPas 
+  VisionTaPas \cite{masry-etal-2022-chartqa} & 61.44 & 29.60 & 45.52 
+  &- & - & - & - & - \\ 
+
+  % T5 
+  T5 \cite{masry-etal-2022-chartqa} & 56.96 & 25.12 & 41.04 
+  & 9.28 & 10.49 & 35.29 & - & -  \\
+
+  % \rowcolor{gray!30}
+  % VL-T5 
+  VL-T5 \cite{masry-etal-2022-chartqa} & 56.88 & 26.24 & 41.56 & 
+  14.73 & - & - & - & -  \\ 
+
+  % Pix2Struct 
+  Pix2Struct \cite{lee2022pix2struct} & 81.6 & 30.5 & 56.0 
+  & - & 10.3 & 38.0 & - & - \\
+
+ % \rowcolor{gray!30}
+  % MatCha                                    
+  MatCha \cite{liu2022matcha} & \textbf{90.2} & 38.2 & 64.2
+  & - & 12.2 & \textbf{39.4} & 85.21 | 83.49 & 44.37 | 17.94 \\ \midrule
+
+  \model\ & 88.56 & \textbf{43.92} & \textbf{66.24} 
+  & \textbf{14.88} & \textbf{12.48} & 38.21 & \textbf{94.01} | \textbf{91.10} & \textbf{60.73} | \textbf{43.21} \\ \bottomrule
+  
+  
+ 
+ \end{tabular}}
+ \vspace{-3mm}
+ \caption{\small {Evaluation results on four public benchmarks: ChartQA, Chart-to-Text, OpenCQA, and Chart-to-Table. All the results are calculated after finetuning \model\ pretrained checkpoint except for WebCharts (zero-shot). %\ahmed{add not applicable statement}
+ }
+ \vspace{-3mm}
+ }
+ \label{tab:results}
+\end{table*}
+ \vspace{-2mm}
+\section{Evaluation}
+ \vspace{-1mm}
+\subsection{Baselines \& Evaluation Metrics} \label{subsec:baselines}
+We compare our model against five baselines: (1) \emph{T5} \cite{Raffel2020t5}, a unified seq2seq Transformer model that achieved state-of-the-art (SoTA) results on various text-to-text tasks, including question answering and summarization; (2) \emph{VL-T5} \cite{vlt5}, a T5-based model that unifies Vision-Language (VL) tasks as text generation conditioned on multimodal inputs and achieved SoTA results on OpenCQA \cite{open-CQA}; (3) \emph{VisionTapas} \cite{masry-etal-2022-chartqa}, an extension of TaPas \cite{tapas}, a SoTA table encoder, adapted for QA over charts; (4) \emph{Pix2Struct} \cite{lee2022pix2struct}, a pretrained image-to-text model for visual language understanding
+%, which can be finetuned on tasks involving visually-situated language, 
+and achieved SoTA results on document understanding tasks; and (5) \emph{MatCha} \cite{liu2022matcha}, an adapted version of Pix2Struct for charts that is further pretrained on math reasoning and chart data extraction tasks, achieving SoTA results on Chart-to-Text \cite{chart-to-text-acl} and ChartQA \cite{masry-etal-2022-chartqa}.
+
+
+To evaluate our approach, we follow previous works \cite{lee2022pix2struct, chart-to-text-acl, masry-etal-2022-chartqa, open-CQA, liu2022matcha} and utilize Relaxed Accuracy (RA) for ChartQA and BLEU \cite{post-2018-call} for text-generation tasks (Chart-to-Text and OpenCQA). However, the BLEU score has limitations as it primarily focuses on n-gram matching between the generated and reference texts, overlooking important factors such as semantic similarity, informativeness, and factual correctness \cite{goyal2022news}.
+ Therefore, we conduct a human evaluation and ChatGPT-driven study to assess and compare these crucial aspects in the outputs of different models (\Cref{subsec:summary_eval}). Finally, we  use Relative Number Set Similarity (RNSS) \cite{masry-etal-2022-chartqa} and Relative Mapping Similarity (RMS) \cite{liu2022deplot} metrics to evaluate the Chart-to-Table task. 
+
+
+
+\subsection{Main Results}
+
+
+As shown in \Cref{tab:results}, \model\ outperforms previous state-of-the-art models, MatCha and VL-T5, on the ChartQA and Chart-to-Text (Pew) datasets, although it shows slightly lower performance on Chart-to-Text (Statista). 
+The performance gap is more prominent on the challenging human-written questions in the ChartQA benchmark~\cite{masry-etal-2022-chartqa}, where our model's pretraining objectives tailored to visual and numerical reasoning give it a significant advantage.
+\model\ also achieved a higher BLUE score compared to the SoTA VL-T5 model on OpenCQA benchmark, which demonstrates our model's capability in generating explanatory answers for questions about charts. Finally, \model\ surpasses MatCha's performance on two datasets, demonstrating its generalizability across diverse visual styles, even in a zero-shot setup on unseen charts (WebCharts). 
+Overall, these results establish \model\ as the SoTA model for chart comprehension and reasoning tasks.
+
+
+
+To further assess the impact of our different pretraining objectives on our model's performance, we conducted ablation studies. We observe that removing various pertaining objectives led to a slight decrease in performance (\Cref{tab:ablations}). The decrease in performance is particularly noticeable when the Numerical Reasoning pretaining task is removed, highlighting the importance of this task in imbuing numerical abilities into our model.  More details of this experiment can be found in \Cref{app:ablation}.
+
+
+
+\begin{table}[t]
+ \setlength\extrarowheight{2pt}
+ \centering
+ 
+ 
+ \scalebox{0.73}{\begin{tabular}{l|ccc}
+  
+  % \cline{1-3}
+  \toprule
+   \textbf{Summary} & \textbf{Human} & \textbf{ChatGPT} & \textbf{p-value}\\ \midrule
+   \model\ ZeroShot & \textbf{3.97} & \textbf{3.18} & 1.70e-10\\ 
+   \model\ Finetuned & 2.86 & 2.37 & 2.32e-8 \\ 
+   MatCha \cite{liu2022matcha} & 2.50 & 2.18 & 0.0020\\ 
+   Gold \cite{chart-to-text-acl} & 3.19 & 2.73 & 2.13e-6 \\
+   \bottomrule
+
+ \end{tabular}}
+ \vspace{-3mm}
+ \caption{
+  \small{Average Informativeness scores from Human and ChatGPT-based evaluation. 
+  }
+  \vspace{-4mm}
+ }
+ 
+ \label{tab:informativeness}
+\end{table}
+\vspace{-1mm}
+\subsection{Human and ChatGPT Evaluation}
+\label{subsec:summary_eval}
+
+As discussed in \Cref{subsec:baselines}, reference-based metrics like BLEU 
+have relatively low correlations with human judgments \cite{belz-reiter-2006-comparing,tan-etal-2015-awkward,liu2023geval}, and generated texts with very high such scores can be of a very poor quality \cite{smith-etal-2016-climbing}. 
+Therefore, we decided to conduct a human evaluation to measure the quality of summaries generated by different models. We focus on following criteria in the chart summarization task:\emph{(1) Informativeness}; \emph{(2) Factual Correctness}; and\emph{(3) Semantic Levels that characterize the content of the summary}. More details about the criteria can be found in \Cref{app:human-chatgpt-eval}.
+
+We randomly picked 150 sample charts from Chart2text Statista test split and asked  3 human annotators to rate four summaries for each chart based on \textit{informativeness} out of 1 to 5.  The order of exposure of summaries to the annotator was randomized to avoid any potential bias. Summaries for each chart were rated by one annotator except for the first 100 charts for which we had two annotators to measure the agreement. 
+We computed  Krippendorff’s alpha \cite{Krippendorff2011ComputingKA} to measure inter-annotator agreement and found a moderate level of agreement with an alpha coefficient of 0.54. 
+We further utilize ChatGPT for evaluating the same 150 samples, as LLMs have demonstrated their effectiveness as evaluators for text generation tasks \cite{luo2023chatgpt, liu2023geval, gao2023humanlike, fu2023gptscore}. We define the informativeness criteria and rating scheme to ChatGPT and then employ ChatGPT to generate evaluation steps. We then send these evaluation steps along with the data table of the chart and the summary to ChatGPT to obtain ratings (see  \Cref{app:human-chatgpt-eval} for details). 
+
+\Cref{tab:informativeness} shows the result of human evaluation on chart summarization based on informativeness criteria. We notice that annotators preferred ZeroShot version of our model which generates summaries that are more similar to those generated by GPT, rather than gold summaries. The finetuned version of \model\ was also rated higher
+compared to SoTA MatCha \cite{liu2022matcha}. The finetuned UniChart model also produces fewer factual errors compared to Matcha and the ZeroShot version (\Cref{app:human-chatgpt-eval} and \Cref{tab:human_eval}). We observe that the ratings provided by ChatGPT are roughly consistent with the human annotators' scores in terms of informativeness criteria. In terms of different semantic contents, the ZeroShot model tends to contain more sentences with high-level visual patterns and trends.
+A previous study finds that such high-level insights lead to more reader takeaways compared to the text describing low-level visual encodings like axes and colors~\cite{stokes2022striking}. Overall, the results above suggest that UniChart model's summaries are more informative with high-level insights and factually accurate than the SoTA (MatCha).
+
+\vspace{-1mm}
+\subsection{Time and Memory Efficiency} 
+\model\ exhibits significant time efficiency compared to MatCha, as shown in \Cref{fig:inference_time}. The gap in speed is more evident on tasks that require the generation of long output sequences (e.g., Chart-to-Text). This difference in speed can be attributed to MatCha's use of a long input sequence (4K) with a quadratic increase in complexity while \model's\ vision encoder relies on sliding windows with a local attention mechanism that scales linearly with the input image size. Moreover, \model\ boasts a smaller parameter count (201M) compared to MatCha (282M), further contributing to its efficiency. As a result, \model\ is highly suitable for real-world applications that prioritize fast inference speeds. More details are provided in \Cref{app:efficiency}. 
+
+\vspace{-1mm}
+\subsection{Error Analysis and Challenges}
+We conducted a manual analysis of our model's outputs to identify key challenges faced by existing models.
+
+\noindent \textbf{$\bullet$ {Densely populated charts:}} Our model struggles with extracting insights from chart images that contain numerous data elements densely packed in a limited area.  This is evident in Figure \Cref{fig:error-analysis} (Q3) where our model generates a hallucinated summary due to the complexity of the chart. Increasing model parameters and input image resolution could potentially improve performance in these cases.
+
+\noindent \textbf{$\bullet$ {Numerical reasoning:}} Despite efforts to incorporate mathematical skills, our model still encounters difficulties with complex arithmetic calculations (Q2 in \Cref{fig:error-analysis}).   
+Addressing this challenge involves decoupling arithmetic calculations and reasoning steps by employing external program executors that perform the calculations using the equations generated by our model \cite{gao2022pal}. 
+
+\noindent \textbf{$\bullet$ {Factual correctness in generated summaries:}} Factual correctness still poses a challenge for autoregressive language models \cite{lin-etal-2022-truthfulqa,ChatGPT,zhao2023verify}. Although our finetuned UniChart model produced fewer factual errors compared to MatCha (see \Cref{tab:human_eval}), it still generates some  incorrect statements (see Q4 in  \Cref{fig:error-analysis}). This issue can be attributed to factual errors in the pretraining captions generated by ChatGPT.
+

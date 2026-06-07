@@ -1,0 +1,153 @@
+
+
+
+
+
+%\vspace{-1mm}
+\subsection{Problem Formulation \& Data Extraction}
+\label{sec:problem-extraction}
+The overall process of our ChartQA system is shown in \Cref{Pipeline}. We consider two problem settings for ChartQA. The first setting assumes that the underlying data table of the chart image is available. Formally, we are given a dataset with $N$ examples $\gD = \{c_i, t_i, q_i, a_i\}_{i=1}^N$, where $c_i$ represents a chart image, $t_i$ represents the underlying data table, $q_i$ represents a question over $c_i$, and $a_i$ represents the answer to the question. The ChartQA models learn to predict the answer $a_i$ given $c_i$, $t_i$ and $q_i$. 
+
+The gold data tables are not generally accessible in most real-world scenarios. Thus we consider the second setup where the underlying data table $t_i$ for chart image $c_i$ is extracted by adapting a state-of-the-art ChartOCR \cite{ChartOCR}. ChartOCR first  locates the main elements of the chart image (\eg\ plot area, title) as well as data-encoding marks (\eg\ bars
+%, line points
+) using key-point detection networks. It then uses the detected keypoints of each mark along with  axis-labels to estimate the data value of that mark. However, 
+%a caveat is that 
+it does not associate the predicted data values with corresponding text labels (\eg\ x-axis-label).
+%, legend-label
+ Hence, we extend their approach to output the fully-structured data tables. We utilize the CRAFT \cite{craftrecognition} model to recognize the texts in the chart elements. Then, we associate the data values with their text labels using positional and color information (see \ref{app:data_extraction} for details). 
+
+
+
+  
+
+
+
+
+
+%\vspace{-1mm}
+\subsection{Models} \label{subsec:data2text}
+
+Our approach to ChartQA builds on two of the state-of-the-art TableQA models: T5 \cite{Raffel2020t5,nan2021feta} and {\sc{TaPas}} \cite{tapas}. The input to these models consists of the question $q_i$ and the data table $t_i$. Different from TableQA, ChartQA often involves extracting visual information from chart images. For this, we also experiment with the visual counterparts of the TableQA models that also take the chart image features into account. While T5 has a visual variant, VL-T5 \cite{vlt5}, {\sc{TaPas}} does not. In this work, we extend Tapas to consider the image features and call it Vision{\sc{TaPas}}. More details on models 
+%including  hyperparameter settings 
+are provided in \ref{app:baselines}.
+
+
+
+\begin{figure*}[t!]
+\begin{subfigure}[b]{.3\textwidth}
+\centering
+    \includegraphics[width=1\textwidth,keepaspectratio]{emnlp2020-templates/imgs/models/initial_tapas_3.png}
+    %\vspace{-6mm}
+\caption{\small {\sc{TaPas}}}
+\label{fig:tapas}
+\end{subfigure}
+\begin{subfigure}[b]{.68\textwidth}
+\centering
+    \includegraphics[width=1\textwidth,keepaspectratio]{emnlp2020-templates/imgs/models/initial_VisionTapas_6.png}
+    
+
+\caption{\small {\sc{VisionTaPas}}}
+\label{VisionTapas}
+\end{subfigure}
+%\vspace{-0.8em}
+\caption{\small  TaPas and VisionTaPas models. TaPas adds positional embeddings to the tokens to encode the tabular structure of the data table. VisionTaPas uses a cross-modality encoder  to combine visual features from ViT and outputs from TaPas encoders.}
+%\vspace{-4mm}
+
+\label{models}
+\end{figure*}
+
+
+
+
+
+
+
+\vspace{0.2em}
+\noindent \textbf{$\bullet$ {\sc{T5}}} \cite{Raffel2020t5} is an encoder-decoder model which unifies the NLP tasks as text-to-text generation using the same architecture and loss function. It has been pre-trained on massive amount of unlabelled data with a self-supervised denoising objective. To fine-tune T5 on our ChartQA task, we flatten the data table and feed it along with the question as: "\texttt{Question:} \textit{Question {tokens}} \texttt{Table:} \textit{Flattened table {tokens}}", and the model is trained to generate the answer directly. %(\Cref{fig:t5}). 
+
+
+
+
+
+\vspace{0.2em}
+\noindent \textbf{$\bullet$ {\sc{VL-T5}}} \cite{vlt5} is an extension of T5 that unifies the Vision-Language (VL) tasks as text generation {conditioned on multimodal inputs}. The input consists of both textual tokens and visual features of the objects extracted from the image using Faster R-CNN \cite{RenHG015}. The model is pre-trained on multiple multimodal tasks such as language modeling, visual QA, and visual grounding. 
+We utilize VL-T5 for our ChartQA task in the following manner. For the textual input, we do the same as T5 where we flatten the data table of the chart image and concatenate it with the question text. For the visual input, we extract the visual features of different marks in the chart image (\eg\ bars, lines) using Mask R-CNN \cite{maskrcnn} with Resnet-101 as its backbone (see \ref{app:maskrcnn} for details). Unlike the original VL-T5 where a fixed number of objects is provided (36), the number of elements varies from one chart to another. To account for this, we pad the extracted visual features with zeros to have a fixed length of 36.  
+
+
+
+\vspace{0.2em}
+\noindent \textbf{$\bullet$ {\sc{TaPas}}} \cite{tapas} extends a BERT \cite{BERT} architecture with additional positional embeddings for rows and columns to encode a table. 
+%the tabular data structure. 
+As shown in \Cref{fig:tapas}, the input to the model has the following format: \texttt{[CLS]} \textit{Question tokens} \texttt{[SEP]} \textit{Flattened table tokens}. The tokens are encoded with the table-specific positional embeddings in addition to BERT's segment and positional 
+embeddings. The model has two output heads: aggregation operation head and cell selection head. The aggregation operation head predicts an operation (e.g., {\sc{count}}, {\sc{sum}}, {\sc{average}}, {\sc{none}}) which is then applied to the cell values selected  by the cell selection head. Depending on the operation type, the selected cells can constitute the final
+answer or the input used to infer the final answer. 
+
+TaPas is first pre-trained on masked language modeling objective using table-text pairs crawled from Wikipedia where table cells are randomly masked and the model is trained to predict them. It is then fine-tuned in a weakly-supervised  manner (using answers as the only supervision) with end-to-end differentiable objectives. 
+
+
+
+
+\vspace{0.2em}
+\noindent \textbf{ $\bullet$ VisionTaPas} is our extension of TaPas for QA over charts. It consists of three main components: a vision transformer encoder for encoding the chart image, a TaPas encoder for encoding the question and data table and a cross-modal encoder (\Cref{VisionTapas}).  
+
+
+
+
+
+\textbf{Vision Transformer} or ViT \cite{vit} utilizes the  transformer encoder architecture \cite{VaswaniSPUJGKP17} in vision tasks. Given a 2D chart image, the image is divided into a sequence of 2D patches $\{\vp_1, \ldots, \vp_n\}$. Each patch is then flattened and linearly projected into a $d$-dimensional embedding vector. To incorporate the positional information of the patches, 1D learnable positional embeddings are added to the image features. An $L$-layer ViT encoder produces a sequence of embeddings $\mH =  \{\vh_{\text{cls}}^L, \vh_1^L, \ldots, \vh_n^L\}$ representing the special \texttt{[CLS]} token and the image patches. We initialize the ViT module with the pre-trained weights from \cite{vit}.   
+
+The \textbf{TaPas} encoder is utilized in the same manner as described above to encode the tokens in the question and the data table. For an input token sequence $\{w_{\text{cls}},  w_1, \ldots, w_m\}$, an $L$-layer TaPas generates the corresponding encodings $\mZ = \{\vz_{\text{cls}}^L, \vz_1^L, \ldots, \vz_m^L\}$. This module is initialized with the TaPas weights \cite{tapas} pre-trained on the WikiTQ dataset \cite{sempre}. 
+
+The \textbf{Cross-modality Encoder} 
+%module 
+takes the output of ViT and TaPas encoders ($\mH$ and $\mZ$) and compute multimodal encodings. It has four blocks, each containing 
+%two main branches: 
+a visual branch and a textual-tabular branch. The input first passes through the multi-headed cross attention layers in parallel, where in the visual branch the query vectors are the visual features, and the key and context vectors are the textual-tabular features and vice versa in the textual-tabular branch. The cross-attended features are then passed through a self-attention layer followed by a fully connected layer. Similar to the transformer model, each layer applies layer normalization \cite{LayerN} and is wrapped with a residual connection. Finally, we append the aggregation operation and the cell selection heads of TaPas to the final layer at the textual-tabular branch.     
+
+
+
+
+ 
+%The module is randomly initialized. 
+\begin{table*}[t!]
+    \centering
+    \scalebox{0.66}{\begin{tabular}{l|cccccccc|cc}
+        \toprule
+       \textbf{Models} & \multicolumn{4}{c}{\textbf{FigureQA}} & \multicolumn{2}{c}{\textbf{DVQA} (ORACLE / OCR)} & \multicolumn{2}{c}{\textbf{PlotQA}} & \multicolumn{2}{c}{\textbf{ChartQA}}\\
+
+%        \textbf{Models} & \makecell{FigureQA \\ Val1} & \makecell{FigureQA \\ Val2} & \makecell{FigureQA \\ Test1} & \makecell{FigureQA \\ Test2} & \makecell{DVQA Val \\ ORACLE / OCR} & \makecell{DVQA Test \\ ORACLE / OCR} & \makecell{PlotQA \\ Val}  & \makecell{PlotQA \\ Test} & \makecell{ChartQA \\ Val} & \makecell{ChartQA \\ Test} \\
+         & Val1 & Val2 & Test1 & Test2 & Test-Familiar & Test-Novel \cmmnt{&  Val}  & Test V1 & Test V2 & Val & Test \\
+        \midrule
+        \multicolumn{10}{c}{\textbf{Gold Data Table Provided}}  \\
+         {TaPas} & \textbf{98.10\%} & \textbf{98.09\%} & - & - & 53.40\% & 53.40\%  & \cmmnt{21.53\% &}  21.56\% & 19.55\% & 49.16\% & 51.80\% \\
+       {VisionTaPas} &  97.59\% &  97.96\% & - & - & \textbf{99.36\%} & \textbf{99.37\%} \cmmnt{&  80.17\%} & 80.18\% & 58.29\% & \textbf{59.32\%} & \textbf{61.84\%} \\
+        {T5}& 95.75\% & 95.75\% & - & - & 94.33\% & 81.42\% \cmmnt{& 93.25\%} & 93.24\% & \textbf{85.99\%} & 59.11\% & 59.80\% \\
+       {VL-T5} & 96.45\% & 96.43\% & - & - & 98.90\% & 80.18\% & \cmmnt{\textbf{96.35\%} &} \textbf{96.38\%} & 84.70\% & 58.80\% & 59.12\% \\
+        \midrule
+        \multicolumn{10}{c}{\textbf{Gold Data Table Not Provided}} \\
+\rowcolor{gray!20}        {TaPas} &  90.32\% & 90.43\% & 89.52\% & 89.57\% & 50.28\% / 48.82\% & 50.24\% / 48.68\% \cmmnt{& 15.12\%} & 15.09\% & 12.90\% & 39.68\% & 41.28\% \\
+\rowcolor{gray!20}        {VisionTaPas} & 91.46\% & 91.45\% & 90.68\% & 90.64\% & 95.38\% / \textbf{94.43\%} & 95.46\% / \textbf{94.54\%} & \cmmnt{65.28\% &} 65.30\% & 42.50\% & \textbf{42.60\%}& \textbf{45.52\%} \\
+\rowcolor{gray!20}        {T5}& 87.97\% & 87.83\% & 87.56\% & 87.57\% & 90.20\% / 89.01\% & 77.97\% / 76.89\% & \cmmnt{72.67\% &} 72.62\% & \textbf{56.22\%} & 40.15\% & 41.04\% \\
+\rowcolor{gray!20}        {VL-T5} & 88.60\%  & 88.49\% & 88.20\% & 88.18\% &  94.80\% / 93.75\% & 77.04\% / 76.14\% & \cmmnt{\textbf{75.92\%} &} \textbf{75.90\%} & 56.02\% & 38.43\% & 41.56\%\\
+        %\midrule
+        %\multicolumn{10}{c}{\textbf{Previous baselines}} \\
+\rowcolor{gray!20}        {PReFIL} & \textbf{94.84\%} & \textbf{93.26\%} & \textbf{94.88\%} & \textbf{93.16\%} &  96.37\% / 80.88\% & 96.53\% / 80.04\% \cmmnt{& -} & - & - & 4.53\% & 4.8\%\\
+\rowcolor{gray!20}        {PlotQA*} & - & - & - & - & --------- / 57.99\%  &  ---------  / 59.54\% \cmmnt{& -} & - & 22.52\% & 36.15\% & 38.00\%  \\
+\rowcolor{gray!20}        {STL-CQA} & - & - & - & - & \textbf{97.35\%} /  ---------  & \textbf{97.51\%} /  ---------  & - & - & - \cmmnt{& -}& - \\
+        \bottomrule
+    \end{tabular}}
+    %\vspace{-0.5em}
+    \caption{\small Evaluation results for different models. 
+    %on FigureQA, DVQA, PlotQA, and our ChartQA datasets. 
+    For DVQA, we have reported the results with and without using Oracle for OCR. We do not evaluate on FigureQA test sets with the gold data table setup since they do not have ground data tables.
+            % our models (Gold Data Table setup) on FigureQA test sets since they are not available.
+    %\vspace{-4mm}
+    }
+\label{tab:evaluation-table}
+\end{table*}
+
+
+%\vspace{-0.05mm}
+
+\vspace{0.5em}
+\noindent \textbf{Extension to Other Operations} Many questions in our ChartQA dataset require performing a subtraction or ratio operation, which the original TaPas model does not support. We thus extend the operation head to add those two operations (\Cref{VisionTapas}). However, instead of training them in a weakly-supervised manner based on the final answer (as done in TaPas), we find it more effective when provided with more direct but potentially noisy supervision on the cells to consider. We rely on some heuristics to generate such supervision in our training data. For example, given a question ``What's the difference between A and B?'', an answer $5$, and data values ``3, 6, 8'', we look for two values between which the difference is 5 (i.e. 8 and 3). While this may yield noisy supervision, similar approaches have been successfully exploited to inject reasoning capability in neural models \cite{geva-etal-2020-injecting,saxton2018analysing}; on a random sample of 100 such questions, a manual checking shows 24\% noise  with our heuristics. To handle the fixed vocabulary answers (e.g. `Yes', `No'), we further extend the operation head to include those classes.

@@ -1,0 +1,195 @@
+%\vspace{-0.2em}
+\subsection{Data Collection \& Preparation}
+
+To ensure that our 
+benchmark
+%ChartQA dataset 
+covers various topics and 
+%contains 
+charts with a diverse range of styles, we crawled charts from four different sources: 
+\Ni Statista ({\href{https://www.statista.com}{statista.com}}) is an online platform that presents charts covering a variety of topics including economy, politics, and industry.  
+\Nii The Pew research {(\href{https://www.pewresearch.org}{pewresearch.org})} %regularly 
+publishes report about social and economic issues, demographic trends and public opinion with a wide variety of charts. 
+%From Pew, We scraped x charts from y different reports.
+\Niii Our World In Data or OWID {(\href{https://ourworldindata.org}{ourworldindata.org})}  
+is %an online 
+another platform that contains thousands of charts  about different global issues such as economy, finance, and society. %We crawled x charts from y different pages.
+%Every topic is discussed in multiple articles with  accompanying charts to display the relevant data.
+\Niv Organisation for Economic Co-operation and Development or OECD {(\href{https://www.oecd.org}{oecd.org})} is a global organization which shares 
+%various 
+reports and data analysis for policymaking. 
+
+
+For the Pew dataset, we only crawled chart images since  the underlying data tables are not available. For the other three, we extracted the underlying data tables, metadata (\eg\ title, chart type), SVG file and associate text description.  Finally, we extracted the bounding boxes information of the different chart elements (\eg\ x-axis labels) from the SVG files to train our data extraction models.
+
+
+
+
+
+%\vspace{-0.2em}
+\subsection{Data Annotation} \label{subsec:data-annot}
+%\vspace{-0.2em}
+We have two main annotations procedures: \Ni collect human-authored QA pairs using Amazon Mechanical Turk (AMT) and \Nii generate QA pairs from the Statista human-written summaries. 
+
+%\vspace{-0.6em}
+\paragraph{$\bullet$ Human-authored QA annotation} To create human-authored QA pairs, we designed an AMT task (see \ref{app:AMT} for details) in which we asked the crowdworkers to focus on two types of questions for each chart image: compositional and visual questions. Compositional questions contain at least two mathematical/logical operations like \emph{sum}, \emph{difference} and \emph{average}, while visual questions refer to the visual attributes such as \textit{color}, \textit{height}, and \textit{length} of graphical marks (\eg\ \textit{bars}) in the chart. We focus on these two types of questions because people tend to ask them commonly~\cite{kim2020answering, hoque-etal-2017} and previous datasets mostly do not focus on such complex visual and logical reasoning questions. 
+% like the examples in Figure~\ref{tab:example}. 
+For each chart, the workers provide two questions with the answers. The same questions are then answered
+%questions are then verified 
+by another annotator. If both workers' answers exactly match, we consider the answer to be correct. Otherwise, we manually check the answers to select the final correct answer. 
+%During manual analysis, we notice that a large number of mismatches happened due to minor variations of words, synonyms and typos. 
+Overall, the agreement between the crowd workers based on exact matches was 61.04\%. 
+%In total, \red{9,608} QA pairs were generated for \red{4,804} chart images. 
+\change{However, such exact match does not consider typos or lexical variations  (e.g., 3\$ vs. 3 dollars, 86.33 vs 86.3) that are common in human annotation. Hence, we have also manually checked the agreement on 500 random samples and found the agreement to be much higher (78.55\%) when we consider typos and lexical variations.}
+
+%\vspace{-0.6em}
+\paragraph{$\bullet$ Dataset Augmentation}
+
+%\joty{
+Prior work on QA  has performed data augmentation by either creating template-based  or machine generated questions, \eg\ for visual QA \cite{visual-data-augmentation}  and textual QA \cite{paq}. Template-based questions generally lack rich linguistic variations. On the other hand, large-scale language models like T5 \cite{Raffel2020t5} which are trained on very large data from various web sources can learn general linguistic properties and variations \cite{NEURIPS2020_1457c0d6}. Therefore, we opt for the latter.
+%}
+
+%\joty{
+Specifically, we fine-tune a pre-trained T5 model on the SQuAD QA dataset  \cite{squadv1} and apply to the human-written chart summaries that come with the charts from Statista to automatically generate questions that are human-like with sufficient lexical and  syntactic variations. The process involves training and applying two T5 models: one for \emph{answer extraction} and the other for answer-aware \emph{question generation}. For answer extraction, the T5 model is trained to generate possible answers separated by \texttt{[SEP]} token given the textual summary as input (\ie\ trained on SQuAD's \emph{passage} $\rightarrow$ \emph{answer} pairs). For question generation, the proposed answer is first concatenated with the summary in the  format: \texttt{Answer}: \textit{Answer} \texttt{Context:} \textit{Chart Summary}.  Then, the T5 model is trained to generate a question from the given question using the chart summary. This model is trained on SQuAD's \emph{(passage, answer)} $\rightarrow$ \emph{question} pairs. Since the summaries are human-written, the generated questions are similar to the human-authored questions (see example questions in \ref{app:examples}).
+%}
+
+
+
+\begin{table}[t!]
+\centering
+\small 
+\scalebox{0.9}{
+\begin{tabular}{lcc|cc}
+\toprule
+\multirow{2}{*}{Split} & \multicolumn{2}{c}{\textbf{ChartQA-H}} & \multicolumn{2}{c}{\textbf{ChartQA-M}} \\
+%\hhline{~----}  
+ & Charts & Questions & Charts & Questions \\
+\midrule
+Training &     3,699 &  7,398 & 15,474 & 20,901\\
+Validation & 480   &  960   & 680 & 960\\
+Test & 625 &   1,250 & 987  & 1,250\\
+\midrule
+Total &  4,804  & 9,608 & 17,141 & 23,111\\
+\bottomrule
+\end{tabular}
+}
+%\vspace{-2mm}
+\caption{\small Our dataset statistics for each split.
+}
+%\vspace{-2mm}
+\label{tab:splits}
+\end{table}
+
+
+%\joty{
+However, the T5 question generation model may still generate invalid questions because of the mismatch in training and test domains. We notice that some questions are either incomplete or not answerable from the chart (\eg\ `What province includes Cape Town?' is not answerable because it requires knowledge outside of the chart).
+%} 
+To filter out such invalid questions, we developed a simple heuristic where we filter out the question if the answer cannot be found in the chart data table. This heuristic was inspired by the fact that most answers to the generated questions were  values/labels of chart elements.
+%most of the generated QA pairs were data retrieval questions. 
+After applying the heuristic, we manually analyzed 1,250 QA pairs and found that {86.64\%} of them were \change{complete, answerable, and correct} given the chart. Moreover, for the sake of fair  evaluation, we manually cleaned the test set of the machine generated dataset by removing invalid questions.
+
+
+
+%\vspace{-0.5em}
+\paragraph{$\bullet$ Data split}
+We randomly split both of the human-written (ChartQA-H) and machine generated (ChartQA-M) QA pairs into train, validation, and test sets as shown in  \Cref{tab:splits}. 
+
+
+\begin{table}[t!]
+\centering
+\small
+\scalebox{0.90}{\begin{tabular}{lcccc|l}
+\toprule
+Type & Statista-H & Pew & OWID & OECD & Statista-M \\
+\midrule
+Bar &  1,696    & 783    &   507   &  128 &  15,223   \\
+Line &  401       & 249    & 279     &    103 &  1,768  \\
+Pie &    387     &  271   &    0  &   0 &  150\\
+\midrule
+Total &   2,484 &   1,303 & 786  &  231 &  17,141 
+\\
+\bottomrule
+\end{tabular}
+}
+%\vspace{-2mm}
+\caption{\small Number of charts from each source. Statista-H and Statista-M refer to the datasets with human-written and machine generated questions respectively from Statista
+%\joty{say what Statista-H and Statista-M refer to}
+}
+\label{tab:dataset-chart-count}
+%\vspace{-3mm}
+\end{table}
+
+
+\begin{table}[t!]
+\centering
+\small 
+\scalebox{0.95}{
+\begin{tabular}{p{1.9cm} p{4.5cm} p{0.2cm}}
+\toprule
+\small{\textbf{Type}} & \small{\textbf{Example}} & \small{\textbf{\%}}\\
+\midrule
+\small{\emph{Data retrieval} } & \small{What's the percentage of men who thinks Valentine's Day is overrated?} & \small{13.0}   \\ \\[-1em]
+\small{\emph{Visual} } & \small{What is the value of the \blue{rightmost light blue bar}?} & \small{10.7} \\ \\ [-1em]
+\small{\emph{Compositional } } &  \small{
+How many years does the poverty percentage rose above 11\%?
+} & \small{\textbf{43.0}}\\ \\[-1em]
+\hspace{-0.3em}{\small{ \emph{Both visual \& compositional}}} & \small{Between \blue{the second and the third} age groups \blue{from the left}, which opinion deviates the most?}   &  \small{33.3}        \\
+\bottomrule
+\end{tabular}
+}
+%\vspace{-3mm}
+\caption{\small Distribution of  questions types of among 300 randomly chosen human written questions (blue-colored tokens make visual references to the chart).
+}
+\label{dataset-content}
+%\vspace{-3mm}
+\end{table}
+
+
+\subsection{Dataset Analysis}   
+
+
+
+
+
+
+
+
+Our dataset has three commonly used chart types: bar, line, and pie charts (\Cref{tab:dataset-chart-count}). Bar is the most common type of chart across all datasets as they are quite prevalent in real-world sources. We further categorize the bar and line charts into simple vs complex where  data tables of simple charts have only two columns where complex charts involve multiple columns (\eg\ stacked or grouped bars and multi-line charts).
+Among bar charts, 79.4\% were simple and 29.6\% were complex. For line charts, 61.0\% were simple and 39.0\% were complex. 
+
+
+
+
+
+
+
+
+\begin{figure*}[t!]
+  \includegraphics[width=1\textwidth]{emnlp2020-templates/imgs/models/initial_pipeline_6.png}
+   %\vspace{-4mm}
+  \caption{\small Our approach for question answering over charts. 
+  %\joty{
+  If not provided,
+  %} 
+  the underlying data table is first extracted from the chart image %\joty{
+  using ChartOCR.
+  %}
+   We then pass the extracted data table in addition to the question and the image features to the ChartQA model where the ChartQA model represents one of the following: TaPas, VisionTaPas, T5, and VL-T5.}
+  \label{Pipeline}
+  %\vspace{-4mm}
+\end{figure*}
+
+
+
+We have also analyzed the basic linguistic statistics about our benchmark (see \ref{app:dataset-analysis}). Unlike previous datasets, our benchmark has more unique tokens on both types of QA pairs and on both questions and answers -- 6,150 and 4,319 unique tokens in questions and answers respectively in ChartQA-H whereas 12,379  and 11,979 unique tokens in questions and answers respectively in ChartQA-M. We also observe that questions cover a variety of syntactic structure and sometimes exhibit informal languages and typos. %( see \ref{app:dataset-analysis}).
+Overall, this suggests the richness of language variations which may introduce more challenges to the task.
+Finally, the topic distribution in our data is quite diverse as it is  constructed from four different sources. Politics is a common topic among all sources but particularly in the Pew dataset where nearly half of charts  are about U.S. Politics \& Policy (45.4 \%).
+Other common topics include economy, health, and society.
+
+
+
+ %\noindent \textbf{Question types:} 
+ To analyze the nature of questions, we randomly selected 300 QA pairs from our benchmark and categorized them into four types (\Cref{dataset-content}). We see that the vast majority of questions (76.33\% in total) are either compositional or both visual and compositional, which reflects the real-world scenarios where people ask complex reasoning questions. We also find that people make visual references to a variety of visual attributes of marks (see \ref{app:dataset-analysis}), most commonly to \textit{color} (\eg\ `orange line') and \textit{length} (\eg\ `tallest bar') followed by  \textit{size} (\eg\ `largest  slice') and \textit{position} (\eg\ `leftmost bar'). %See \cref{app:dataset-analysis} for details.
+ 
+
+

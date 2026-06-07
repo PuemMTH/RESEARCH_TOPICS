@@ -1,0 +1,505 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2cm]{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{tcolorbox}
+\usepackage{titlesec}
+\usepackage{parskip}
+
+%% ─── Design system tokens ──────────────────────────────────────
+\definecolor{primary}{HTML}{cc785c}
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{primary-active}{HTML}{a9583e}
+\definecolor{primary-disabled}{HTML}{e6dfd8}
+\definecolor{ink}{HTML}{141413}
+\definecolor{body-strong}{HTML}{252523}
+\definecolor{body}{HTML}{3d3d3a}
+\definecolor{muted}{HTML}{6c6a64}
+\definecolor{muted-soft}{HTML}{8e8b82}
+\definecolor{canvas}{HTML}{faf9f5}
+\definecolor{surface-soft}{HTML}{f5f0e8}
+\definecolor{surface-card}{HTML}{efe9de}
+\definecolor{surface-cream-strong}{HTML}{e8e0d2}
+\definecolor{surface-dark}{HTML}{181715}
+\definecolor{hairline}{HTML}{e6dfd8}
+\definecolor{on-dark}{HTML}{faf9f5}
+\definecolor{accent-teal}{HTML}{5db8a6}
+\definecolor{accent-amber}{HTML}{e8a55a}
+\definecolor{success}{HTML}{5db872}
+\definecolor{warning}{HTML}{d4a017}
+\definecolor{error}{HTML}{c64545}
+\definecolor{rowA}{HTML}{faf9f5}
+\definecolor{rowB}{HTML}{efe9de}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+  local function is_thai(c) return c >= 0x0E01 and c <= 0x0E5B end
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+\emergencystretch=1em
+
+%% ─── Custom column types ────────────────────────────────────────
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+%% ─── tcolorbox styles ───────────────────────────────────────────
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{gapbox}[1][]{
+  enhanced, breakable,
+  colback=surface-soft, colframe=coral, colbacktitle=coral,
+  coltitle=white, fonttitle=\bfseries\small,
+  boxrule=1pt, arc=3pt,
+  #1
+}
+\newtcolorbox{infobox}[1][]{
+  enhanced, breakable,
+  colback=surface-card, colframe=hairline,
+  boxrule=0.5pt, arc=2pt,
+  #1
+}
+
+%% ─── Section style ──────────────────────────────────────────────
+\titleformat{\section}{\large\bfseries\color{coral}}{}{0em}{}[\vspace{-4pt}\color{hairline}\rule{\linewidth}{0.6pt}]
+\titleformat{\subsection}{\normalsize\bfseries\color{body-strong}}{}{0em}{}
+
+\setlist[itemize]{nosep, leftmargin=1.5em, itemsep=2pt}
+
+\begin{document}
+
+%% ─── Title ──────────────────────────────────────────────────────
+\begin{center}
+  {\LARGE \textbf{การวิเคราะห์ช่องว่างงานวิจัย}}\\[6pt]
+  {\large Personalized Scientific Figure Caption Generation}\\
+  {\large with RAG and Multimodal LLMs}\\[6pt]
+  {\color{muted}\small Research Gap Analysis · 17 Papers · สรุปครบชุด}\\[4pt]
+  {\color{muted-soft}\small จัดทำ 7 มิถุนายน 2569}
+\end{center}
+
+\noindent\rule{\linewidth}{2pt}
+\vspace{4pt}
+
+%% ─── 1. OVERVIEW ────────────────────────────────────────────────
+\section{ภาพรวมงานวิจัยที่เกี่ยวข้อง}
+
+งานวิจัยทั้ง 17 ชิ้นสามารถจัดกลุ่มได้เป็น \textbf{5 กลุ่มหลัก} ซึ่งล้วนมีส่วนเกี่ยวข้องกับโจทย์วิทยานิพนธ์เรื่อง
+\emph{Personalized Scientific Figure Caption Generation using RAG + Multimodal LLMs}
+
+\begin{center}
+\begin{tabular}{@{}clcc@{}}
+  \toprule
+  \textbf{กลุ่ม} & \textbf{ชื่อกลุ่ม} & \textbf{Papers} & \textbf{จำนวน} \\
+  \midrule
+  A & Scientific Figure Captioning (Core)          & 1, 2, 4, 8, 9, 10 & 6 \\
+  B & Chart Understanding / Vision-Language Models & 3, 5, 14, 15, 16, 17 & 6 \\
+  C & RAG \& Retrieval                              & 6\textsubscript{RAG}, 11 & 2 \\
+  D & Evaluation Methods                            & 7 & 1 \\
+  E & Adjacent / Background                        & 12, 13 & 2 \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{6pt}
+\textbf{สมการวิทยานิพนธ์:} \quad
+$\underbrace{\text{Chart VLM}}_{\text{Group B}} + \underbrace{\text{RAG context}}_{\text{Group C}} + \underbrace{\text{Personalization}}_{\text{Group A}} \xrightarrow{\text{งานเรา}} \text{Personalized Scientific Figure Caption}$
+
+\vspace{8pt}
+\noindent\textcolor{coral}{\textbf{ข้อสังเกตสำคัญ:}} ยังไม่มีงานใดที่รวมทั้ง 3 องค์ประกอบนี้เข้าด้วยกันในบริบท scientific figures — นี่คือ research gap หลักของวิทยานิพนธ์
+
+\noindent\rule{\linewidth}{0.5pt}
+
+%% ─── 2. PAPER DETAILS ───────────────────────────────────────────
+\section{รายละเอียดแต่ละ Paper}
+
+%% GROUP A ────────────────────────────────────────────────────────
+\subsection*{\textcolor{accent-teal}{กลุ่ม A — Scientific Figure Captioning (Core)}}
+
+\textbf{Paper \#1 — SciCap (2021)}
+\hfill {\color{muted}\small Hsu, Giles, Huang · Penn State · arXiv:2110.11624 · EMNLP Findings 2021}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} ขาดชุดข้อมูลขนาดใหญ่สำหรับ scientific figure captioning\\
+\textbf{แนวทาง:} ดึงรูปภาพและ caption จาก 290,000+ arXiv CS papers (2010–2020) ผ่าน LaTeX source\\
+\textbf{ผลลัพธ์:} ชุดข้อมูล 2+ ล้านรูป; graph plot เป็น type หลัก (19.2\%); baseline model ด้วย vision encoder + text decoder\\
+\textbf{ข้อจำกัด:} Caption สั้น (เฉลี่ย 51 คำ), ไม่มีบริบทจากเนื้อหาบทความ, ไม่รองรับ personalization
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#2 — SciCap+ (2023)}
+\hfill {\color{muted}\small arXiv:2306.03491}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} SciCap เดิมขาดบริบทจากเนื้อหาบทความ\\
+\textbf{แนวทาง:} เพิ่ม knowledge augmentation — figure-mentioning paragraphs เข้าไปในชุดข้อมูล\\
+\textbf{ผลลัพธ์:} ศึกษา context-aware captioning; แสดงว่าบริบทช่วยได้แต่ยังมีความท้าทาย\\
+\textbf{ข้อจำกัด:} ยังไม่มี personalization, RAG หรือ retrieval; ใช้เฉพาะ text context ไม่ใช่ visual context
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#4 — MLBCAP (2025)}
+\hfill {\color{muted}\small Kim et al. · Teamreboott/PSU/Adobe · arXiv:2501.02552 · AAAI 2025 Workshop}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} single-LLM approach ใช้ข้อมูลไม่ครบและมองงานแบบ isolated\\
+\textbf{แนวทาง:} Multi-LLM collaborative framework — หลายโมเดลทำงานร่วมกัน ใช้ข้อมูลหลาย modality\\
+\textbf{ผลลัพธ์:} ชนะ SciCap Challenge; performance ดีกว่า single-LLM baselines\\
+\textbf{ข้อจำกัด:} ไม่มี author-specific personalization; ไม่ใช้ retrieval; computational cost สูง
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#8 — LaMPCap (2025)}
+\hfill {\color{muted}\small Ng, Hsu, Ramakrishnan et al. · PSU/Adobe · arXiv:2506.06561}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} Author ต้องแก้ AI-generated caption ให้ match writing style ตัวเอง\\
+\textbf{แนวทาง:} Dataset ใหม่: target figure + profile (≤3 figures จากบทความเดียวกัน พร้อม image, caption, paragraphs)\\
+\textbf{ผลลัพธ์:} Profile ช่วยสร้าง caption ใกล้เคียง author-written มากขึ้น; image ใน profile สำคัญกว่า text paragraphs\\
+\textbf{ข้อจำกัด:} Profile จำกัดอยู่ในบทความเดียวกัน; ไม่ใช้ retrieved knowledge จากแหล่งภายนอก; \textbf{307,903 figures จาก 110,828 papers}
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#9 — AuthorContextSciCap (2025)}
+\hfill {\color{muted}\small Timklaypachara et al. · Mahidol University · arXiv:2510.07993}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} Generic captions ไม่ match writing style ของ author\\
+\textbf{แนวทาง:} Two-stage pipeline: (1) DSPy MIPROv2/SIMBA optimize prompts per figure category + context filtering; (2) few-shot profile refinement\\
+\textbf{ผลลัพธ์:} Category-specific prompts: ROUGE-1 recall +8.3\%; Profile refinement: BLEU +40–48\%, ROUGE +25–27\%\\
+\textbf{ข้อจำกัด:} ใช้ profile แค่ within-paper; ไม่มี external knowledge retrieval; ไม่มี visual understanding ของ scientific figures
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#10 — PersonalizedSciFigCap (2025)}
+\hfill {\color{muted}\small Kim, Lee, Choi, Jang · arXiv:2509.25817}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} Author-specific writing style transfer ใน scientific figure captioning\\
+\textbf{แนวทาง:} Empirical study: ทดสอบหลาย strategy สำหรับ style transfer จาก author writing profile\\
+\textbf{ผลลัพธ์:} Profile/context ช่วยให้ caption เหมือน author style มากขึ้น แต่ optimize เพื่อ style overlap อาจลด informativeness\\
+\textbf{ข้อจำกัด:} Tradeoff ระหว่าง style fidelity กับ caption quality; ไม่รวม external retrieval
+\end{infobox}
+
+\vspace{10pt}
+%% GROUP B ────────────────────────────────────────────────────────
+\subsection*{\textcolor{accent-teal}{กลุ่ม B — Chart Understanding / Vision-Language Models}}
+
+\textbf{Paper \#17 — Pix2Struct (2022)}
+\hfill {\color{muted}\small Lee, Joshi, Turc et al. · Google Research · arXiv:2210.03347 · ICML 2023}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} ไม่มี unified VLM ที่ handle visually-situated language ได้; fixed-resolution ทำให้ text ใน charts อ่านไม่ออก\\
+\textbf{แนวทาง:} Pretrain ViT encoder + T5 decoder ด้วย screenshot-to-HTML; variable-resolution patches (≤2048 patches, คง aspect ratio); prompt render บน image\\
+\textbf{ผลลัพธ์:} SoTA บน 6/9 tasks — DocVQA 88.0 ANLS, AI2D 89.5\%, ChartQA 56.0\%\\
+\textbf{ข้อจำกัด:} Web pretraining ≠ scientific charts; ไม่เข้าใจ math; image-only (ไม่รับ text context)
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#16 — MatCha (2022)}
+\hfill {\color{muted}\small Liu et al. · Google DeepMind · arXiv:2212.09662 · ACL 2023}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} Pix2Struct ไม่เข้าใจ mathematical/numerical relationships ใน charts\\
+\textbf{แนวทาง:} เพิ่ม 2 objectives ใน finetuning บน Pix2Struct: (1) Math reasoning (arithmetic, counting); (2) Chart derendering (chart→table)\\
+\textbf{ผลลัพธ์:} PlotQA +20\%, ChartQA human +2.4\%, ChartQA augmented +4.2\% over prior SoTA\\
+\textbf{ข้อจำกัด:} ยังเป็น image-only; ไม่มี chart summarization/captioning objective; scientific figures ยังไม่ครอบคลุม
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#15 — UniChart (2023)}
+\hfill {\color{muted}\small Masry et al. · George Mason University · arXiv:2305.14761 · EMNLP 2023}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} ขาดโมเดล chart-specific ที่ครอบคลุมทั้ง low-level และ high-level tasks\\
+\textbf{แนวทาง:} Pretrain บน 611K charts ด้วย 4 objectives: (1) Chart-to-Table; (2) Open-ended QA; (3) Chart Summarization; (4) Chart-to-Caption (Chart2Text)\\
+\textbf{ผลลัพธ์:} SoTA บน 4 benchmarks; 11× เร็วกว่า MatCha; ดีกว่า Pix2Struct/DePlot ทุก task\\
+\textbf{ข้อจำกัด:} Corpus เป็น general charts ไม่ใช่ scientific figures; ไม่มี RAG; ไม่มี personalization
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#14 — ChartQA (2022)}
+\hfill {\color{muted}\small Masry et al. · arXiv:2203.10244 · ACL Findings 2022}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} Benchmarks เดิม (FigureQA, PlotQA) ใช้ synthetic charts และ template questions\\
+\textbf{แนวทาง:} 9,608 คำถามจากมนุษย์จริง + 23,111 คำถาม augmented บน real-world charts จาก 4 แหล่ง; เพิ่ม visual + arithmetic reasoning\\
+\textbf{ผลลัพธ์:} Baseline: VisionTaPas 45.5\%, T5 22.4\%; Human accuracy 69.8\%; gap ยังกว้างมาก\\
+\textbf{ข้อจำกัด:} QA-only (ไม่ใช่ captioning); charts จาก news/business ไม่ใช่ scientific papers
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#3 — DePlot (2023)}
+\hfill {\color{muted}\small Liu et al. · Google DeepMind · arXiv:2212.10505 · ACL Findings 2023}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} Visual reasoning บน charts ต้องการ fine-tuning บน data จำนวนมาก\\
+\textbf{แนวทาง:} แยกเป็น 2 module: DePlot (chart→table, fine-tuned) + LLM (table→answer, one-shot)\\
+\textbf{ผลลัพธ์:} +29.4\% บน ChartQA human-written; ไม่ต้องการ downstream fine-tuning\\
+\textbf{ข้อจำกัด:} Plot-to-table translation อาจสูญเสียข้อมูล visual; ไม่รวม caption generation
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#5 — Survey: MLLM for Chart Understanding (2025)}
+\hfill {\color{muted}\small arXiv:2602.10138}
+
+\begin{infobox}
+\textbf{เนื้อหา:} Survey วิวัฒนาการ MLLM สำหรับ chart understanding; ครอบคลุม multimodal information fusion, cognitive enhancement, ข้อจำกัดปัจจุบัน\\
+\textbf{ประโยชน์:} ภาพรวมสถานะปัจจุบันของ chart understanding field; ระบุช่องว่างที่ MLLM ยังทำไม่ได้
+\end{infobox}
+
+\vspace{10pt}
+%% GROUP C ────────────────────────────────────────────────────────
+\subsection*{\textcolor{accent-teal}{กลุ่ม C — RAG \& Retrieval}}
+
+\textbf{Paper \#6\textsubscript{RAG} — RAGBeyondTheBuzz (2024)}
+\hfill {\color{muted}\small Zhao, Yang et al. · Microsoft Research Asia · arXiv:2409.14924}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} ขาด framework สำหรับเลือกเทคนิค RAG ให้เหมาะกับงาน\\
+\textbf{แนวทาง:} จัดระดับ query เป็น 4 ประเภท: explicit fact, implicit fact, interpretable rationale, hidden rationale; แนะนำเทคนิคสำหรับแต่ละระดับ\\
+\textbf{ผลลัพธ์:} Framework สำหรับออกแบบระบบ RAG; ครอบคลุม context/small-model/fine-tuning approaches\\
+\textbf{ข้อจำกัด:} เน้น text-only RAG; ไม่ครอบคลุม multimodal retrieval (image queries)
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#11 — MIND-RAG (2025)}
+\hfill {\color{muted}\small arXiv preprint · ICCVW 2025 (MRR Workshop)}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} RAG ทั่วไปไม่เข้าใจ multimodal context และ user intent ใน educational publications\\
+\textbf{แนวทาง:} (1) Context-aware image summarization (ผสาน visual + text context); (2) Intent-aware reranking\\
+\textbf{ผลลัพธ์:} 84.29\% accuracy บน MEED-QA benchmark\\
+\textbf{ข้อจำกัด:} ใช้ educational domain; ไม่ได้ทดสอบ scientific figure generation; ไม่มี personalization
+\end{infobox}
+
+\vspace{10pt}
+%% GROUP D ────────────────────────────────────────────────────────
+\subsection*{\textcolor{accent-teal}{กลุ่ม D — Evaluation Methods}}
+
+\textbf{Paper \#7 — LLM-as-a-Judge (2023)}
+\hfill {\color{muted}\small Zheng et al. · UC Berkeley et al. · arXiv:2306.05685 · NeurIPS 2023}
+
+\begin{infobox}
+\textbf{ปัญหาที่แก้:} Human evaluation แพงและช้า; benchmarks เดิมไม่วัด open-ended quality\\
+\textbf{แนวทาง:} MT-Bench (80 multi-turn questions, 8 categories) + Chatbot Arena (crowdsourced battles) ให้ GPT-4 เป็น judge\\
+\textbf{ผลลัพธ์:} Strong LLM judge (GPT-4) ตรงกับ human preference >80\%; เทียบเท่า inter-human agreement\\
+\textbf{ข้อจำกัด:} Position bias, verbosity bias; ไม่ได้ออกแบบสำหรับ scientific figure evaluation
+\end{infobox}
+
+\vspace{10pt}
+%% GROUP E ────────────────────────────────────────────────────────
+\subsection*{\textcolor{accent-teal}{กลุ่ม E — Adjacent / Background}}
+
+\textbf{Paper \#12 — NLIDBSensitive (2025)}
+\hfill {\color{muted}\small ITNG 2025}
+
+\begin{infobox}
+\textbf{เนื้อหา:} NL interface สำหรับ query database ที่มีข้อมูล sensitive ด้วย OCR + Neo4j + LLM Cypher translation\\
+\textbf{ความเกี่ยวข้อง:} แสดง pattern ของการใช้ LLM เป็น intermediary ระหว่าง unstructured query กับ structured data — คล้ายกับ RAG สำหรับ scientific figures
+\end{infobox}
+
+\vspace{6pt}
+\textbf{Paper \#13 — WebSearchViz (2010)}
+\hfill {\color{muted}\small IEEE Symposium on Web Society 2010}
+
+\begin{infobox}
+\textbf{เนื้อหา:} Scatter plot visualization สำหรับแสดงผลลัพธ์ web search ตาม modification date และ document type\\
+\textbf{ความเกี่ยวข้อง:} Background สำหรับ information visualization; แนวคิด temporal + type-based result display
+\end{infobox}
+
+\noindent\rule{\linewidth}{1.5pt}
+
+%% ─── 3. COMPARISON TABLE ────────────────────────────────────────
+\section{ตารางเปรียบเทียบ (17 Papers)}
+
+\footnotesize
+\begin{longtable}{@{}C{0.4cm}L{2.8cm}C{0.8cm}L{2.6cm}L{3.0cm}L{3.2cm}C{0.6cm}C{0.6cm}C{0.6cm}@{}}
+  \toprule
+  \textbf{\#} & \textbf{Paper} & \textbf{ปี} & \textbf{แนวทาง} & \textbf{จุดเด่น} & \textbf{ข้อจำกัด} & \rotatebox{75}{\textbf{SciFig}} & \rotatebox{75}{\textbf{RAG}} & \rotatebox{75}{\textbf{Personal}} \\
+  \midrule
+  \endfirsthead
+  \multicolumn{9}{l}{\color{muted}\small (ต่อ)} \\
+  \toprule
+  \textbf{\#} & \textbf{Paper} & \textbf{ปี} & \textbf{แนวทาง} & \textbf{จุดเด่น} & \textbf{ข้อจำกัด} & \rotatebox{75}{\textbf{SciF}} & \rotatebox{75}{\textbf{RAG}} & \rotatebox{75}{\textbf{Per}} \\
+  \midrule
+  \endhead
+  \midrule\multicolumn{9}{r}{\color{muted}\small (มีต่อ)}\\
+  \endfoot
+  \bottomrule
+  \endlastfoot
+
+  \rowcolor{rowA}1 & SciCap & 2021 & Large-scale dataset & 2M+ figs, arXiv CS & ไม่มีบริบท, ไม่มี personalization & \checkmark & — & — \\
+  \rowcolor{rowB}2 & SciCap+ & 2023 & Knowledge augmentation & Context-aware dataset & Text-only context, ไม่มี retrieval & \checkmark & — & — \\
+  \rowcolor{rowA}3 & DePlot & 2023 & Plot→Table→LLM & +29.4\% ChartQA one-shot & QA-only, ไม่ใช่ captioning & — & — & — \\
+  \rowcolor{rowB}4 & MLBCAP & 2025 & Multi-LLM collaborative & ชนะ SciCap Challenge & ไม่มี personalization, ไม่มี retrieval & \checkmark & — & — \\
+  \rowcolor{rowA}5 & MLLM Survey & 2025 & Survey & Chart MLLM evolution & — & — & — & — \\
+  \rowcolor{rowB}6 & RAGBeyondTheBuzz & 2024 & RAG Survey & 4-level query taxonomy & Text-only, ไม่ใช่ multimodal & — & \checkmark & — \\
+  \rowcolor{rowA}7 & LLM-as-Judge & 2023 & Evaluation framework & >80\% human agreement & ไม่เฉพาะ scientific figs & — & — & — \\
+  \rowcolor{rowB}8 & LaMPCap & 2025 & Profile-based generation & 307K figs, multimodal profile & Profile เฉพาะ within-paper & \checkmark & — & \checkmark \\
+  \rowcolor{rowA}9 & AuthorContextSciCap & 2025 & DSPy+profile refinement & BLEU +40–48\% & ไม่มี external retrieval & \checkmark & — & \checkmark \\
+  \rowcolor{rowB}10 & PersonalizedSciFigCap & 2025 & Style transfer study & Style fidelity analysis & Tradeoff: style vs. quality & \checkmark & — & \checkmark \\
+  \rowcolor{rowA}11 & MIND-RAG & 2025 & Multimodal RAG & 84.29\% MEED-QA & Educational domain, ไม่ใช่ sci-fig gen & — & \checkmark & — \\
+  \rowcolor{rowB}12 & NLIDBSensitive & 2025 & NL-to-Cypher & Sensitive data safety & ไม่เกี่ยวกับ captioning & — & — & — \\
+  \rowcolor{rowA}13 & WebSearchViz & 2010 & Search visualization & Temporal scatter plot UI & เก่า, ไม่เกี่ยวกับ ML & — & — & — \\
+  \rowcolor{rowB}14 & ChartQA & 2022 & QA Benchmark & 9.6K human questions & QA-only, ไม่ใช่ scientific figs & — & — & — \\
+  \rowcolor{rowA}15 & UniChart & 2023 & Universal chart VLM & 4 objectives, 611K charts, 11× faster & General charts, ไม่มี RAG & — & — & — \\
+  \rowcolor{rowB}16 & MatCha & 2022 & Math+chart pretraining & +20\% PlotQA vs. prior SoTA & Image-only, ไม่มี captioning obj. & — & — & — \\
+  \rowcolor{rowA}17 & Pix2Struct & 2022 & Screenshot pretraining & Variable-res, SoTA 6/9 tasks & Web domain ≠ scientific charts & — & — & — \\
+  \midrule
+  \rowcolor{coral!15} & \textbf{งานของเรา} & 2025 & \textbf{RAG+VLM+Profile} & \textbf{ครบทั้ง 3 dimension} & — & \checkmark & \checkmark & \checkmark \\
+\end{longtable}
+
+\normalsize
+{\color{muted}\small \textbf{SciF} = Scientific Figure domain, \textbf{RAG} = ใช้ retrieval/external knowledge, \textbf{Personal} = มี personalization/author-specific}
+
+\noindent\rule{\linewidth}{1.5pt}
+
+%% ─── 4. GAP ANALYSIS ────────────────────────────────────────────
+\section{การวิเคราะห์ช่องว่างงานวิจัย (Gap Analysis)}
+
+\begin{gapbox}[title=Gap \#1 — ไม่มีงานที่รวม Chart VLM + RAG + Personalization ในบริบท Scientific Figures]
+งานด้าน chart VLM (Pix2Struct, MatCha, UniChart) เน้น QA บน general/business charts
+งานด้าน scientific captioning (LaMPCap, MLBCAP) ไม่ใช้ retrieved external knowledge
+งานด้าน RAG (MIND-RAG, RAGBeyondTheBuzz) ไม่ได้ออกแบบสำหรับ figure generation
+\textbf{→ โอกาสวิจัย: ระบบที่รับ scientific figure image + retrieved paper context → สร้าง caption ที่ match author style}
+\end{gapbox}
+
+\vspace{6pt}
+\begin{gapbox}[title=Gap \#2 — Profile-based Personalization ยังจำกัดอยู่ใน Single Paper]
+LaMPCap (\#8), AuthorContextSciCap (\#9), PersonalizedSciFigCap (\#10) ทั้งหมดใช้ profile เฉพาะ
+รูปภาพอื่นในบทความเดียวกัน (within-paper profile) ยังไม่มีงานใดที่ retrieve author's previous papers
+หรือ domain-specific figure patterns จาก external corpus
+\textbf{→ โอกาสวิจัย: Cross-paper author profile ด้วย RAG ที่ retrieve ผลงานที่ผ่านมาของ author คนเดียวกัน}
+\end{gapbox}
+
+\vspace{6pt}
+\begin{gapbox}[title=Gap \#3 — Scientific Figure ≠ General Chart: ขาด Domain-Specific Pretraining]
+Pix2Struct pretrain บน web screenshots; MatCha/UniChart ใช้ general charts (Statista, Pew Research etc.)
+Scientific figures มีลักษณะต่างออกไป: axis labels ซับซ้อน, error bars, multi-panel, specialized notation
+ยังไม่มี VLM ที่ pretrain บน scientific figure corpus (arXiv/PubMed figures) โดยเฉพาะ
+\textbf{→ โอกาสวิจัย: Fine-tune chart VLM ด้วย scientific figure data หรือใช้ domain adaptation}
+\end{gapbox}
+
+\vspace{6pt}
+\begin{gapbox}[title=Gap \#4 — ขาด Evaluation Framework สำหรับ Personalized Scientific Figure Captions]
+Metrics ปัจจุบัน (BLEU, ROUGE, BERTScore) วัด surface-level similarity ไม่ใช่ style fidelity หรือ scientific accuracy
+LLM-as-Judge (\#7) ยังไม่ถูกนำมาใช้ใน scientific figure captioning evaluation
+PersonalizedSciFigCap (\#10) ชี้ถึง tradeoff ระหว่าง style overlap กับ caption quality แต่ยังขาด formal evaluation framework
+\textbf{→ โอกาสวิจัย: Multi-dimensional evaluation: (1) scientific accuracy, (2) style fidelity, (3) informativeness}
+\end{gapbox}
+
+\vspace{6pt}
+\begin{gapbox}[title=Gap \#5 — Multimodal RAG สำหรับ Scientific Documents ยังอยู่ในระยะเริ่มต้น]
+MIND-RAG (\#11) แสดงให้เห็นว่า multimodal context-aware RAG ทำงานได้บน educational publications
+แต่ใช้ text QA เป็น downstream task ไม่ใช่ generation
+RAGBeyondTheBuzz (\#6) ยังเป็น text-only framework; ไม่ครอบคลุม image-as-query scenario
+\textbf{→ โอกาสวิจัย: Multimodal RAG ที่รับ figure image เป็น query และ retrieve paper sections/related figures}
+\end{gapbox}
+
+\noindent\rule{\linewidth}{1.5pt}
+
+%% ─── 5. DIMENSION MATRIX ─────────────────────────────────────────
+\section{Gap Matrix — มิติที่ยังขาด}
+
+\vspace{6pt}
+\noindent
+\begin{tabular}{@{}L{4.5cm}C{1.8cm}C{1.8cm}C{1.8cm}C{1.8cm}C{1.8cm}@{}}
+  \toprule
+  \textbf{มิติ} & \textbf{LaMPCap} & \textbf{MLBCAP} & \textbf{UniChart} & \textbf{MIND-RAG} & \textbf{งานเรา} \\
+  \midrule
+  Scientific figure domain  & \checkmark & \checkmark & — & — & \checkmark \\
+  Chart visual understanding & — & partial & \checkmark & — & \checkmark \\
+  External RAG retrieval    & — & — & — & \checkmark & \checkmark \\
+  Author personalization    & \checkmark & — & — & — & \checkmark \\
+  Cross-paper profile       & — & — & — & — & \checkmark \\
+  Caption generation task   & \checkmark & \checkmark & partial & — & \checkmark \\
+  Scientific accuracy eval  & — & — & — & — & \checkmark \\
+  \bottomrule
+\end{tabular}
+
+\vspace{10pt}
+\noindent\textbf{สรุป:} ไม่มีงานใดในชุดนี้ที่ครอบคลุมทุกมิติ --- งานวิทยานิพนธ์จะเป็นงานแรกที่รวม
+\emph{scientific figure domain + chart visual understanding + external RAG + author personalization} ไว้ในระบบเดียวกัน
+
+\noindent\rule{\linewidth}{1.5pt}
+
+%% ─── 6. RESEARCH POSITIONING ────────────────────────────────────
+\section{ตำแหน่งงานวิทยานิพนธ์}
+
+\begin{center}
+\begin{tabular}{@{}L{3cm}L{11cm}@{}}
+  \toprule
+  \textbf{ด้าน} & \textbf{รายละเอียด} \\
+  \midrule
+  \textbf{สิ่งที่ยืมมา} &
+  Variable-resolution VLM จาก Pix2Struct (\#17);
+  Chart pretraining objectives จาก MatCha (\#16) หรือ UniChart (\#15);
+  Profile-based personalization framework จาก LaMPCap (\#8);
+  RAG taxonomy และ techniques จาก RAGBeyondTheBuzz (\#6);
+  LLM-as-Judge evaluation จาก LLMJudge (\#7) \\[4pt]
+  \textbf{สิ่งที่แตกต่าง} &
+  เป้าหมายคือ \emph{scientific figure captioning} (ไม่ใช่ QA);
+  ใช้ RAG retrieve external paper context (ข้ามบทความ);
+  รวม author profile + domain knowledge + visual understanding ในระบบเดียว \\[4pt]
+  \textbf{Novel contribution} &
+  (1) Multimodal RAG pipeline สำหรับ scientific figure captioning;
+  (2) Cross-paper author style profile;
+  (3) Evaluation framework สำหรับ personalized scientific captions \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\vspace{10pt}
+\textbf{Evolution chain ของสาย Chart VLM:}
+\[
+  \underbrace{\text{Pix2Struct}}_{\#17\;2022} \;\to\;
+  \underbrace{\text{MatCha}}_{\#16\;2022} \;\to\;
+  \underbrace{\text{UniChart}}_{\#15\;2023} \;\to\;
+  \underbrace{\text{DePlot}}_{\#3\;2023} \;\to\;
+  \underbrace{\textbf{งานเรา}}_{\text{+ RAG + Profile}}
+\]
+
+\textbf{Evolution chain ของสาย Personalized Captioning:}
+\[
+  \underbrace{\text{SciCap}}_{\#1\;2021} \;\to\;
+  \underbrace{\text{SciCap+}}_{\#2\;2023} \;\to\;
+  \underbrace{\text{MLBCAP}}_{\#4\;2025} \;\to\;
+  \underbrace{\text{LaMPCap}}_{\#8\;2025} \;\to\;
+  \underbrace{\textbf{งานเรา}}_{\text{+ RAG + VLM}}
+\]
+
+\noindent\rule{\linewidth}{2pt}
+{\color{muted}\small สรุปโดย Claude Sonnet 4.6 · 7 มิถุนายน 2569 · 17 papers ครบชุด}
+
+\end{document}

@@ -1,0 +1,140 @@
+% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Remove the "review" option to generate the final version.
+\usepackage{ACL2023}
+%\usepackage{ACL2023}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym,comment}
+
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out.
+% However, it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% This is also not strictly necessary, and may be commented out.
+% However, it will improve the aesthetics of text in
+% the typewriter font.
+\usepackage{inconsolata}
+
+
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{appendix}
+\usepackage{microtype}
+\usepackage{bm}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{soul} % for the command \hl
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tcolorbox}
+\usepackage{paralist}
+\usepackage{enumitem}
+%\setlist{topsep=0pt, leftmargin=*}
+
+\usepackage{mathtools}
+\usepackage{amsfonts,amssymb,amsthm}
+\usepackage[ruled,noend]{algorithm2e}
+
+
+\usepackage{cleveref}
+\crefformat{section}{\S#2#1#3}
+\crefformat{subsection}{\S#2#1#3}
+\crefformat{subsubsection}{\S#2#1#3}
+\crefrangeformat{section}{\S\S#3#1#4 to~#5#2#6}
+\crefmultiformat{section}{\S\S#2#1#3}{ and~#2#1#3}{, #2#1#3}{ and~#2#1#3}
+
+
+%\usepackage{refstyle}
+\Crefformat{figure}{#2Figure~#1#3}
+\Crefmultiformat{figure}{Figures~#2#1#3}{ and~#2#1#3}{, #2#1#3}{ and~#2#1#3}
+\Crefformat{table}{#2Table~#1#3}
+\Crefmultiformat{table}{Tables.~#2#1#3}{ and~#2#1#3}{, #2#1#3}{ and~#2#1#3}
+\Crefformat{appendix}{#2Appx.~\S#1#3}
+\crefformat{algorithm}{Alg.~#2#1#3}
+\Crefformat{equation}{#2Eq.~#1#3}
+\newcommand{\stitle}[1]{\vspace{0.3em}\noindent{\bf #1}}
+
+
+
+\pagestyle{plain} % page number
+
+\newcommand{\model}{\textsc{MatCha}}
+
+% \usepackage{dblfloatfix}
+\usepackage{color, colortbl}
+\usepackage{xcolor}
+\definecolor{asparagus}{rgb}{0.53, 0.66, 0.42}
+\definecolor{applegreen}{rgb}{0.55, 0.71, 0.0}
+
+\newcommand{\todo}[1]{\textcolor{red}{{\bf TODO: #1}}}
+
+\newif\ifcomment\commenttrue
+\ifcomment
+\newcommand{\pinaforecomment}[3]{\colorbox{#1}{\parbox{.8\linewidth}{#2: #3}}}
+\else
+\newcommand{\pinaforecomment}[3]{}
+\fi
+
+\newcommand{\flcomment}[1]{\pinaforecomment{red}{FL}{#1}}
+\newcommand{\juliancomment}[1]{\pinaforecomment{green}{JE}{#1}}
+% orange, green, etc
+
+\title{\model{} : Enhancing Visual Language Pretraining \\with Math Reasoning and Chart Derendering}
+\author{Fangyu Liu$^{\spadesuit\clubsuit}$\thanks{\ \ Work done during Google internship.} \ \ \ Francesco Piccinno$^\clubsuit$ \ \ \ Syrine Krichene$^\clubsuit$ \ \ \ Chenxi Pang$^\clubsuit$ \ \ \ Kenton Lee$^\clubsuit$ \\ \textbf{Mandar Joshi$^\clubsuit$ \ \ \ Yasemin Altun$^\clubsuit$ \ \ \ Nigel Collier$^\spadesuit$ \ \ \ Julian Martin Eisenschlos$^\clubsuit$} \\
+$^\clubsuit$Google DeepMind \ \ \ \ $^\spadesuit$University of Cambridge}
+
+\begin{document}
+
+\maketitle
+
+
+\begin{abstract}
+Visual language data such as plots, charts, and infographics are ubiquitous in the human world. However, state-of-the-art vision-language models do not perform well on these data.
+We propose \model{} (\textbf{Mat}h reasoning and \textbf{Cha}rt derendering pretraining) to enhance visual language models' capabilities in jointly modeling charts/plots and language data. Specifically we propose several pretraining tasks that cover plot deconstruction and numerical reasoning which are the key capabilities in visual language modeling. 
+% and plot deconstruction capabilities. These two capabilities enable a model with the key capabilities of (1) extracting key information and (2) reasoning on the extracted information. 
+We perform the \model{} pretraining starting from Pix2Struct, a recently proposed image-to-text visual language model.
+% and continue pretraining with our proposed objectives. 
+On standard benchmarks such as PlotQA and ChartQA, the \model{} model outperforms state-of-the-art methods by as much as nearly 20\%.
+We also examine how well the \model{} pretraining transfers to domains such as screenshots, textbook diagrams, and document figures and observe overall improvement, verifying the usefulness of \model{} pretraining on broader visual language tasks.\footnote{Code and models: \href{https://github.com/google-research/google-research/tree/master/deplot}{github.com/google-research/google-research/tree/master/deplot}}\footnote{For questions paper please contact \texttt{fl399@cam.ac.uk} and \texttt{eisenjulian@google.com}.}
+%We observe improvement over the base Pix2Struct checkpoint by 1.2\% on average, 
+
+\end{abstract}
+
+\input{01_introduction}
+\input{02_related_work}
+\input{03_method}
+\input{04_experiment}
+\input{05_conclusion}
+\input{06_limitations}
+\input{07_ethics_statement}
+% \input{08_acknowledgement}
+
+
+% Entries for the entire Anthology, followed by custom entries
+\bibliography{anthology,custom}
+\bibliographystyle{acl_natbib}
+
+%\clearpage
+
+\input{xx_appendix}
+
+
+\end{document}

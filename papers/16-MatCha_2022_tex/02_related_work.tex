@@ -1,0 +1,22 @@
+
+\section{Related Work}\label{sec:rw}
+
+\paragraph{Vision-language research and a lack of attention on visual language.}
+%Better define the concept. Put it into the right context.
+Research on vision-and-language has predominately been focusing on natural images. Visually-grounded reasoning datasets such as NLVR2 \citep{suhr-etal-2019-corpus} and MaRVL \citep{liu-etal-2021-visually} are mostly in the natural image domain. Synthesized datasets such as SHAPES \citep{andreas2016neural}, NLVR \citep{suhr-etal-2017-corpus}, and CLEVR \citep{johnson2017clevr} can be seen as in the visual language domain. However, their visual language systems are significantly simpler than those in the real world such as plots and charts. As a result, information extraction from these synthesized datasets is straightforward. Besides, the queries in the synthesized datasets are relatively naive and do not require complex reasoning (e.g., questions can usually be on spatial relations or counting objects). Consequently, current vision-language models can handle the above mentioned synthesized visual reasoning datasets quite well. However, they do not perform well on real-world visual language datasets where both the information extraction and reasoning becomes much more complex (we will show this in \Cref{sec:exp}).
+
+\paragraph{OCR-based \& end-to-end methods for visually-situated language.\footnote{There is a nuanced difference between \emph{visual} language and \emph{visually-situated} language. Most models discussed here are specifically designed for images with significant amount of texts (e.g., documents) and thus they are models primarily for visually-situated language. Visual language data significantly overlaps with visually-situated language data. However, visual language also covers the scenarios where no/few texts are explicitly used but visual objects/patterns are most responsible for presenting information (e.g., certain types of plots).}}
+LayoutLM \citep{xu2020layoutlm,huang2022layoutlmv3} leverages a patch-OCR alignment loss to inject an external OCR systems' knowledge into the Transformer model.
+PresSTU \citep{kil2022prestu} and PaLI \citep{chen2022pali} also design OCR-aware pretraining objectives where the model needs to predict texts obtained from off-the-shelf OCR systems. 
+ChartBERT \citep{akhtar-etal-2023-reading} relies on OCR text and positions to train a transformer encoder.
+While OCR systems can be helpful for accurately extracting texts, running them is not cheap. Also, OCR systems do not cover visual language systems that do not explicitly use text. As examples, plots and charts do not always have numbers written explicitly.
+In our concurrent work \textsc{DePlot} \citep{liu2022deplot}, we explore combining a chart-to-text translation module (without OCR) with large language models.
+
+%\paragraph{End-to-end methods for visual language.}
+Donut \citep{kim2022ocr}, Dessurt \citep{Davis2022EndtoendDR}, and Pix2Struct \citep{lee2022pix2struct} are end-to-end pretrained models for visual language where Donut and Dessurt focus on document understanding and Pix2Struct aim to provide a generic pretrained checkpoint for all visual language tasks. \model's architecture is identical to Pix2Struct -- we continually pretrain a Pix2Struct checkpoint with new objectives.
+
+\paragraph{Learning to reason by designing novel pretraining tasks.} \model{} is related to the literature of designing better pretraining objectives to help the language models (LMs) to reason better since the skill is hard to require through naive language modeling objectives only (e.g, masked language modeling and autoregressive language modeling on raw text).
+\citet{geva-etal-2020-injecting, eisenschlos-etal-2020-understanding} generate additional pretraining data focused on (numerical) reasoning through human-written templates. 
+\citet{pi-etal-2022-reasoning} synthesize data and programs, and then use program executors to simulate answers. LMs are pretrained to predict the answers given data and programs.
+%TAPEX \citep{liu2022tapex} 
+\citet{wu2022insights} explore a wide range of synthetic pretraining tasks and found that even just injecting knowledge as simple as induction and deduction rules could teach LMs to reason. We teach an image-to-text model to reason through mapping charts to data and code, and also directly learning textual math reasoning datasets.

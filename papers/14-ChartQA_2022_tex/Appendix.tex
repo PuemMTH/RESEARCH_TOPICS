@@ -1,0 +1,331 @@
+% \cleardoublepage
+\appendix
+\section{Appendices}
+\subsection{Additional Details on Data Annotation}
+\label{app:AMT}
+
+\textbf{Amazon Mechanical Turk Task:} In each HIT (Human Intelligent Task), the workers verify two previously asked questions by other workers and also provide two new QA pairs. To ensure quality, we selected workers with an acceptance rate of 95\% and total accomplished HITs of 5000. Moreover, we further filtered the workers by giving them a pre-test to select the best qualified workers for this task. The data collection interface is shown in Figure \ref{annot-interface}. While presenting the chart, we ensure that the data labels of chart elements are visible to workers so that they can accurately perform the necessary arithmetic and logical operations to provide and answer the questions successfully.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.85\textwidth]{emnlp2020-templates/imgs/interface_statista.png}
+    \caption{The user interface for the annotation task}
+    \label{annot-interface}
+\end{figure*}
+
+\subsection{Dataset Analysis}
+\label{app:dataset-analysis}
+Table \ref{dataset-token-stats} shows some linguistic statistics about our benchmark. Also, Figure~\ref{topics} shows the distribution of topics in our dataset for each of the four sources. Politics is a common topic among all sources but particularly in the Pew dataset where   nearly half of charts  are about U.S. Politics \& Policy (45.4 \%). The most frequent topic from OECD and OWID is Society (34.0 \% and 26.0 \% respectively).
+ 
+Furthermore, we analyzed how people make visual references to charts in their questions.  Table \ref{visual-ref-stats} shows the usage of visual references made in the randomly selected 300 QA pairs.  
+ 
+
+
+
+\begin{table}[h]
+\centering
+\small
+\scalebox{0.90}{\begin{tabular}{l|c|c}
+\toprule
+Type  & \textbf{ChartQA-H} & \textbf{ChartQA-M}   \\
+\midrule
+Avg. Character per question & 60.53   & 67.82 \\
+Avg. Character per answer & 5.31   & 5.0 \\
+Avg. Token per question & 12.32  & 13.18    \\
+Avg. Token per answer & 1.31  & 1.08    \\
+Unique tokens in questions & 6,150  & 12,379     \\
+Unique tokens in answers & 4,319  & 11,979    \\
+Numeric answers & 6,583  & 19,622      \\
+Non-numeric answers & 3,025  & 3,489     \\
+\bottomrule
+\end{tabular}
+}
+\vspace{-2mm}
+\caption{
+    \small ChartQA benchmark statistics.
+}
+\vspace{-2mm}
+\label{dataset-token-stats}
+\end{table}
+
+
+ \begin{table}[h!]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+Type  & Examples & Percentage   \\
+\hline
+Color & green line, red bar & 44.70\% \\
+Length & tallest bar & 40.15\% \\
+Size & largest pie slice & 11.36\% \\
+Position & rightmost, topmost & 8.33\% \\
+Counting marks & how many green bars & 3.03\% \\
+Unit of a mark & bar unit & 0.76\% \\
+\bottomrule
+\end{tabular}
+\caption{
+    Usage of visual references in visual questions
+    %\enamul{provide 2-3 examples of words that provide visual references.}
+}
+\label{visual-ref-stats}
+\end{table}
+
+\begin{figure*}[t!]
+\begin{subfigure}[b]{.49\textwidth}
+\centering
+    \includegraphics[width=\textwidth]{emnlp2020-templates/statista_topic.png}
+\caption{\small Statista}
+\end{subfigure}
+\begin{subfigure}[b]{.49\textwidth}
+\centering
+    \includegraphics[width=\textwidth]{emnlp2020-templates/pew_topic.png}
+\caption{\small Pew}
+\end{subfigure}
+\begin{subfigure}[c]{.49\textwidth}
+\centering
+    \includegraphics[width=\textwidth]{emnlp2020-templates/OECD_topic.png}
+\caption{\small OECD}
+\end{subfigure}
+\begin{subfigure}[d]{.49\textwidth}
+\centering
+    \includegraphics[width=\textwidth]{emnlp2020-templates/OWID_topic.png}
+\caption{\small OWID}
+\end{subfigure}
+\vspace{-0.5em}
+\caption{Distribution of topics in the datasets.}
+\label{topics}
+\end{figure*}
+
+\begin{figure*}[t!]
+\centering
+    \includegraphics[width=0.95\textwidth,keepaspectratio]{emnlp2020-templates/imgs/figure1_extracted.png}
+    \vspace{-3mm}
+
+\caption{\small Data Extraction Process}
+\label{fig:data_extraction_example}
+\end{figure*}
+
+\begin{figure*}[t!]
+\begin{subfigure}[b]{.49\textwidth}
+\centering
+    \includegraphics[width=1.05\textwidth,keepaspectratio]{emnlp2020-templates/imgs/figure2_extracted.png}
+\caption{\small OWID Line Chart}
+\label{fig:data_extraction_owid}
+\end{subfigure}
+\begin{subfigure}[b]{.49\textwidth}
+\centering
+    \includegraphics[width=0.80\textwidth,keepaspectratio]{emnlp2020-templates/imgs/figure3_extracted.png}
+\caption{\small Pew Bar Chart}
+\label{fig:data_extraction_pew}
+\end{subfigure}
+\vspace{-1em}
+\caption{Data extraction examples from OWID and Pew. }
+\label{fig:data_extraction_owid_pew}
+\end{figure*}
+
+\begin{figure*}[t!]
+\begin{subfigure}[b]{.49\textwidth}
+\centering
+    \includegraphics[width=0.85\textwidth,keepaspectratio]{emnlp2020-templates/imgs/models/initial_T5_3.png}
+\caption{\small T5 fine-tuning}
+\label{fig:t5}
+\end{subfigure}
+\begin{subfigure}[b]{.49\textwidth}
+\centering
+    \includegraphics[width=0.94\textwidth,keepaspectratio]{emnlp2020-templates/imgs/models/initial_VLT5_3.png}
+\caption{\small VL-T5 fine-tuning}
+\label{fig:vlt5}
+\end{subfigure}
+\vspace{-1em}
+\caption{Different neural models for ChartQA. Data tables are first flattened and fed into the model along with the question (and visual features in VL-T5). }
+\label{fig:t5-vl-t5-models}
+\end{figure*}
+
+\subsection{Automatic Chart Data Extraction}
+\label{app:data_extraction}
+\textbf{Model:} We extend ChartOCR \cite{ChartOCR} which relies on both deep-learning models and rule-based techniques to parse the chart image into the underlying data table. As described in Section (\cref{sec:problem-extraction}), the chart image is parsed in three main stages. In the first stage, key-point detection networks, adapted from \cite{Law2019CornerNetDO}, locates the chart visual marks (\textit{e.g.} bars, plot area, line points). Ideally, the network locates the top-left point and bottom-right points for the rectangular objects (\textit{e.g.} bar, plot area). In line charts, the detection network locates the coordinates of the points connecting the line segments. In pie charts, the network locates the intersection points between the pie segments along the pie perimeter. We extend their detection networks to also locate the chart textual elements (\textit{e.g. x-axis-label, legend-label} ) as shown in Figure \ref{fig:data_extraction_example}a and utilize the CRAFT model \cite{craftrecognition} to read their underlying texts. In the second stage, the chart scale is estimated using the \textit{y-axis-labels} value for line and bar charts, Figure \ref{fig:data_extraction_example}b. For pie charts, the value of each segment is estimated by calculating the angle between its borderlines. Finally, the model aggregates the extracted data values (using color and proximity heuristics) to output the final \textit{raw data values}. We extend their approach to extract the \textit{fully-structured} data table with the textual labels (\textit{e.g.} column headers). As shown in Figure \ref{fig:data_extraction_example}, we associate the estimated bars data values (\textit{e.g.}, `17.13', `40.14') with their closest \textit{x-axis-label} ('Snapchat'). Moreover, if the chart has more than one data series (dark bars or blue bars values), each data series is matched with its \textit{legend-label} (\textit{e.g.}, `2016', `2014') based on the color of the \textit{legend mark} and data-encoding marks (\eg\ bars). 
+%\textit{bars}
+If we cannot match data values with legends by colors (\eg\ when all legend marks have the same color or there are no legend marks), we use other criteria that associate data-encoding marks with legend marks (\eg\ proximity, alignment). For example, in Figure \ref{fig:data_extraction_pew}, 'More' is matched with '17' and '29' since they are vertically aligned. Similarly, for line charts if there is no explicit legend mark for a line series 
+%For OWID and OECD line charts, 
+we associate the legend labels with the points of their closest lines as shown in Figure \ref{fig:data_extraction_owid}.
+
+
+\textbf{Evaluation Metric:} Our evaluation metric is adapted from ChartOCR \cite{ChartOCR}. The distance between any two data values is estimated as follows:
+\[
+D(gt, pr) = min(1, ||\frac{gt - pr}{gt}||)
+\]
+where $gt$ is the ground truth value and $pr$ is the predicted value. For each chart, the cost matrix $C$, where $C_{n,m} = D(gt_n, pr_m)$ is computed and the total minimum cost is calculated by solving the following linear sum assignment problem
+\[
+Cost = \sum_{i=1}^{K}{\sum_{j=1}^{K}{C_{i, j} X_{i,j}}}
+\]
+Where $K = max(N, M)$ and $X$ is a binary assignment matrix. The final overall score is then estimated as follows:
+\[
+Overall \ Score = \frac{1}{L}\sum_{i=1}^{L}{1 - \frac{cost}{K_i}}
+\]
+where $L$ is the total number of charts. Our evaluation results are shown in Table \ref{tab:data_extraction_accuracies}. We have noticed that the accuracy is specifically lower on line and dot line charts in FigureQA and PlotQA. In DVQA, the extracted tables from logarithmic-scale charts were quite noisy since ChartOCR does not support them. Moreover, PlotQA has many charts with very large values (usually written in E notation). Hence, errors in such figures have higher impact on the overall accuracy. Overall, the accuracy on PlotQA and ChartQA are generally lower since they have more complex charts (PlotQA has numerous charts with very large values (\eg\ $1\mathrm{e}^{6}$) and ChartQA has real-world challenging charts). A major limitation of evaluation metrics for the chart data extraction is that they do not take the extracted textual tokens into consideration (which are much more noisy in real-world figures). Hence, better metrics are still needed in the future.  
+\begin{table}[h!]
+\centering
+\scalebox{0.98}{\begin{tabular}{cc}
+\toprule
+Dataset & \makecell{Accuracy} \\
+\hline
+FigureQA  & 95.05\%  \\
+DVQA & 89.98\% \\
+PlotQA & 80.88\% \\
+ChartQA & 83.85\% \\
+\bottomrule
+\end{tabular}}
+\caption{
+    Accuracies of our data extraction algorithm on the test sets of DVQA, PlotQA, and ChartQA. Since the gold data table is not available in FigureQA, we report the results on the Validation2 set.
+}
+\label{tab:data_extraction_accuracies}
+\end{table}
+
+\subsection{Visual Features Extraction in VL-T5} 
+\label{app:maskrcnn}
+\paragraph{Object Detection (Mask R-CNN)}
+%\subsection{Object Detection (Mask R-CNN)} 
+We train the model to detect the following 15 objects: \textit{'Legend'}, \textit{'yAxisTitle'}, \textit{'ChartTitle'}, \textit{'xAxisTitle'}, \textit{'LegendPreview'}, \textit{'PlotArea'}, \textit{'yAxisLabel'}, \textit{'xAxisLabel'}, \textit{'LegendLabel'}, \textit{'PieLabel'}, \textit{'bar'}, \textit{'pie'}, \textit{'pieSlice'}, \textit{'line'}, and \textit{'dotLine'}. For the bounding boxes annotations, we use the available bboxes. For the masks, we generate them easily using the bounding boxes for all the rectangular objects. For \textit{'pieSlice'}  and \textit{'pie'}, we follow a similar approach to \cite{stlcqa} where we generate the masks by projecting the radius along the pie perimeter from the starting to the ending points of each slice. We use the detectron2 library \cite{detectron2} and initialize the model with pre-trained wights on the COCO dataset \cite{coco}. We fine-tune the model with a batch size of 8 and an initial learning rate 0f 0.00025 for 50K iterations.
+
+\subsection{ChartQA Baseline Models}
+\label{app:baselines}
+
+T5 and VL-T5 fine-tuning process setup is shown in Figure \ref{fig:t5-vl-t5-models}. 
+Our experiments were carried out on one 4-V100 GPU and one 4-A100 GPU machines. Fine-tuning VL-T5 on the PlotQA dataset was the longest experiment which took around 64-70 hours on 4 V100 GPUs. 
+
+\paragraph{TaPas} We follow the same settings as \cite{tapas} on the WikiTQ dataset \cite{sempre} and fine-tune the TaPas-base-wtq for 40K iterations with a batch size 24 on DVQA, PlotQA, and our new dataset. For FigureQA, we follow similar settings to \cite{tabfact} and fine-tune the model with classification objective for 4 epochs with a batch size of 48 and initial learning rate of 0.00001.
+
+\paragraph{VisionTaPas} We fine-tune the model (TaPas-Base 12 layers, ViT-Base 12 layers, and 4 Cross-Modality Layers) for 4 epochs on FigureQA and DVQA, one epoch on PlotQA, and 30 epochs on the new dataset. We use an initial learning rate of 0.00001 and a batch size of 64.
+
+\paragraph{T5} We fine-tune T5-Base (220M, 12 layers) using the huggingface library \cite{huggingface} for 4 epochs on FigureQA, DVQA, and PlotQA datasets and for 30 epochs on our new dataset. We use a batch size of 40 and an initial learning rate of 0.0001. Inference is done with beam search of size 4. 
+
+\paragraph{VL-T5} Similar to T5, we fine-tune VL-T5-Base (220M 12 layers) for 20 epochs on FigureQA and DVQA, 10 epochs on PlotQA, and 30 epochs on our dataset. We use a batch size of 96 and an initial learning rate of 0.0001. Inference is done with beam search of size 5.
+
+\paragraph{PlotQA} We fine-tune the SEMPRE model \cite{sempre} pre-trained on the PlotQA \cite{plotqa} checkpoint for 20 epochs on the new dataset with a batch size of 1 and L1 regularization coefficient of 0.00003.
+
+\paragraph{PReFIL} We follow similar settings 
+to \citet{prefil} and train the model for 100 epochs with batch size of 128 and a learning rate of 0.001. 
+
+
+
+
+\subsection{Additional Results from Evaluation}
+\label{app:results}
+
+Table \ref{tab:chartype} presents the results of two top-performing models in our benchmark by chart types. To analyze question types, we randomly sampled 200 QA pairs from our ChartQA-H and classified them into four main categories.  Table \ref{tab:questiontype} shows the results by question types on this set of 200 QA pairs. 
+
+\begin{table}[h!]
+\centering
+\scalebox{0.80}{\begin{tabular}{lllll}
+\toprule
+Model & \makecell{Bar} & \makecell{Line} & \makecell{Pie} & \makecell{Overall} \\
+\hline
+VisionTaPas  & 49.80\% & 38.20\% & 24.41\% & 45.52\% \\
+VL-T5 & 45.82\% & 35.40\% & 25.00\% & 41.56\% \\
+\bottomrule
+\end{tabular}}
+\caption{
+    Results for VisionTaPas and VL-T5 on the ChartQA test set by chart type.%\enamul{can we also include T5 and TaPas?}
+}
+\label{tab:chartype}
+\end{table}
+
+\begin{table}[h!]
+\centering
+\scalebox{0.6}{\begin{tabular}{cccccc}
+\toprule
+Model & \makecell{Data \\ Retrieval} & \makecell{Visual \\ Compositional} & \makecell{Compositional} & \makecell{Visual}  & \makecell{Overall} \\
+\hline
+VisionTaPas  & 60.00\% & 29.78\% & 34.88\% & 16.21\% & 34.00\% \\
+VL-T5 & 50.00\% & 19.14\% & 24.41\% & 21.62\% & 26.50\% \\
+\bottomrule
+\end{tabular}}
+\caption{
+    Accuracies of VisionTaPas and VL-T5 on the ChartQA-H test set by question type on 200 random samples.
+}
+\label{tab:questiontype}
+\end{table}
+
+
+
+
+
+
+
+\subsection{Sample Questions and Outputs}
+\label{app:examples}
+
+
+Sample machine-generated questions with the human-written summaries are shown in Table \ref{tab:augtmented_examples}.
+Sample predictions from our model, VisionTaPas on ChartQA test set are shown in Figure \ref{fig:predictions_examples}. 
+
+
+\begin{table*}[t] 
+\linespread{0.5}\selectfont\centering 
+%\footnotesize
+\renewcommand{\arraystretch}{1.0}
+\scalebox{0.98}{\begin{tabular}{p{1.3cm} | p{9.4cm} | p{3.2cm}|p{0.7cm}}     % centered columns (3 columns) 
+%\begin{tabular}{c |c| c |c}      % centered columns (3 columns) 
+\toprule
+        {\tiny \textbf{Question Type}}
+        &
+        {\tiny \textbf{Human-written Summary}}
+        &
+        {\tiny \textbf{Generated Question}}
+        &
+        {\tiny \textbf{Answer}}
+        \\
+\toprule
+        {\tiny Compositional}
+        &
+        {\tiny Cancer was the leading cause of death among state prisoners in the United States, which killed 1,137 state prisoners in 2018. Heart disease was the second leading cause of death in that year, accounting for 1,052 deaths.}
+        &
+        {\tiny What was the second leading cause of death among state prisoners in 2018?}
+        &
+        {\tiny Heart disease}
+        \\
+\midrule 
+        {\tiny Compositional}
+        &
+        {\tiny This statistic shows the number of tourist arrivals at accommodation establishments in Latvia from 2006 to 2019. Since 2009 there has been an increasing trend in arrivals.}
+        &
+        {\tiny Since what year has there been an increasing trend in arrivals?}
+        &
+        {\tiny 2009}
+        \\
+\midrule  
+        {\tiny Data Retrieval}
+        &
+        {\tiny  The statistic shows the youth unemployment rate in the Gambia from 1999 to 2019. According to the source, the data are ILO estimates. In 2019, the estimated youth unemployment rate in the Gambia was at 12.44 percent.}
+        &
+        {\tiny What was the youth unemployment rate in the Gambia in 2019?}
+        &
+        {\tiny 12.44 percent}
+        \\
+\midrule  
+        {\tiny Data Retrieval}
+        &
+        {\tiny  This statistic shows the total population of Portugal from 2016 to 2020, with projections up until 2026. In 2020, the total population of Portugal was at approximately 10.29 million inhabitants.}
+        &
+        {\tiny In what year did Portugal's population reach 10.29 million?}
+        &
+        {\tiny 2020}
+        \\
+ 
+\bottomrule  
+    \end{tabular}
+    }
+    \vspace{-0.5em}
+    \caption{\small Sample question answer pairs generated from human-written summaries in Statista.}
+    \label{tab:augtmented_examples}
+    \vspace{-4mm}
+\end{table*}
+
+
+\begin{figure*}[t!]
+\centering
+    \includegraphics[width=0.98\textwidth,keepaspectratio]{emnlp2020-templates/imgs/examples_figure_app.png}
+\caption{\small Sample outputs of our model VisionTaPas on our new ChartQA test set. Answers in green are correct and answers in red are incorrect. }
+\label{fig:predictions_examples}
+\end{figure*}

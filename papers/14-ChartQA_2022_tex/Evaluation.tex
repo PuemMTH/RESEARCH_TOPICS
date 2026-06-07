@@ -1,0 +1,196 @@
+
+\subsection{Datasets, Baselines \& Metrics} 
+
+We evaluate our models on three datasets from previous work namely, FigureQA \cite{figureqa}, PlotQA \cite{plotqa} and DVQA \cite{dvqa}, as well as our newly created ChartQA dataset. We compare our benchmarking models (\Cref{subsec:data2text}) with two following baselines\footnote{Two other datasets (LeafQA, LeafQA++) and baselines  (STL-CQA, LEAF-NET) are not publicly available}:
+
+
+
+
+
+
+\vspace{0.2em}
+\noindent \textbf{$\bullet$ {\sc{PReFIL}}} \cite{prefil} is a classification approach that fuses the question and image features in parallel. The features are then aggregated and projected into a final classification layer.
+
+
+
+
+ \vspace{0.2em}
+\noindent \textbf{$\bullet$ {\sc{PlotQA*}}} is our reimplementation of PlotQA~\cite{plotqa}. It 
+%takes a pipeline approach that  
+parses the chart image to extract the underlying data table and then employs a TableQA model  
+from \citet{sempre}. However, since their data extraction approach is specific to their synthetic dataset that does not generalize well to real-world charts, 
+%in our implementation, 
+we use data tables extracted according to our method  (\cref{sec:problem-extraction}) to evaluate their approach. 
+
+Following \citet{plotqa}, we use a relaxed accuracy measure for the numeric answers to allow a minor inaccuracy that may result from the automatic data extraction process.
+We consider an answer to be correct if it is within 5\% of the gold answer. For non-numeric answers, we still need an exact match to consider an answer to be correct.
+
+
+
+
+
+
+%\vspace{-1mm}
+\subsection{Results}
+
+\noindent \textbf{Previous Datasets~~} 
+When the gold data table is provided, VisionTaPas and VL-T5 achieve near perfect results, however, the performance slightly decreases when it is not provided 
+%when we use automatically extracted data as input
+(\Cref{tab:evaluation-table}).
+Still, VisionTaPas and VL-T5 achieve state-of-the-art results on DVQA (fully-automated setup) and PlotQA \change{V1} datasets, respectively. For example, VisionTaPas achieves 94.54\% accuracy in the DVQA test set (14.5\% margin over PReFIL). Moreover, our approach proved to be more robust to OCR noise. 
+%Different from 
+Unlike PReFIL whose performance significantly dropped by 16.49\% when using OCR outputs
+%predictions 
+instead of ORACLE, VisionTaPas only witnessed a marginal decrease in performance (0.92\%). Similarly, in the PlotQA dataset, both models have outperformed the PlotQA model by wide margins. 
+Another observation is that the improvement of VL-T5 over T5 is limited only to the PlotQA \change{V1} dataset  likely due to the lack of visual reasoning questions.  \change{In fact, the performance of both models is quite similar on PlotQA V2 test set where the majority of the questions are not visual.} Finally, 
+%we notice that  
+while the TaPas model achieves the best results on FigureQA (Gold Table setup), it does not perform very well on DVQA and PlotQA. 
+This is likely because most questions in FigureQA are answerable from the data table alone. In PlotQA, however, questions are not always answerable from the data table alone and may involve the difference and ratio operations which are not supported by TaPas. This highlights the importance of the extensions we have made in the VisionTaPas model.
+
+
+
+\noindent \textbf{ChartQA Dataset~~}  We observe that VisionTaPas achieves state-of-the-art performance on both problem scenarios. PReFIL performs pooly (4.8\%) as it is a classification model which does not work well for  the open-vocabulary questions in our dataset. We also notice VL-T5 does not necessarily improve over T5, likely because many visual questions in our new dataset involve %are complex involving 
+multiple references to chart elements and VL-T5 cannot effectively capture such references.
+%the chart structure. 
+Overall, 
+%we notice that 
+the accuracies of different models are generally lower in our dataset compared to previous datasets, suggesting the challenges introduced with the human-written 
+%complex 
+visual and logical reasoning questions. Finally, the performance of our models %significantly
+decreases when the gold data table was not given.
+%using the automatically extracted data tables instead of gold tables.
+This highlights the increasing challenge of automatic data extraction from real-world charts with diversity in 
+%visual 
+styles.
+
+We also evaluate the \emph{transferability} of the models and the datasets, where we first pretrain the two top performing models (VisionTaPas and VL-T5) on the PlotQA dataset and then fine-tune them on ChartQA. From 
+%the results in 
+\Cref{tab:pretrained}, we notice that the accuracy increased from 41.56\% to 51.84\% for VL-T5 while the improvement for VisionTaPas was marginal (1.56\%). One possible explanation is that VisionTaPas does not support nested arithmetic operations which are prevalent in ChartQA, so pretraining does not have a substantial effect. In contrast,  
+we observe that the performance gain for VL-T5 were mainly for the compositional questions that do not require nested operations.
+Overall, this suggests that large
+%-scale 
+datasets like PlotQA can be 
+%quite 
+useful for pretraining the model even if the questions are generated from a small number of templates. 
+
+\change{We also performed an another experiment in which we train the VL-T5 and VisionTaPas on the PlotQA dataset and evaluate directly on the ChartQA dataset without any fine-tuning. 
+As shown in Table \ref{tab:pretrained}, the performance of the models decreased by wide margins when they are trained on the PlotQA dataset instead of the target dataset (e.g,. 45.52\% to 31.96\% for VisionTaPas). This supports our hypothesis that our newly created dataset, ChartQA, introduces more challenging visual and compositional questions and more lexical variations which the previous datasets lack. }
+
+ 
+
+
+
+
+
+\subsection{Ablation Studies}
+To assess the importance of extensions we made in the VisionTaPas model, we conducted an ablation study in which we remove the supervision for `difference' and `ratio' operations  from the 
+%VisionTaPas 
+model. 
+%As shown in Table \ref{tab:pretrained},
+The overall accuracy dropped 
+by 1.80\%
+%from 45.52\% to 43.72\% 
+and the accuracy on ChartQA-H (which have many such questions) dropped 
+by 4.76\%
+%from 29.60\% to 24.84\% 
+which suggests the usefulness of these operations (Table \ref{tab:pretrained}).
+
+
+
+\begin{table}[h!]
+\centering
+\scalebox{0.68}{\begin{tabular}{lccc}
+\toprule
+Model & \textbf{ChartQA-H} & \textbf{ChartQA-M} & \textbf{Overall} \\
+\hline
+TaPas & 28.72\% & 53.84\% & 41.28\% \\
+VisionTaPas & \textbf{29.60\%} & 61.44\% & \textbf{45.52\%} \\
+VisionTaPas\dagger & 24.84\% & \textbf{61.60\%} & 43.72\% \\
+T5 & 25.12\% & 56.96\% & 41.04\% \\
+VL-T5 & 26.24\% & 56.88\% & 41.56\% \\
+\midrule
+VisionTaPas$^\star$ & 25.12\% & 38.80\% & 31.96\% \\
+VL-T5$^\star$ & 22.08\% & 19.84\% & 20.96\% \\
+
+\midrule
+\rowcolor{gray!20} VisionTaPas \textbf{Pretrained} & 32.56\% & 61.60\% & 47.08\%\\
+\rowcolor{gray!20} VL-T5  \textbf{Pretrained} & \textbf{40.08\%} & \textbf{63.60\%} & \textbf{51.84\%} \\
+\bottomrule
+\end{tabular}}
+%\vspace{-3mm}
+\caption{
+    \small Accuracy of the different models on our benchmark.
+    %the test set of ChartQA-H and ChartQA-M questions.
+    VisionTaPas$\dagger$ does not support difference and ratio operations. \change{VisionTaPas$^\star$ and VL-T5$^\star$ are trained on PlotQA and evaluated directly on ChartQA. }
+}
+%\vspace{-4mm}
+\label{tab:pretrained}
+\end{table}
+
+We further analyze 
+%how 
+the performance by
+%might vary for 
+chart types and question types (see \ref{app:results}). %Table \ref{tab:chartype} 
+VisionTapas and VL-T5 perform better on bar charts while the performance decreases for other charts mainly due to higher data extraction errors, especially for pie charts which are less common in our dataset. To analyze question types, we randomly sampled 200 
+human-written questions.
+ As expected, the performance is much higher on the data retrieval questions that do not require mathematical reasoning  while the performance is lower for visual questions which refers to chart elements.
+
+
+
+
+%\vspace{-0.2em}
+\subsection{Qualitative Analysis}
+
+\begin{figure}[t!]
+  \includegraphics[width=0.48\textwidth]{emnlp2020-templates/imgs/figure4_two_v2.png}
+  %\vspace{-2mm}
+  \caption{Example of errors from VisionTaPas
+  }
+  \label{results}
+  %\vspace{-4mm}
+\end{figure}
+We have manually analyzed model predictions to investigate the key challenges existing models face (see sample predictions in \ref{app:examples}).
+
+
+\vspace{0.2em}
+\noindent \textbf{Logical Inference with Nested Operations}
+While VisionTaPas and VL-T5 handle various  mathematical/logical operations, still they cannot effectively handle nested operations.  For example, \textit{Q1} in \cref{results} requires the model to   add two numbers and then subtract from another number, but our model only outputs the difference between two numbers.In  future, we will extend the VisionTaPas model (by possibly training it in a sequential fashion \cite{Cho2018AdversarialTA}) to address the issue. 
+
+
+\vspace{0.2em}
+\noindent \textbf{Input Representation} Complex visual compositional questions 
+%are quite prevalent in our dataset which 
+may require a multi-stage reasoning process (\eg\ \textit{Q2} in \cref{results}). Currently, our models take the data table and the visual features of the chart separately and then
+combine them. Such 
+%input
+representation does not fully capture the chart structure.
+%underlying structure of the charts. 
+In future, we will develop better representations including semantic graph representations \cite{Teney2017GraphStructuredRF} that can 
+%better 
+exploit the 
+% dependence and 
+relations among the question, chart objects, and data values.
+
+\vspace{0.2em}
+\noindent \textbf{Computer Vision Challenges} Table \ref{tab:evaluation-table} indicates that performance of our models decrease 
+%(especially in our dataset) 
+when the gold table is not given,
+%automatic data extraction is applied
+ suggesting the need for more accurate data extraction. Current approaches for  automatic data extraction are modular and combine deep learning and rule-based methods which are error-prone. An end-to-end deep learning approach could help improve the performance and generalize well to different chart styles.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

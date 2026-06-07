@@ -1,0 +1,114 @@
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+   width=0.6\textwidth,
+   height=0.4\textwidth,
+   font=\small,
+   xmin=32768, xmax=5000000,
+   ymin=0, ymax=80,
+   xmode=log,
+   ytick={20, 40, 60},
+   xtick={32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304},
+   xticklabels={128, 256, 512, 1024, 2048, 4096, 8192, 16384},
+   xlabel=Input sequence length]
+\end{axis}
+\begin{axis}[
+   axis x line*=top,
+   width=0.6\textwidth,
+   height=0.4\textwidth,
+   legend cell align=left,
+   legend style={at={(1, 0)},anchor=south east,font=\small},
+   mark options={mark size=2},
+   font=\small,
+   xmin=32768, xmax=5000000,
+   ymin=0, ymax=80,
+   xmode=log,
+   ytick={20, 40, 60},
+   xtick={32768, 65536, 131072, 262144, 524288, 1048576, 2097152, 4194304},
+   xticklabels={$2^{15}$, $2^{16}$, $2^{17}$, $2^{18}$, $2^{19}$, $2^{20}$, $2^{21}$, $2^{22}$},
+   ymajorgrids=true,
+   xmajorgrids=true,
+   xlabel=Effective number of pixels,
+   ylabel style={align=center},
+   ylabel=ANLS (\%),
+   ylabel style={yshift=-0.5ex,}]
+   
+    \addplot[mark=o, g-orange, line width=1.2pt] plot coordinates {
+(32768, 10.341893196105957)
+(65536, 16.964523315429688)
+(131072, 32.167327880859375)
+(262144, 56.5987663269043)
+(524288, 69.2957992553711)
+(1048576, 72.01505279541016)
+    };
+    \addlegendentry{\ourmodel-base}
+    
+    \addplot[mark=square, g-green, line width=1.2pt] plot coordinates {
+(409600, 40.95)
+(921600, 52.96)
+(1228800, 56.2)
+(4915200, 59.56)
+    };
+    \addlegendentry{Donut}
+    \addplot[black, dash pattern=on \pgflinewidth off 5pt, line width=1.2pt] plot coordinates {
+(50176, 0)
+(50176, 100)
+    };
+    \addlegendentry{ViT pretraining}
+    \addplot[dotted, black, line width=1.2pt] plot coordinates {
+(262144, 0)
+(262144, 100)
+    };
+    \addlegendentry{ViT finetuning}
+\end{axis}
+\end{tikzpicture}
+\begin{tikzpicture}
+\begin{axis}[
+   width=0.4\textwidth,
+   height=0.4\textwidth,
+   mark options={mark size=2},
+   font=\small,
+   xmin=32768, xmax=1048576,
+   ymin=0, ymax=350,
+   ytick={50, 100, 150, 200, 250, 300},
+   xmode=log,
+   xtick={32768, 65536, 131072, 262144, 524288, 1048576},
+   xticklabels={128, 256, 512, 1024, 2048, 4096},
+   xlabel=Input sequence length]
+\end{axis}
+\begin{axis}[
+   axis x line*=top,
+   width=0.4\textwidth,
+   height=0.4\textwidth,
+   legend cell align=left,
+   legend style={at={(1, 1)},anchor=north east,font=\small},
+   mark options={mark size=2},
+   font=\small,
+   xmin=32768, xmax=1048576,
+   ymin=0, ymax=350,
+   xmode=log,
+   ytick={50, 100, 150, 200, 250, 300},
+   xtick={32768, 65536, 131072, 262144, 524288, 1048576},
+   xticklabels={$2^{15}$, $2^{16}$, $2^{17}$, $2^{18}$, $2^{19}$, $2^{20}$},
+   ymajorgrids=true,
+   xmajorgrids=true,
+   xlabel=Effective number of pixels,
+   ylabel style={align=center},
+   ylabel=Examples per second,
+   ylabel style={yshift=-0.5ex,}]
+   
+    \addplot[mark=o, g-orange, line width=1.2pt] plot coordinates {
+(32768, 254.66)
+(131072, 191)
+(1048576, 62.18)
+    };
+    \addlegendentry{\ourmodel-base}
+    
+    \addplot[mark=x, g-blue, line width=1.2pt] plot coordinates {
+(32768, 79.82)
+(131072, 68.56)
+(1048576, 20.18)
+    };
+    \addlegendentry{\ourmodel-large}
+\end{axis}
+\end{tikzpicture}

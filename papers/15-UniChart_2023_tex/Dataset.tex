@@ -1,0 +1,82 @@
+To build a large and diverse corpus 
+with various styles, topics, and storage formats, we crawled charts from various online sources. Additionally, we utilized publicly available chart datasets suitable for pretraining. The collected charts can be categorized into two types: charts with underlying data tables and charts without data tables.
+
+
+
+\vspace{-1mm}
+\subsection{Charts with Data Tables} \label{subsec:charts-data}
+
+
+Charts with an underlying data table are collected in three ways: \Ni utilize existing datasets, \Nii extract SVG charts, and \Niii data augmentation.
+
+\textbf{$\bullet$ Utilize Existing Datasets} Our goal was to train the model based on real-world data, thus, we did not consider the ones that are generated from synthetic data~\cite{dvqa, figureqa}. 
+In particular, we used the following five chart datasets for which the underlying data tables were available: 
+\Ni Statista ({\href{https://www.statista.com}{statista.com}})~\cite{chart-to-text-acl}, \Nii Our World In Data or OWID {(\href{https://ourworldindata.org}{ourworldindata.org})} \cite{masry-etal-2022-chartqa}, \Niii Organisation for Economic Co-operation and Development or OECD {(\href{https://www.oecd.org}{oecd.org})} \cite{masry-etal-2022-chartqa}, \Niv PlotQA~\cite{plotqa}, and \Nv a subset of the ChartInfo~\cite{chartinfo}  dataset that provides bounding box annotations for data encoding marks (e.g., bars in a bar chart). 
+
+\textbf{$\bullet$ Extract SVG Charts:} We extracted charts in SVG format from the Chartblocks and Plotly datasets of the Beagle corpus \cite{battle2018beagle}. These charts do not come with data tables, but the data can be extracted accurately from the SVG elements. 
+The steps for preparing these charts are: (1) identify axis labels and legends using specific class names of HTML attribute, (2) extract bounding boxes of chart elements (e.g., bars, line) using SVG attribute properties (e.g., \texttt{size} and \texttt{location} of \texttt{<rect>}), (3) construct the underlying data table by iterating through each of the \texttt{<g>} elements  to find data values of each data attribute.
+When data labels are absent, we utilize the scale information based on the axis labels and tick marks 
+of the chart and the bounding box information of data encoding marks to recover the data values.
+
+\textbf{$\bullet$ Data Augmentation} We further augmented the corpus by creating charts from publicly available data tables. We used the {The Web Data Commons 
+ (WDC)~\cite{webdatacommons}, which used Common Crawl\footnote{https://commoncrawl.org/} to collect a large amount of structured data. 
+The charts are created in the following steps: 
+
+\begin{enumerate} [wide, label=(\roman*),labelwidth=!, itemindent=!, labelindent=0pt]
+\vspace{-2mm}
+    \item \textit{Data pre-processing:} Since many tables in WDC contain more than three columns, we decomposed so that tables are suitable for creating desired chart types (e.g., bars, lines, and pie charts). In particular, we automatically analyze the data type of each column (e.g, numeric vs. categorical) and then randomly choose one column with numeric data values and one/two column(s) with categorical data. We also limit the maximum number of rows of the table to 8 so that the corresponding chart can fit within reasonable screen space. 
+\vspace{-2mm}
+
+    \item \textit{Chart generation}: To generate visually diverse charts, we used the D3 \cite{d3} library that provides great flexibility in terms of creating diverse visualization styles. We also employed Vega-Lite \cite{vegalite} which creates charts based on declarative JSON syntax. We used simple heuristics for determining chart types from the data table~\cite{mackinlay2007show}. We created four types of charts: (1) vertical simple bar charts with one numeric data column, (2) vertical grouped bar charts, (3) pie charts, and (4) line charts (both single series and multi-series).
+\vspace{-2mm}
+    \item  \textit{Visual diversification}: To create visually diverse charts resembling real-world variations, we  manipulated the following visual style properties: (1) \textbf{Colors and shapes}: Color schemes from ColorBrewer\footnote{https://colorbrewer2.org/} and Tableau\footnote{tableau.com} were chosen for categorical data attributes. We also varied shape properties such as bar thickness, line types (e.g., continuous vs dotted), and legend shape types (e.g., rect, circle). (2) \textbf{Position and distance}: We also varied bar positions and distances with respect to axis labels. (3) \textbf{Guides}: Charts may contain additional guides such as grids, so we generate charts with and without grids to diversify styles. 
+\end{enumerate}
+
+\Cref{fig:d3-samples} depicts a visually diverse set of charts created using this augmentation process. In total, we created a total of 189,836 charts (\Cref{tab:datasets}).
+
+
+
+\subsection{Charts without Data Tables}
+Many online charts are available only as images, without corresponding data tables.
+However,  they can still be valuable for large-scale pretraining as we can extract chart elements and rich textual contents (e.g., titles, surrounding texts, captions) using object detection and optical character recognition (OCR) techniques. We collected image chart datasets such as LineCap \cite{mahinpei2022linecap} and Neural Caption Generation \cite{Andrea-carenini} 
+since they provide high-quality summaries. We also used the Pew dataset from \cite{chart-to-text-acl} and further augmented it by an crawling additional 1K charts.
+Finally, we used the ExcelChart400K dataset \cite{ChartOCR} which only provides bounding boxes without underlying data tables. We also considered other existing image chart datasets such as Vis30K \cite{chen2021vis30k} and VisImage \cite{deng2020visimages}, 
+but they are not suitable as they usually have poor resolution and lack meaningful textual content (e.g., titles). 
+
+
+
+\subsection{Augmentation by Knowledge Distillation for Chart-to-text Generation Tasks}
+\label{subsec:knowledge_distillation}
+
+
+Chart-related downstream tasks such as chart summarization \cite{chart-to-text-acl} and open-ended question answering~\cite{open-CQA} require generating informative and relevant texts. However, 
+for most of the charts in the pretraining corpus, there are either no associated summaries or the summaries that are collected opportunistically such as the Statista dataset \cite{chart-to-text-acl} lack quality (e.g., too short and not very informative). {Training on such substandard ``ground-truth'' summaries can negatively affect the overall model performance as shown in text summarization \cite{kryscinski-etal-2019-neural,clark-etal-2021-thats}. Indeed, \citet{goyal2022news} and \citet{yixin-acl23} have recently shown that human raters prefer summaries generated by LLMs, especially the ones that are instruction-tuned such as InstructGPT \cite{instructgpt}, compared to the reference summaries in various text summarization datasets. Consequently, the instruction-tuned LLMs have been successfully used as a 
+annotator in several recent studies \cite{Ding-acl-23,qin2023chatgpt}.
+
+
+
+Inspired by these findings, we leveraged
+InstructGPT to generate coherent and relevant text. 
+Specifically, we prompted \texttt{text-davinci-003} by providing the underlying data table as input and one exemplar (i.e., 1-shot in-context learning). 
+Since generating summaries for 
+thousands of charts by calling OpenAI API is quite costly, we devised a knowledge distillation approach. We first used \texttt{text-davinci-003} to create a small dataset of 3700 summaries for different chart types. Next, we finetuned Flan-T5 XL \cite{chung2022scaling} on this dataset. Finally, we utilized the finetuned Flan-T5 model to generate summaries for charts that do not have an associated summary. More details about this approach can be found in \Cref{app:knowledge-distillation}. 
+ 
+ 
+
+
+\subsection{Datasets Analysis}
+
+Our chart pretraining corpus has over 611K charts covering a diverse range of bar charts, line charts, and pie charts (\Cref{tab:datasets}). Data tables of \textit{Simple} charts have two columns (simple bar charts or single-series line charts), whereas \textit{Complex} charts involve at least three columns (e.g., stacked or group bar charts, line charts with multiple lines). The first two chart groups in \Cref{tab:datasets} come with an underlying data table which cover over 80\% of the corpus.
+The bottom group contains five datasets which only provide charts in image format without a data table\footnote{The ExcelChart400K dataset only provides bounding box annotations of chart elements and we used this dataset for data value estimation task during pretraining.}
+and cover about 20\% of the corpus. 
+Bar charts make up the majority portion (58.51\%), followed by line charts (32.94\%) and pie charts (9.39\%). About 60\% of the charts have multiple columns in their data tables, while 40\% of the charts have only two columns.\footnote{
+Since we do not have access to the chart types of Pew dataset, 
+we manually tagged random  200 samples from each of these datasets 
+to estimate the chart type distribution.} 
+The corpus also covers a diverse range of topics including technology, economy, politics, health, and society. Details about the linguistics of the corpus textual elements can be found in \Cref{app:dataset-analysis}. 
+
+  
+
+
+
+

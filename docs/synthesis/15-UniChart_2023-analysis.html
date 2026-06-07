@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UniChart — Paper Analysis</title>
+<link rel="stylesheet" href="../../assets/summary.css">
+</head>
+<body>
+
+<nav class="top-nav">
+<div class="container">
+  <a class="nav-brand" href="#">✦ <span>Research</span> Notes</a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#thesis">Thesis</a></li>
+  </ul>
+</div>
+</nav>
+
+<section class="hero">
+<div class="container">
+  <h1>UniChart: A Universal Vision-language Pretrained Model for Chart Comprehension and Reasoning</h1>
+  <p class="subtitle">โมเดล pretrained แรกที่ออกแบบมาเฉพาะสำหรับ chart comprehension ด้วย chart-specific pretraining objectives ครอบคลุมทั้ง low-level (data extraction) และ high-level (summarization, QA) tasks — ทำได้ state-of-the-art บน 4 benchmark พร้อมเร็วกว่า MatCha ถึง 11 เท่า</p>
+  <div class="hero-meta">
+    <span class="badge">Masry, Kavehzadeh, Do, Hoque, Joty</span>
+    <span class="badge coral">EMNLP 2023</span>
+    <span class="badge"><a href="https://arxiv.org/abs/2305.14761" style="color:inherit">arXiv:2305.14761</a></span>
+  </div>
+</div>
+</section>
+
+<section class="section" id="overview">
+<div class="container">
+<div class="section-header"><span class="overline">Abstract & Contributions</span><h2>ภาพรวม</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">!</span><h3>ปัญหาที่ Paper นี้แก้</h3></div>
+<div class="detail-body">
+<div class="key-box">
+<ul>
+  <li><strong>General-purpose VLMs ไม่เข้าใจ chart structure:</strong> โมเดลอย่าง CLIP, BLIP pretrain บน natural images + text ไม่มี objective เฉพาะสำหรับ chart elements (bars, lines, axes, legends) ทำให้ไม่ "understand" chart อย่างที่ควร</li>
+  <li><strong>MatCha ขาด text generation objectives:</strong> MatCha (predecessor) pretrain เฉพาะ data table generation และ math reasoning ไม่มี pretraining สำหรับ chart summarization หรือ open-ended QA</li>
+  <li><strong>Corpus ขนาดเล็กและ style จำกัด:</strong> งานก่อนหน้าใช้ corpus ขนาดเล็ก ทำให้ model generalize ไปยัง chart styles ใหม่ๆ ได้ไม่ดี</li>
+  <li><strong>ไม่มี universal model:</strong> แต่ละ task ต้องการ fine-tune model ต่างกัน ไม่มี unified pretrained model ที่ handle chart tasks ได้ครบ</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">★</span><h3>Key Contributions</h3></div>
+<div class="detail-body">
+<ul>
+  <li><strong>UniChart pretrained model:</strong> Chart encoder + text decoder pretrained บน 611K diverse charts ด้วย 4 pretraining objectives ที่ออกแบบมาเฉพาะสำหรับ charts</li>
+  <li><strong>Large chart pretraining corpus:</strong> 611K charts รวบรวมจาก multiple real-world sources (Statista, OWID, OECD, Plotly, SVG datasets) + data augmentation ด้วย D3.js และ Vega-Lite</li>
+  <li><strong>Chart-specific pretraining objectives:</strong> (1) Data table generation, (2) Chart summarization, (3) Numerical & visual reasoning, (4) Open-ended QA</li>
+  <li><strong>State-of-the-art บน 4 tasks:</strong> ChartQA, OpenCQA, Chart-to-Text (Pew & Statista), Chart-to-Table — พร้อมเร็วกว่า MatCha 11× ด้วย parameters น้อยกว่า 28%</li>
+  <li><strong>Knowledge distillation สำหรับ chart summaries:</strong> ใช้ InstructGPT/ChatGPT สร้าง summaries สำหรับ charts ที่ไม่มี caption — เป็น scalable solution สำหรับ annotation</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section section-alt" id="methodology">
+<div class="container">
+<div class="section-header"><span class="overline">How It Works</span><h2>Methodology</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">1</span><h3>Model Architecture</h3></div>
+<div class="detail-body">
+<div class="method-box">
+<span class="label">Architecture</span>
+<p>UniChart ใช้ encoder-decoder architecture: <strong>Donut encoder</strong> (ViT-based image encoder ที่ไม่ต้องการ OCR) + <strong>BART text decoder</strong>. Encoder รับ chart image โดยตรงและ encode เป็น sequence of patch embeddings. Decoder รับ task-specific prompt และ generate output text autoregressively.</p>
+</div>
+<ul>
+  <li><strong>Chart Image Encoder:</strong> ใช้ Donut encoder (ViT) — encode chart image เป็น visual token sequence โดยไม่ต้องผ่าน OCR engine ทำให้ end-to-end trainable</li>
+  <li><strong>Text Decoder:</strong> BART-based decoder ที่รับ visual tokens จาก encoder + text prompt แล้ว generate output (answer, summary, data table)</li>
+  <li><strong>Task prompting:</strong> แต่ละ task ใช้ prompt format ที่ต่างกัน เช่น "Summarize this chart:" สำหรับ summarization หรือ "What is...?" สำหรับ QA</li>
+</ul>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">2</span><h3>Pretraining Corpus (611K Charts)</h3></div>
+<div class="detail-body">
+<table class="comparison-table">
+<thead><tr><th>Source</th><th>Type</th><th>Size</th><th>Has Data Table?</th></tr></thead>
+<tbody>
+  <tr><td>Statista, OWID, OECD, PlotQA</td><td>Real-world charts</td><td>~420K</td><td>✓</td></tr>
+  <tr><td>SVG (Chartblocks, Plotly)</td><td>Real-world charts</td><td>~1K</td><td>✓ (from SVG)</td></tr>
+  <tr><td>WDC augmentation (D3/Vega-Lite)</td><td>Synthetic diverse</td><td>189K</td><td>✓</td></tr>
+  <tr><td>LineCap, Pew (images only)</td><td>Real-world charts</td><td>~1K</td><td>✗ (summaries only)</td></tr>
+</tbody>
+</table>
+<p style="margin-top:0.8rem"><strong>Key challenge:</strong> Charts ไม่มี summaries → ใช้ InstructGPT/ChatGPT สร้าง summaries จาก data table representation (knowledge distillation)</p>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">3</span><h3>Pretraining Objectives</h3></div>
+<div class="detail-body">
+<ul>
+  <li><strong>Low-level: Data table generation</strong> — given chart image, generate underlying data table เป็น structured text. สอน model ให้ extract numerical values และ relationships</li>
+  <li><strong>Low-level: Chart element extraction</strong> — extract specific chart components เช่น axis labels, legend items (annotation-based tasks)</li>
+  <li><strong>High-level: Chart summarization</strong> — generate natural language summary จาก chart image. ใช้ knowledge-distilled summaries จาก LLM</li>
+  <li><strong>High-level: Open-ended QA</strong> — answer free-form questions ไม่จำกัด vocabulary ใช้ ChartQA dataset เป็น training source</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section" id="results">
+<div class="container">
+<div class="section-header"><span class="overline">Experiments</span><h2>Results & Benchmarks</h2></div>
+
+<div class="detail-block">
+<div class="detail-body">
+<table class="comparison-table">
+<thead><tr><th>Task / Benchmark</th><th>Previous SoTA</th><th>UniChart</th><th>Metric</th></tr></thead>
+<tbody>
+  <tr><td>ChartQA (human)</td><td>MatCha: 64.2%</td><td><strong>88.8%</strong></td><td>Relaxed Accuracy</td></tr>
+  <tr><td>ChartQA (machine)</td><td>MatCha: 90.2%</td><td><strong>90.4%</strong></td><td>Relaxed Accuracy</td></tr>
+  <tr><td>OpenCQA</td><td>Prior model: 15.3</td><td><strong>16.5</strong></td><td>BLEU-4</td></tr>
+  <tr><td>Chart-to-Text (Pew)</td><td>MatCha: 26.0</td><td><strong>28.3</strong></td><td>BLEU-4</td></tr>
+  <tr><td>Chart-to-Text (Statista)</td><td>MatCha: 29.9</td><td><strong>36.7</strong></td><td>BLEU-4</td></tr>
+  <tr><td>Chart-to-Table</td><td>MatCha: 84.7%</td><td><strong>88.5%</strong></td><td>RMS</td></tr>
+</tbody>
+</table>
+<div class="key-box teal">
+<h5>Efficiency Comparison vs MatCha</h5>
+<ul>
+  <li>UniChart: <strong>201M parameters</strong> vs MatCha: 282M parameters (−28%)</li>
+  <li>Inference: <strong>11× faster</strong> than MatCha</li>
+  <li>Achieves higher performance with smaller, faster model</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section section-alt" id="limitations">
+<div class="container">
+<div class="section-header"><span class="overline">Gaps & Future Work</span><h2>ข้อจำกัดและทิศทางต่อไป</h2></div>
+<div class="detail-block"><div class="detail-body">
+<div class="key-box amber">
+<h5>Limitations</h5>
+<ul>
+  <li><strong>ไม่รวม surrounding text context:</strong> UniChart ใช้แค่ chart image — ไม่มี paper text, paragraph context, หรือ caption as input. สำหรับ scientific figure captioning ที่ต้องการ context จาก paper นี่คือ gap ใหญ่มาก</li>
+  <li><strong>General charts ≠ Scientific figures:</strong> Corpus ส่วนใหญ่มาจาก news/statistics websites ไม่ใช่ scientific papers — ขาด complex multi-panel figures, domain-specific notation</li>
+  <li><strong>ไม่มี personalization:</strong> ไม่รองรับ author-specific style หรือ domain adaptation — generate generic summary เหมือนกันสำหรับทุก chart</li>
+  <li><strong>Evaluation metric จำกัด:</strong> BLEU-based metrics ไม่วัด factual accuracy หรือ completeness ของ generated summary</li>
+  <li><strong>ไม่ ground output ใน evidence:</strong> ไม่มี mechanism ตรวจสอบว่า generated text ตรงกับ data จริงๆ ในกราฟ (hallucination risk)</li>
+</ul>
+</div>
+</div></div>
+</div>
+</section>
+
+<section class="section section-dark" id="thesis">
+<div class="container">
+<div class="section-header"><span class="overline">Connection to My Research</span><h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2></div>
+<div class="synthesis-grid">
+  <div class="synthesis-card">
+    <h4>What I Borrow</h4>
+    <p>UniChart encoder architecture เป็น candidate สำหรับ <strong>vision encoder ใน RAG-based captioning system</strong> ของเรา — โดยเฉพาะ ViT-based Donut encoder ที่ไม่ต้องการ OCR และ pretrained tasks สำหรับ data table generation เป็น foundation ที่แข็งแกร่ง. Knowledge distillation approach (ใช้ LLM สร้าง labels) ก็น่าสนใจสำหรับ data collection</p>
+  </div>
+  <div class="synthesis-card">
+    <h4>Where I Diverge</h4>
+    <p>งานวิจัยของเรา <strong>เพิ่ม RAG context จาก paper</strong> (surrounding paragraphs, in-text mentions) ซึ่ง UniChart ไม่มี. นอกจากนี้เรา focus ที่ <strong>personalization ตาม author style</strong> ซึ่งไม่มีใน UniChart. Input ของเราคือ scientific paper figure ที่มี complex structure มากกว่า news charts ที่ UniChart ถูก pretrain มา</p>
+  </div>
+  <div class="synthesis-card">
+    <h4>Research Gap</h4>
+    <p><strong>GAP หลัก:</strong> UniChart ไม่มี document context — ใช้ chart image อย่างเดียว. งานวิจัยของเราจะ address gap นี้ด้วยการ integrate RAG module ที่ดึง relevant text context จาก paper มาเป็น conditioning signal สำหรับ caption generation. การผสม UniChart encoder + RAG context + personalization คือ novel contribution</p>
+  </div>
+</div>
+</div>
+</section>
+
+<footer class="footer">
+<div class="container">
+  <p>Analysis generated 2026-06-07 · arXiv:2305.14761 · EMNLP 2023</p>
+</div>
+</footer>
+</body>
+</html>

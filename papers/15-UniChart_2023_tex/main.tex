@@ -1,0 +1,299 @@
+% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Remove the "review" option to generate the final version.
+\usepackage[]{EMNLP2023}
+%\usepackage{acl}
+\usepackage{fdsymbol}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{makecell}
+\usepackage{tablefootnote}
+
+\usepackage{enumitem}
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files) 
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+% \ifpdf \usepackage[pdftex]{graphicx} \pdfcompresslevel=9
+% \else \usepackage[dvips]{graphicx} \fi
+
+\renewcommand{\UrlFont}{\ttfamily\small}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\graphicspath{{./imgs/}}
+\usepackage{footmisc}
+
+\usepackage{floatrow}
+\floatsetup[figure]{style=plain}%,subcapbesideposition=top}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{array, makecell} %
+
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+
+\usepackage{tabularx,colortbl}
+
+%Apply the gradient macro
+\usepackage{tikz}
+\usepackage{collcell}
+
+% https://tex.stackexchange.com/a/40603 - only color in table body
+\usepackage{etoolbox}
+
+\newcolumntype{?}{!{\vrule width 1.5pt}}
+
+\newtoggle{inTableHeader}% Track if still in header of table
+\toggletrue{inTableHeader}% Set initial value
+\newcommand*{\StartTableHeader}{\global\toggletrue{inTableHeader}}%
+\newcommand*{\EndTableHeader}{\global\togglefalse{inTableHeader}}%
+
+
+
+% Redefine tabular to initialize \StartTableHeader at start and end
+\let\OldTabular\tabular%
+\let\OldEndTabular\endtabular%
+\renewenvironment{tabular}{\StartTableHeader\OldTabular}{\OldEndTabular\StartTableHeader}%
+
+\newcommand*{\MinNumber}{-1.0}%
+\newcommand*{\MidNumber}{0.0} %
+\newcommand*{\MaxNumber}{1.0}%
+
+\newcommand{\ApplyGradient}[1]{%
+  \iftoggle{inTableHeader}{#1}{
+    \ifdim #1 pt > \MidNumber pt
+        \pgfmathsetmacro{\PercentColor}{max(min(100.0*(#1 - \MidNumber)/(\MaxNumber-\MidNumber),100.0),0.00)} %
+        \hspace{-0.33em}\colorbox{yellow!\PercentColor!blue}{#1}
+    \else
+        \pgfmathsetmacro{\PercentColor}{max(min(100.0*(\MidNumber - #1)/(\MidNumber-\MinNumber),100.0),0.00)} %
+        \hspace{-0.33em}\colorbox{blue!\PercentColor!blue}{#1}
+    \fi
+  }}
+\newcolumntype{R}{>{\collectcell\ApplyGradient}c<{\endcollectcell}}
+
+
+% \input{math-com}
+\input{math-com}
+
+
+
+\usepackage[nameinlink]{cleveref}
+\crefformat{section}{\S#2#1#3} % see manual of cleveref, section 8.2.1
+\crefname{algorithm}{Alg.}{Algs.}
+\crefformat{subsection}{\S#2#1#3}
+\Crefname{equation}{Eq.}{Eqs.}
+\Crefname{figure}{Fig.}{Figs.}
+
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+\newcommand{\enamul}[1]{\textcolor{purple}{(Enamul: #1)}}
+\newcommand{\joty}[1]{\textcolor{cyan}{(Joty: #1)}}
+\newcommand{\xlong}[1]{{\textcolor{blue}{#1}}}
+\newcommand{\llong}[1]{\textcolor{blue}{(Long: #1)}}
+\newcommand{\parsa}[1]{\textcolor{brown}{(Parsa: #1)}}
+\newcommand{\ahmed}[1]{\textcolor{red}{(Ahmed: #1)}}
+\newcommand{\shankar}[1]{\textcolor{green}{(Shankar: #1)}}
+\newcommand{\tanj}[1]{\textcolor{orange}{(Tan: #1)}}
+\newcommand{\zhao}[1]{\textcolor{cyan}{(Zhao: #1)}}
+\newcommand{\change}[1]{{\leavevmode\color{magenta}#1}}%Revision change
+
+\usepackage{soul}
+\newcommand{\cut}[1]{\textcolor{gray}{\sout{#1}}}
+\usepackage{float}
+\definecolor{azure}{rgb}{0.0, 0.5, 1.0}
+
+\usepackage{multirow}% http://ctan.org/pkg/multirow
+\usepackage{hhline}% http://ctan.org/pkg/hhline
+
+\newcommand{\model}{\text{UniChart}}
+
+
+ \title{UniChart: A Universal Vision-language Pretrained Model for \\ Chart Comprehension and Reasoning}
+
+
+\author{
+Ahmed Masry$^{\clubsuit}$\thanks{\ \ Equal contribution.}, \ Parsa Kavehzadeh$^{\clubsuit}$\footnotemark[1], \ Xuan Long Do$^{\spadesuit}$\thanks{\ \ Now affiliated with NUS.},  \ Enamul Hoque$^{\clubsuit}$, \ Shafiq Joty$^{\spadesuit\vardiamondsuit}$\\
+$^\clubsuit$York University, Canada \\
+$^\spadesuit$Nanyang Technological University, Singapore, $^\vardiamondsuit$Salesforce AI 
+\\
+\{parsaka, enamulh\}@yorku.ca\\
+srjoty@ntu.edu.sg  \\
+ahmed.elmasry24653@gmail.com, xuanlong.do@u.nus.edu 
+%\{xuanlong001, C190022\}@e.ntu.edu.sg \\
+}
+
+% \date{}
+\begin{document}
+\maketitle
+
+
+
+
+\begin{abstract} 
+
+Charts are widely used for data analysis, providing visual representations and insights into complex data. To facilitate chart-based data analysis using natural language, several downstream tasks have been introduced recently such as chart question answering and chart summarization. However, existing methods for these tasks often rely on pretraining on language or vision-language tasks, neglecting the explicit modeling of chart structures (e.g., 
+how chart elements are related to each other). 
+To address this, we first build a large corpus of charts covering diverse topics and visual styles. We then present \model, a pretrained model for chart comprehension and reasoning. \model\ encodes the relevant text, data, and visual elements of charts and then uses a chart-grounded text decoder for text generation.
+We propose several chart-specific pretraining tasks that include: (i) low-level tasks to extract the visual elements (e.g., bars, lines) and data from charts, and (ii) high-level tasks to acquire chart understanding and reasoning skills. 
+Our experiments demonstrate that  pretraining \model\ on a large corpus with chart-specific 
+objectives,
+followed by fine-tuning, yields state-of-the-art performance on four downstream tasks. Moreover, our model exhibits superior generalizability to unseen chart corpus, surpassing previous approaches that lack chart-specific objectives and utilize limited chart resources.
+
+
+\end{abstract}
+
+
+\section{Introduction}
+
+
+\begin{figure*}[t!]
+     \centering
+        \includegraphics[width=.92\textwidth]{Figures/Donut.drawio1.pdf}
+        \vspace{-3mm}
+         \caption{\small{
+         Our \model\ model with different pretraining objectives. The model consists of two main modules: Chart Image Encoder, and Text Decoder. Four different pretraining objectives are specified in different colors; \textit{\color{blue}{data table generation}}, \textit{\color{brown}{chart summarization}}, \textit{\color{purple}{numerical and visual reasoning}}, and \textit{\color{teal}{open-ended question answering}}.    
+         }
+         \vspace{-4mm}
+         }
+    \label{fiq:first-stage-pretraining}
+
+\end{figure*} 
+
+Information visualizations such as bar charts and line charts are commonly used for analyzing data,  inferring key insights and making informed decisions \cite{hoque2022chartSurvey}. However, understanding important patterns and trends from charts and answering complex questions about them can be cognitively taxing. Thus, to facilitate users in analyzing charts, several downstream NLP tasks over charts have been proposed recently, including chart question answering  \cite{masry-etal-2022-chartqa, open-CQA, lee2022pix2struct}, natural language generation for visualizations \cite{obeid-hoque-2020-chart, chart-to-text-acl} and automatic data story generation \cite{shi2020calliope}.
+
+A dominant strategy to tackle these downstream tasks is to utilize pretrained models \cite{Su2020VL-BERT,li-etal-2020-bert-vision, vilt,vlt5} trained on langauge and vision tasks~\cite{ijcai2022p762}. However, although effective, such models may not be  optimal for chart-specific tasks because they are trained on large text corpus and/or image-text pairs without any specific focus on chart comprehension. In reality, charts differ from natural images in that they visually communicate the \textit{data} using \textit{graphical marks} (e.g., bars, lines) and \textit{text} (e.g., titles, labels, legends). Readers can discover important patterns, trends, and outliers from such visual representation 
+~\cite{munzner2014visualization}. Existing pretrained models do not consider such unique structures and communicative goals of charts. For instance, Pix2Struct \cite{lee2022pix2struct} is a pretrained image-to-text model designed for situated language understanding. Its pretraining objective focuses on screenshot parsing based on HTML codes of webpages, with a primary emphasis on layout understanding rather than reasoning over the visual elements. 
+MatCha \cite{liu2022matcha} extends Pix2Struct by incorporating math reasoning and chart data extraction tasks, but it still lacks training objectives for text generation from charts and it was trained on a limited number of charts.
+
+
+
+In this work, we present \model, a pretrained model designed specifically for chart comprehension and reasoning. \model\ is pretrained on a large corpus of charts and it aims to serve as a Universal model for various chart-related downstream tasks (\Cref{fiq:first-stage-pretraining}). 
+Inspired by the model architecture from \citet{kim2022ocr}, \model\ consists of two modules:
+\emph{(1)} a chart encoder, which takes the chart image as input, and \emph{(2)} a text decoder, trained to decode the expected output based on the encoded image and the text input fed in the decoder as task prompt. We performed pretraining on a diverse set of 611K charts that we collected from multiple real-world sources. Our pretraining objectives include both low-level tasks focused on extracting visual elements and data from chart images, as well as high-level tasks, intended to align more closely with downstream applications.
+One key challenge for pretraining was that most charts in the corpus do not come with informative summaries, which are critical for various downstream tasks.
+To address this challenge, we used knowledge distillation techniques to leverage large language models (LLMs) for opportunistically collecting 
+chart summaries, which were then used during pretraining.
+
+We conducted extensive experiments and analysis on various chart-specific downstream tasks to evaluate the effectiveness of our approach. Specifically, we evaluated \model\ on two chart question answering datasets, ChartQA \cite{masry-etal-2022-chartqa} and OpenCQA \cite{open-CQA}, and found that it outperformed the state-of-the-art models in both cases. For chart summarization, \model\ achieves superior performance in both human and automatic evaluation measures such as BLEU \cite{post-2018-call} and ratings from ChatGPT \cite{ChatGPT}. Moreover, \model\ achieved state-of-the-art results in the Chart-to-Table downstream task. Finally, our model showed improved time and memory efficiency compared to the previous state-of-the-art model, MatCha, being more than 11 times faster with 28\% fewer parameters.
+
+
+Our primary contributions are: (i) A pretrained model for chart comprehension with unique low-level and high-level pretraining objectives specific to charts; (ii) a large-scale chart corpus for pretraining, covering a diverse range of visual styles and topics; (iii) extensive automatic and human evaluations that demonstrate the state-of-the-art performance of \model\ across various chart-specific benchmark task while optimizing time and memory efficiency. We have made our code and chart corpus publicly available at 
+ \href{https://github.com/vis-nlp/UniChart}{https://github.com/vis-nlp/UniChart}. %\textit{redacted}.
+
+
+
+
+
+\vspace{-1mm}
+\section{Related Work}
+\vspace{-2mm}
+\subsection{Vision-language Pretraining}
+Pretrained models have dominated 
+in many vision and language 
+tasks \cite{ijcai2022p762}. 
+Building a pretrained vision-language model typically involves three steps. 
+First, textual input is usually encoded using BERT-based encoder 
+\cite{lu2019vilbert,
+%lxmert,
+radford2021learning, ALBEF, li2022blip}. Second, for the input image, some prior studies utilize Fast-RCNN \cite{faster-rcnn} to encode the sequence of object regions as the image features \cite{li2019visualbert, lu2019vilbert, 
+%lxmert, 
+chen2020uniter}.  However, this method may neglect some crucial regions in an image. Recent approaches favor encoding the image as a whole \cite{pixel-bert, huang2021seeing, ALBEF, li2022blip} by using ResNet \cite{resnet} or ViT \cite{vit}. Third, to fuse the textual and visual features, prior work mostly either designs a fusion encoder \cite{lxmert,Su2020VL-BERT,vlt5,vilt} or a dual encoder \cite{radford2021learning,jia2021scaling,li2022blip}. Finally, multiple common cross-modal pretraining tasks have been designed such as  image-text matching \cite{chen2020uniter, li2020unicoder}, cross-modal contrastive learning \cite{radford2021learning,jia2021scaling} and generation tasks such as visual question answering \cite{vlt5, wang2021simvlm}. 
+
+Our work is also related to multimodal document understanding tasks that involve analyzing the textual content, layout, and visual elements of documents \cite{Xu2020, xu2020layoutlmv2, wang2022lilt, layoutlmv3, kim2022ocr, tang2022unifying}. 
+These tasks can be addressed using encoder-only and encoder-decoder architectures. Encoder-only models rely on OCR engines to extract text from document images and use BERT-like encoders augmented with specialized embeddings to encode layout and visual features \cite{Xu2020, xu2020layoutlmv2, wang2022lilt, layoutlmv3}.
+In contrast, encoder-decoder architectures combine transformer-based 
+encoders with autoregressive text decoders for text generation tasks related to documents \cite{tang2022unifying, kim2022ocr, lee2022pix2struct}.
+While \citet{tang2022unifying} incorporates an OCR tool to supplement the vision encoder, \citet{kim2022ocr} and \citet{lee2022pix2struct} operate in an end-to-end manner without external OCR engines. In line with the latter approach, our model adopts an end-to-end encoder-decoder architecture \cite{kim2022ocr}.
+
+
+
+
+In general, the above work focuses on training on large image-text pairs or text corpus, lacking focus on chart understanding.
+One 
+exception is MatCha \cite{liu2022matcha},  
+a pretrained chart model based on Pix2Struct \cite{lee2022pix2struct}, which achieved SoTA on chart question answering and summarization tasks. 
+However, MatCha's pretraining tasks mainly focus on data table generation 
+without focusing on text generation tasks. 
+The model is also pretrained with reasoning tasks using the  textual datasets 
+which might limit its visual reasoning ability.
+Our model is trained on a larger
+corpus with chart-specific pretraining objectives, including visual reasoning and text generation, 
+making it more versatile for various chart-related tasks.
+
+\vspace{-2mm}
+\subsection{Chart-related Downstream Tasks}
+ There has been growing interest in solving various chart-related 
+ tasks. 
+ Chart question answering (ChartQA) tackles questions about charts, with benchmarks like \cite{plotqa} and \cite{masry-etal-2022-chartqa} targeting factoid questions involving visual and arithmetic reasoning. 
+ Open-ended question answering (OpenCQA) task requires an explanatory answer by reasoning with the chart content~\cite{open-CQA}. Finally, Chart-to-Text generates natural language summaries from input charts~\cite{chart-to-text-acl}, while Chart-to-Table generates underlying data tables \cite{Choi2019VisualizingFT}.
+ We evaluate 
+ our model on these four chart-related 
+ tasks, as they involve the interaction between language and vision and have publicly available datasets.
+ There are a few other 
+ tasks  such as infographics understanding~\cite{mathew2022infographicvqa} and question answering with science diagram~\cite{kembhavi2016diagram}, however, in this work, we only focus on chart-related tasks.
+ 
+
+
+\vspace{-2mm}
+\section{Chart Pretraining Corpus}
+\input{Dataset.tex}
+\vspace{-2mm}
+\section{Method}
+\input{Models}
+\input{Downstream}
+
+\input{Evaluation}
+\section{Conclusion}
+We present UniChart, a general purpose pretrained model designed for a broad range of chart-related tasks. 
+Our model incorporates chart-specific pretraining tasks and is trained on a large and diverse collection of charts and corresponding summaries collected opportunistically using LLMs. 
+We conducted both human and ChatGPT evaluations to show the superiority of our method. While our model sets the state-of-the-art record on four different downstream tasks and showed improved time and memory efficiency, the evaluation also reveals opportunities for improvement. 
+We believe that our model and pretraining data will be valuable resources for future research and encourage further exploration in this  relatively new area.
+
+\section*{Limitations}
+While \model ~exhibits state-of-the-art performance on several benchmarks, it suffers from several limitations. Despite the remarkable abilities on the ChartQA dataset, the model still struggles to answer questions that involve compositional mathematical operations. Moreover, we have noticed that the model may hallucinate and produce factually incorrect statements on the text generation tasks such as Chart-to-Text and OpenCQA. 
+
+Despite the generalizability of our model on unseen chart image styles (WebCharts), there's still a noticeable drop in performance compared to the performance on the tasks on which the model is finetuned (e.g., ChartQA). Hence, there's still a need for better generalizable chart models for the diverse charts on the Web. One direction is to enlarge our pretraining datasets by crawling millions of chart images from the Web. Since most charts on the Web do not provide high-quality captions or the underlying data table, self-supervised pretraining objectives are needed to benefit from these charts. 
+
+Due to the limited computing resources, we did not investigate the effect hyperparameter tuning might have on the performance on the different downstream tasks. Also, although we have noticed the convergence of \model\ at the end of the second stage pretraining, we can not confirm whether further pretraining may improve the performance of our model. 
+
+
+\section*{Ethics Statement}
+
+During the dataset collection process, we made sure to comply with the terms and conditions of the different websites we used to crawl our data. Statista\footnote{\href{https://www.statista.com/getting-started/publishing-statista-content-terms-of-use-and-publication-rights}{https://www.statista.com/getting-started/publishing-statista-content-terms-of-use-and-publication-rights}} provide a permissive license to use their publicly available data for scientific purposes. Pew Research Centre \footnote{\href{https://www.pewresearch.org/about/terms-and-conditions/}{https://www.pewresearch.org/about/terms-and-conditions/}} also provide a permissive license to use their data with the condition that we attribute it to the Centre. OECD\footnote{\href{https://www.oecd.org/termsandconditions/}{https://www.oecd.org/termsandconditions/}} allows the users to download and publish their data as long as they give appropriate credit to the OECD website. For OWID\footnote{\href{https://ourworldindata.org/faqs\#can-i-use-or-reproduce-your-data}{https://ourworldindata.org/faqs\#can-i-use-or-reproduce-your-data}}, all their data are provided under the Creative Commons BY license which gives the permission for downloading and publication. Web Data Commons\footnote{\href{https://webdatacommons.org/}{https://webdatacommons.org/}}, which we used in the data augmentation process, allows the usage of their data under the conditions of the Apache License Software which gives the right to download and publish. Finally, all the remaining datasets (PlotQA, Beagle, ChartInfo, ExcelChart400K, LineCap, and Neural Captions) are publicly available datasets which were released in earlier scientific publications. 
+
+Due to the generative nature of our models, they may be abused for misinforming the public by generating factually incorrect responses. Moreover, we can not guarantee that our models may not produce texts that may contain hate speech or harmful content. 
+
+\section*{Acknowledgement}
+The authors would like to thank the anonymous reviewers for their helpful comments. This research was supported by the Natural Sciences \& Engineering Research Council (NSERC) of Canada and Canada Foundation for Innovation (CFI).
+
+\bibliographystyle{acl_natbib}
+\bibliography{chart2text}
+\newpage
+\input{Appendix}
+
+\end{document}

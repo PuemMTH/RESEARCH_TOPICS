@@ -1,0 +1,54 @@
+\appendix
+
+
+
+\section{More Details on Datasets Used}\label{sec:dataset_details}
+
+\paragraph{Chart-table pairs from the web.} The data was originally collected by \citet{masry-etal-2022-chartqa} and came from the below four sources:
+\begin{compactitem}
+    \item Statista: \url{www.statista.com}
+    \item Pew: \url{www.pewresearch.org}
+    \item Our World in Data: \url{ourworldindata.org}
+    \item OECD: \url{www.oecd.org}
+\end{compactitem}
+
+\paragraph{Modules of MATH questions included.} We exclude overly complex math questions and only select the basic modules that would help with numerical reasoning. They are from the two areas of Arithmetic and Comparison. The individual modules included are
+\begin{compactitem}
+    \item Arithmetic
+    \begin{compactitem}
+        \item \texttt{add\_or\_sub}
+        \item \texttt{add\_sub\_multiple}
+        \item \texttt{div}
+        \item \texttt{mixed}
+        \item \texttt{mul}
+        \item \texttt{mul\_div\_multiple}
+    \end{compactitem}
+     
+    \item Comparison
+    \begin{compactitem}
+        \item \texttt{closest}
+        \item \texttt{closest\_composed}
+        \item \texttt{kth\_biggest}
+        \item \texttt{kth\_biggest\_composed}
+        \item \texttt{pair}
+        \item \texttt{pair\_composed}
+        \item \texttt{sort}
+        \item \texttt{sort\_composed}
+    \end{compactitem}
+\end{compactitem}
+
+Please see \citet{saxton2019analysing} for detailed descriptions about each module and how they are generated.
+
+
+\section{Details of Baselines}\label{sec:baselines}
+We introduce below the details of the baselines used in \Cref{tab:main}.
+
+T5 is an encode-decoder Transformer model proposed by \citet{raffel2020exploring}. The baseline model T5 takes the concatenation of a linearized table (and a query, when the task is QA) as input, and aims to decode the target (answer or summarization). When the gold table is availible, the gold table is used as the input and the chart image is not used directly. VL-T5 proposed by \citet{cho2021unifying} is similar to T5 but also takes a visual input (i.e., the chart image) on the encoder side. VisionTaPas \citep{masry-etal-2022-chartqa} is modified from TaPas \citep{herzig-etal-2020-tapas} to incorporate the visual modality by adding a ViT model \citep{dosovitskiy2021image} and cross-modal fusion layers.
+T5-OCR, VL-T5-OCR, and VisionTaPas-OCR are the same model as T5, VL-T5, and VisionTaPas, respectively. However, they do not assume the existence of gold table but use an OCR-based system to extract the data table from the chart image.
+The above mentioned models and their performance numbers are all extracted from \citet{masry-etal-2022-chartqa} and \citet{kantharaj-etal-2022-chart}. Please see the original paper for more details.
+Classification - Regression Chart Transformer (CRCT) \citep{levy2022classification} is the best performing model on PlotQA according to the PlotQA benchmark on \url{paperswithcode.com}. It uses a detector that extracts all textual and visual elements of chart then processes these elements with a multimodal Transformer.
+%PaLI...
+
+% \section{Additional Experiments and Analyses}\label{sec:more_exp}
+
+

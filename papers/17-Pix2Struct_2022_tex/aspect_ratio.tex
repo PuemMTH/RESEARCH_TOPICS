@@ -1,0 +1,101 @@
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+   width=0.8\columnwidth,
+   height=0.5\columnwidth,
+   legend cell align=left,
+   legend style={at={(1, 0)},anchor=south east,font=\scriptsize, style={row sep=-0.1cm}},
+   mark options={mark size=2},
+   font=\small,
+   xmin=0, xmax=30,
+   ymin=0, ymax=75,
+   ytick={20, 40, 60},
+   xtick={0, 10, 20, 30},
+   xticklabels={0, 10k, 20k, 30k},
+   ymajorgrids=true,
+   xmajorgrids=true,
+   xlabel style={yshift=0.5ex,},
+   xlabel=Training steps (Warmup stage),
+   ylabel style={align=center},
+   ylabel=Exact Match (\%),
+   ylabel style={yshift=-0.5ex,}]
+    \addplot[g-blue, line width=1.2pt] plot coordinates {
+(30, 71.6796875)
+(29, 71.6796875)
+(28, 71.6796875)
+(27, 70.60546875)
+(26, 71.09375)
+(25, 69.921875)
+(24, 68.75)
+(23, 68.75)
+(22, 67.96875)
+(21, 66.11328125)
+(20, 66.40625)
+(19, 64.55078125)
+(18, 63.18359375)
+(17, 63.671875)
+(16, 63.28125)
+(15, 61.23046875)
+(14, 59.9609375)
+(13, 58.7890625)
+(12, 56.73828125)
+(11, 53.61328125)
+(10, 51.85546875)
+(9, 48.73046875)
+(8, 45.99609375)
+(7, 44.140625)
+(6, 37.59765625)
+(5, 13.28125)
+(4, 0.68359375)
+(3, 0.09765625)
+(2, 0.0)
+(1, 0.0)
+    };
+    \addlegendentry{Variable}
+    \addplot[g-red, line width=1.2pt, dash pattern=on \pgflinewidth off 2pt] plot coordinates {
+(30, 51.66015625)
+(28, 51.171875)
+(26, 50.390625)
+(25, 50.0)
+(24, 49.4140625)
+(23, 49.4140625)
+(21, 46.97265625)
+(19, 42.7734375)
+(17, 40.8203125)
+(15, 36.71875)
+(13, 34.47265625)
+(11, 27.9296875)
+(9, 20.41015625)
+(7, 10.64453125)
+(6, 4.78515625)
+(5, 0.29296875)
+(4, 0.0)
+(3, 0.0)
+(2, 0.0)
+(1, 0.0)
+    };
+    \addlegendentry{Padded}
+    \addplot[black, line width=1.2pt, dash pattern=on 6pt off 6pt] plot coordinates {
+(30, 66.2109375)
+(28, 66.30859375)
+(27, 65.91796875)
+(25, 65.625)
+(23, 62.890625)
+(21, 62.5)
+(19, 60.15625)
+(17, 58.30078125)
+(15, 53.3203125)
+(13, 48.6328125)
+(12, 49.90234375)
+(10, 44.04296875)
+(8, 34.5703125)
+(6, 17.3828125)
+(5, 2.34375)
+(4, 0.0)
+(3, 0.0)
+(2, 0.0)
+(1, 0.0)
+    };
+    \addlegendentry{Stretched}
+\end{axis}
+\end{tikzpicture}

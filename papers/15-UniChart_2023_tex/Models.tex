@@ -1,0 +1,82 @@
+
+We propose \model, a unified pretrained model for chart comprehension and reasoning. This section first introduces the \model\ architecture followed by its pretraining objectives (hyperparameter settings are provided in \Cref{app:details-downstream-tasks}).
+\vspace{-1mm}
+\subsection{Model Architecture} \label{subsec:data2text}
+
+\model\ consists of two main modules: a chart image encoder and a text decoder as shown in \Cref{fiq:first-stage-pretraining}.
+
+
+\noindent \textbf{$\bullet$ {Chart Image Encoder}}
+In order to effectively encode a chart image, an encoder needs to identify and interpret three different types of chart components: (1) textual elements (axis labels and legends), (2) visual elements (e.g., bars, lines), and (3) the layout that arranges textual and visual elements within a chart. Since this has a similarity with document image (e.g., receipts) understanding, our chart image encoder builds upon the encoder of one of the recent state-of-the-art document image understanding models, Donut \cite{kim2022ocr}.
+
+Donut offers an OCR-free architecture. The model is pretrained using an OCR-pseudo task, where it sequentially generates the encoded text in a document image, following the order from the top-left corner to the bottom-right corner of the image.
+As a result, we did not have to run an external OCR module like CRAFT \cite{craft} and Parseq \cite{bautista2022parseq}, which improved time and memory efficiency throughout our training pipeline. Donut employs Swin Transformer \cite{liu2021swin} architecture as the image encoder. To encode the chart image features, 
+the images are split into non-overlapping patches, which are then processed using shifted window-based multi-headed self-attention and MLP layers to produce the image embeddings.
+
+
+\noindent \textbf{$\bullet$ {Text Decoder~}}
+Similar to Donut \cite{kim2022ocr}, we use the BART \cite{bart} decoder for generating the output. The textual (task-specific) prompts are fed to the decoder and the decoder has to generate the output by conditioning on the prompted context  (see \Cref{fiq:first-stage-pretraining}).
+
+
+
+
+
+ 
+
+\subsection{Pretraining Objectives} \label{subsec:pretraining_objectives}
+
+Our pretraining objectives include low-level tasks that are more focused on retrieving the underlying data from the chart images and high-level tasks that align closely with the downstream tasks. 
+
+
+
+\noindent \textbf{$\bullet$ {Data Table Generation}}
+A chart creates a visual representation of a data table by mapping each data attribute (e.g., `country', `population') to corresponding visual attributes (e.g., \texttt{x-positions}, \texttt{height}) of graphical marks (e.g, bars). An effective chart comprehension and reasoning model should be able to deconstruct the structured underlying data table by recovering such mappings. To this end, we propose the data table generation task in which we ask the model to generate the flattened data table given a chart image.
+
+A vast amount of charts available online are stored as bitmap images without access to the underlying data. It is important to learn how to recover data values when the chart data is not available. Therefore, we also introduce the  data value estimation task, in which the model is asked to generate the scale of the graphical marks (e.g., bars, line points) as a percentage of the chart plot area. We obtain these scales by dividing the bars or line points heights (bounding boxes) by the height of the chart plot area and rounding the result to two decimal places. At the final stage, we use charts for which both data tables and object bounding boxes are available as well as charts for which at least the bounding box annotations are available, e.g., ExcelCharts from \cite{ChartOCR}.
+
+ 
+
+\begin{table}[t!]
+\scalebox{0.48}{ %0.73
+\begin{tabular}{lcccc}
+\toprule
+Dataset & \makecell{Data Table \\ Generation} & \makecell{Numerical \& \\ Visual Reasoning} & \makecell{Open-ended \\ Question Answering} & \makecell{Chart \\ Summarization} 
+\\ 
+
+\midrule
+Pew & 0 & 0 & 5,295 & 5,295 \\
+Statista, OECD, OWID & 144,147 & 679,420 & 126,009 & 126,009 \\
+PlotQA & 155,082 & 2,414,359 & 157,070 & 157,070 \\
+LineCap & 0 & 0 & 2,821 & 2,821 \\
+Neural Caption & 0 & 0 & 100 & 306 \\
+Beagle & 3,972 & 51 & 0 & 0 \\
+ChartInfo & 1,796 & 21,949 & 0 & 0 \\
+Data Aug. & 189,792 & 2,218,468 & 189,802 & 189,802 \\
+
+ExcelChart & 106,897 & 0 & 0 & 0 \\
+\midrule
+Total & \textbf{601,686} & \textbf{5,334,247} & \textbf{481,097} & \textbf{481,303} \\
+\bottomrule
+\end{tabular}
+} \label{tab:statistics-synthetic-QA-oairs}
+\vspace{-3mm}
+\caption{\small{Number of examples for each task in pretraining.}
+\vspace{-5mm}
+}
+\end{table}
+
+
+
+\noindent \textbf{$\bullet$ {Numerical \& Visual Reasoning~}} Many downstream applications over charts may involve numerical and visual reasoning with the chart elements such as chart QA and summarization. For example, the model may need to apply a series of mathematical and logical operations such as addition, subtraction and comparisons to answer a question. To inject such reasoning skills into the model, 
+we design template-based numerical reasoning tasks where the model is trained to execute/perform the most common mathematical operations over the chart data values. We manually analyzed the existing task datasets (e.g., ChartQA}) to find the most common operations (\eg sum, average, difference, etc.) and constructed 90 templates that we utilize to generate synthetic question and answer pairs. All the templates are provided in \Cref{app:template-visual-logical}. 
+
+
+\noindent \textbf{$\bullet$ {Open-ended Question Answering}~} It is very common for users to ask open-ended questions over charts \cite{open-CQA}. Such questions often ask for answers that require high-level reasoning and explanations. To improve the capability of the model in answering open-ended questions, we follow previous work \cite{table-oqa} to generate synthetic open-ended QA pairs. Specifically, a T5 model \cite{Raffel2020t5} pretrained on SQuAD \cite{squadv1} is employed to generate an open-ended  question for each summary. The sentence containing the answer in the summary then serves as the answer to its generated question.
+
+
+\noindent \textbf{$\bullet$ { Chart Summarization}~}
+Image captioning is a fundamental problem in AI in which the machines need to summarize the main content of the image in the textual form. This task has been studied extensively \cite{vinyals2015show, herdade2019image, hu2021vivo, li2022blip}. We follow previous work \cite{vinyals2015show, xia2021xgpt} to pretrain our model on this task to further enhance the model's capability in generating textual descriptions from the chart image. As discussed in \Cref{subsec:knowledge_distillation}, we used mostly the summaries generated from GPT models provided by OpenAI either directly or through a knowledge distillation step.
+
+
+
+ 

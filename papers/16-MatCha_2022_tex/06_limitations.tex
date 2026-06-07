@@ -1,0 +1,15 @@
+
+\section*{Limitations}\label{sec:limits}
+Though we have injected math reasoning skills to \model, error analysis shows that there is still room for improvement on queries requiring complex reasoning. Besides, it remains debatable whether doing math calculation in weight space in a purely end-to-end manner is the most promising path forward.\footnote{See recent works that combine LLMs with calculators \citep{wei2022chain}  or compilers/program executors \citep{cheng2022binding,chen2022program,gao2022pal}.}
+
+Besides math reasoning, \Cref{fig:finegrained} shows that plot attributes is an area where \model{} underperforms PaLI. We conjecture that it is due to \model's lack of massive scale grounded image-text pretraining with rich semantics (which PaLI has using web-scale image-text pairs). While chart-to-code pretraining provides certain level of plot attribute grounding, such plot features are mostly using default options in plotting packages but not explicitly written out in code.
+%We plan to improve \model{} on this front in future work.
+
+
+In terms of experimental setup, the reported number is result of a single run. Pretraining is extremely costly especially when there exists more than twenty ablation setups and downstream evaluation tasks. We have collected pretraining and evaluation data points from multiple aspects on various scenarios to verify the robustness of \model. However, we do acknowledge that the paper can benefit from reporting multiple runs given sufficient compute.
+
+
+Last but not least, it is also worth noting that visual language is an umbrella term. There are other visual language systems beyond the ones discussed in this paper. As an example, comics/manga have their distinct visual lexicon or even grammars \citep{cohn2013visual}.
+
+\section*{Ethics Statement}\label{sec:ethics}
+To the best of our knowledge, \model{} has not been trained on sensitive private information and should be of low risk to generate harmful contents. All pretraining and finetuning data are either synthetically created using rules or publicly available data on the web with appropriate permissive licenses.

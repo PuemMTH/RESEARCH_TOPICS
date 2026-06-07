@@ -1,0 +1,25 @@
+{
+  "arxiv_id": "2212.09662",
+  "title": "MatCha : Enhancing Visual Language Pretraining with Math Reasoning and Chart Derendering",
+  "authors": [
+    "Fangyu Liu♠♣Francesco Piccinno♣Syrine Krichene♣Chenxi Pang♣Kenton Lee♣Mandar Joshi♣Yasemin Altun♣Nigel Collier♠Julian Martin Eisenschlos♣♣Google DeepMind♠University of Cambridge"
+  ],
+  "abstract": "Visual language data such as plots, charts, and infographics are ubiquitous in the human world. However, state-of-the-art vision-language models do not perform well on these data.\nWe propose MatCha ( Mat h reasoning and Cha rt derendering pretraining) to enhance visual language models’ capabilities in jointly modeling charts/plots and language data. Specifically we propose several pretraining tasks that cover plot deconstruction and numerical reasoning which are the key capabilities in visual language modeling.\nWe perform the MatCha pretraining starting from Pix2Struct, a recently proposed image-to-text visual language model.\nOn standard benchmarks such as PlotQA and ChartQA, the MatCha model outperforms state-of-the-art methods by as much as nearly 20%.\nWe also examine how well the MatCha pretraining transfers to domains such as screenshots, textbook diagrams, and document figures and observe overall improvement, verifying the usefulness of MatCha pretraining on broader visual language tasks. 1 1 1 Code and models: github.com/google-research/google-research/tree/master/deplot 2 2 2 For questions paper please contact fl399@cam.ac.uk and eisenjulian@google.com .",
+  "year": "2022",
+  "figure_count": 2,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:MatChadefines two types of pretraining tasks: (1) chart derendering (light blue boxes) and (2) mathematical reasoning (light red boxes). In chart derendering, given a chart, the model needs to decode its underlying rendering code or data table. In math reasoning, given a math question rendered as an image, the model needs to decode its answer. Chart derendering teaches the models layout understanding (including number extraction and their organizations) and math reasoning teaches the models numerical reasoning capabilities.",
+      "src": "/html/2212.09662/assets/x1.png"
+    },
+    {
+      "id": "S5.F2",
+      "caption": "Figure 2:Fine-grained by-category performance comparison on ChartQA.",
+      "src": "/html/2212.09662/assets/figs/matcha_perf_per_cat_v2.png"
+    }
+  ],
+  "paper_number": 16,
+  "slug": "MatCha",
+  "base_name": "16-MatCha_2022"
+}

@@ -1,0 +1,99 @@
+{
+  "arxiv_id": "2210.03347",
+  "title": "Pix2Struct: Screenshot Parsing as Pretraining for Visual Language Understanding",
+  "authors": [
+    "Kenton Lee",
+    "Mandar Joshi",
+    "Iulia Turc",
+    "Hexiang Hu",
+    "Fangyu Liu",
+    "Julian Eisenschlos",
+    "Urvashi Khandelwal",
+    "Peter Shaw",
+    "Ming-Wei Chang",
+    "Kristina Toutanova"
+  ],
+  "abstract": "Visually-situated language is ubiquitous—sources range from textbooks with diagrams to web pages with images and tables, to mobile apps with buttons and forms. Perhaps due to this diversity, previous work has typically relied on domain-specific recipes with limited sharing of the underlying data, model architectures, and objectives. We present Pix2Struct , a pretrained image-to-text model for purely visual language understanding, which can be finetuned on tasks containing visually-situated language. Pix2Struct is pretrained by learning to parse masked screenshots of web pages into simplified HTML. The web, with its richness of visual elements cleanly reflected in the HTML structure, provides a large source of pretraining data well suited to the diversity of downstream tasks. Intuitively, this objective subsumes common pretraining signals such as OCR, language modeling, and image captioning. In addition to the novel pretraining strategy, we introduce a variable-resolution input representation and a more flexible integration of language and vision inputs, where language prompts such as questions are rendered directly on top of the input image. For the first time, we show that a single pretrained model can achieve state-of-the-art results in six out of nine tasks across four domains: documents, illustrations, user interfaces, and natural images.",
+  "year": "2022",
+  "figure_count": 15,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:Examples of visually-situated language understanding tasks, including diagram QA (AI2D), app captioning (Screen2Words), and document QA (DocVQA). We also include an example of our proposed pretraining task (screenshot parsing) on the left.Pix2Structencodes the pixels from the input image (above) and decodes the output text (below).",
+      "src": "/html/2210.03347/assets/figures/pretraining_example.png"
+    },
+    {
+      "id": "S1.F1.1",
+      "caption": "",
+      "src": "/html/2210.03347/assets/figures/pretraining_example.png"
+    },
+    {
+      "id": "S1.F1.2",
+      "caption": "",
+      "src": "/html/2210.03347/assets/figures/ai2d_example.png"
+    },
+    {
+      "id": "S1.F1.3",
+      "caption": "",
+      "src": "/html/2210.03347/assets/figures/screen2words_example.png"
+    },
+    {
+      "id": "S1.F1.4",
+      "caption": "",
+      "src": "/html/2210.03347/assets/figures/docvqa_example.png"
+    },
+    {
+      "id": "S2.F2",
+      "caption": "Figure 2:Comparison of our variable resolution inputs and the typical fixed resolution input. We illustrate the preprocessing for a target sequence length of 36 patches for both inputs.",
+      "src": "/html/2210.03347/assets/x1.png"
+    },
+    {
+      "id": "S2.F3",
+      "caption": "Figure 3:Toy illustration of input-output pairs (right) sampled from the original web page (left).",
+      "src": "/html/2210.03347/assets/figures/example.png"
+    },
+    {
+      "id": "S5.F4",
+      "caption": "Figure 4:Our variable-resolution inputs prevent aspect-ratio distortion while minimizing padding.",
+      "src": ""
+    },
+    {
+      "id": "A1.F5",
+      "caption": "Figure 5:Overview of the impact of resolution on the DocVQA task. Note that the bottom axis only applies toPix2Struct.Pix2Structis also the only model that adapts to various resolutions seamlessly, without any retraining or post-hoc parameter creation. (Left) In both Donut andPix2Struct, we show clear benefits from use larger resolutions. (Right) Inference speed measured by auto-regressive decoding (max decoding length of 32 tokens) on the validation set of DocVQA using a v3-8 Cloud TPU.",
+      "src": ""
+    },
+    {
+      "id": "A5.F6",
+      "caption": "Figure 6:Example of input-output pairs during the warmup stage.",
+      "src": "/html/2210.03347/assets/figures/warmup.png"
+    },
+    {
+      "id": "A6.3",
+      "caption": "",
+      "src": "/html/2210.03347/assets/figures/ex1.png"
+    },
+    {
+      "id": "A6.6",
+      "caption": "",
+      "src": "/html/2210.03347/assets/figures/ex4.png"
+    },
+    {
+      "id": "A6.9",
+      "caption": "",
+      "src": "/html/2210.03347/assets/figures/ex5.png"
+    },
+    {
+      "id": "A6.12",
+      "caption": "",
+      "src": "/html/2210.03347/assets/figures/ex2.png"
+    },
+    {
+      "id": "A6.15",
+      "caption": "",
+      "src": "/html/2210.03347/assets/figures/ex3.png"
+    }
+  ],
+  "paper_number": 17,
+  "slug": "Pix2Struct",
+  "base_name": "17-Pix2Struct_2022"
+}

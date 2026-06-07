@@ -1,0 +1,337 @@
+\pdfoutput=1
+% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Remove the "review" option to generate the final version.
+\usepackage
+%[review]
+{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{makecell}
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+\renewcommand{\UrlFont}{\ttfamily\small}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\graphicspath{{./imgs/}}
+\usepackage{footmisc}
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{array, makecell} %
+
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+
+\usepackage{tabularx,colortbl}
+
+%Apply the gradient macro
+\usepackage{tikz}
+\usepackage{collcell}
+\usepackage{fdsymbol}
+% https://tex.stackexchange.com/a/40603 - only color in table body
+\usepackage{etoolbox}
+
+\newtoggle{inTableHeader}% Track if still in header of table
+\toggletrue{inTableHeader}% Set initial value
+\newcommand*{\StartTableHeader}{\global\toggletrue{inTableHeader}}%
+\newcommand*{\EndTableHeader}{\global\togglefalse{inTableHeader}}%
+
+% Redefine tabular to initialize \StartTableHeader at start and end
+\let\OldTabular\tabular%
+\let\OldEndTabular\endtabular%
+\renewenvironment{tabular}{\StartTableHeader\OldTabular}{\OldEndTabular\StartTableHeader}%
+
+\newcommand*{\MinNumber}{-1.0}%
+\newcommand*{\MidNumber}{0.0} %
+\newcommand*{\MaxNumber}{1.0}%
+\newcommand{\cmmnt}[1]{}
+
+\newcommand{\ApplyGradient}[1]{%
+  \iftoggle{inTableHeader}{#1}{
+    \ifdim #1 pt > \MidNumber pt
+        \pgfmathsetmacro{\PercentColor}{max(min(100.0*(#1 - \MidNumber)/(\MaxNumber-\MidNumber),100.0),0.00)} %
+        \hspace{-0.33em}\colorbox{yellow!\PercentColor!blue}{#1}
+    \else
+        \pgfmathsetmacro{\PercentColor}{max(min(100.0*(\MidNumber - #1)/(\MidNumber-\MinNumber),100.0),0.00)} %
+        \hspace{-0.33em}\colorbox{blue!\PercentColor!blue}{#1}
+    \fi
+  }}
+\newcolumntype{R}{>{\collectcell\ApplyGradient}c<{\endcollectcell}}
+
+
+\input{math-com}
+
+
+\usepackage[nameinlink]{cleveref}
+\crefformat{section}{\S#2#1#3} % see manual of cleveref, section 8.2.1
+\crefname{algorithm}{Alg.}{Algs.}
+\crefformat{subsection}{\S#2#1#3}
+\Crefname{equation}{Eq.}{Eqs.}
+\Crefname{figure}{Fig.}{Figs.}
+
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+\newcommand{\enamul}[1]{\textcolor{purple}{(Enamul: #1)}}
+\newcommand{\joty}[1]{\textcolor{cyan}{(Joty: #1)}}
+\newcommand{\llong}[1]{\textcolor{blue}{(Long: #1)}}
+\newcommand{\ahmed}[1]{\textcolor{red}{(Ahmed: #1)}}
+\newcommand{\shankar}[1]{\textcolor{green}{(Shankar: #1)}}
+\newcommand{\tanj}[1]{\textcolor{orange}{(Tan: #1)}}
+\newcommand{\change}[1]{{\leavevmode\color{black}#1}}%Revision change
+
+\usepackage{soul}
+\newcommand{\cut}[1]{\textcolor{gray}{\sout{#1}}}
+\usepackage{float}
+
+\usepackage{multirow}% http://ctan.org/pkg/multirow
+\usepackage{hhline}% http://ctan.org/pkg/hhline
+
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+
+ \title{ChartQA: A Benchmark for Question Answering about Charts \\with Visual and Logical Reasoning}
+
+
+\author{
+Ahmed Masry$^{\clubsuit}$, \  Do Xuan Long$^{\spadesuit}$, \ Jia Qing Tan$^{\spadesuit}$,  \ Shafiq Joty$^{\spadesuit\vardiamondsuit}$, \ Enamul Hoque$^{\clubsuit}$\\
+$^\clubsuit$York University, Canada \\
+$^\spadesuit$Nanyang Technological University, Singapore, $^\vardiamondsuit$Salesforce Research 
+\\
+$^\clubsuit$\{masry20, enamulh\}@yorku.ca\\
+$^\spadesuit$\{xuanlong001@e.ntu, C190022@e.ntu, srjoty@ntu\}.edu.sg 
+%\{xuanlong001, C190022\}@e.ntu.edu.sg \\
+}
+
+\begin{document}
+\maketitle
+
+
+
+
+\begin{abstract} Charts are very popular for analyzing data. When exploring charts, people often ask a variety of complex reasoning questions that involve several logical and arithmetic operations. They also commonly refer to visual features of a chart in their questions. However, most existing datasets do not focus on such 
+%a variety of 
+complex reasoning questions as their questions are template-based and answers come from a fixed-vocabulary. In this work, we present a large-scale benchmark covering 9.6K human-written questions as well as 23.1K questions generated from human-written chart summaries. To address the unique challenges in our benchmark involving visual and logical reasoning over charts, we present two transformer-based models that combine visual features and the data table of the chart in a unified way to answer questions. While our models achieve the state-of-the-art results on the previous datasets as well as on our benchmark, the evaluation also reveals several challenges in answering complex reasoning questions.
+
+\end{abstract}
+
+\section{Introduction}
+
+
+Data visualizations such as bar charts and line charts have become popular in analyzing data and making informed decisions. To analyze data, often people ask complex reasoning questions about charts involving arithmetic and logical operations~\cite{kim2020answering}. Answering such questions requires   
+%can be challenging and 
+a significant amount of perceptual and cognitive efforts  as people need to combine multiple operations such as retrieving values, comparing values, finding maximum, calculating sums and differences 
+%and averages 
+of values. For example, the question Q1 in \Cref{tab:example} requires the user to compute the differences between the two lines for each year and find the year with the highest difference.
+%for which the difference is the maximum.
+
+The goal of a Chart Question Answering (ChartQA) system is to help users by taking a chart and a natural language question as input and predicting the answer. %as output.
+This task differs from other  QA tasks such as QA on texts~\cite{squadv1} and tables~\cite{sempre} because the input for ChartQA is a visual representation of data 
+%(rather than text passages or table of raw data) 
+that can draw a reader’s attention to various prominent features such as trends and outliers ~\cite{kim2020answering,kim2021towards}. Also, people tend to ask questions by referring to visual attributes of marks. For example, in \Cref{tab:example}, Q2 
+%is a visual reasoning question that 
+refers to the color of a mark (`line') and its attribute (`peak') in the chart.
+
+
+\begin{figure}[t] 
+\linespread{0.5}\selectfont\centering 
+%\footnotesize
+\renewcommand{\arraystretch}{1.0}
+\scalebox{0.94}{\begin{tabular}{p{3.5cm}p{4.5cm}}     % centered columns (3 columns) 
+%\begin{tabular}{c |c| c |c}      % centered columns (3 columns) 
+ \raisebox{-0.5\height}{\includegraphics[width=3.5cm]{emnlp2020-templates/imgs/figure1.png}}
+        &
+         {\begin{tabular}{@{}p{3.9cm}@{}}
+         {\small{\textbf{Q1:} \small Which year has the most divergent opinions about Brazil's economy?}}
+         \\ [+2em]
+         {\small{\blue{\textbf{Answer:} 2015}}}
+         \\\\
+         \small{\textbf{Q2:} \small What is the peak value of the orange line?} 
+         \\ [+1.2em]
+         {\small{\blue{\textbf{Answer:} 87}}}
+         \end{tabular}}
+    \end{tabular}
+    }
+    %\vspace{-0.5em}
+    \caption{Sample 
+    %visual and compositional 
+    questions in our benchmark.
+    }
+    \label{tab:example}
+    %\vspace{-4mm}
+\end{figure}
+
+
+
+While the task of ChartQA has received growing attentions in recent years, existing datasets have several major limitations: \Ni the questions are generated automatically using pre-defined templates \cite{figureqa,dvqa, leafqa,stlcqa} which lack naturalness,  \Nii the charts  are created automatically using a programming tool like Matplotlib \cite{stlcqa} which do not reflect the diverse styles of many real-world charts, and  finally, \Niii in most datasets, the answer comes from a small fixed sized vocabulary (\eg\ chart axis labels, `yes', `no'), ignoring many complex reasoning questions where the answer is derived through various mathematical operations such as aggregation and comparison.
+
+
+
+Since most datasets only support \emph{fixed vocabulary} questions, existing 
+%ChartQA 
+models usually treat the task as a classification problem and rely on dynamic encoding techniques with the questions and answers encoded in terms of spatial positions of chart elements (\eg\  \textit{x-axis-label-1}).
+%the chart vocabulary spatial positions such as \textit{x-axis-label-1} and  \textit{x-axis-label-2}. 
+Such approaches do not work when the OCR model generates errors or when the question refers to chart elements using synonyms 
+%or related terms 
+(\eg\ US vs. United States).
+%and their performance significantly degrades when using the predicted OCR labels instead of the ORACLE tokens, or 
+PlotQA \cite{plotqa} attempts to support \emph{open vocabulary} questions by applying a TableQA model~\cite{sempre} but it does not consider any visual features of a chart which are critical for answering visual reasoning questions.
+%questions containing visual references to a chart.
+
+To address these limitations, 
+%in this paper 
+we present a large-scale 
+%ChartQA 
+benchmark covering  9,608 human-written questions focusing on logical and visual reasoning questions. Since human annotations are costly, we 
+%have 
+also generated  another 23,111 questions automatically  from human-written chart summaries using a T5 model \cite{Raffel2020t5} 
+%\joty{
+and manually validated a subset of it for quality assurance.
+%}. 
+%which are used to augment our benchmark. 
+In this way, we collect a large number of questions automatically while maintaining rich variations in language as they were generated from human-written summaries. Our benchmark consists of 20,882 charts which are curated from four different online
+%real-world  
+sources to ensure variety in visual styles and topics. %two problem scenario...
+
+
+To address the challenges introduced in our benchmark,
+where many questions involve complex reasoning and visual references to charts, we propose an approach that combines visual features and extracted data from the chart image. Our pipeline first extracts the underlying data table from the chart image by adapting the ChartOCR model \cite{ChartOCR} as well as the visual features from the chart image using neural models. Then, we adapt two  transformer-based QA models where we utilize both the extracted data table and visual features of the chart in a unified way. Our models achieve the state-of-the-art results, or stands on par with the previous models on the previous datasets as well as on our newly created benchmark. 
+
+
+In sum, our main contributions are: \Ni A large-scale ChartQA dataset with real-world charts and human-authored question-answer pairs; \Nii a pipeline approach that combines visual features and automatically extracted data from charts to  utilize in transformer-based QA models that provide state-of-the-art results; and \Niii an extensive analysis and evaluation of the performance of our models. Our code and dataset are publicly available at
+\url{https://github.com/vis-nlp/ChartQA}
+%\textit{Link\_removed\_for\_anonymity}.
+
+
+
+
+
+
+
+
+
+
+
+\begin{table*}[t]
+  \centering
+  \small
+  \scalebox{0.95}{
+  \begin{tabular}{l|c|c|c|c|c}
+  \toprule
+    Datasets & \makecell{Question \\ Types} & \makecell{Answer \\ Types} &  \makecell{Real-world \\ Data} & \makecell{Real-world \\ Charts} & \makecell{%Size
+    \#Charts/\\ \#QA pairs}\\
+    \midrule
+    FigureQA \cite{figureqa} & Template-based & Fixed & \xmark & \xmark & 180K/2.3M\\
+    %\midrule
+    DVQA \cite{dvqa} & Template-based & Fixed & \xmark & \xmark & 300K/3.4M \\
+   % \midrule
+    LEAF-QA \cite{leafqa} & Template-based & Fixed & \cmark & \xmark & 240K/2M \\
+  %  \midrule
+    LEAFQA++ \cite{stlcqa} & Template-based & Fixed & \cmark & \xmark & 244K/2.5M \\
+ %  \midrule
+    PlotQA \cite{plotqa} & Template-based & Open & \cmark & \xmark & 224K/28M\\
+%   \midrule
+    % \citet{kim2020answering} & Human-authored & Open & \cmark & \cmark & 52/629\\
+    \midrule
+    \textbf{ChartQA-H \blue{(ours)}} & \textbf{Human-authored} & \textbf{Open} & \cmark & \cmark & \textbf{4.8K/9.6K}\\
+    \textbf{ChartQA-M \blue{(ours)}} & \textbf{Machine generated} & \textbf{Open} & \cmark & \cmark & \textbf{17.1K/23.1K}\\
+    \bottomrule
+  \end{tabular}}
+  %\vspace{-2mm}
+  \caption{Comparison between existing  datasets and our new ChartQA benchmark}
+  %\vspace{-4mm}
+  \label{tab:1}
+\end{table*}
+
+
+
+\section{Related Work}
+
+
+
+
+
+\paragraph{Existing Datasets} ChartQA differs from previous datasets in two main aspects: the questions' types (human-authored vs. template-based) and the chart source (real-world vs. generated using a tool). A detailed comparison is shown in  \Cref{tab:1}.  Earlier datasets such as FigureQA \cite{figureqa}, DVQA \cite{dvqa}, LEAF-QA \cite{leafqa} and LEAF-QA++ \cite{stlcqa}  are mostly synthetic where the questions are generated using a small number of templates and the answers come from a fixed set of vocabulary (e.g. `yes', `no'). Moreover, their charts are created automatically using the same software. While FigureQA and DVQA use synthetically-generated data to plot the charts, LEAF-QA and LEAFQA++ use real-world data.  PlotQA \cite{plotqa} is the only dataset with open-vocabulary questions that require applying aggregation operations on the underlying chart data. However, they do not have visual reasoning questions while their questions are still template-based and the charts are plotted using a software. 
+\citet{kim2020answering} ran a formative study with a very small human-authored dataset consisting of 52 charts and 629 QA pairs to understand how people ask questions about charts and explain answers. To our knowledge, there is no large-scale Chart QA dataset involving  visual and logical reasoning questions written by humans on real-worlds charts which motivated us to build a new dataset.
+
+
+\paragraph{Existing Models} 
+There are two main approaches for Chart QA. The first approach uses classification-based visual QA models that can only handle fixed-vocabulary questions \cite{leafqa, stlcqa, prefil, figureqa, dvqa}. These models use encoders to encode the question and the chart image and an attention mechanism to combine the features of both the question and chart before applying a classification layer. These models mostly utilize dynamic encoding techniques to encode the question in terms of the positional information of the textual elements in the chart image that are prone to OCR noise. The second approach applies table QA methods by either assuming that the data table of the chart is given \cite{kim2020answering, ahmed-workshop-2021} or by extracting it from the chart image using vision techniques \cite{plotqa}.
+
+
+
+%\vspace{-0.5em}
+\paragraph{Chart Data Extraction}
+Early papers introduced semi-automatic systems to extract the data from the chart images \cite{Revision, chartsense}. \citet{Choi2019VisualizingFT}, \citet{Liu2019DataEF}\change{, and \cite{Siegel2016FigureSeerPR} }proposed fully automatic chart data extraction pipelines, however, their methods rely on various heuristics which do not work for many real-world charts and the performance was still limited. \citet{ChartOCR} also automatically
+%introduced another automated system which 
+extract data from real-world charts with high accuracy. Still, the model only predicts the raw data values of marks (\eg\ bars) without associating them with their corresponding axis or legends. We extend their pipeline to extract the fully-structured data table to pass it to our models.
+
+\section{ChartQA Datasets}
+\input{Dataset}
+
+%\section{Tasks}
+%\input{emnlp2020-templates/Tasks}
+
+\section{Method}
+\input{Models}
+
+
+%\vspace{-1mm}
+\section{Evaluation}
+\input{Evaluation}
+%\vspace{-1mm}
+\section{Conclusion}
+%In this paper,
+We present ChartQA, a new large-scale benchmark with human-written questions focusing on visual and logical reasoning. We also introduce a new approach that combines visual features and extracted data table from a chart to answer questions. While our evaluation highlights the promise of this approach, it also reveals several unique challenges emerge from the  visual and logical reasoning questions asked by human which exhibit the informal, intricate, and nuanced nature of language. We hope that our benchmark  will serve as a starting point for others to address these challenges.
+
+
+\section*{Acknowledgement}
+The authors would like to thank the anonymous reviewers for their helpful comments. This research was supported by the Natural Sciences \& Engineering Research Council (NSERC) of Canada.
+
+\section*{Ethical Considerations}
+
+During the dataset collection and annotation process, we have considered several ethical issues. To respect the intellectual property of dataset sources, we only used  the publicly available charts that comply with their terms and conditions. According to Statista publication rights,\footnote{\href{https://www.statista.com/getting-started/publishing-statista-content-terms-of-use-and-publication-rights}{https://www.statista.com/getting-started/publishing-statista-content-terms-of-use-and-publication-rights}} users are given open access to the publicly available charts for academic purposes. According to the terms and conditions for Pew,\footnote{\href{https://www.pewresearch.org/about/terms-and-conditions/}{https://www.pewresearch.org/about/terms-and-conditions/}} users are allowed to download and publish the content as long as they are attributed to the Center or are not attributed to a different party. 
+According to OECD \footnote{\href{https://www.oecd.org/termsandconditions/}{https://www.oecd.org/termsandconditions/}} terms and conditions, users can crawl and use the data in their own work for any purpose unless where restrictions apply. According to OWID \footnote{\href{https://ourworldindata.org/faqs\#can-i-use-or-reproduce-your-data}{https://ourworldindata.org/faqs\#can-i-use-or-reproduce-your-data}} terms and conditions, all their data are open access and users can download or utilize the data in their own work.
+
+
+In order to fairly compensate the Mechanical Turk annotators, we considered the minimum wage in the United States at the time (\$7.25 USD per hour). The estimated time taken for each task is 3-5 minutes. Hence, these annotators received \$0.6 USD for each task. Additionally, to protect the privacy of these annotators, all of their annotations were anonymized.
+
+To ensure the reproducibility of our experimental results, our hyperparameters settings are provided in \Cref{app:baselines}.
+
+Our models can be abused to mislead the public about the charts content and implications. While our models provide state-of-the-art results on most of the existing datasets, we can not guarantee that their output will be correct all the time.
+
+\bibliographystyle{acl_natbib}
+\bibliography{chart2text}
+\newpage
+\input{Appendix}
+
+\end{document}

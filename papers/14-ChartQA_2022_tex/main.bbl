@@ -1,0 +1,320 @@
+\begin{thebibliography}{41}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Ba et~al.(2016)Ba, Kiros, and Hinton}]{LayerN}
+Jimmy Ba, Jamie~Ryan Kiros, and Geoffrey~E. Hinton. 2016.
+\newblock Layer normalization.
+\newblock \emph{ArXiv}, abs/1607.06450.
+
+\bibitem[{Baek et~al.(2019)Baek, Kim, Lee, Park, Han, Yun, Oh, and
+  Lee}]{craftrecognition}
+Jeonghun Baek, Geewook Kim, Junyeop Lee, Sungrae Park, Dongyoon Han, Sangdoo
+  Yun, Seong~Joon Oh, and Hwalsuk Lee. 2019.
+\newblock What is wrong with scene text recognition model comparisons? dataset
+  and model analysis.
+\newblock In \emph{International Conference on Computer Vision (ICCV)}.
+
+\bibitem[{Brown et~al.(2020)Brown, Mann, Ryder, Subbiah, Kaplan, Dhariwal,
+  Neelakantan, Shyam, Sastry, Askell, Agarwal, Herbert-Voss, Krueger, Henighan,
+  Child, Ramesh, Ziegler, Wu, Winter, Hesse, Chen, Sigler, Litwin, Gray, Chess,
+  Clark, Berner, McCandlish, Radford, Sutskever, and
+  Amodei}]{NEURIPS2020_1457c0d6}
+Tom Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared~D Kaplan, Prafulla
+  Dhariwal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell,
+  Sandhini Agarwal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon
+  Child, Aditya Ramesh, Daniel Ziegler, Jeffrey Wu, Clemens Winter, Chris
+  Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess,
+  Jack Clark, Christopher Berner, Sam McCandlish, Alec Radford, Ilya Sutskever,
+  and Dario Amodei. 2020.
+\newblock \href
+  {https://proceedings.neurips.cc/paper/2020/file/1457c0d6bfcb4967418bfb8ac142f64a-Paper.pdf}
+  {Language models are few-shot learners}.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~33, pages 1877--1901. Curran Associates, Inc.
+
+\bibitem[{{Chaudhry} et~al.(2020){Chaudhry}, {Shekhar}, {Gupta}, {Maneriker},
+  {Bansal}, and {Joshi}}]{leafqa}
+R.~{Chaudhry}, S.~{Shekhar}, U.~{Gupta}, P.~{Maneriker}, P.~{Bansal}, and
+  A.~{Joshi}. 2020.
+\newblock \href {https://doi.org/10.1109/WACV45572.2020.9093269} {Leaf-qa:
+  Locate, encode attend for figure question answering}.
+\newblock In \emph{2020 IEEE Winter Conference on Applications of Computer
+  Vision (WACV)}, pages 3501--3510.
+
+\bibitem[{Cho et~al.(2021)Cho, Lei, Tan, and Bansal}]{vlt5}
+Jaemin Cho, Jie Lei, Hao Tan, and Mohit Bansal. 2021.
+\newblock Unifying vision-and-language tasks via text generation.
+\newblock In \emph{ICML}.
+
+\bibitem[{Cho et~al.(2018)Cho, Amplayo, won Hwang, and
+  Park}]{Cho2018AdversarialTA}
+Minseok Cho, Reinald~Kim Amplayo, Seung won Hwang, and Jonghyuck Park. 2018.
+\newblock Adversarial tableqa: Attention supervision for question answering on
+  tables.
+\newblock \emph{ArXiv}, abs/1810.08113.
+
+\bibitem[{Choi et~al.(2019)Choi, Jung, Park, Choo, and
+  Elmqvist}]{Choi2019VisualizingFT}
+J.~Choi, Sanghun Jung, Deok~Gun Park, J.~Choo, and N.~Elmqvist. 2019.
+\newblock Visualizing for the non‐visual: Enabling the visually impaired to
+  use visualization.
+\newblock \emph{Computer Graphics Forum}, 38.
+
+\bibitem[{Devlin et~al.(2019)Devlin, Chang, Lee, and Toutanova}]{BERT}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2019.
+\newblock \href {https://doi.org/10.18653/v1/N19-1423} {{BERT}: Pre-training of
+  deep bidirectional transformers for language understanding}.
+\newblock In \emph{Proceedings of the 2019 Conference of the North {A}merican
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long and Short Papers)}, pages 4171--4186,
+  Minneapolis, Minnesota. Association for Computational Linguistics.
+
+\bibitem[{Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn,
+  Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and
+  Houlsby}]{vit}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn,
+  Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg
+  Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby. 2021.
+\newblock \href {https://openreview.net/forum?id=YicbFdNTTy} {An image is worth
+  16x16 words: Transformers for image recognition at scale}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Eisenschlos et~al.(2020)Eisenschlos, Krichene, and
+  M{\"u}ller}]{tabfact}
+Julian Eisenschlos, Syrine Krichene, and Thomas M{\"u}ller. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.findings-emnlp.27}
+  {Understanding tables with intermediate pre-training}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2020}, pages 281--296, Online. Association for Computational
+  Linguistics.
+
+\bibitem[{Geva et~al.(2020)Geva, Gupta, and Berant}]{geva-etal-2020-injecting}
+Mor Geva, Ankit Gupta, and Jonathan Berant. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.89} {Injecting
+  numerical reasoning skills into language models}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 946--958, Online. Association for
+  Computational Linguistics.
+
+\bibitem[{He et~al.(2017)He, Gkioxari, Dollár, and Girshick}]{maskrcnn}
+Kaiming He, Georgia Gkioxari, Piotr Dollár, and Ross Girshick. 2017.
+\newblock \href {https://doi.org/10.1109/ICCV.2017.322} {Mask r-cnn}.
+\newblock In \emph{2017 IEEE International Conference on Computer Vision
+  (ICCV)}, pages 2980--2988.
+
+\bibitem[{Herzig et~al.(2020)Herzig, Nowak, M{\"u}ller, Piccinno, and
+  Eisenschlos}]{tapas}
+Jonathan Herzig, Pawel~Krzysztof Nowak, Thomas M{\"u}ller, Francesco Piccinno,
+  and Julian Eisenschlos. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.398} {{T}a{P}as:
+  Weakly supervised table parsing via pre-training}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 4320--4333, Online. Association for
+  Computational Linguistics.
+
+\bibitem[{{Hoque} et~al.(){Hoque}, {Setlur}, {Tory}, and
+  {Dykeman}}]{hoque-etal-2017}
+Enamul {Hoque}, Vidya {Setlur}, Melanie {Tory}, and Isaac {Dykeman}.
+\newblock Applying pragmatics principles for interaction with visual analytics.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics}.
+
+\bibitem[{Jung et~al.(2017)Jung, Kim, Song, Hwang, Lee, Kim, and
+  Seo}]{chartsense}
+Daekyoung Jung, Wonjae Kim, Hyunjoo Song, Jeong-in Hwang, Bongshin Lee,
+  Bohyoung Kim, and Jinwook Seo. 2017.
+\newblock \href {https://doi.org/10.1145/3025453.3025957} {\emph{ChartSense:
+  Interactive Data Extraction from Chart Images}}, page 6706–6717.
+  Association for Computing Machinery, New York, NY, USA.
+
+\bibitem[{Kafle et~al.(2018)Kafle, Cohen, Price, and Kanan}]{dvqa}
+Kushal Kafle, Scott Cohen, Brian~L. Price, and Christopher Kanan. 2018.
+\newblock \href {http://arxiv.org/abs/1801.08163} {{DVQA:} understanding data
+  visualizations via question answering}.
+\newblock \emph{CoRR}, abs/1801.08163.
+
+\bibitem[{Kafle et~al.(2019)Kafle, Shrestha, Price, Cohen, and Kanan}]{prefil}
+Kushal Kafle, Robik Shrestha, Brian~L. Price, Scott Cohen, and Christopher
+  Kanan. 2019.
+\newblock \href {http://arxiv.org/abs/1908.01801} {Answering questions about
+  data visualizations using efficient bimodal fusion}.
+\newblock \emph{CoRR}, abs/1908.01801.
+
+\bibitem[{Kafle et~al.(2017)Kafle, Yousefhussien, and
+  Kanan}]{visual-data-augmentation}
+Kushal Kafle, Mohammed Yousefhussien, and Christopher Kanan. 2017.
+\newblock \href {https://doi.org/10.18653/v1/W17-3529} {Data augmentation for
+  visual question answering}.
+\newblock In \emph{Proceedings of the 10th International Conference on Natural
+  Language Generation}, pages 198--202, Santiago de Compostela, Spain.
+  Association for Computational Linguistics.
+
+\bibitem[{Kahou et~al.(2017)Kahou, Atkinson, Michalski, K{\'{a}}d{\'{a}}r,
+  Trischler, and Bengio}]{figureqa}
+Samira~Ebrahimi Kahou, Adam Atkinson, Vincent Michalski, {\'{A}}kos
+  K{\'{a}}d{\'{a}}r, Adam Trischler, and Yoshua Bengio. 2017.
+\newblock \href {http://arxiv.org/abs/1710.07300} {Figureqa: An annotated
+  figure dataset for visual reasoning}.
+\newblock \emph{CoRR}, abs/1710.07300.
+
+\bibitem[{Kim et~al.(2020)Kim, Hoque, and Agrawala}]{kim2020answering}
+Dae~Hyun Kim, Enamul Hoque, and Maneesh Agrawala. 2020.
+\newblock Answering questions about charts and generating visual explanations.
+\newblock In \emph{Proceedings of the 2020 CHI Conference on Human Factors in
+  Computing Systems}, pages 1--13.
+
+\bibitem[{Kim et~al.(2021)Kim, Setlur, and Agrawala}]{kim2021towards}
+Dae~Hyun Kim, Vidya Setlur, and Maneesh Agrawala. 2021.
+\newblock Towards understanding how readers integrate charts and captions: A
+  case study with line charts.
+\newblock In \emph{Proceedings of the CHI Conference on Human Factors in
+  Computing Systems}, pages 1--11.
+
+\bibitem[{Law and Deng(2019)}]{Law2019CornerNetDO}
+Hei Law and Jia~Bin Deng. 2019.
+\newblock Cornernet: Detecting objects as paired keypoints.
+\newblock \emph{International Journal of Computer Vision}, 128:642--656.
+
+\bibitem[{Lewis et~al.(2021)Lewis, Wu, Liu, Minervini, Küttler, Piktus,
+  Stenetorp, and Riedel}]{paq}
+Patrick Lewis, Yuxiang Wu, Linqing Liu, Pasquale Minervini, Heinrich Küttler,
+  Aleksandra Piktus, Pontus Stenetorp, and Sebastian Riedel. 2021.
+\newblock \href {https://doi.org/10.1162/tacl_a_00415} {{PAQ: 65 Million
+  Probably-Asked Questions and What You Can Do With Them}}.
+\newblock \emph{Transactions of the Association for Computational Linguistics},
+  9:1098--1115.
+
+\bibitem[{Lin et~al.(2014)Lin, Maire, Belongie, Bourdev, Girshick, Hays,
+  Perona, Ramanan, Doll{\'{a}}r, and Zitnick}]{coco}
+Tsung{-}Yi Lin, Michael Maire, Serge~J. Belongie, Lubomir~D. Bourdev, Ross~B.
+  Girshick, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll{\'{a}}r, and
+  C.~Lawrence Zitnick. 2014.
+\newblock \href {http://arxiv.org/abs/1405.0312} {Microsoft {COCO:} common
+  objects in context}.
+\newblock \emph{CoRR}, abs/1405.0312.
+
+\bibitem[{Liu et~al.(2019)Liu, Klabjan, and Bless}]{Liu2019DataEF}
+Xiaoyi Liu, Diego Klabjan, and Patrick~N. Bless. 2019.
+\newblock Data extraction from charts via single deep neural network.
+\newblock \emph{ArXiv}, abs/1906.11906.
+
+\bibitem[{Luo et~al.(2021)Luo, Li, Wang, and Lin}]{ChartOCR}
+Junyu Luo, Zekun Li, Jinpeng Wang, and Chin-Yew Lin. 2021.
+\newblock Chartocr: Data extraction from charts images via a deep hybrid
+  framework.
+\newblock \emph{2021 IEEE Winter Conference on Applications of Computer Vision
+  (WACV)}, pages 1916--1924.
+
+\bibitem[{Masry and Hoque(2021)}]{ahmed-workshop-2021}
+Ahmed Masry and Enamul Hoque. 2021.
+\newblock Integrating image data extraction and table parsing methods for chart
+  question answering.
+\newblock \emph{Chart Question Answering Workshop, in conjunction with the
+  Conference on Computer Vision and Pattern Recognition (CVPR)}, pages 1--5.
+
+\bibitem[{Methani et~al.(2020)Methani, Ganguly, Khapra, and Kumar}]{plotqa}
+Nitesh Methani, Pritha Ganguly, Mitesh~M. Khapra, and Pratyush Kumar. 2020.
+\newblock Plotqa: Reasoning over scientific plots.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on
+  Applications of Computer Vision (WACV)}.
+
+\bibitem[{Nan et~al.(2021)Nan, Hsieh, Mao, Lin, Verma, Zhang, Kryściński,
+  Schoelkopf, Kong, Tang, Mutuma, Rosand, Trindade, Bandaru, Cunningham, Xiong,
+  and Radev}]{nan2021feta}
+Linyong Nan, Chiachun Hsieh, Ziming Mao, Xi~Victoria Lin, Neha Verma, Rui
+  Zhang, Wojciech Kryściński, Nick Schoelkopf, Riley Kong, Xiangru Tang,
+  Murori Mutuma, Ben Rosand, Isabel Trindade, Renusree Bandaru, Jacob
+  Cunningham, Caiming Xiong, and Dragomir Radev. 2021.
+\newblock Fetaqa: Free-form table question answering.
+\newblock \emph{arXiv preprint arXiv:2104.00369}.
+
+\bibitem[{Pasupat and Liang(2015)}]{sempre}
+Panupong Pasupat and Percy Liang. 2015.
+\newblock \href {https://doi.org/10.3115/v1/P15-1142} {Compositional semantic
+  parsing on semi-structured tables}.
+\newblock In \emph{Proceedings of the 53rd Annual Meeting of the Association
+  for Computational Linguistics and the 7th International Joint Conference on
+  Natural Language Processing (Volume 1: Long Papers)}, pages 1470--1480,
+  Beijing, China. Association for Computational Linguistics.
+
+\bibitem[{Raffel et~al.(2020)Raffel, Shazeer, Roberts, Lee, Narang, Matena,
+  Zhou, Li, and Liu}]{Raffel2020t5}
+Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael
+  Matena, Yanqi Zhou, Wei Li, and Peter~J. Liu. 2020.
+\newblock \href {http://jmlr.org/papers/v21/20-074.html} {Exploring the limits
+  of transfer learning with a unified text-to-text transformer}.
+\newblock \emph{Journal of Machine Learning Research}, 21(140):1--67.
+
+\bibitem[{Rajpurkar et~al.(2016)Rajpurkar, Zhang, Lopyrev, and Liang}]{squadv1}
+Pranav Rajpurkar, Jian Zhang, Konstantin Lopyrev, and Percy Liang. 2016.
+\newblock \href {http://arxiv.org/abs/1606.05250} {Squad: 100, 000+ questions
+  for machine comprehension of text}.
+\newblock \emph{CoRR}, abs/1606.05250.
+
+\bibitem[{Ren et~al.(2015)Ren, He, Girshick, and Sun}]{RenHG015}
+Shaoqing Ren, Kaiming He, Ross~B. Girshick, and Jian Sun. 2015.
+\newblock \href {http://arxiv.org/abs/1506.01497} {Faster {R-CNN:} towards
+  real-time object detection with region proposal networks}.
+\newblock \emph{CoRR}, abs/1506.01497.
+
+\bibitem[{Savva et~al.(2011)Savva, Kong, Chhajta, Fei-Fei, Agrawala, and
+  Heer}]{Revision}
+M.~Savva, Nicholas Kong, Arti Chhajta, Li~Fei-Fei, Maneesh Agrawala, and
+  J.~Heer. 2011.
+\newblock Revision: automated classification, analysis and redesign of chart
+  images.
+\newblock \emph{Proceedings of the 24th annual ACM symposium on User interface
+  software and technology}.
+
+\bibitem[{Saxton et~al.(2019)Saxton, Grefenstette, Hill, and
+  Kohli}]{saxton2018analysing}
+David Saxton, Edward Grefenstette, Felix Hill, and Pushmeet Kohli. 2019.
+\newblock \href {https://openreview.net/forum?id=H1gR5iR5FX} {Analysing
+  mathematical reasoning abilities of neural models}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Siegel et~al.(2016)Siegel, Horvitz, Levin, Divvala, and
+  Farhadi}]{Siegel2016FigureSeerPR}
+Noah Siegel, Zachary Horvitz, Roie Levin, Santosh~Kumar Divvala, and Ali
+  Farhadi. 2016.
+\newblock Figureseer: Parsing result-figures in research papers.
+\newblock In \emph{ECCV}.
+
+\bibitem[{Singh and Shekhar(2020)}]{stlcqa}
+Hrituraj Singh and Sumit Shekhar. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.emnlp-main.264} {{STL-CQA}:
+  Structure-based transformers with localization and encoding for chart
+  question answering}.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pages 3275--3284, Online. Association
+  for Computational Linguistics.
+
+\bibitem[{Teney et~al.(2017)Teney, Liu, and van~den
+  Hengel}]{Teney2017GraphStructuredRF}
+Damien Teney, Lingqiao Liu, and Anton van~den Hengel. 2017.
+\newblock Graph-structured representations for visual question answering.
+\newblock \emph{2017 IEEE Conference on Computer Vision and Pattern Recognition
+  (CVPR)}, pages 3233--3241.
+
+\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}]{VaswaniSPUJGKP17}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N. Gomez, Lukasz Kaiser, and Illia Polosukhin. 2017.
+\newblock \href {http://arxiv.org/abs/1706.03762} {Attention is all you need}.
+\newblock \emph{CoRR}, abs/1706.03762.
+
+\bibitem[{Wolf et~al.(2019)Wolf, Debut, Sanh, Chaumond, Delangue, Moi, Cistac,
+  Rault, Louf, Funtowicz, and Brew}]{huggingface}
+Thomas Wolf, Lysandre Debut, Victor Sanh, Julien Chaumond, Clement Delangue,
+  Anthony Moi, Pierric Cistac, Tim Rault, R{\'{e}}mi Louf, Morgan Funtowicz,
+  and Jamie Brew. 2019.
+\newblock \href {http://arxiv.org/abs/1910.03771} {Huggingface's transformers:
+  State-of-the-art natural language processing}.
+\newblock \emph{CoRR}, abs/1910.03771.
+
+\bibitem[{Wu et~al.(2019)Wu, Kirillov, Massa, Lo, and Girshick}]{detectron2}
+Yuxin Wu, Alexander Kirillov, Francisco Massa, Wan-Yen Lo, and Ross Girshick.
+  2019.
+\newblock Detectron2.
+\newblock \url{https://github.com/facebookresearch/detectron2}.
+
+\end{thebibliography}
