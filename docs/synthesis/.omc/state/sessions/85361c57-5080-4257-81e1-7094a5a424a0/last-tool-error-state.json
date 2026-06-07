@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"/c/Users/admin/AppData/Local/Programs/MiKTeX/miktex/bin/x64/initexmf.exe --mkmaps 2>&1; /c/Users/admin/AppData/Local/Programs/MiKTeX/miktex/bin/x64/miktex.exe formats build --engine luahbt...",
+  "error": "Exit code 1\ninternal error\r\nData: \r\nSource: Libraries\\MiKTeX\\PackageManager\\PackageManagerImpl.h:174\r\ninternal error\r\nInfo: \r\nSource: Libraries\\MiKTeX\\PackageManager\\PackageManagerImpl.h\r\nLine: 174\r\n\r\nSorry, but \"MiKTeX Configuration Utility\" did not succeed.\r\nlog4cxx: No appender could be found for logger (initexmf).\r\nlog4cxx: Please initialize the log4cxx system properly.\r\n\r\nSorry, but: internal error",
+  "timestamp": "2026-06-07T16:26:47.968Z",
+  "retry_count": 1
+}
