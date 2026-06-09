@@ -21,7 +21,7 @@
   <p class="meta">Ting-Yao Hsu, C. Lee Giles, Ting-Hao Huang · Pennsylvania State University · ACL Findings 2021 · arXiv:2110.11624</p>
 </header>
 
-<div class="hover-hint"><span>🇬🇧 EN — hover ประโยคเพื่อดูภาษาไทย · คลิกเพื่อล็อก</span></div>
+<div class="hover-hint"><span>🇬🇧 EN — hover ย่อหน้าเพื่อดูภาษาไทย · คลิกเพื่อล็อก</span></div>
 
 <div class="translation-grid">
 
@@ -387,58 +387,13 @@ let fontSize=16;
 function changeFont(d){fontSize=Math.min(24,Math.max(12,fontSize+d));document.body.style.fontSize=fontSize+'px';document.getElementById('font-size-val').textContent=fontSize+'px';}
 let dark=false;
 function toggleTheme(){dark=!dark;document.documentElement.setAttribute('data-theme',dark?'dark':'');}
-function splitSentences(text){
-  return text.replace(/([.!?])\s+([A-Zก-๙"])/g,'$1 $2').split(' ').map(s=>s.trim()).filter(Boolean);
-}
-function initSentenceReveal(){
-  let pIdx=0;
-  document.querySelectorAll('.row.para').forEach(row=>{
-    const enP=row.querySelector('.en p');
-    const thP=row.querySelector('.th p');
-    if(!enP||!thP){pIdx++;return;}
-    const enSents=splitSentences(enP.textContent.trim());
-    const thSents=splitSentences(thP.textContent.trim());
-    // Build EN spans with data-th attribute storing the matching TH sentence
-    enP.innerHTML=enSents.map((s,i)=>{
-      const th=thSents[i]||thSents[thSents.length-1]||'';
-      return `<span class="en-sent" data-en="${s.replace(/"/g,'&quot;')}" data-th="${th.replace(/"/g,'&quot;')}">${s}</span>`;
-    }).join(' ');
-    pIdx++;
-  });
-
-  // Hover: swap EN → TH text inline
-  const grid=document.querySelector('.translation-grid');
-  grid.addEventListener('mouseover',e=>{
-    const s=e.target.closest('.en-sent');
-    if(!s||s.classList.contains('locked'))return;
-    if(!s._origHTML) s._origHTML=s.innerHTML;
-    s.textContent=s.dataset.th;
-    s.classList.add('showing-th');
-  });
-  grid.addEventListener('mouseout',e=>{
-    const s=e.target.closest('.en-sent');
-    if(!s||s.classList.contains('locked'))return;
-    if(s._origHTML!==undefined){s.innerHTML=s._origHTML;}
-    s.classList.remove('showing-th');
-  });
-  // Click: lock the TH text (click again to unlock)
-  grid.addEventListener('click',e=>{
-    const s=e.target.closest('.en-sent');if(!s)return;
-    if(s.classList.contains('locked')){
-      // Unlock → restore EN
-      if(s._origHTML!==undefined) s.innerHTML=s._origHTML;
-      s.classList.remove('locked','showing-th');
-    } else {
-      // Lock in TH mode
-      if(!s._origHTML) s._origHTML=s.innerHTML;
-      s.textContent=s.dataset.th;
-      s.classList.add('locked','showing-th');
-    }
-  });
-}
 document.addEventListener('DOMContentLoaded',()=>{
-  initSentenceReveal();
-  document.querySelectorAll('.row .en').forEach(walkAndWrap);
+  // Paragraph-level click-to-lock: CSS :hover handles EN→TH reveal
+  document.querySelectorAll('.row.para').forEach(row=>{
+    row.addEventListener('click',()=>{ row.classList.toggle('locked'); });
+  });
+  // Word tooltips on EN text only
+  document.querySelectorAll('.row.para .en, .row.heading .en').forEach(walkAndWrap);
   updateProgress();
 });
 </script>
