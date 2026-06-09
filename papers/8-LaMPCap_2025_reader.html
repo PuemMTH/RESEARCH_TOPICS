@@ -1,0 +1,469 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LaMP-Cap — Reader</title>
+<!-- Copyright 2026 · Apache-2.0 -->
+<style>
+:root {
+  --bg:        #FAF8F3;
+  --paper:     #FFFFFF;
+  --ink:       #1A1917;
+  --ink2:      #4A4845;
+  --ink3:      #87867F;
+  --rule:      #E3DACC;
+  --accent:    #C07040;
+  --accent-l:  #F5E8DA;
+  --teal:      #3A7A6A;
+  --teal-l:    #D6EDEA;
+  --amber:     #C07D3A;
+  --amber-l:   #F5EDDA;
+  --serif:     "Georgia", "Sarabun", ui-serif, serif;
+  --sans:      "Sarabun", system-ui, -apple-system, sans-serif;
+  --mono:      ui-monospace, "SF Mono", Consolas, monospace;
+  --col:       680px;
+  --progress:  0%;
+}
+[data-theme="dark"] {
+  --bg:    #17161A;
+  --paper: #1F1E22;
+  --ink:   #E8E6E0;
+  --ink2:  #A8A6A0;
+  --ink3:  #68666A;
+  --rule:  #2E2C30;
+  --accent-l: #2A1C10;
+  --teal-l:   #0D2520;
+  --amber-l:  #251A08;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 18px;
+  line-height: 1.85;
+  transition: background .2s, color .2s;
+}
+
+/* ── Progress bar ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; z-index: 100;
+  height: 3px; width: var(--progress);
+  background: var(--accent);
+  transition: width .1s linear;
+}
+
+/* ── Toolbar ── */
+#toolbar {
+  position: fixed; top: 0; right: 0; z-index: 99;
+  display: flex; gap: 8px; align-items: center;
+  padding: 10px 16px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+  width: 100%;
+  justify-content: flex-end;
+}
+#toolbar button {
+  background: none; border: 1px solid var(--rule); border-radius: 6px;
+  color: var(--ink2); cursor: pointer; padding: 4px 10px; font-size: 13px;
+  font-family: var(--mono); transition: all .15s;
+}
+#toolbar button:hover { background: var(--accent-l); color: var(--accent); border-color: var(--accent); }
+#font-size-val { font-family: var(--mono); font-size: 12px; color: var(--ink3); min-width: 36px; text-align: center; }
+
+/* ── Layout ── */
+#toc-sidebar {
+  position: fixed; left: 0; top: 44px; bottom: 0;
+  width: 220px; overflow-y: auto;
+  padding: 24px 16px;
+  border-right: 1px solid var(--rule);
+  background: var(--bg);
+  transform: translateX(-220px);
+  transition: transform .2s;
+}
+#toc-sidebar.open { transform: translateX(0); }
+#toc-sidebar h6 {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink3); margin-bottom: 12px;
+}
+#toc-sidebar a {
+  display: block; color: var(--ink2); text-decoration: none;
+  font-size: 13px; padding: 4px 0; border-left: 2px solid transparent;
+  padding-left: 8px; transition: all .15s;
+}
+#toc-sidebar a:hover, #toc-sidebar a.active {
+  color: var(--accent); border-color: var(--accent);
+}
+
+main {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 72px 24px 120px;
+}
+
+/* ── Typography ── */
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(22px, 3.5vw, 30px);
+  line-height: 1.3;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+.hero-sub {
+  font-size: 16px; color: var(--ink2); line-height: 1.7;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  background: var(--accent-l);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 32px; }
+.badge {
+  font-family: var(--mono); font-size: 11px;
+  padding: 3px 8px; border-radius: 4px;
+  background: var(--rule); color: var(--ink2);
+}
+.badge a { color: inherit; text-decoration: none; }
+.badge.coral { background: #EED6CA; color: #8B3A20; }
+[data-theme="dark"] .badge.coral { background: #2A1410; color: #D08060; }
+
+h2 {
+  font-family: var(--serif); font-size: clamp(18px, 2.5vw, 22px);
+  font-weight: 700; color: var(--ink);
+  margin: 48px 0 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+}
+h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin: 24px 0 8px; }
+p { margin: 12px 0; color: var(--ink2); }
+ul, ol { padding-left: 22px; margin: 8px 0; color: var(--ink2); }
+li { margin: 4px 0; }
+strong { color: var(--ink); font-weight: 700; }
+
+.overline {
+  font-family: var(--mono); font-size: 10px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink3); display: block; margin-bottom: 4px;
+}
+
+/* ── Boxes ── */
+.key-box {
+  background: var(--teal-l); border-left: 3px solid var(--teal);
+  border-radius: 0 6px 6px 0; padding: 12px 16px; margin: 12px 0;
+}
+.key-box.amber { background: var(--amber-l); border-color: var(--amber); }
+.key-box.accent { background: var(--accent-l); border-color: var(--accent); }
+
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 15px; margin: 16px 0;
+}
+th {
+  background: var(--rule); padding: 8px 12px;
+  text-align: left; font-weight: 700;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .06em;
+}
+td { padding: 8px 12px; border-bottom: 1px solid var(--rule); color: var(--ink2); }
+tr:hover td { background: var(--accent-l); }
+
+.synthesis-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 16px 0; }
+.synthesis-card {
+  background: var(--paper); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 16px;
+}
+.synthesis-card h4 { font-size: 13px; font-family: var(--mono); color: var(--accent); margin-bottom: 8px; }
+.synthesis-card p { font-size: 14px; margin: 0; }
+
+footer { text-align: center; font-size: 13px; color: var(--ink3); padding: 24px 0; border-top: 1px solid var(--rule); margin-top: 48px; }
+
+/* ── Hover Translation ── */
+.en-word {
+  position: relative; cursor: help;
+  border-bottom: 1px dashed var(--ink3);
+  transition: border-color .15s;
+}
+.en-word:hover { border-color: var(--accent); }
+.en-word .tooltip {
+  display: none;
+  position: absolute; bottom: calc(100% + 6px); left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink); color: var(--bg);
+  font-family: var(--sans); font-size: 13px; font-weight: 400;
+  white-space: nowrap; padding: 5px 10px; border-radius: 6px;
+  pointer-events: none; z-index: 200;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+}
+.en-word .tooltip::after {
+  content: ''; position: absolute; top: 100%; left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: var(--ink);
+}
+.en-word:hover .tooltip { display: block; }
+.en-word .tooltip.has-ctx { white-space: normal; max-width: 320px; min-width: 200px; padding: 10px 14px; line-height: 1.55; }
+.tooltip-th { display: block; font-size: 14px; font-weight: 600; }
+.tooltip-ctx { display: block; font-style: italic; font-size: 12px; line-height: 1.55; margin-top: 6px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,.25); opacity: .92; }
+
+/* suppress tooltip on Thai-only words */
+.no-tooltip { border-bottom: none; cursor: auto; }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<div id="toolbar">
+  <button onclick="toggleToc()" title="Table of Contents">☰ TOC</button>
+  <button onclick="changeFont(-1)">A−</button>
+  <span id="font-size-val">18px</span>
+  <button onclick="changeFont(1)">A+</button>
+  <button onclick="toggleTheme()">◐ Theme</button>
+</div>
+
+<nav id="toc-sidebar">
+  <h6>Contents</h6>
+  <a href="#overview">ภาพรวม</a>
+  <a href="#methodology">Methodology</a>
+  <a href="#results">Results</a>
+  <a href="#limitations">ข้อจำกัด</a>
+  <a href="#thesis">Thesis</a>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <div id="overview">
+    <p class="overline">Paper Analysis · arXiv 2025</p>
+    <h1 class="hero-title">LaMP-Cap: Personalized Figure Caption Generation With Multimodal Figure Profiles</h1>
+    <p class="hero-sub">Paper นี้สำคัญกับ thesis เพราะเปลี่ยนโจทย์ figure captioning จากการดูเฉพาะ target figure ไปสู่การใช้ profile figures จาก paper เดียวกันเป็นบริบท multimodal เพื่อสร้าง caption ที่ใกล้ author-written caption มากขึ้น</p>
+    <div class="meta-row">
+      <span class="badge">Ng, Hsu, Ramakrishnan et al.</span>
+      <span class="badge coral">arXiv 2025</span>
+      <span class="badge"><a href="https://arxiv.org/abs/2506.06561">arXiv:2506.06561</a></span>
+    </div>
+
+    <span class="overline">Abstract & Contributions</span>
+    <h2>ภาพรวม</h2>
+
+    <h3>ปัญหาที่ Paper นี้แก้</h3>
+    <div class="key-box">
+      <ul>
+        <li>งาน personalization ส่วนใหญ่เป็น text-only แต่ scientific figure captioning ต้องใช้ image, figure-mentioning paragraph และ caption style จาก paper เดียวกัน</li>
+        <li>caption ที่ generate แบบ generic มักต้องถูกแก้โดยผู้เขียนเพื่อให้เข้ากับ domain และ writing style</li>
+        <li>ยังขาด benchmark ที่ออกแบบมาให้ทดสอบ multimodal profile สำหรับ personalized scientific caption generation โดยตรง</li>
+      </ul>
+    </div>
+
+    <h3>Key Contributions</h3>
+    <ul>
+      <li><strong>LaMP-Cap dataset:</strong> สร้างจาก SciCap Challenge โดยให้ target figure พร้อม multimodal source และ profile figures สูงสุด 3 รูปจาก paper เดียวกัน</li>
+      <li><strong>Context profile formulation:</strong> profile แต่ละชุดมี image, caption และ figure-mentioning paragraph เพื่อแทนทั้งเนื้อหาและ style</li>
+      <li><strong>Empirical finding:</strong> profile information ช่วยให้ caption ใกล้ ground-truth มากขึ้น และ profile image มีประโยชน์มากกว่า paragraph ใน ablation</li>
+    </ul>
+  </div>
+
+  <!-- METHODOLOGY -->
+  <div id="methodology">
+    <span class="overline">How It Works</span>
+    <h2>Methodology</h2>
+
+    <h3>Dataset Construction</h3>
+    <p>LaMP-Cap curate จาก SciCap Challenge Dataset ซึ่งมี figures จาก arXiv papers จำนวนมาก แล้วเลือกหนึ่งรูปเป็น target figure และใช้รูปอื่นใน paper เดียวกันเป็น profile context โดยตัด paper ที่มีรูปเดียวออก เพราะไม่สามารถสร้าง target-profile pair ได้</p>
+    <div class="key-box">
+      <ul>
+        <li>110,828 target figures</li>
+        <li>307,903 total figures รวม target และ profile</li>
+        <li>profile สูงสุด 3 รูปต่อ target figure</li>
+        <li>split เป็น train/validation/test แบบ 80/10/10</li>
+      </ul>
+    </div>
+
+    <h3>Input Format</h3>
+    <p>โมเดลได้รับ target image และ figure-mentioning paragraph เป็น source จากนั้นเพิ่ม profile figures จาก paper เดียวกันเพื่อช่วยเรื่อง context, domain vocabulary และ author style การทดลองเปรียบเทียบ No-Profile, One-Profile และ All-Profile</p>
+  </div>
+
+  <!-- RESULTS -->
+  <div id="results">
+    <span class="overline">Experiments</span>
+    <h2>Results & Benchmarks</h2>
+
+    <table>
+      <thead><tr><th>Finding</th><th>Implication</th></tr></thead>
+      <tbody>
+        <tr><td>All-Profile ได้คะแนนสูงสุดในหลาย model</td><td>context จาก paper เดียวกันช่วย caption generation จริง</td></tr>
+        <tr><td>gain จาก No-Profile ไป One-Profile ใหญ่กว่าการเพิ่ม profile หลังจากนั้น</td><td>retrieval ควรเลือก profile/context ที่ relevant มากกว่าส่งทุกอย่าง</td></tr>
+        <tr><td>Ablation hierarchy: caption > image > paragraph</td><td>context extraction สำหรับ thesis ไม่ควรพึ่ง text paragraph อย่างเดียว</td></tr>
+        <tr><td>Qwen-2.5-VL-7B มี generation failure สูงในบาง profile setting</td><td>open-source VLM ต้องมี fallback/validation layer</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LIMITATIONS -->
+  <div id="limitations">
+    <span class="overline">Gaps & Future Work</span>
+    <h2>ข้อจำกัดและทิศทางต่อไป</h2>
+    <div class="key-box amber">
+      <ul>
+        <li>dataset จำกัด profile ไม่เกิน 3 รูป จึงยังไม่ครอบคลุม long-document context เต็ม paper</li>
+        <li>evaluation ยังพึ่ง lexical metrics เช่น BLEU/ROUGE เป็นหลัก ซึ่งอาจไม่วัด faithfulness หรือ informativeness ได้ดี</li>
+        <li>context ถูกนิยามเป็น profile figures มากกว่า retrieval จาก abstract, methodology, results หรือ cross-reference อื่น ๆ</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- THESIS -->
+  <div id="thesis">
+    <span class="overline">Connection to My Research</span>
+    <h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2>
+    <div class="synthesis-grid">
+      <div class="synthesis-card">
+        <h4>What I Borrow</h4>
+        <p>ใช้แนวคิด multimodal profile เป็นหลักฐานว่า context จาก paper เดียวกันช่วย scientific figure captioning ได้</p>
+      </div>
+      <div class="synthesis-card">
+        <h4>Where I Diverge</h4>
+        <p>thesis สามารถขยายจาก profile figures ไปเป็น multi-level document context retrieval เช่น section, mention paragraph, abstract และ table/figure cross-reference</p>
+      </div>
+      <div class="synthesis-card">
+        <h4>Open Questions</h4>
+        <p>ต้องวัดว่า context แบบ RAG ที่ retrieve จากเอกสารทั้งฉบับดีกว่า fixed profile figures หรือไม่ และช่วยลด hallucination ได้แค่ไหน</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>Analysis generated 2026-06-07 · arXiv:2506.06561 · <span style="color:var(--accent)">Hover over underlined English terms for Thai translations</span></footer>
+</main>
+
+<script src="../assets/translations.js"></script>
+<script>
+// DICT loaded from ../assets/translations.js (window.DICT)
+// Add paper-specific terms here if needed:
+// Object.assign(window.DICT, { "term": "คำแปล" });
+const DICT = window.DICT;
+
+// ── Detect English word ──
+function isEnglish(word) {
+  return /^[A-Za-z][A-Za-z0-9''-]*$/.test(word);
+}
+
+function lookupTh(word) {
+  const lower = word.toLowerCase().replace(/[.,;:!?'"()[\]]/g,'');
+  const val = DICT[lower] || DICT[word] || null;
+  if (!val) return null;
+  return (typeof val === 'string') ? { th: val, ctx: null } : val;
+}
+
+// ── Wrap English words in text nodes ──
+function wrapTextNode(node) {
+  const text = node.nodeValue;
+  if (!text.trim()) return;
+
+  const parts = text.split(/(\s+)/);
+  const frag = document.createDocumentFragment();
+  let changed = false;
+
+  parts.forEach(part => {
+    const clean = part.replace(/^[^A-Za-z0-9]+|[^A-Za-z0-9]+$/g,'');
+    const entry = clean ? lookupTh(clean) : null;
+
+    if (entry && isEnglish(clean)) {
+      changed = true;
+      // prefix punctuation
+      const pre = part.match(/^[^A-Za-z0-9]*/)[0];
+      const suf = part.match(/[^A-Za-z0-9]*$/)[0];
+      if (pre) frag.appendChild(document.createTextNode(pre));
+
+      const span = document.createElement('span');
+      span.className = 'en-word';
+      span.textContent = clean;
+      const tip = document.createElement('span');
+      tip.className = entry.ctx ? 'tooltip has-ctx' : 'tooltip';
+      const thSpan = document.createElement('span');
+      thSpan.className = 'tooltip-th';
+      thSpan.textContent = entry.th;
+      tip.appendChild(thSpan);
+      if (entry.ctx) {
+        const ctxSpan = document.createElement('span');
+        ctxSpan.className = 'tooltip-ctx';
+        ctxSpan.textContent = entry.ctx;
+        tip.appendChild(ctxSpan);
+      }
+      span.appendChild(tip);
+      frag.appendChild(span);
+
+      if (suf) frag.appendChild(document.createTextNode(suf));
+    } else {
+      frag.appendChild(document.createTextNode(part));
+    }
+  });
+
+  if (changed) node.parentNode.replaceChild(frag, node);
+}
+
+function walkAndWrap(el) {
+  // skip code, pre, script, style, tooltip spans
+  if (['SCRIPT','STYLE','PRE','CODE'].includes(el.tagName)) return;
+  if (el.classList && el.classList.contains('tooltip')) return;
+
+  const children = [...el.childNodes];
+  children.forEach(child => {
+    if (child.nodeType === Node.TEXT_NODE) {
+      wrapTextNode(child);
+    } else if (child.nodeType === Node.ELEMENT_NODE) {
+      walkAndWrap(child);
+    }
+  });
+}
+
+// ── Progress bar ──
+function updateProgress() {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docHeight > 0 ? (scrollTop / docHeight * 100).toFixed(1) : 0;
+  document.documentElement.style.setProperty('--progress', pct + '%');
+}
+
+// ── TOC active link ──
+function updateToc() {
+  const sections = ['overview','methodology','results','limitations','thesis'];
+  const links = document.querySelectorAll('#toc-sidebar a');
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) current = id;
+  });
+  links.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+
+window.addEventListener('scroll', () => { updateProgress(); updateToc(); }, { passive: true });
+
+// ── Controls ──
+let fontSize = 18;
+function changeFont(delta) {
+  fontSize = Math.min(24, Math.max(14, fontSize + delta));
+  document.body.style.fontSize = fontSize + 'px';
+  document.getElementById('font-size-val').textContent = fontSize + 'px';
+}
+
+let dark = false;
+function toggleTheme() {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : '');
+}
+
+let tocOpen = false;
+function toggleToc() {
+  tocOpen = !tocOpen;
+  document.getElementById('toc-sidebar').classList.toggle('open', tocOpen);
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', () => {
+  walkAndWrap(document.querySelector('main'));
+  updateProgress();
+});
+</script>
+</body>
+</html>

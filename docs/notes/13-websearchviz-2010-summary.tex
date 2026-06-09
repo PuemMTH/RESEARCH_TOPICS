@@ -1,0 +1,224 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{mdframed}
+
+%% ─── Design system tokens (@docs/design/design.md) ──────────
+\definecolor{primary}{HTML}{cc785c}
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{primary-active}{HTML}{a9583e}
+\definecolor{primary-disabled}{HTML}{e6dfd8}
+\definecolor{ink}{HTML}{141413}
+\definecolor{body-strong}{HTML}{252523}
+\definecolor{body}{HTML}{3d3d3a}
+\definecolor{muted}{HTML}{6c6a64}
+\definecolor{muted-soft}{HTML}{8e8b82}
+\definecolor{canvas}{HTML}{faf9f5}
+\definecolor{surface-soft}{HTML}{f5f0e8}
+\definecolor{surface-card}{HTML}{efe9de}
+\definecolor{surface-cream-strong}{HTML}{e8e0d2}
+\definecolor{surface-dark}{HTML}{181715}
+\definecolor{surface-dark-elevated}{HTML}{252320}
+\definecolor{surface-dark-soft}{HTML}{1f1e1b}
+\definecolor{hairline}{HTML}{e6dfd8}
+\definecolor{on-dark}{HTML}{faf9f5}
+\definecolor{on-dark-soft}{HTML}{a09d96}
+\definecolor{accent-teal}{HTML}{5db8a6}
+\definecolor{accent-amber}{HTML}{e8a55a}
+\definecolor{success}{HTML}{5db872}
+\definecolor{warning}{HTML}{d4a017}
+\definecolor{error}{HTML}{c64545}
+%% alias for mdframed highlight
+\definecolor{lightbg}{HTML}{f5f0e8}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+\newmdenv[
+  backgroundcolor=lightbg,
+  linecolor=coral,
+  linewidth=2pt,
+  topline=false, rightline=false, bottomline=false,
+  innerleftmargin=12pt, innerrightmargin=8pt,
+  innertopmargin=8pt, innerbottommargin=8pt,
+]{highlight}
+
+\begin{document}
+
+\begin{center}
+  {\Large \textbf{สรุปบทความวิจัย}}\\[6pt]
+  {\color{muted}\small Paper Reading Note · วิทยานิพนธ์}
+\end{center}
+
+\noindent\rule{\textwidth}{1.5pt}
+
+%% ─── Metadata ─────────────────────────────────────────────────
+\vspace{12pt}
+\noindent
+\begin{tabular}{@{}ll@{}}
+  \textbf{ชื่อบทความ}  & Visualizing the Web Search Results with Web Search \\
+                        & Visualization Using Scatter Plot \\[4pt]
+  \textbf{ผู้เขียน}    & Anwar Alhenshiri, Stephen Brooks, Carolyn Watters, Michael Shepherd \\[4pt]
+  \textbf{ปี / สถานที่} & 2010 · IEEE Symposium on Web Society (SWS 2010) \\[4pt]
+  \textbf{arXiv / DOI}  & DOI: 10.1109/SWS.2010.5607488 \\[4pt]
+  \textbf{อ่านเมื่อ}   & \today \\
+\end{tabular}
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─── Problem ──────────────────────────────────────────────────
+\section*{ปัญหาที่แก้ไข}
+
+ระบบ Web Search ในยุคดั้งเดิมมักแสดงผลลัพธ์ในรูป \textbf{ranked list} เพียงมิติเดียว ทำให้ผู้ใช้ไม่สามารถ
+สำรวจ (explore) หรือเปรียบเทียบ (compare) ผลลัพธ์ตามคุณสมบัติที่ต้องการ เช่น ความใหม่ของเนื้อหา
+(freshness) หรือประเภทไฟล์ (document type) ได้อย่างมีประสิทธิภาพ:
+\begin{enumerate}
+  \item \textbf{ข้อจำกัดของ List-based Presentation}: การเรียงผลลัพธ์ตาม relevance rank ซ่อน
+    distribution ของผลลัพธ์ตาม temporal และ format dimension ทำให้ผู้ใช้ไม่เห็นภาพรวมของ
+    result space
+  \item \textbf{ขาด Interactive Exploration}: ผู้ใช้ไม่มีเครื่องมือ filter หรือ navigate ผลลัพธ์ตาม
+    dimension ที่ต้องการ เช่น ต้องการเฉพาะ PDF ที่เผยแพร่หลังปี 2008
+\end{enumerate}
+
+%% ─── Contribution ─────────────────────────────────────────────
+\section*{ผลงานสำคัญ (Contribution)}
+
+\begin{enumerate}[nosep, leftmargin=2em]
+  \item \textbf{Dual-View Search Result Presentation}: ระบบแสดงผลลัพธ์พร้อมกันทั้ง
+    traditional ranked list และ interactive 2D scatter plot view ในหน้าเดียว
+  \item \textbf{2D Scatter Plot Layout}: แกน X = last modification date (temporal dimension),
+    แกน Y = document type (format dimension) ทำให้ผู้ใช้เห็น distribution ของผลลัพธ์
+    ได้ทันที
+  \item \textbf{Linked Interactive Selection}: การ select หรือ click จุดในกราฟ scatter plot
+    จะ highlight ผลลัพธ์ที่สอดคล้องใน list view และในทางกลับกัน (bidirectional linking)
+\end{enumerate}
+
+%% ─── Method ───────────────────────────────────────────────────
+\section*{วิธีการ}
+
+ระบบ Web Search Visualization ทำงานผ่าน 3 ขั้นตอนหลัก:
+\begin{itemize}
+  \item \textbf{Query \& Metadata Extraction}: ส่ง query ไปยัง Search Engine API,
+    ดึง metadata ของแต่ละผลลัพธ์ได้แก่ last modification date และ document type
+    (HTML, PDF, DOC, PPT เป็นต้น)
+  \item \textbf{Dual Rendering}: นำ metadata มา render พร้อมกันใน 2 view: (1)
+    traditional ranked list พร้อม title/snippet/URL และ (2) scatter plot ที่ plot
+    แต่ละผลลัพธ์เป็นจุดตาม 2 แกน
+  \item \textbf{Interactive Filtering}: ผู้ใช้สามารถ drag เพื่อเลือก region ใน scatter
+    plot --- ผลลัพธ์ที่อยู่ใน region จะ highlight/filter ทั้งสองฝั่ง (linked views
+    paradigm)
+\end{itemize}
+
+%% ─── Key Results ──────────────────────────────────────────────
+\section*{ผลลัพธ์สำคัญ}
+
+\begin{highlight}
+\textbf{ข้อค้นพบหลักจาก Paper (Qualitative / Demonstration):}
+\begin{itemize}[nosep]
+  \item Scatter plot view ช่วยเปิดเผย \textbf{hidden patterns} ใน result set เช่น cluster
+    ของ PDF วิชาการที่เผยแพร่ในช่วงปี 2005--2009 ซึ่งซ่อนอยู่ใน list view
+  \item \textbf{Dual-view เสริมซึ่งกันและกัน}: ผู้ใช้ยังต้องการ ranking information จาก
+    list view ดังนั้น scatter plot ทำหน้าที่ complement ไม่ใช่ replace
+  \item Date และ document type เป็น metadata ที่ \textbf{extract ได้ง่าย} จาก search
+    engine API และ useful สำหรับ first-pass filtering
+\end{itemize}
+\end{highlight}
+
+\vspace{6pt}
+\noindent\textbf{ข้อสังเกต:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item งานนี้เป็น \textbf{demonstration paper} ไม่มี formal user study --- ไม่มีการวัด
+    task completion time, error rate หรือ user satisfaction score
+  \item บริบทปี 2010 ก่อน modern search engine ที่มี rich snippets, knowledge panels
+    และ AI-powered features ทำให้บางส่วนของ motivation ลดความเกี่ยวข้องลง
+\end{itemize}
+
+%% ─── Strength / Weakness ──────────────────────────────────────
+\section*{จุดแข็ง / จุดอ่อน}
+
+\noindent\textbf{จุดแข็ง:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item แนวคิด linked views (scatter plot $\leftrightarrow$ list) เป็น UX pattern ที่ timeless
+    และยังคงถูกนำไปใช้ใน modern information visualization systems
+  \item Metadata-based approach (date + type) เรียบง่ายและ generalizable --- ไม่ต้องการ
+    deep semantic understanding ของเนื้อหา
+  \item เป็น pioneer work ใน visual web search ที่เปิดแนวทางให้งานในภายหลัง
+\end{itemize}
+
+\vspace{6pt}
+\noindent\textbf{จุดอ่อน / ข้อจำกัด:}
+\begin{itemize}[nosep, leftmargin=2em]
+  \item ใช้เพียง 2 dimensions (date, type) ซึ่งเป็น \textbf{shallow metadata} --- ไม่ capture
+    semantic content หรือ relevance ของเนื้อหา
+  \item Scatter plot coordinates ไม่แสดง \textbf{semantic proximity} --- จุดที่อยู่ใกล้กัน
+    ไม่จำเป็นต้องมีเนื้อหาเกี่ยวข้องกัน
+  \item ขาด empirical evidence จาก user study --- ไม่ทราบว่า dual-view ช่วยผู้ใช้จริงหรือไม่
+\end{itemize}
+
+%% ─── Relevance ────────────────────────────────────────────────
+\section*{ความเกี่ยวข้องกับงานของเรา}
+
+งานนี้มีความเกี่ยวข้องในเชิง \textbf{UX design pattern} สำหรับ information retrieval systems:
+\begin{itemize}
+  \item แนวคิด \textbf{dual-view (structured list + visual overview)} เป็น pattern ที่สามารถ
+    นำไปประยุกต์ใช้กับระบบ browse/search scientific figures ได้ --- หาก embed รูปภาพในพื้นที่
+    2D (เช่น t-SNE/UMAP บน figure embeddings) จะ meaningful กว่า metadata-based scatter plot
+    มาก เพราะแสดง semantic similarity จริง
+  \item สำหรับวิทยานิพนธ์: การแสดง \textbf{figure exploration interface} ที่ complement ผลการ
+    ค้นหาแบบ list ด้วย visual map ของ embedding space อาจเป็น future work ที่น่าสนใจ
+  \item งานนี้เตือนว่า \textbf{metadata เพียงอย่างเดียวไม่เพียงพอ} --- ระบบที่ดีควรใช้ semantic
+    embeddings ในการจัด layout visual space
+\end{itemize}
+
+%% ─── Notes ────────────────────────────────────────────────────
+\section*{บันทึกเพิ่มเติม}
+Paper นี้เป็นตัวอย่างที่ดีของ \textit{early exploratory visualization work} ที่นำเสนอ concept
+มากกว่า evidence บทเรียนสำคัญคือ: visual interface สำหรับ retrieval ต้องการ user study ที่
+ชัดเจนเพื่อพิสูจน์ประโยชน์ --- อย่า assume ว่า richer visualization = better UX โดยไม่มีข้อมูล
+
+\vspace{16pt}
+\noindent\rule{\textwidth}{1pt}
+\noindent{\color{muted}\small สรุปโดย Antigravity (Claude Sonnet 4.6) · \today}
+
+\end{document}

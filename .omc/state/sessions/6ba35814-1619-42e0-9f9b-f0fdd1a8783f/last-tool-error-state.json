@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"rtk ls C:\\\\Users\\\\admin\\\\Desktop\\\\RESEARCH_TOPICS\\\\.claude\\\\skills\\\\ 2>/dev/null && echo \\\"---\\\" && rtk ls C:\\\\Users\\\\admin\\\\Desktop\\\\RESEARCH_TOPICS\\\\.claude\\\\ 2>/dev/null\",\"description\":...",
+  "error": "Exit code 2\n/usr/bin/ls: cannot access 'C:UsersadminDesktopRESEARCH_TOPICS.claudeskills 2': No such file or directory",
+  "timestamp": "2026-06-09T08:12:36.428Z",
+  "retry_count": 1
+}

@@ -6,11 +6,11 @@ version: 1.0.0
 
 # Paper Reader — Skill
 
-Converts an existing `*-analysis.html` (from `docs/synthesis/`) into a clean, self-contained reader HTML with **hover translation** for English terms.
+Converts an existing `*_analysis.html` (from `papers/`) into a clean, self-contained reader HTML with **hover translation** for English terms.
 
 ## Output
 
-`docs/synthesis/{base_name}-reader.html` — fully self-contained, no external CSS/JS dependencies.
+`papers/{base_name}_reader.html` — fully self-contained, no external CSS/JS dependencies.
 
 ## Features
 
@@ -24,10 +24,10 @@ Converts an existing `*-analysis.html` (from `docs/synthesis/`) into a clean, se
 
 ## How to Generate
 
-1. Read the source analysis file: `docs/synthesis/{N}-{Slug}_{Year}-analysis.html`
+1. Read the source analysis file: `papers/{N}-{Slug}_{Year}_analysis.html`
 2. Extract all content sections (overview, methodology, results, limitations, thesis)
-3. Produce a new `{N}-{Slug}_{Year}-reader.html` using the template below
-4. Save to `docs/synthesis/`
+3. Produce a new `{N}-{Slug}_{Year}_reader.html` using the template below
+4. Save to `papers/`
 
 ## Template Structure
 
@@ -40,7 +40,7 @@ Converts an existing `*-analysis.html` (from `docs/synthesis/`) into a clean, se
 <title>{ShortTitle} — Reader</title>
 <!-- Copyright 2026 · Apache-2.0 -->
 <style>
-/* Paste full CSS from reference file: docs/synthesis/8-LaMPCap_2025-reader.html */
+/* Paste full CSS from reference file: papers/8-LaMPCap_2025_reader.html */
 /* Key design tokens: */
 :root {
   --bg: #FAF8F3; --paper: #FFFFFF; --ink: #1A1917; --ink2: #4A4845;
@@ -68,7 +68,7 @@ Converts an existing `*-analysis.html` (from `docs/synthesis/`) into a clean, se
   <footer>Analysis generated {date} · arXiv:{id} · hover hint</footer>
 </main>
 <script>
-/* Paste full JS from reference file: docs/synthesis/8-LaMPCap_2025-reader.html */
+/* Paste full JS from reference file: papers/8-LaMPCap_2025_reader.html */
 /* Key pieces: DICT{}, walkAndWrap(), updateProgress(), TOC active, controls */
 </script>
 </body>
@@ -218,5 +218,5 @@ const DICT = window.DICT;
 - Always include the hover hint in the footer
 - Preserve all content from the source analysis — do not summarize further
 - For tables, keep `<table>` with `tr:hover` highlight (already in CSS)
-- Reference file: `docs/synthesis/8-LaMPCap_2025-reader.html`
+- Reference file: `papers/8-LaMPCap_2025_reader.html`
 - When writing `ctx` for any term, apply the Semantic Waves principle above — Unpack → Repack, not just origin info

@@ -45,7 +45,7 @@ Where `<input>` is one of:
 
 ## Step 2 — Read the source material
 
-1. **`papers/{base_name}.html`** — full ar5iv LaTeX-rendered HTML. Read the entire file.
+1. **`papers/{base_name}_source.html`** — full ar5iv LaTeX-rendered HTML. Read the entire file.
 2. **`papers/{base_name}_tex/`** — LaTeX source. Start with `main.tex` or the largest `.tex` file. Gives raw equations, algorithm pseudocode, and author comments not visible in rendered HTML.
 3. **`papers/{base_name}.json`** — metadata (title, authors, abstract, figure captions).
 4. **PDF** — fallback if `ar5iv_available: false`.
@@ -56,11 +56,11 @@ Focus on: methodology (exact architecture, training, loss functions), figure/tab
 
 ## Step 3 — Generate the analysis HTML
 
-Create `docs/synthesis/{base_name}-analysis.html`.
+Create `papers/{base_name}_analysis.html`.
 
 **Language:** Thai-English mixed — Thai for narrative/commentary, English for technical terms, model names, benchmark names, metrics, and direct quotes.
 
-**CSS:** `<link rel="stylesheet" href="../../assets/summary.css">` (relative from `docs/synthesis/`).
+**CSS:** `<link rel="stylesheet" href="../assets/summary.css">` (relative from `papers/`).
 
 ### HTML Template
 
@@ -71,7 +71,7 @@ Create `docs/synthesis/{base_name}-analysis.html`.
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{Title} — Paper Analysis</title>
-<link rel="stylesheet" href="../../assets/summary.css">
+<link rel="stylesheet" href="../assets/summary.css">
 </head>
 <body>
 
@@ -196,10 +196,10 @@ Fill every section with real content. Do not leave placeholder text.
 ## Step 4 — Commit
 
 ```bash
-git add papers/{base_name}.html papers/{base_name}.pdf papers/{base_name}.json
+git add papers/{base_name}_source.html papers/{base_name}.pdf papers/{base_name}.json
 git add papers/{base_name}_tex/
 git add assets/papers/{base_name}/
-git add docs/synthesis/{base_name}-analysis.html
+git add papers/{base_name}_analysis.html
 git commit -m "feat: add {base_name} paper + analysis"
 ```
 
@@ -209,17 +209,17 @@ git commit -m "feat: add {base_name} paper + analysis"
 
 **ar5iv not available** (new paper < 2 weeks old): set `ar5iv_available: false`, download PDF only. Read PDF with the Read tool; note "ar5iv rendering not yet available" in the analysis HTML.
 
-**GitHub code-only** (no arXiv link in README): `status: github_code_only`. Generate a code architecture summary at `docs/synthesis/{repo-name}-code-arch.html`. Sections: Purpose → Directory structure → Key modules/algorithms → Usage → Thesis relevance.
+**GitHub code-only** (no arXiv link in README): `status: github_code_only`. Generate a code architecture summary at `papers/{repo-name}_code-arch.html`. Sections: Purpose → Directory structure → Key modules/algorithms → Usage → Thesis relevance.
 
 ---
 
 ## Verification Checklist
 
-- [ ] `papers/{base_name}.html` — all `<img src>` start with `../assets/papers/`
+- [ ] `papers/{base_name}_source.html` — all `<img src>` start with `../assets/papers/`
 - [ ] `assets/papers/{base_name}/` — PNG files present, count matches `image_count`
 - [ ] `papers/{base_name}.pdf` — non-zero bytes
 - [ ] `papers/{base_name}_tex/` — at least one `.tex` file
-- [ ] `docs/synthesis/{base_name}-analysis.html` — renders correctly in browser, all sections filled
+- [ ] `papers/{base_name}_analysis.html` — renders correctly in browser, all sections filled
 - [ ] `papers/{base_name}.json` — valid JSON with title, authors, abstract
 
 ---
@@ -227,9 +227,13 @@ git commit -m "feat: add {base_name} paper + analysis"
 ## File Placement
 
 ```
-papers/          → {N}-{Slug}_{Year}.html  .pdf  .json  _tex/
-assets/papers/   → {N}-{Slug}_{Year}/  (figure images)
-docs/synthesis/  → {N}-{Slug}_{Year}-analysis.html
+papers/          → {N}-{Slug}_{Year}_source.html    (ar5iv source)
+                   {N}-{Slug}_{Year}.pdf
+                   {N}-{Slug}_{Year}.json
+                   {N}-{Slug}_{Year}_tex/           (LaTeX source folder)
+                   {N}-{Slug}_{Year}_analysis.html  (bilingual analysis)
+                   {N}-{Slug}_{Year}_reader.html    (self-contained reader)
+assets/papers/   → {N}-{Slug}_{Year}/              (figure images)
 ```
 
 Naming: `<N>-<CamelCaseSlug>_<Year>` — N is the next sequential number from `papers/`.

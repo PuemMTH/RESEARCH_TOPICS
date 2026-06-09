@@ -1,8 +1,0 @@
-{"t":0,"agent":"system","event":"skill_invoked","skill_name":"paper-ingest"}
-{"t":0,"agent":"system","event":"skill_invoked","skill_name":"paper-reader"}
-{"t":0,"agent":"aabc7af","agent_type":"unknown","event":"agent_stop","success":true}
-{"t":0,"agent":"system","event":"skill_invoked","skill_name":"latex"}
-{"t":0,"agent":"a68207f","agent_type":"unknown","event":"agent_stop","success":true}
-{"t":0,"agent":"a010f25","agent_type":"unknown","event":"agent_stop","success":true}
-{"t":0,"agent":"a108ed1","agent_type":"unknown","event":"agent_stop","success":true}
-{"t":0,"agent":"a0bf970","agent_type":"unknown","event":"agent_stop","success":true}

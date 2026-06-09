@@ -1,0 +1,162 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Natural Language Interface for Sensitive Databases — Paper Analysis</title>
+<link rel="stylesheet" href="../assets/summary.css">
+</head>
+<body>
+
+<nav class="top-nav">
+<div class="container">
+  <a class="nav-brand" href="#">✦ <span>Research</span> Notes</a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#thesis">Thesis</a></li>
+  </ul>
+</div>
+</nav>
+
+<section class="hero">
+<div class="container">
+  <h1>Natural Language Interface for Queries on Databases with Sensitive Information</h1>
+  <p class="subtitle">Framework ที่รวม OCR, Neo4j graph database, และ LLM Cypher translation เพื่อให้ผู้ใช้ที่ไม่มีความรู้ด้าน query language สามารถ query ข้อมูล sensitive ได้อย่างปลอดภัยผ่านภาษาธรรมชาติ</p>
+  <div class="hero-meta">
+    <span class="badge">IEEE Conference Publication</span>
+    <span class="badge coral">ITNG 2025</span>
+    <span class="badge">DOI: 10.1109/ITNG63569.2025.11114052</span>
+  </div>
+</div>
+</section>
+
+<section class="section" id="overview">
+<div class="container">
+<div class="section-header"><span class="overline">Abstract & Contributions</span><h2>ภาพรวม</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">!</span><h3>ปัญหาที่ Paper นี้แก้</h3></div>
+<div class="detail-body">
+<div class="key-box">
+<ul>
+  <li>ผู้ใช้จาก social sciences, law enforcement, healthcare ต้องการ query ข้อมูล sensitive (criminal justice, medical records, education data) แต่ไม่มีทักษะ SQL/Cypher</li>
+  <li>ข้อมูลที่ต้องการมักอยู่ในเอกสารที่ scan แล้ว (unstructured) ต้องผ่าน OCR ก่อน</li>
+  <li>Conventional SQL interfaces ไม่รองรับ graph relationships ที่ซับซ้อนของข้อมูล sensitive เหล่านี้</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">★</span><h3>Key Contributions</h3></div>
+<div class="detail-body">
+<ul>
+  <li><strong>OCR-to-Graph Pipeline:</strong> ใช้ OCR extract structured data จาก scanned documents แล้ว store ใน Neo4j graph database ที่ model entity relationships ได้ดีกว่า relational DB</li>
+  <li><strong>LLM-powered Natural Language to Cypher:</strong> แปลง natural language query เป็น Cypher query อัตโนมัติ โดยไม่ต้องมีความรู้ด้าน query language</li>
+  <li><strong>Privacy-preserving design:</strong> architecture ออกแบบเพื่อจัดการ sensitive data — ไม่ expose schema หรือ sample data ไปยัง external LLM services</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section section-alt" id="methodology">
+<div class="container">
+<div class="section-header"><span class="overline">How It Works</span><h2>Methodology</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">1</span><h3>System Architecture</h3></div>
+<div class="detail-body">
+<div class="method-box">
+<span class="label">Pipeline</span>
+<p>เอกสาร → OCR extraction → structured entities → Neo4j graph DB → NL query input → LLM translation → Cypher → graph query → results</p>
+</div>
+<ul>
+  <li><strong>OCR Layer:</strong> extract entities และ relationships จาก unstructured/scanned documents</li>
+  <li><strong>Neo4j Graph DB:</strong> store entities และ relationships ใน graph structure ที่เหมาะสำหรับ complex relational queries</li>
+  <li><strong>LLM Query Translator:</strong> รับ natural language input แปลงเป็น Cypher query โดยใช้ graph schema เป็น context</li>
+</ul>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">2</span><h3>Privacy Considerations</h3></div>
+<div class="detail-body">
+<div class="method-box">
+<span class="label">Security</span>
+<p>ข้อมูล sensitive ต้องไม่ถูก expose ไปยัง external LLM APIs — design ต้องการ local deployment หรือ schema abstraction layer ที่ปกป้อง sensitive field names และ sample data</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section" id="results">
+<div class="container">
+<div class="section-header"><span class="overline">Experiments</span><h2>Results & Benchmarks</h2></div>
+<div class="detail-block">
+<div class="detail-body">
+<div class="key-box"><h5>Application Domains</h5>
+<ul>
+  <li>Criminal justice databases (law enforcement)</li>
+  <li>Healthcare records (medical professionals)</li>
+  <li>Education data (researchers, administrators)</li>
+</ul>
+</div>
+<div class="key-box teal"><h5>Key Insight</h5>
+<ul>
+  <li>Graph database (Neo4j) เหมาะกว่า relational DB สำหรับ entity-relationship-heavy sensitive data</li>
+  <li>Natural language → Cypher translation ช่วยให้ non-technical users query complex graph data ได้</li>
+  <li>OCR integration ทำให้ระบบใช้งานได้กับเอกสารที่ยังไม่ได้ digitize</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section section-alt" id="limitations">
+<div class="container">
+<div class="section-header"><span class="overline">Gaps & Future Work</span><h2>ข้อจำกัดและทิศทางต่อไป</h2></div>
+<div class="detail-block"><div class="detail-body">
+<div class="key-box amber"><h5>Limitations</h5>
+<ul>
+  <li>LLM Cypher translation accuracy ขึ้นอยู่กับ quality ของ graph schema — complex schemas อาจทำให้ translation ผิดพลาด</li>
+  <li>OCR accuracy สำหรับ handwritten หรือ low-quality scans ยังเป็น bottleneck</li>
+  <li>Privacy-preserving approach ยังไม่ได้รับการ formal verification — เป็น design intent มากกว่า proven guarantee</li>
+  <li>Paper ไม่ได้รายงาน quantitative evaluation metrics (accuracy, F1) ที่ชัดเจน</li>
+</ul>
+</div>
+</div></div>
+</div>
+</section>
+
+<section class="section section-dark" id="thesis">
+<div class="container">
+<div class="section-header"><span class="overline">Connection to My Research</span><h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2></div>
+<div class="synthesis-grid">
+  <div class="synthesis-card">
+    <h4>What I Borrow</h4>
+    <p>แนวคิด NL interface ที่ abstract away query complexity สามารถนำมาคิดกับ scientific figure retrieval — user ควรจะ query figures ด้วย natural language โดยไม่ต้องรู้ว่า figure อยู่ใน section ไหน</p>
+  </div>
+  <div class="synthesis-card">
+    <h4>Where I Diverge</h4>
+    <p>งานนี้เน้น structured data querying; งานของเราเน้น unstructured multimodal content (figures + captions) — ความท้าทายต่างกันอย่างมาก โดยเฉพาะด้าน semantic understanding ของ visual content</p>
+  </div>
+  <div class="synthesis-card">
+    <h4>Open Questions</h4>
+    <p>Privacy-preserving NL interface กับ scientific figure databases — ถ้า paper อยู่ใน closed-access corpus (institutional repository) ควรออกแบบ privacy layer อย่างไร?</p>
+  </div>
+</div>
+</div>
+</section>
+
+<footer class="footer">
+<div class="container">
+  <p>Analysis generated 2026-06-07 · IEEE ITNG 2025 · DOI: 10.1109/ITNG63569.2025.11114052</p>
+</div>
+</footer>
+</body>
+</html>

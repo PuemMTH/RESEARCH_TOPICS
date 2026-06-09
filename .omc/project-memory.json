@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1780772627367,
+  "lastScanned": 1780987199909,
   "projectRoot": "C:\\Users\\admin\\Desktop\\RESEARCH_TOPICS",
   "techStack": {
     "languages": [],
@@ -40,7 +40,7 @@
       "path": "assets",
       "purpose": "Static assets",
       "fileCount": 2,
-      "lastAccessed": 1780772627351,
+      "lastAccessed": 1780987199891,
       "keyFiles": [
         "summary.css",
         "translations.js"
@@ -50,14 +50,14 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 0,
-      "lastAccessed": 1780772627352,
+      "lastAccessed": 1780987199892,
       "keyFiles": []
     },
     "papers": {
       "path": "papers",
       "purpose": null,
-      "fileCount": 31,
-      "lastAccessed": 1780772627353,
+      "fileCount": 43,
+      "lastAccessed": 1780987199892,
       "keyFiles": [
         "1-SciCap_2021.html",
         "1-SciCap_2021.pdf",
@@ -70,7 +70,7 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 3,
-      "lastAccessed": 1780772627353,
+      "lastAccessed": 1780987199893,
       "keyFiles": [
         "fetch_paper.py",
         "README.md",
@@ -80,9 +80,39 @@
   },
   "hotPaths": [
     {
+      "path": "",
+      "accessCount": 16,
+      "lastAccessed": 1780992597397,
+      "type": "directory"
+    },
+    {
+      "path": "docs\\thesis\\thesis-overview.html",
+      "accessCount": 13,
+      "lastAccessed": 1780991008549,
+      "type": "file"
+    },
+    {
+      "path": ".claude\\commands\\paper-ingest.md",
+      "accessCount": 11,
+      "lastAccessed": 1780988098707,
+      "type": "file"
+    },
+    {
+      "path": ".claude\\skills\\paper-reader\\SKILL.md",
+      "accessCount": 11,
+      "lastAccessed": 1780992749426,
+      "type": "file"
+    },
+    {
       "path": "docs\\synthesis\\8-LaMPCap_2025-reader.html",
       "accessCount": 9,
       "lastAccessed": 1780848798925,
+      "type": "file"
+    },
+    {
+      "path": "assets\\translations.js",
+      "accessCount": 9,
+      "lastAccessed": 1780994011507,
       "type": "file"
     },
     {
@@ -102,12 +132,6 @@
       "accessCount": 5,
       "lastAccessed": 1780773394575,
       "type": "file"
-    },
-    {
-      "path": "",
-      "accessCount": 5,
-      "lastAccessed": 1780849320605,
-      "type": "directory"
     },
     {
       "path": "docs\\synthesis\\9-AuthorContextSciCap_2025-reader.html",
@@ -140,9 +164,15 @@
       "type": "file"
     },
     {
-      "path": ".claude\\skills\\paper-reader\\SKILL.md",
-      "accessCount": 3,
-      "lastAccessed": 1780774424075,
+      "path": "CLAUDE.md",
+      "accessCount": 4,
+      "lastAccessed": 1780988075901,
+      "type": "file"
+    },
+    {
+      "path": "papers\\6-RAGBeyondTheBuzz_2024.json",
+      "accessCount": 4,
+      "lastAccessed": 1780990227302,
       "type": "file"
     },
     {
@@ -152,9 +182,39 @@
       "type": "file"
     },
     {
-      "path": "assets\\translations.js",
+      "path": ".claude",
       "accessCount": 3,
-      "lastAccessed": 1780848793621,
+      "lastAccessed": 1780988103582,
+      "type": "directory"
+    },
+    {
+      "path": "papers\\8-LaMPCap_2025.json",
+      "accessCount": 3,
+      "lastAccessed": 1780990188804,
+      "type": "file"
+    },
+    {
+      "path": "papers\\9-AuthorContextSciCap_2025.json",
+      "accessCount": 3,
+      "lastAccessed": 1780990189795,
+      "type": "file"
+    },
+    {
+      "path": "papers\\16-MatCha_2022.json",
+      "accessCount": 3,
+      "lastAccessed": 1780990193252,
+      "type": "file"
+    },
+    {
+      "path": "papers\\13-WebSearchViz_2010.json",
+      "accessCount": 3,
+      "lastAccessed": 1780990194332,
+      "type": "file"
+    },
+    {
+      "path": "papers\\11-MINDRAG_2025.json",
+      "accessCount": 3,
+      "lastAccessed": 1780990228090,
       "type": "file"
     },
     {
@@ -164,69 +224,45 @@
       "type": "file"
     },
     {
-      "path": "papers\\13-WebSearchViz_2010.json",
-      "accessCount": 2,
-      "lastAccessed": 1780848209937,
-      "type": "file"
-    },
-    {
-      "path": "papers\\16-MatCha_2022.json",
-      "accessCount": 2,
-      "lastAccessed": 1780848508070,
-      "type": "file"
-    },
-    {
-      "path": "papers\\6-RAGBeyondTheBuzz_2024.json",
-      "accessCount": 2,
-      "lastAccessed": 1780849292334,
-      "type": "file"
-    },
-    {
-      "path": "papers\\8-LaMPCap_2025.json",
-      "accessCount": 2,
-      "lastAccessed": 1780849293312,
-      "type": "file"
-    },
-    {
-      "path": "papers\\9-AuthorContextSciCap_2025.json",
-      "accessCount": 2,
-      "lastAccessed": 1780849293460,
-      "type": "file"
-    },
-    {
       "path": "docs\\synthesis\\papers-summary.tex",
       "accessCount": 2,
       "lastAccessed": 1780849329112,
       "type": "file"
     },
     {
-      "path": "docs\\synthesis\\13-WebSearchViz_2010-analysis.html",
-      "accessCount": 1,
-      "lastAccessed": 1780772670366,
+      "path": "src\\fetch_paper.py",
+      "accessCount": 2,
+      "lastAccessed": 1780988062169,
       "type": "file"
     },
     {
-      "path": "docs\\synthesis\\paper-synthesis.html",
-      "accessCount": 1,
-      "lastAccessed": 1780848201865,
-      "type": "file"
-    },
-    {
-      "path": "papers\\11-MINDRAG_2025.json",
-      "accessCount": 1,
-      "lastAccessed": 1780848202619,
+      "path": "papers\\7-LLMJudge_2023.json",
+      "accessCount": 2,
+      "lastAccessed": 1780990188297,
       "type": "file"
     },
     {
       "path": "papers\\10-PersonalizedSciFigCap_2025.json",
-      "accessCount": 1,
-      "lastAccessed": 1780848208302,
+      "accessCount": 2,
+      "lastAccessed": 1780990190263,
       "type": "file"
     },
     {
       "path": "papers\\12-NLIDBSensitive_2025.json",
+      "accessCount": 2,
+      "lastAccessed": 1780990191279,
+      "type": "file"
+    },
+    {
+      "path": "docs\\synthesis\\paper-synthesis.html",
+      "accessCount": 2,
+      "lastAccessed": 1780991003783,
+      "type": "file"
+    },
+    {
+      "path": "docs\\synthesis\\13-WebSearchViz_2010-analysis.html",
       "accessCount": 1,
-      "lastAccessed": 1780848209259,
+      "lastAccessed": 1780772670366,
       "type": "file"
     },
     {
@@ -290,16 +326,58 @@
       "type": "file"
     },
     {
-      "path": "papers\\7-LLMJudge_2023.json",
-      "accessCount": 1,
-      "lastAccessed": 1780849292792,
-      "type": "file"
-    },
-    {
       "path": "docs\\notes\\reading-list.md",
       "accessCount": 1,
       "lastAccessed": 1780849323656,
       "type": "file"
+    },
+    {
+      "path": ".claude\\skills\\html\\examples\\13-flowchart-diagram.html",
+      "accessCount": 1,
+      "lastAccessed": 1780988217950,
+      "type": "file"
+    },
+    {
+      "path": ".claude\\skills\\html\\examples\\14-research-feature-explainer.html",
+      "accessCount": 1,
+      "lastAccessed": 1780988218793,
+      "type": "file"
+    },
+    {
+      "path": "DESIGN.md",
+      "accessCount": 1,
+      "lastAccessed": 1780988566731,
+      "type": "file"
+    },
+    {
+      "path": "papers\\14-ChartQA_2022.json",
+      "accessCount": 1,
+      "lastAccessed": 1780990192248,
+      "type": "file"
+    },
+    {
+      "path": "papers\\15-UniChart_2023.json",
+      "accessCount": 1,
+      "lastAccessed": 1780990192741,
+      "type": "file"
+    },
+    {
+      "path": "papers\\17-Pix2Struct_2022.json",
+      "accessCount": 1,
+      "lastAccessed": 1780990193755,
+      "type": "file"
+    },
+    {
+      "path": "papers",
+      "accessCount": 1,
+      "lastAccessed": 1780990471716,
+      "type": "directory"
+    },
+    {
+      "path": "papers\\8-LaMPCap_2025_analysis.html",
+      "accessCount": 1,
+      "lastAccessed": 1780990482761,
+      "type": "directory"
     }
   ],
   "userDirectives": []

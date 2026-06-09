@@ -1,0 +1,1338 @@
+<!-- Copyright 2026 · Apache-2.0 -->
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thesis Overview — Context-Aware Caption Generation</title>
+<style>
+/* ── Design tokens: Coinbase-inspired ──────────────────── */
+:root {
+  --primary:          #0052ff;
+  --primary-active:   #003ecc;
+  --ink:              #0a0b0d;
+  --body:             #5b616e;
+  --muted:            #7c828a;
+  --muted-soft:       #a8acb3;
+  --hairline:         #dee1e6;
+  --hairline-soft:    #eef0f3;
+  --canvas:           #ffffff;
+  --surface-soft:     #f7f7f7;
+  --surface-strong:   #eef0f3;
+  --surface-dark:     #0a0b0d;
+  --surface-dark-el:  #16181c;
+  --on-dark:          #ffffff;
+  --on-dark-soft:     #a8acb3;
+  --up:               #05b169;
+  --down:             #cf202f;
+  --yellow:           #f4b000;
+
+  --r-xs: 4px;
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 24px;
+  --r-pill: 100px;
+  --r-full: 9999px;
+
+  --display: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --body-font: -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--canvas);
+  color: var(--body);
+  font-family: var(--body-font);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── layout ───────────────────────────────────────────── */
+.page {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  min-height: 100vh;
+}
+@media (max-width: 860px) {
+  .page { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+
+/* ── sidebar ──────────────────────────────────────────── */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  background: var(--canvas);
+  border-right: 1px solid var(--hairline);
+  padding: 32px 20px;
+  font-size: 14px;
+}
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--hairline);
+}
+.brand-dot {
+  width: 20px; height: 20px;
+  background: var(--primary);
+  border-radius: var(--r-full);
+  flex-shrink: 0;
+}
+.brand-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.brand-sub { font-size: 11px; color: var(--muted); }
+.nav-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted-soft);
+  letter-spacing: 0.02em;
+  padding: 0 8px;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 8px;
+  border-radius: var(--r-sm);
+  color: var(--body);
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: background 0.12s, color 0.12s;
+}
+.sidebar a:hover { background: var(--surface-strong); color: var(--ink); }
+.sidebar a.active { background: var(--primary); color: #fff; }
+.nav-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  width: 18px;
+  text-align: center;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+.sidebar a.active .nav-num { opacity: 0.8; }
+
+/* ── main ─────────────────────────────────────────────── */
+main { overflow-x: hidden; }
+
+/* ── hero (dark band) ─────────────────────────────────── */
+.hero {
+  background: var(--surface-dark);
+  padding: 80px 56px 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 500px; height: 500px;
+  background: radial-gradient(ellipse, rgba(0,82,255,0.12) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--surface-dark-el);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-dark-soft);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-badge span { color: var(--primary); }
+.hero h1 {
+  font-family: var(--display);
+  font-size: clamp(36px, 4.5vw, 64px);
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  line-height: 1.0;
+  color: var(--on-dark);
+  max-width: 760px;
+  margin-bottom: 20px;
+}
+.hero h1 em { color: var(--primary); font-style: normal; }
+.hero-sub {
+  font-size: 16px;
+  color: var(--on-dark-soft);
+  max-width: 580px;
+  margin-bottom: 32px;
+  line-height: 1.55;
+}
+.hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 52px;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill-primary { background: var(--primary); color: #fff; }
+.pill-outline { border: 1px solid rgba(255,255,255,0.2); color: var(--on-dark-soft); }
+.pill-dark { background: var(--surface-dark-el); color: var(--on-dark-soft); border: 1px solid rgba(255,255,255,0.08); }
+
+/* pipeline card inside hero */
+.hero-pipeline-card {
+  background: var(--surface-dark-el);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-bottom: none;
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  padding: 28px 28px 0;
+  overflow: hidden;
+  box-shadow: 0 -8px 48px rgba(0,82,255,0.1);
+}
+.pipeline-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.pipeline-card-dots { display: flex; gap: 5px; }
+.pipeline-card-dots span {
+  width: 8px; height: 8px;
+  border-radius: var(--r-full);
+  background: rgba(255,255,255,0.12);
+}
+.pipeline-card-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--on-dark-soft);
+  letter-spacing: 0.06em;
+}
+
+/* ── section wrapper ──────────────────────────────────── */
+.section {
+  padding: 80px 56px 0;
+  max-width: 1200px;
+}
+.section-alt {
+  background: var(--surface-soft);
+  padding: 80px 56px 0;
+  max-width: none;
+}
+.section-alt .section-inner { max-width: 1200px; margin: 0 auto; padding-bottom: 80px; }
+.section-inner { padding-bottom: 80px; }
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: var(--surface-strong);
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.section-eyebrow.blue { background: rgba(0,82,255,0.08); color: var(--primary); }
+.section h2 {
+  font-family: var(--display);
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 400;
+  letter-spacing: -1px;
+  line-height: 1.09;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.section-lead {
+  font-size: 16px;
+  color: var(--body);
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 40px;
+}
+
+/* ── keywords ─────────────────────────────────────────── */
+.kw-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+.kw-group {
+  background: var(--canvas);
+  padding: 28px;
+}
+.kw-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.kw-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.kw-chip {
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  cursor: default;
+  transition: opacity 0.12s;
+}
+.kw-chip:hover { opacity: 0.8; }
+.chip-blue   { background: rgba(0,82,255,0.07); color: #0040cc; border-color: rgba(0,82,255,0.15); }
+.chip-green  { background: rgba(5,177,105,0.07); color: #047a48; border-color: rgba(5,177,105,0.15); }
+.chip-amber  { background: rgba(244,176,0,0.10); color: #9a6e00; border-color: rgba(244,176,0,0.2); }
+.chip-gray   { background: var(--surface-strong); color: var(--ink); border-color: var(--hairline); }
+
+/* ── pipeline (section) ───────────────────────────────── */
+.module-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+.module-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  padding: 28px;
+  transition: box-shadow 0.15s, border-color 0.15s;
+}
+.module-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-color: var(--primary); }
+.module-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: var(--r-md);
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.mb1 { background: rgba(0,82,255,0.1); color: var(--primary); }
+.mb2 { background: rgba(5,177,105,0.1); color: #047a48; }
+.mb3 { background: rgba(244,176,0,0.12); color: #9a6e00; }
+.mb4 { background: rgba(124,58,237,0.1); color: #5B21B6; }
+.mb5 { background: rgba(207,32,47,0.08); color: #9B1C2A; }
+.module-card h3 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.module-card p { font-size: 13.5px; color: var(--body); line-height: 1.5; }
+.tool-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 12px; }
+.tool-tag {
+  padding: 2px 8px;
+  background: var(--surface-strong);
+  border-radius: var(--r-xs);
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ── gaps ─────────────────────────────────────────────── */
+.gaps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.gap-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: box-shadow 0.15s;
+}
+.gap-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+.gap-number {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.gap-card h3 { font-size: 15px; font-weight: 600; color: var(--ink); }
+.gap-card p { font-size: 13.5px; color: var(--body); line-height: 1.5; }
+.g1 .gap-number { color: var(--primary); }
+.g2 .gap-number { color: var(--up); }
+.g3 .gap-number { color: #9a6e00; }
+.g4 .gap-number { color: #5B21B6; }
+.g5 .gap-number { color: var(--down); }
+.g1 { border-top: 2px solid var(--primary); }
+.g2 { border-top: 2px solid var(--up); }
+.g3 { border-top: 2px solid #f4b000; }
+.g4 { border-top: 2px solid #7c3aed; }
+.g5 { border-top: 2px solid var(--down); }
+
+/* ── approach table ───────────────────────────────────── */
+.approach-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 14px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+.approach-table th {
+  background: var(--surface-soft);
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border-bottom: 1px solid var(--hairline);
+}
+.approach-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--hairline-soft);
+  vertical-align: top;
+  line-height: 1.5;
+  color: var(--body);
+}
+.approach-table td:first-child { font-weight: 600; color: var(--ink); }
+.approach-table tr:last-child td { border-bottom: none; }
+.approach-table tr.rec { background: rgba(0,82,255,0.03); }
+.approach-table tr.rec td:first-child { color: var(--primary); }
+.rec-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--r-pill);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+.up { color: var(--up); font-size: 13px; }
+.dn { color: var(--down); font-size: 13px; }
+
+/* ── tech stack ───────────────────────────────────────── */
+.stack-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+.stack-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+.stack-header {
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--hairline-soft);
+}
+.stack-icon {
+  width: 28px; height: 28px;
+  border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.stack-title { font-size: 14px; font-weight: 600; color: var(--ink); }
+.stack-body {
+  padding: 14px 20px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.stack-chip {
+  padding: 4px 10px;
+  background: var(--surface-strong);
+  border-radius: var(--r-pill);
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ── timeline ─────────────────────────────────────────── */
+.tl-wrap {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  padding: 28px;
+  overflow-x: auto;
+}
+.tl-months {
+  display: grid;
+  grid-template-columns: 180px repeat(12, 1fr);
+  gap: 2px;
+  margin-bottom: 10px;
+  min-width: 640px;
+}
+.tl-month-label {
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted-soft);
+}
+.tl-row {
+  display: grid;
+  grid-template-columns: 180px repeat(12, 1fr);
+  gap: 2px;
+  margin-bottom: 6px;
+  align-items: center;
+  min-width: 640px;
+}
+.tl-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  padding-right: 16px;
+}
+.tl-bar {
+  height: 30px;
+  border-radius: var(--r-sm);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tl-dels {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+.tl-del {
+  background: var(--surface-strong);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+}
+.tl-del-ph {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.tl-del ul { padding-left: 14px; font-size: 13px; color: var(--body); line-height: 1.7; }
+
+/* ── experiments ──────────────────────────────────────── */
+.exp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+.exp-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  padding: 24px;
+  transition: box-shadow 0.15s;
+}
+.exp-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
+.exp-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+.exp-card h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px; }
+.exp-card p { font-size: 13.5px; color: var(--body); line-height: 1.5; }
+
+/* ── contributions ────────────────────────────────────── */
+.contrib-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 32px;
+}
+@media (max-width: 720px) { .contrib-grid { grid-template-columns: 1fr; } }
+.contrib-card {
+  background: var(--canvas);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-xl);
+  padding: 28px;
+}
+.contrib-card h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 14px; }
+.contrib-card ul { padding-left: 16px; font-size: 14px; color: var(--body); line-height: 1.8; }
+
+/* ── cta-band (dark) ──────────────────────────────────── */
+.cta-band {
+  background: var(--surface-dark);
+  padding: 80px 56px;
+  margin-top: 80px;
+}
+.cta-band h2 {
+  font-family: var(--display);
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 400;
+  letter-spacing: -1px;
+  color: var(--on-dark);
+  margin-bottom: 16px;
+}
+.cta-band p { font-size: 16px; color: var(--on-dark-soft); max-width: 540px; line-height: 1.6; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--primary);
+  color: #fff;
+  border-radius: var(--r-pill);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.btn-primary:hover { background: var(--primary-active); }
+.btn-secondary-dark {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 24px;
+  background: var(--surface-dark-el);
+  color: var(--on-dark);
+  border-radius: var(--r-pill);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 0.12s;
+}
+.btn-secondary-dark:hover { opacity: 0.8; }
+
+/* ── footer ───────────────────────────────────────────── */
+footer {
+  background: var(--canvas);
+  border-top: 1px solid var(--hairline);
+  padding: 32px 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+footer p { font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-dot"></div>
+    <div>
+      <div class="brand-name">Thesis Overview</div>
+      <div class="brand-sub">2026 · ปริญญาโท</div>
+    </div>
+  </div>
+  <div class="nav-label" style="margin-bottom:8px;">Sections</div>
+  <a href="#keywords"><span class="nav-num">01</span>Keywords</a>
+  <a href="#pipeline"><span class="nav-num">02</span>Pipeline</a>
+  <a href="#gaps"><span class="nav-num">03</span>Research Gaps</a>
+  <a href="#approach"><span class="nav-num">04</span>Approach</a>
+  <a href="#stack"><span class="nav-num">05</span>Tech Stack</a>
+  <a href="#timeline"><span class="nav-num">06</span>Timeline</a>
+  <a href="#experiments"><span class="nav-num">07</span>Experiments</a>
+</aside>
+
+<main>
+
+<!-- ── HERO ──────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-badge"><span>●</span>&nbsp;Thesis Research · 2026</div>
+  <h1>Context-Aware Caption<br>Generation for <em>Figures</em><br>&amp; <em>Charts</em></h1>
+  <p class="hero-sub">การสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการ<br>โดยใช้บริบทจากเนื้อหาเอกสาร</p>
+  <div class="hero-meta">
+    <span class="pill pill-primary">Hybrid RAG + VLM</span>
+    <span class="pill pill-dark">Scientific Figure Captioning</span>
+    <span class="pill pill-dark">Multimodal Learning</span>
+    <span class="pill pill-outline">ผศ.ดร. หัชทัย ชาญเลขา</span>
+  </div>
+
+  <!-- Floating pipeline card — step indicator only -->
+  <div class="hero-pipeline-card">
+    <div class="pipeline-card-header">
+      <div class="pipeline-card-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="pipeline-card-title">System Pipeline — 5 Modules · See Section 02 for full diagram</div>
+    </div>
+    <div style="display:flex;align-items:stretch;gap:0;padding-bottom:24px;overflow-x:auto;min-width:0;">
+      <div style="flex-shrink:0;background:#1e2330;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px 16px;min-width:160px;">
+        <div style="font-family:ui-monospace,monospace;font-size:9px;color:#4d7fff;font-weight:700;letter-spacing:0.1em;margin-bottom:5px;">MODULE 1</div>
+        <div style="font-size:12px;color:#fff;font-weight:500;line-height:1.35;">Document Parsing<br>&amp; Layout Analysis</div>
+        <div style="font-family:ui-monospace,monospace;font-size:10px;color:#a8acb3;margin-top:6px;">Docling · DocLayout-YOLO</div>
+      </div>
+      <div style="flex-shrink:0;display:flex;align-items:center;padding:0 8px;"><span style="display:block;width:20px;height:1px;background:#3a3f4a;position:relative;"><span style="position:absolute;right:-4px;top:-5px;font-size:11px;color:#3a3f4a;line-height:1;">▶</span></span></div>
+      <div style="flex-shrink:0;background:#1e2330;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px 16px;min-width:160px;">
+        <div style="font-family:ui-monospace,monospace;font-size:9px;color:#1a9f62;font-weight:700;letter-spacing:0.1em;margin-bottom:5px;">MODULE 2</div>
+        <div style="font-size:12px;color:#fff;font-weight:500;line-height:1.35;">Visual<br>Understanding</div>
+        <div style="font-family:ui-monospace,monospace;font-size:10px;color:#a8acb3;margin-top:6px;">Qwen2-VL · DePlot · OCR</div>
+      </div>
+      <div style="flex-shrink:0;display:flex;align-items:center;padding:0 8px;"><span style="display:block;width:20px;height:1px;background:#3a3f4a;position:relative;"><span style="position:absolute;right:-4px;top:-5px;font-size:11px;color:#3a3f4a;line-height:1;">▶</span></span></div>
+      <div style="flex-shrink:0;background:#1e2330;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px 16px;min-width:160px;">
+        <div style="font-family:ui-monospace,monospace;font-size:9px;color:#c49400;font-weight:700;letter-spacing:0.1em;margin-bottom:5px;">MODULE 3</div>
+        <div style="font-size:12px;color:#fff;font-weight:500;line-height:1.35;">Context<br>Extraction</div>
+        <div style="font-family:ui-monospace,monospace;font-size:10px;color:#a8acb3;margin-top:6px;">RAG · FAISS · Sentence-BERT</div>
+      </div>
+      <div style="flex-shrink:0;display:flex;align-items:center;padding:0 8px;"><span style="display:block;width:20px;height:1px;background:#0052ff;position:relative;"><span style="position:absolute;right:-4px;top:-5px;font-size:11px;color:#0052ff;line-height:1;">▶</span></span></div>
+      <div style="flex-shrink:0;background:#0a1a40;border:1px solid rgba(0,82,255,0.35);border-radius:8px;padding:12px 16px;min-width:160px;">
+        <div style="font-family:ui-monospace,monospace;font-size:9px;color:#4d7fff;font-weight:700;letter-spacing:0.1em;margin-bottom:5px;">MODULE 4 · CORE</div>
+        <div style="font-size:12px;color:#fff;font-weight:500;line-height:1.35;">Caption<br>Generation</div>
+        <div style="font-family:ui-monospace,monospace;font-size:10px;color:#4d7fff;margin-top:6px;">Hybrid RAG + VLM</div>
+      </div>
+      <div style="flex-shrink:0;display:flex;align-items:center;padding:0 8px;"><span style="display:block;width:20px;height:1px;background:#0052ff;position:relative;"><span style="position:absolute;right:-4px;top:-5px;font-size:11px;color:#0052ff;line-height:1;">▶</span></span></div>
+      <div style="flex-shrink:0;background:#1e2330;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:12px 16px;min-width:160px;">
+        <div style="font-family:ui-monospace,monospace;font-size:9px;color:#9f6fff;font-weight:700;letter-spacing:0.1em;margin-bottom:5px;">MODULE 5</div>
+        <div style="font-size:12px;color:#fff;font-weight:500;line-height:1.35;">Quality<br>Assessment</div>
+        <div style="font-family:ui-monospace,monospace;font-size:10px;color:#a8acb3;margin-top:6px;">Faithfulness · LLM-as-Judge</div>
+      </div>
+      <div style="flex-shrink:0;display:flex;align-items:center;padding:0 12px;"><span style="font-family:ui-monospace,monospace;font-size:11px;color:#0052ff;font-weight:700;white-space:nowrap;">→ ✅ Caption</span></div>
+    </div>
+    <svg viewBox="0 0 860 0" xmlns="http://www.w3.org/2000/svg" style="display:none;">
+      <defs>
+        <marker id="a" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="#3a3f4a"/>
+        </marker>
+        <marker id="ab" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L7,3 z" fill="#0052ff"/>
+        </marker>
+      </defs>
+
+      <!-- Input PDF -->
+      <rect x="8" y="52" width="72" height="56" rx="8" fill="#1e2128"/>
+      <text x="44" y="74" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#0052ff" font-weight="700">INPUT</text>
+      <text x="44" y="90" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#fff">Academic</text>
+      <text x="44" y="104" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#fff">PDF</text>
+
+      <!-- Arrow -->
+      <line x1="80" y1="80" x2="100" y2="80" stroke="#3a3f4a" stroke-width="1.5" marker-end="url(#a)"/>
+
+      <!-- M1 -->
+      <rect x="104" y="44" width="130" height="72" rx="8" fill="#131620"/>
+      <rect x="104" y="44" width="130" height="24" rx="8" fill="#0040cc"/>
+      <rect x="104" y="58" width="130" height="10" fill="#0040cc"/>
+      <text x="169" y="60" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#fff" font-weight="700">MODULE 1</text>
+      <text x="169" y="78" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#a8acb3">Document Parsing</text>
+      <text x="169" y="93" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#a8acb3">&amp; Layout Analysis</text>
+      <text x="169" y="107" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5b616e">Docling · DocLayout-YOLO</text>
+
+      <!-- Arrow -->
+      <line x1="234" y1="80" x2="254" y2="80" stroke="#3a3f4a" stroke-width="1.5" marker-end="url(#a)"/>
+
+      <!-- M2 -->
+      <rect x="258" y="44" width="130" height="72" rx="8" fill="#131620"/>
+      <rect x="258" y="44" width="130" height="24" rx="8" fill="#047a48"/>
+      <rect x="258" y="58" width="130" height="10" fill="#047a48"/>
+      <text x="323" y="60" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#fff" font-weight="700">MODULE 2</text>
+      <text x="323" y="78" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#a8acb3">Visual Understanding</text>
+      <text x="323" y="93" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#5b616e">VLM · OCR</text>
+      <text x="323" y="107" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5b616e">Qwen2-VL · DePlot · MatCha</text>
+
+      <!-- Arrow -->
+      <line x1="388" y1="80" x2="408" y2="80" stroke="#3a3f4a" stroke-width="1.5" marker-end="url(#a)"/>
+
+      <!-- M3 -->
+      <rect x="412" y="44" width="130" height="72" rx="8" fill="#131620"/>
+      <rect x="412" y="44" width="130" height="24" rx="8" fill="#9a6e00"/>
+      <rect x="412" y="58" width="130" height="10" fill="#9a6e00"/>
+      <text x="477" y="60" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#fff" font-weight="700">MODULE 3</text>
+      <text x="477" y="78" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#a8acb3">Context Extraction</text>
+      <text x="477" y="93" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#5b616e">RAG · Mention Extraction</text>
+      <text x="477" y="107" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5b616e">FAISS · Sentence-BERT</text>
+
+      <!-- Arrow -->
+      <line x1="542" y1="80" x2="562" y2="80" stroke="#0052ff" stroke-width="1.8" marker-end="url(#ab)"/>
+
+      <!-- M4 -->
+      <rect x="566" y="44" width="130" height="72" rx="8" fill="#0d0f1a"/>
+      <rect x="566" y="44" width="130" height="24" rx="8" fill="#0052ff"/>
+      <rect x="566" y="58" width="130" height="10" fill="#0052ff"/>
+      <text x="631" y="60" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#fff" font-weight="700">MODULE 4</text>
+      <text x="631" y="78" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" fill="#fff" font-weight="600">Caption Generation</text>
+      <text x="631" y="93" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#a8acb3">Hybrid RAG + VLM</text>
+      <text x="631" y="107" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#6b7fff">Open-source LMMs · vLLM</text>
+
+      <!-- Arrow -->
+      <line x1="696" y1="80" x2="716" y2="80" stroke="#0052ff" stroke-width="1.8" marker-end="url(#ab)"/>
+
+      <!-- M5 -->
+      <rect x="720" y="44" width="130" height="72" rx="8" fill="#131620"/>
+      <rect x="720" y="44" width="130" height="24" rx="8" fill="#7c3aed"/>
+      <rect x="720" y="58" width="130" height="10" fill="#7c3aed"/>
+      <text x="785" y="60" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9.5" fill="#fff" font-weight="700">MODULE 5</text>
+      <text x="785" y="78" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#a8acb3">Quality Assessment</text>
+      <text x="785" y="93" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#a8acb3">&amp; Refinement</text>
+      <text x="785" y="107" text-anchor="middle" font-family="ui-monospace,monospace" font-size="9" fill="#5b616e">Faithfulness · LLM-as-Judge</text>
+
+      <!-- Output label -->
+      <text x="856" y="83" text-anchor="end" font-family="ui-monospace,monospace" font-size="9" fill="#0052ff" font-weight="700">✓ CAPTION</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ── KEYWORDS ──────────────────────────────────────── -->
+<div class="section" id="keywords">
+  <div class="section-inner">
+    <div class="section-eyebrow blue">01 · Keywords</div>
+    <h2>คำสำคัญของงานวิจัย</h2>
+    <p class="section-lead">งานวิจัยนี้อยู่ในจุดตัดระหว่าง Multimodal AI, Document Understanding, และ Caption Generation</p>
+    <div class="kw-grid">
+      <div class="kw-group">
+        <div class="kw-group-label" style="color:var(--primary)">Primary</div>
+        <div class="kw-chips">
+          <span class="kw-chip chip-blue">Scientific Figure Captioning</span>
+          <span class="kw-chip chip-blue">Context-Aware Caption Generation</span>
+          <span class="kw-chip chip-blue">Multimodal Learning</span>
+          <span class="kw-chip chip-blue">Document Layout Analysis</span>
+          <span class="kw-chip chip-blue">Chart Understanding</span>
+        </div>
+      </div>
+      <div class="kw-group">
+        <div class="kw-group-label" style="color:var(--up)">Secondary</div>
+        <div class="kw-chips">
+          <span class="kw-chip chip-green">Large Multimodal Models (LMMs)</span>
+          <span class="kw-chip chip-green">Vision-Language Models (VLMs)</span>
+          <span class="kw-chip chip-green">OCR</span>
+          <span class="kw-chip chip-green">Retrieval-Augmented Generation (RAG)</span>
+          <span class="kw-chip chip-green">Knowledge-Augmented Captioning</span>
+        </div>
+      </div>
+      <div class="kw-group">
+        <div class="kw-group-label" style="color:#9a6e00">Domain-Specific</div>
+        <div class="kw-chips">
+          <span class="kw-chip chip-amber">Academic Document Understanding</span>
+          <span class="kw-chip chip-amber">Figure-Mention Paragraph Extraction</span>
+          <span class="kw-chip chip-amber">Chart-to-Text / Summarization</span>
+          <span class="kw-chip chip-amber">Multimodal Document Parsing</span>
+          <span class="kw-chip chip-amber">Hallucination Mitigation</span>
+        </div>
+      </div>
+      <div class="kw-group">
+        <div class="kw-group-label" style="color:var(--muted)">Evaluation</div>
+        <div class="kw-chips">
+          <span class="kw-chip chip-gray">BLEU / ROUGE / METEOR</span>
+          <span class="kw-chip chip-gray">BERTScore</span>
+          <span class="kw-chip chip-gray">LLM-as-a-Judge</span>
+          <span class="kw-chip chip-gray">Faithfulness Evaluation</span>
+          <span class="kw-chip chip-gray">Human Evaluation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PIPELINE DETAIL ───────────────────────────────── -->
+<div class="section-alt" id="pipeline">
+  <div class="section-inner">
+    <div class="section-eyebrow">02 · System Architecture</div>
+    <h2>5-Module Pipeline</h2>
+    <p class="section-lead">ระบบประกอบด้วย 5 โมดูลทำงานต่อเนื่อง ตั้งแต่รับ PDF ไปจนถึงสร้าง caption ขั้นสุดท้าย</p>
+
+    <!-- Large readable pipeline flowchart -->
+    <div style="margin-bottom:40px;overflow-x:auto;">
+      <svg viewBox="0 0 760 644" xmlns="http://www.w3.org/2000/svg" style="width:100%;min-width:560px;height:auto;display:block;background:#ffffff;border-radius:16px;border:1.5px solid #dee1e6;">
+        <defs>
+          <marker id="pa" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L0,9 L9,4.5 z" fill="#dee1e6"/>
+          </marker>
+          <marker id="pb" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+            <path d="M0,0 L0,9 L9,4.5 z" fill="#0052ff"/>
+          </marker>
+        </defs>
+
+        <!-- ── Input ── -->
+        <rect x="280" y="16" width="200" height="44" rx="22" fill="#0a0b0d"/>
+        <text x="380" y="35" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="#a8acb3" font-weight="700" letter-spacing="0.08em">INPUT</text>
+        <text x="380" y="52" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" fill="#ffffff" font-weight="500">Academic PDF</text>
+
+        <line x1="380" y1="60" x2="380" y2="73" stroke="#dee1e6" stroke-width="2" marker-end="url(#pa)"/>
+
+        <!-- ── M1 ── -->
+        <rect x="60" y="76" width="640" height="86" rx="12" fill="#ffffff" stroke="#dee1e6" stroke-width="1.5"/>
+        <rect x="60" y="76" width="640" height="26" rx="12" fill="#0040cc"/>
+        <rect x="60" y="90" width="640" height="12" fill="#0040cc"/>
+        <text x="380" y="93" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="rgba(255,255,255,0.75)" font-weight="700" letter-spacing="0.08em">MODULE 1 — Document Parsing &amp; Layout Analysis</text>
+        <text x="380" y="118" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="14" fill="#0a0b0d" font-weight="600">แยกองค์ประกอบจาก PDF ให้เป็น structured elements</text>
+        <text x="380" y="137" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#7c828a">Docling · DocLayout-YOLO · LayoutParser · PyMuPDF</text>
+        <text x="380" y="153" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#5b616e">Output: Figure · Text · Caption · Table + bounding boxes</text>
+
+        <!-- branch from M1 -->
+        <line x1="380" y1="162" x2="380" y2="186" stroke="#dee1e6" stroke-width="2"/>
+        <line x1="200" y1="186" x2="560" y2="186" stroke="#dee1e6" stroke-width="1.5"/>
+        <line x1="200" y1="186" x2="200" y2="198" stroke="#dee1e6" stroke-width="1.5" marker-end="url(#pa)"/>
+        <line x1="560" y1="186" x2="560" y2="198" stroke="#dee1e6" stroke-width="1.5" marker-end="url(#pa)"/>
+
+        <!-- branch labels -->
+        <rect x="122" y="198" width="156" height="26" rx="13" fill="#eef0f3"/>
+        <text x="200" y="216" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" fill="#0a0b0d" font-weight="500">📊 Figure / Chart</text>
+        <rect x="482" y="198" width="156" height="26" rx="13" fill="#eef0f3"/>
+        <text x="560" y="216" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="12" fill="#0a0b0d" font-weight="500">📝 Text · Caption · Table</text>
+
+        <line x1="200" y1="224" x2="200" y2="243" stroke="#dee1e6" stroke-width="1.5" marker-end="url(#pa)"/>
+        <line x1="560" y1="224" x2="560" y2="243" stroke="#dee1e6" stroke-width="1.5" marker-end="url(#pa)"/>
+
+        <!-- ── M2 ── -->
+        <rect x="40" y="246" width="320" height="92" rx="12" fill="#ffffff" stroke="#dee1e6" stroke-width="1.5"/>
+        <rect x="40" y="246" width="320" height="26" rx="12" fill="#047a48"/>
+        <rect x="40" y="260" width="320" height="12" fill="#047a48"/>
+        <text x="200" y="263" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="rgba(255,255,255,0.75)" font-weight="700" letter-spacing="0.08em">MODULE 2 — Visual Understanding</text>
+        <text x="200" y="288" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" fill="#0a0b0d" font-weight="600">วิเคราะห์ภาพและกราฟ</text>
+        <text x="200" y="306" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#7c828a">Qwen2-VL · LLaVA · DePlot</text>
+        <text x="200" y="323" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#7c828a">MatCha · EasyOCR · Tesseract</text>
+
+        <!-- ── M3 ── -->
+        <rect x="400" y="246" width="320" height="92" rx="12" fill="#ffffff" stroke="#dee1e6" stroke-width="1.5"/>
+        <rect x="400" y="246" width="320" height="26" rx="12" fill="#9a6e00"/>
+        <rect x="400" y="260" width="320" height="12" fill="#9a6e00"/>
+        <text x="560" y="263" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="rgba(255,255,255,0.75)" font-weight="700" letter-spacing="0.08em">MODULE 3 — Context Extraction</text>
+        <text x="560" y="288" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" fill="#0a0b0d" font-weight="600">ดึงบริบทที่เกี่ยวข้อง</text>
+        <text x="560" y="306" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#7c828a">RAG · Mention Extraction</text>
+        <text x="560" y="323" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#7c828a">FAISS · Sentence-BERT · LangChain</text>
+
+        <!-- merge -->
+        <line x1="200" y1="338" x2="200" y2="362" stroke="#dee1e6" stroke-width="1.5"/>
+        <line x1="560" y1="338" x2="560" y2="362" stroke="#dee1e6" stroke-width="1.5"/>
+        <line x1="200" y1="362" x2="560" y2="362" stroke="#dee1e6" stroke-width="1.5"/>
+        <line x1="380" y1="362" x2="380" y2="382" stroke="#0052ff" stroke-width="2.5" marker-end="url(#pb)"/>
+        <!-- merge label -->
+        <rect x="290" y="350" width="180" height="22" rx="11" fill="#eef8ff" stroke="rgba(0,82,255,0.2)" stroke-width="1"/>
+        <text x="380" y="365" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#0052ff" font-weight="600">Visual + Context รวมกัน</text>
+
+        <!-- ── M4 CORE ── -->
+        <rect x="60" y="385" width="640" height="88" rx="12" fill="#f0f4ff" stroke="#0052ff" stroke-width="2"/>
+        <rect x="60" y="385" width="640" height="26" rx="12" fill="#0052ff"/>
+        <rect x="60" y="399" width="640" height="12" fill="#0052ff"/>
+        <text x="380" y="402" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="rgba(255,255,255,0.85)" font-weight="700" letter-spacing="0.08em">MODULE 4 — CORE — Multimodal Caption Generation</text>
+        <text x="380" y="427" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="14" fill="#0a0b0d" font-weight="600">สร้าง Caption จาก Visual Features + Context</text>
+        <text x="380" y="447" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#003ecc">Hybrid RAG + VLM · Open-source LMMs · HuggingFace · vLLM</text>
+        <text x="380" y="463" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="11" fill="#0040cc">แนวทางที่เลือก: ดึง context ผ่าน RAG แล้วส่งให้ VLM สร้าง caption</text>
+
+        <line x1="380" y1="473" x2="380" y2="492" stroke="#dee1e6" stroke-width="2" marker-end="url(#pa)"/>
+
+        <!-- ── M5 ── -->
+        <rect x="60" y="495" width="640" height="74" rx="12" fill="#ffffff" stroke="#dee1e6" stroke-width="1.5"/>
+        <rect x="60" y="495" width="640" height="26" rx="12" fill="#7c3aed"/>
+        <rect x="60" y="509" width="640" height="12" fill="#7c3aed"/>
+        <text x="380" y="512" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="rgba(255,255,255,0.75)" font-weight="700" letter-spacing="0.08em">MODULE 5 — Quality Assessment &amp; Refinement</text>
+        <text x="380" y="537" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" fill="#0a0b0d" font-weight="600">ตรวจสอบและปรับปรุงคุณภาพ Caption</text>
+        <text x="380" y="555" text-anchor="middle" font-family="ui-monospace,monospace" font-size="11" fill="#7c828a">Faithfulness Check · Context Relevance Scoring · Self-correction · LLM-as-Judge</text>
+
+        <line x1="380" y1="569" x2="380" y2="587" stroke="#0052ff" stroke-width="2.5" marker-end="url(#pb)"/>
+
+        <!-- ── Output ── -->
+        <rect x="230" y="590" width="300" height="44" rx="22" fill="#0a0b0d"/>
+        <text x="380" y="609" text-anchor="middle" font-family="ui-monospace,monospace" font-size="10" fill="rgba(255,255,255,0.6)" font-weight="700" letter-spacing="0.08em">OUTPUT</text>
+        <text x="380" y="626" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="13" fill="#ffffff" font-weight="600">✅ Final Caption — Faithful · Context-aware</text>
+      </svg>
+    </div>
+
+    <div class="module-cards">
+      <div class="module-card">
+        <div class="module-badge mb1">1</div>
+        <h3>Document Parsing &amp; Layout Analysis</h3>
+        <p>แยกองค์ประกอบจาก PDF — ภาพ, ข้อความ, ตาราง, caption พร้อม bounding boxes</p>
+        <div class="tool-row">
+          <span class="tool-tag">Docling</span><span class="tool-tag">DocLayout-YOLO</span><span class="tool-tag">LayoutParser</span><span class="tool-tag">PyMuPDF</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-badge mb2">2</div>
+        <h3>Visual Understanding</h3>
+        <p>จำแนกประเภทภาพ, ดึง OCR tokens, แปลงกราฟเป็นข้อมูล (chart derendering)</p>
+        <div class="tool-row">
+          <span class="tool-tag">Qwen2-VL</span><span class="tool-tag">LLaVA</span><span class="tool-tag">DePlot</span><span class="tool-tag">MatCha</span><span class="tool-tag">EasyOCR</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-badge mb3">3</div>
+        <h3>Context Extraction</h3>
+        <p>ดึง mention-paragraphs, Section-aware context, Cross-reference resolution ผ่าน RAG</p>
+        <div class="tool-row">
+          <span class="tool-tag">LangChain</span><span class="tool-tag">LlamaIndex</span><span class="tool-tag">FAISS</span><span class="tool-tag">Sentence-BERT</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-badge mb4">4</div>
+        <h3>Multimodal Caption Generation</h3>
+        <p>รวม visual features + context passages สร้าง caption แบบ Hybrid RAG + VLM</p>
+        <div class="tool-row">
+          <span class="tool-tag">Open LMMs</span><span class="tool-tag">HuggingFace</span><span class="tool-tag">vLLM</span>
+        </div>
+      </div>
+      <div class="module-card">
+        <div class="module-badge mb5">5</div>
+        <h3>Quality Assessment &amp; Refinement</h3>
+        <p>Faithfulness checking, context relevance scoring, iterative self-correction</p>
+        <div class="tool-row">
+          <span class="tool-tag">LLM-as-Judge</span><span class="tool-tag">BERTScore</span><span class="tool-tag">GPT-4o</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RESEARCH GAPS ─────────────────────────────────── -->
+<div class="section" id="gaps">
+  <div class="section-inner">
+    <div class="section-eyebrow blue">03 · Problem Space</div>
+    <h2>Research Gaps</h2>
+    <p class="section-lead">5 ช่องว่างที่งานวิจัยก่อนหน้ายังไม่ได้แก้ไข — สิ่งเหล่านี้คือ contribution หลักของงานนี้</p>
+    <div class="gaps-grid">
+      <div class="gap-card g1">
+        <div class="gap-number">Gap 01</div>
+        <h3>Context Integration Gap</h3>
+        <p>งานส่วนใหญ่ใช้เฉพาะ mention-paragraph แต่ไม่ได้ใช้ full document context (abstract, intro, methodology)</p>
+      </div>
+      <div class="gap-card g2">
+        <div class="gap-number">Gap 02</div>
+        <h3>Multi-Figure Type Gap</h3>
+        <p>งานส่วนใหญ่เน้น chart/graph แต่ยังขาดการรองรับ architecture diagrams, flowcharts, experimental setups</p>
+      </div>
+      <div class="gap-card g3">
+        <div class="gap-number">Gap 03</div>
+        <h3>Non-English Gap</h3>
+        <p>ชุดข้อมูลและโมเดลส่วนใหญ่เน้นภาษาอังกฤษ ยังไม่มีงานสำหรับเอกสารวิชาการภาษาไทย</p>
+      </div>
+      <div class="gap-card g4">
+        <div class="gap-number">Gap 04</div>
+        <h3>End-to-End Pipeline Gap</h3>
+        <p>ยังไม่มี pipeline ครบจาก PDF → Layout Analysis → Context Extraction → Caption Generation</p>
+      </div>
+      <div class="gap-card g5">
+        <div class="gap-number">Gap 05</div>
+        <h3>Evaluation Gap</h3>
+        <p>Metric แบบเดิม (BLEU/ROUGE) ไม่เหมาะ ต้องการ framework ที่วัด faithfulness + context relevance</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── APPROACH ──────────────────────────────────────── -->
+<div class="section-alt" id="approach">
+  <div class="section-inner">
+    <div class="section-eyebrow">04 · Methodology</div>
+    <h2>แนวทาง Caption Generation</h2>
+    <p class="section-lead">เปรียบเทียบ 4 แนวทาง — แนวทาง D (Hybrid RAG + VLM) คือที่เลือกใช้</p>
+    <table class="approach-table">
+      <thead>
+        <tr>
+          <th>แนวทาง</th>
+          <th>รายละเอียด</th>
+          <th>ข้อดี</th>
+          <th>ข้อเสีย</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>A: Prompt-based LMM</td>
+          <td>ใช้ LMM (GPT-4V, Gemini) + prompt ที่รวม visual + context</td>
+          <td class="up">ง่าย, โมเดลใหญ่</td>
+          <td class="dn">ต้นทุนสูง, reproduce ยาก</td>
+        </tr>
+        <tr>
+          <td>B: Fine-tuned VLM</td>
+          <td>Fine-tune open-source (Qwen2-VL, LLaVA) บน SciCap+</td>
+          <td class="up">ควบคุมได้, reproduce ได้</td>
+          <td class="dn">ต้องการ GPU, ข้อมูลเยอะ</td>
+        </tr>
+        <tr>
+          <td>C: Multi-LLM Pipeline</td>
+          <td>หลาย LLM ทำงานร่วมกัน (แบบ MLBCAP)</td>
+          <td class="up">คุณภาพสูงมาก</td>
+          <td class="dn">ซับซ้อน, ต้นทุนสูง</td>
+        </tr>
+        <tr class="rec">
+          <td>D: Hybrid RAG + VLM <span class="rec-pill">เลือก</span></td>
+          <td>RAG ดึง context → ส่งให้ VLM สร้าง caption</td>
+          <td class="up">สมดุลดี, novelty สูง, open-source</td>
+          <td class="dn">ต้องออกแบบ retrieval ดี</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── TECH STACK ─────────────────────────────────────── -->
+<div class="section" id="stack">
+  <div class="section-inner">
+    <div class="section-eyebrow blue">05 · Technology</div>
+    <h2>Technology Stack</h2>
+    <p class="section-lead">เครื่องมือและ framework แยกตาม layer ของระบบ</p>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon" style="background:rgba(0,82,255,0.1);">📄</div>
+          <div class="stack-title">Document Parsing</div>
+        </div>
+        <div class="stack-body">
+          <span class="stack-chip">Docling (IBM)</span>
+          <span class="stack-chip">PyMuPDF</span>
+          <span class="stack-chip">pdfplumber</span>
+          <span class="stack-chip">LayoutParser</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon" style="background:rgba(5,177,105,0.1);">👁️</div>
+          <div class="stack-title">Visual Understanding</div>
+        </div>
+        <div class="stack-body">
+          <span class="stack-chip">Qwen2-VL</span>
+          <span class="stack-chip">LLaVA</span>
+          <span class="stack-chip">DePlot</span>
+          <span class="stack-chip">MatCha</span>
+          <span class="stack-chip">EasyOCR</span>
+          <span class="stack-chip">Tesseract</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon" style="background:rgba(244,176,0,0.12);">🔍</div>
+          <div class="stack-title">Context Retrieval</div>
+        </div>
+        <div class="stack-body">
+          <span class="stack-chip">LangChain</span>
+          <span class="stack-chip">LlamaIndex</span>
+          <span class="stack-chip">Sentence-BERT</span>
+          <span class="stack-chip">FAISS</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon" style="background:rgba(0,82,255,0.1);">✍️</div>
+          <div class="stack-title">Caption Generation</div>
+        </div>
+        <div class="stack-body">
+          <span class="stack-chip">Open-source LMMs</span>
+          <span class="stack-chip">HuggingFace</span>
+          <span class="stack-chip">vLLM</span>
+          <span class="stack-chip">PyTorch</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon" style="background:rgba(5,177,105,0.1);">📊</div>
+          <div class="stack-title">Evaluation</div>
+        </div>
+        <div class="stack-body">
+          <span class="stack-chip">BLEU / ROUGE</span>
+          <span class="stack-chip">BERTScore</span>
+          <span class="stack-chip">GPT-based Judge</span>
+        </div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-header">
+          <div class="stack-icon" style="background:var(--surface-strong);">⚙️</div>
+          <div class="stack-title">Infrastructure</div>
+        </div>
+        <div class="stack-body">
+          <span class="stack-chip">Python 3.10+</span>
+          <span class="stack-chip">Weights &amp; Biases</span>
+          <span class="stack-chip">LANTA HPC</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TIMELINE ───────────────────────────────────────── -->
+<div class="section-alt" id="timeline">
+  <div class="section-inner">
+    <div class="section-eyebrow">06 · Schedule</div>
+    <h2>12-Month Timeline</h2>
+    <p class="section-lead">แผนการทำงาน 4 phases ตลอด 12 เดือน</p>
+    <div class="tl-wrap">
+      <div class="tl-months">
+        <div></div>
+        <div class="tl-month-label">M1</div><div class="tl-month-label">M2</div>
+        <div class="tl-month-label">M3</div><div class="tl-month-label">M4</div>
+        <div class="tl-month-label">M5</div><div class="tl-month-label">M6</div>
+        <div class="tl-month-label">M7</div><div class="tl-month-label">M8</div>
+        <div class="tl-month-label">M9</div><div class="tl-month-label">M10</div>
+        <div class="tl-month-label">M11</div><div class="tl-month-label">M12</div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-name">Phase 1: Foundation</div>
+        <div style="grid-column:span 2">
+          <div class="tl-bar" style="background:var(--primary);">ศึกษา + เตรียมข้อมูล</div>
+        </div>
+        <div style="grid-column:span 10"></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-name">Phase 2: Core Dev</div>
+        <div></div><div></div>
+        <div style="grid-column:span 5">
+          <div class="tl-bar" style="background:#047a48;">พัฒนา Module 1–4</div>
+        </div>
+        <div style="grid-column:span 5"></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-name">Phase 3: Integration</div>
+        <div style="grid-column:span 7"></div>
+        <div style="grid-column:span 3">
+          <div class="tl-bar" style="background:#9a6e00;">รวมระบบ + Eval</div>
+        </div>
+        <div style="grid-column:span 2"></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-name">Phase 4: Finalize</div>
+        <div style="grid-column:span 8"></div>
+        <div style="grid-column:span 4">
+          <div class="tl-bar" style="background:#7c3aed;">เขียน Thesis + Paper</div>
+        </div>
+      </div>
+      <div class="tl-dels">
+        <div class="tl-del">
+          <div class="tl-del-ph" style="color:var(--primary)">Phase 1 · M1–2</div>
+          <ul><li>Literature review</li><li>Dataset preparation</li><li>Baseline results</li></ul>
+        </div>
+        <div class="tl-del">
+          <div class="tl-del-ph" style="color:#047a48">Phase 2 · M3–7</div>
+          <ul><li>Working modules (1–4)</li><li>Intermediate results</li></ul>
+        </div>
+        <div class="tl-del">
+          <div class="tl-del-ph" style="color:#9a6e00">Phase 3 · M8–10</div>
+          <ul><li>Complete system</li><li>Evaluation results</li></ul>
+        </div>
+        <div class="tl-del">
+          <div class="tl-del-ph" style="color:#7c3aed">Phase 4 · M9–12</div>
+          <ul><li>Thesis document</li><li>Published paper</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EXPERIMENTS ───────────────────────────────────── -->
+<div class="section" id="experiments">
+  <div class="section-inner">
+    <div class="section-eyebrow blue">07 · Evaluation Plan</div>
+    <h2>Planned Experiments</h2>
+    <p class="section-lead">6 การทดลองเพื่อตอบคำถามวิจัยและแสดง contribution ของระบบ</p>
+    <div class="exp-grid">
+      <div class="exp-card">
+        <div class="exp-num">EXP 01</div>
+        <h4>Baseline Comparison</h4>
+        <p>เปรียบเทียบ VLM ต่าง ๆ ระหว่าง image-only vs context-aware</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-num">EXP 02</div>
+        <h4>Context Ablation</h4>
+        <p>วัดผลกระทบของแต่ละ level ของ context ต่อคุณภาพ caption</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-num">EXP 03</div>
+        <h4>Figure Type Analysis</h4>
+        <p>ดูว่าโมเดลทำได้ดีกับรูปแบบไหน (chart, diagram, photo, flowchart)</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-num">EXP 04</div>
+        <h4>RAG vs Full Context</h4>
+        <p>เปรียบเทียบ retrieval-based context vs การส่ง full text</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-num">EXP 05</div>
+        <h4>Human Evaluation</h4>
+        <p>ให้ผู้เชี่ยวชาญประเมิน faithfulness และ informativeness</p>
+      </div>
+      <div class="exp-card">
+        <div class="exp-num">EXP 06</div>
+        <h4>LLM-as-a-Judge</h4>
+        <p>ใช้ LLM ประเมินคุณภาพแทน human เพื่อ scalable evaluation</p>
+      </div>
+    </div>
+    <div class="contrib-grid">
+      <div class="contrib-card">
+        <h4>Academic Contributions</h4>
+        <ul>
+          <li>End-to-End Pipeline สำหรับ context-aware figure captioning</li>
+          <li>Context Retrieval Framework เฉพาะสำหรับรูปภาพในเอกสาร</li>
+          <li>Evaluation Framework วัด faithfulness + context relevance</li>
+          <li>Comparative Study ระหว่างแนวทางต่าง ๆ</li>
+        </ul>
+      </div>
+      <div class="contrib-card">
+        <h4>Practical Contributions</h4>
+        <ul>
+          <li>Tool/Library สร้างคำอธิบายรูปภาพใน paper อัตโนมัติ</li>
+          <li>ต่อยอดไปยัง Document Summarization</li>
+          <li>Academic Knowledge Management</li>
+        </ul>
+        <div style="margin-top:16px; padding:12px 14px; background:var(--surface-strong); border-radius:var(--r-md); font-size:13px; color:var(--body);">
+          <strong style="color:var(--ink)">Datasets:</strong>&nbsp; SciCap (133K+) · SciCap+ · ArXivCap · Chart-to-Text · DocLayNet
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA BAND ────────────────────────────────────────── -->
+<div class="cta-band">
+  <h2>Context-Aware Caption Generation<br>for Academic Documents</h2>
+  <p>วิทยานิพนธ์ปริญญาโท · อาจารย์ที่ปรึกษา: ผู้ช่วยศาสตราจารย์ ดร. หัชทัย ชาญเลขา</p>
+  <div class="cta-row">
+    <a class="btn-primary" href="#pipeline">View Pipeline</a>
+    <a class="btn-secondary-dark" href="#gaps">Research Gaps</a>
+  </div>
+</div>
+
+<!-- ── FOOTER ─────────────────────────────────────────── -->
+<footer>
+  <p>Context-Aware Caption Generation · Thesis Overview · 2026</p>
+  <p>docs/thesis/thesis-overview.html</p>
+</footer>
+
+</main>
+</div>
+
+<script>
+const sections = document.querySelectorAll('[id]');
+const links = document.querySelectorAll('.sidebar a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const a = document.querySelector(`.sidebar a[href="#${e.target.id}"]`);
+      if (a) a.classList.add('active');
+    }
+  });
+}, { rootMargin: '-25% 0px -65% 0px' });
+sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>

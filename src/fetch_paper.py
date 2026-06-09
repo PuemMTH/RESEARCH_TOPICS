@@ -384,12 +384,12 @@ def ingest_arxiv(arxiv_id: str, slug_override: str | None, year_override: str | 
     # Step 2: Download images and rewrite HTML
     images_dir = ASSETS_DIR / base_name
     url_to_local: dict[str, str] = {}
-    html_path_rel = f"papers/{base_name}.html"
+    html_path_rel = f"papers/{base_name}_source.html"
 
     if ar5iv_available and soup:
         url_to_local = download_images(soup, arxiv_id, images_dir)
         soup = rewrite_img_srcs(soup, url_to_local)
-        html_dest = PAPERS_DIR / f"{base_name}.html"
+        html_dest = PAPERS_DIR / f"{base_name}_source.html"
         html_dest.parent.mkdir(parents=True, exist_ok=True)
         html_dest.write_bytes(soup.encode(formatter="html5"))
         log(f"HTML saved → {html_path_rel}")

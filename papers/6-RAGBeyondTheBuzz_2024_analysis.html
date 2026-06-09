@@ -1,0 +1,190 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG and Beyond — Paper Analysis</title>
+<link rel="stylesheet" href="../assets/summary.css">
+</head>
+<body>
+
+<nav class="top-nav">
+<div class="container">
+  <a class="nav-brand" href="#">✦ <span>Research</span> Notes</a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#thesis">Thesis</a></li>
+  </ul>
+</div>
+</nav>
+
+<section class="hero">
+<div class="container">
+  <h1>Retrieval Augmented Generation (RAG) and Beyond: A Comprehensive Survey on How to Make your LLMs use External Data More Wisely</h1>
+  <p class="subtitle">Survey ที่จัดระดับ query ของ data-augmented LLM เป็น 4 ระดับ และเสนอ framework เลือกเทคนิคที่เหมาะสมสำหรับแต่ละระดับ</p>
+  <div class="hero-meta">
+    <span class="badge">Siyun Zhao, Yuqing Yang et al. (Microsoft Research Asia)</span>
+    <span class="badge coral">arXiv 2024</span>
+    <span class="badge"><a href="https://arxiv.org/abs/2409.14924" style="color:inherit">arXiv:2409.14924</a></span>
+  </div>
+</div>
+</section>
+
+<section class="section" id="overview">
+<div class="container">
+<div class="section-header"><span class="overline">Abstract & Contributions</span><h2>ภาพรวม</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">!</span><h3>ปัญหาที่ Paper นี้แก้</h3></div>
+<div class="detail-body">
+<div class="key-box">
+<ul>
+  <li>นักพัฒนา LLM applications มักล้มเหลวเพราะไม่เข้าใจว่า query ของตนอยู่ในระดับความซับซ้อนใด และเลือก technique ที่ไม่เหมาะสม</li>
+  <li>RAG surveys ที่มีอยู่มักโฟกัสเฉพาะด้านใดด้านหนึ่ง ไม่มี unified framework สำหรับ decompose ปัญหา</li>
+  <li>ไม่มี "one-size-fits-all" solution สำหรับ data-augmented LLM — แต่ developer มักพยายามหาทางลัด</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">★</span><h3>Key Contributions</h3></div>
+<div class="detail-body">
+<ul>
+  <li><strong>4-Level Query Taxonomy:</strong> จัดประเภท user queries เป็น Explicit Facts, Implicit Facts, Interpretable Rationales, Hidden Rationales — แต่ละระดับมีความซับซ้อนของ data interaction ต่างกัน</li>
+  <li><strong>Technique-to-Level Mapping:</strong> สรุป challenge เฉพาะและ technique ที่เหมาะสมสำหรับแต่ละ query level</li>
+  <li><strong>3 Data Injection Strategies:</strong> เปรียบเทียบ context injection, small model, และ fine-tuning พร้อม trade-offs ที่ชัดเจน</li>
+  <li><strong>Dataset Stratification Table:</strong> classify benchmark datasets ที่รู้จัก (HotPotQA, SQuAD, NQ ฯลฯ) ตาม query level</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section section-alt" id="methodology">
+<div class="container">
+<div class="section-header"><span class="overline">How It Works</span><h2>Methodology</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">1</span><h3>4-Level Query Taxonomy</h3></div>
+<div class="detail-body">
+<div class="method-box">
+<span class="label">Framework</span>
+<p>Data-augmented LLM application สามารถ formalize ได้เป็น <code>f: Q → A</code> โดยอาศัย data D โดย level ของ query บอกว่า D ต้องถูก "ใช้งาน" อย่างไร</p>
+</div>
+<table class="comparison-table">
+<thead><tr><th>Level</th><th>Query Type</th><th>ความท้าทาย</th><th>Best Technique</th></tr></thead>
+<tbody>
+  <tr><td><strong>Level 1</strong></td><td>Explicit Facts</td><td>locate fact ที่ถูกต้องใน database</td><td>Basic RAG</td></tr>
+  <tr><td><strong>Level 2</strong></td><td>Implicit Facts</td><td>รวม multiple facts + basic reasoning</td><td>Iterative RAG, Graph/Tree RAG, Text-to-SQL</td></tr>
+  <tr><td><strong>Level 3</strong></td><td>Interpretable Rationales</td><td>ทำตาม domain-specific rules ที่ explicit (FDA guidelines, workflows)</td><td>Prompt Tuning, Chain-of-Thought</td></tr>
+  <tr><td><strong>Level 4</strong></td><td>Hidden Rationales</td><td>synthesize implicit patterns จาก historical data</td><td>Offline Learning, In-context Learning, Fine-tuning</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">2</span><h3>3 Data Injection Strategies</h3></div>
+<div class="detail-body">
+<table class="comparison-table">
+<thead><tr><th>Strategy</th><th>วิธี</th><th>ข้อดี</th><th>ข้อเสีย</th></tr></thead>
+<tbody>
+  <tr><td><strong>Context Injection (RAG)</strong></td><td>ดึง relevant data มาใส่ใน prompt</td><td>Interpretable, stable, ไม่ต้อง train</td><td>จำกัดด้วย context window, information loss</td></tr>
+  <tr><td><strong>Small Model</strong></td><td>train small model จาก domain data แล้วใช้ guide LLM</td><td>Training time สั้นกว่า, รับ data ได้มาก</td><td>ขีดจำกัดตาม capability ของ small model</td></tr>
+  <tr><td><strong>Fine-tuning</strong></td><td>fine-tune LLM โดยตรงด้วย domain data</td><td>ใช้ LLM capacity เต็มที่</td><td>อาจทำให้เกิด hallucination ถ้า data out-of-domain, costly</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">3</span><h3>Query-Document Alignment Types</h3></div>
+<div class="detail-body">
+<div class="method-box">
+<span class="label">Figure 3</span>
+<p>Paper แบ่ง query-document alignment เป็น 3 ประเภท สำหรับ Level 1–2: dense retrieval ทำงานดี; Level 3–4 ต้องการ semantic understanding ที่ลึกกว่า</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section" id="results">
+<div class="container">
+<div class="section-header"><span class="overline">Datasets & Benchmarks</span><h2>Results & Benchmarks</h2></div>
+<div class="detail-block">
+<div class="detail-body">
+<div class="key-box teal"><h5>Dataset Stratification (เลือกตัวอย่าง)</h5>
+<ul>
+  <li><strong>Level 1 (Explicit):</strong> NQ, MS MARCO, TriviaQA, SQuAD, ASQA</li>
+  <li><strong>Level 2 (Implicit):</strong> HotPotQA, 2WikiMultiHopQA, MuSiQue, StrategyQA, DROP</li>
+  <li><strong>Level 3 (Interpretable Rationale):</strong> domain-specific (legal, medical guidelines)</li>
+  <li><strong>Level 4 (Hidden Rationale):</strong> IT ops incident logs, code debugging histories</li>
+</ul>
+</div>
+<div class="key-box">
+<h5>Insight สำคัญจาก Survey</h5>
+<ul>
+  <li>Basic RAG เพียงพอสำหรับ Level 1 แต่ fail อย่างชัดเจนบน multi-hop reasoning (Level 2)</li>
+  <li>Chain-of-Thought + prompt tuning ช่วย Level 3 ได้มากแต่ไม่สามารถ extract hidden knowledge (Level 4)</li>
+  <li>Real-world applications มักมี mixed query levels → ต้องการ routing pipeline</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section section-alt" id="limitations">
+<div class="container">
+<div class="section-header"><span class="overline">Gaps & Future Work</span><h2>ข้อจำกัดและทิศทางต่อไป</h2></div>
+<div class="detail-block"><div class="detail-body">
+<div class="key-box amber"><h5>Limitations</h5>
+<ul>
+  <li>Survey ไม่ได้ perform empirical experiments — เป็น taxonomy/framework เชิง conceptual</li>
+  <li>Boundary ระหว่าง Level 2 และ Level 3 ค่อนข้าง fuzzy ในทางปฏิบัติ</li>
+  <li>Context window limitation ยังคงเป็นปัญหา fundamental สำหรับ context injection strategy</li>
+  <li>Fine-tuning บน out-of-domain data อาจทำให้ LLM "ลืม" general knowledge — catastrophic forgetting</li>
+</ul>
+</div>
+<div class="key-box"><h5>Future Directions</h5>
+<ul>
+  <li>Multi-modal external data integration (text + image + table)</li>
+  <li>Automatic query level classification และ routing</li>
+  <li>Better evaluation metrics สำหรับ Level 3–4 queries</li>
+</ul>
+</div>
+</div></div>
+</div>
+</section>
+
+<section class="section section-dark" id="thesis">
+<div class="container">
+<div class="section-header"><span class="overline">Connection to My Research</span><h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2></div>
+<div class="synthesis-grid">
+  <div class="synthesis-card">
+    <h4>What I Borrow</h4>
+    <p>Framework แบ่ง query complexity level ใช้ได้กับงาน figure captioning — การอ้างอิงไปยังข้อมูลภายนอก (author context, paper metadata) อาจเทียบได้กับ Level 2–3 implicit/rationale queries ที่ต้องการ multi-hop reasoning ข้าม document sections</p>
+  </div>
+  <div class="synthesis-card">
+    <h4>Where I Diverge</h4>
+    <p>งานนี้เน้น text-only QA; figure captioning มีมิติ multimodal ที่ taxonomy นี้ไม่ได้ cover โดยตรง — need to extend "explicit/implicit" distinction ไปสู่ visual content</p>
+  </div>
+  <div class="synthesis-card">
+    <h4>Open Questions</h4>
+    <p>สำหรับ scientific figure captioning: retrieval จาก paper context เทียบเท่า Level 2–3 หรือเปล่า? Context injection vs. fine-tuning ควรใช้อันไหนสำหรับ domain-specific captioning (biomedical vs. CS)?</p>
+  </div>
+</div>
+</div>
+</section>
+
+<footer class="footer">
+<div class="container">
+  <p>Analysis generated 2026-06-07 · arXiv:2409.14924</p>
+</div>
+</footer>
+</body>
+</html>

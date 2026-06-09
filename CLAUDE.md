@@ -8,12 +8,12 @@ Research notes and papers repository. Content is primarily Markdown documents �
 
 ## Directory Layout
 
-- `papers/` — academic papers and their HTML summaries (PDF + HTML pairs, numbered prefix)
-- `docs/` — research notes, design decisions, contributor docs, synthesis documents
+- `papers/` — all paper files in a flat structure: PDF, source HTML, JSON, analysis HTML, reader HTML
+- `docs/` — research notes, design decisions, contributor docs, cross-paper synthesis
 - `src/` — scripts or reusable modules (when added)
 - `tests/` — tests mirroring `src/` layout
 - `data/` — small sample inputs only; do not commit large datasets or generated artifacts
-- `assets/` — static images, diagrams, media used by docs
+- `assets/` — static images, diagrams, CSS, static media
 
 Add a short `README.md` inside any new subdirectory whose setup or usage is not obvious.
 
@@ -34,8 +34,18 @@ Create a new subfolder if no existing one fits the topic.
 
 ### `papers/`
 
-Flat — no subfolders. Naming: `<N>-<ShortTitle>_<Year>.<ext>`, PDF and HTML as a pair.  
-e.g. `6-MyPaper_2024.pdf` + `6-MyPaper_2024.html`
+Flat — all paper-related files live here. Naming: `<N>-<ShortTitle>_<Year>_<type>.<ext>` where `_<type>` distinguishes file purpose.
+
+| Type suffix | What it is |
+|---|---|
+| `_source` | ar5iv source HTML: `6-MyPaper_2024_source.html` |
+| `_analysis` | bilingual analysis HTML: `6-MyPaper_2024_analysis.html` |
+| `_reader` | self-contained reader HTML: `6-MyPaper_2024_reader.html` |
+| *(none)* | PDF and JSON: `6-MyPaper_2024.pdf`, `6-MyPaper_2024.json` |
+| `_tex/` | LaTeX source folder (only subfolder allowed): `6-MyPaper_2024_tex/` |
+
+CSS path from `papers/`: `../assets/summary.css`  
+Image path from `papers/`: `../assets/papers/{base_name}/`
 
 ### Other top-level folders
 

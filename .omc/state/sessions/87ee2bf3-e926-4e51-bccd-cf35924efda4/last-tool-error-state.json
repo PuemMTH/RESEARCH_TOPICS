@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"Start-Process \\\"C:\\\\Users\\\\admin\\\\Desktop\\\\RESEARCH_TOPICS\\\\docs\\\\thesis\\\\thesis-overview.html\\\"\",\"description\":\"Open thesis-overview.html in default browser\"}",
+  "error": "Exit code 127\n/usr/bin/bash: line 1: Start-Process: command not found",
+  "timestamp": "2026-06-09T07:01:27.155Z",
+  "retry_count": 1
+}
