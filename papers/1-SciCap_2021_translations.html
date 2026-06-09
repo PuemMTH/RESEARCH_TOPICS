@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
@@ -21,10 +21,7 @@
   <p class="meta">Ting-Yao Hsu, C. Lee Giles, Ting-Hao Huang · Pennsylvania State University · ACL Findings 2021 · arXiv:2110.11624</p>
 </header>
 
-<div class="col-labels">
-  <div class="col-label">🇬🇧 English — Original</div>
-  <div class="col-label">🇹🇭 Thai — แปลภาษาไทย</div>
-</div>
+<div class="hover-hint"><span>🇬🇧 EN — hover ประโยคเพื่อดูภาษาไทย · คลิกเพื่อล็อก</span></div>
 
 <div class="translation-grid">
 
@@ -401,31 +398,42 @@ function initSentenceReveal(){
     if(!enP||!thP){pIdx++;return;}
     const enSents=splitSentences(enP.textContent.trim());
     const thSents=splitSentences(thP.textContent.trim());
-    enP.innerHTML=enSents.map((s,i)=>`<span class="en-sent" data-sent="${pIdx}-${i}">${s}</span>`).join(' ');
-    thP.innerHTML=thSents.map((s,i)=>`<span class="th-sent" data-sent="${pIdx}-${i}">${s}</span>`).join(' ');
+    // Build EN spans with data-th attribute storing the matching TH sentence
+    enP.innerHTML=enSents.map((s,i)=>{
+      const th=thSents[i]||thSents[thSents.length-1]||'';
+      return `<span class="en-sent" data-en="${s.replace(/"/g,'&quot;')}" data-th="${th.replace(/"/g,'&quot;')}">${s}</span>`;
+    }).join(' ');
     pIdx++;
   });
+
+  // Hover: swap EN → TH text inline
   const grid=document.querySelector('.translation-grid');
   grid.addEventListener('mouseover',e=>{
-    const s=e.target.closest('.en-sent');if(!s)return;
-    s.classList.add('active');
-    const id=s.dataset.sent;
-    document.querySelectorAll(`.th-sent[data-sent="${id}"]`).forEach(t=>{if(!t.classList.contains('locked'))t.classList.add('reveal');});
+    const s=e.target.closest('.en-sent');
+    if(!s||s.classList.contains('locked'))return;
+    if(!s._origHTML) s._origHTML=s.innerHTML;
+    s.textContent=s.dataset.th;
+    s.classList.add('showing-th');
   });
   grid.addEventListener('mouseout',e=>{
-    const s=e.target.closest('.en-sent');if(!s)return;
-    s.classList.remove('active');
-    const id=s.dataset.sent;
-    document.querySelectorAll(`.th-sent[data-sent="${id}"]`).forEach(t=>{if(!t.classList.contains('locked'))t.classList.remove('reveal');});
+    const s=e.target.closest('.en-sent');
+    if(!s||s.classList.contains('locked'))return;
+    if(s._origHTML!==undefined){s.innerHTML=s._origHTML;}
+    s.classList.remove('showing-th');
   });
+  // Click: lock the TH text (click again to unlock)
   grid.addEventListener('click',e=>{
     const s=e.target.closest('.en-sent');if(!s)return;
-    const id=s.dataset.sent;
-    document.querySelectorAll(`.th-sent[data-sent="${id}"]`).forEach(t=>{
-      const wasLocked=t.classList.contains('locked');
-      t.classList.toggle('locked');
-      if(wasLocked){t.classList.remove('reveal');}else{t.classList.add('reveal');}
-    });
+    if(s.classList.contains('locked')){
+      // Unlock → restore EN
+      if(s._origHTML!==undefined) s.innerHTML=s._origHTML;
+      s.classList.remove('locked','showing-th');
+    } else {
+      // Lock in TH mode
+      if(!s._origHTML) s._origHTML=s.innerHTML;
+      s.textContent=s.dataset.th;
+      s.classList.add('locked','showing-th');
+    }
   });
 }
 document.addEventListener('DOMContentLoaded',()=>{

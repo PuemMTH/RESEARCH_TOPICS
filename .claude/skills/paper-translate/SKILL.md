@@ -1,4 +1,4 @@
----
+﻿---
 name: paper-translate
 description: Generate a full bilingual EN|TH side-by-side translation HTML from a paper source HTML or PDF. Every paragraph, figure, and table gets a Thai translation column. Hover tooltips use assets/translations.js. TRIGGER when user asks to translate a paper, create a bilingual view, or make a side-by-side EN/TH version.
 version: 1.0.0
@@ -156,10 +156,7 @@ Use this complete template:
   <p class="meta">{AUTHORS} · {VENUE} · {YEAR} · arXiv:{ARXIV_ID}</p>
 </header>
 
-<div class="col-labels">
-  <div class="col-label">🇬🇧 English — Original</div>
-  <div class="col-label">🇹🇭 Thai — แปลภาษาไทย</div>
-</div>
+<div class="hover-hint"><span>🇬🇧 EN — hover ประโยคเพื่อดูภาษาไทย · คลิกเพื่อล็อก</span></div>
 
 <div class="translation-grid">
 
@@ -168,8 +165,8 @@ Use this complete template:
     <div class="en"><h2>Abstract</h2></div>
     <div class="th"><h2>บทคัดย่อ (Abstract)</h2></div>
   </div>
-  <!-- Paragraphs: each sentence gets data-sent="{paragraphIndex}-{sentenceIndex}" -->
-  <!-- Hover an EN sentence → corresponding TH sentence reveals; click → locks it amber -->
+  <!-- Paragraphs: JS splits sentences at runtime, stores TH in data-th attr -->
+  <!-- Hover an EN sentence → EN text swaps to TH inline; click → locks (amber) -->
   <div class="row para">
     <div class="en"><p>
       <span class="en-sent" data-sent="0-0">{ABSTRACT_SENT_1_EN}</span>
@@ -228,7 +225,7 @@ Use this complete template:
 
 <footer>
   Bilingual translation generated {DATE} · arXiv:{ARXIV_ID} ·
-  <span style="color:var(--teal)">Hover an English sentence → Thai reveals · Click to lock · Click again to unlock</span>
+  <span style="color:var(--teal)">Hover an English sentence → shows Thai · Click to lock</span>
   · <span style="color:var(--accent)">Hover underlined words for term tooltips</span>
 </footer>
 
@@ -245,43 +242,51 @@ function changeFont(d){fontSize=Math.min(24,Math.max(12,fontSize+d));document.bo
 let dark=false;
 function toggleTheme(){dark=!dark;document.documentElement.setAttribute('data-theme',dark?'dark':'');}
 document.addEventListener('DOMContentLoaded',()=>{
+  initSentenceReveal();
   document.querySelectorAll('.row .en').forEach(walkAndWrap);
   updateProgress();
-  initSentenceReveal();
 });
+function splitSentences(text){
+  return text.replace(/([.!?])\s+([A-Z\u0E00-\u0E7F"])/g,'$1\x00$2').split('\x00').map(s=>s.trim()).filter(Boolean);
+}
 function initSentenceReveal(){
+  let pIdx=0;
+  document.querySelectorAll('.row.para').forEach(row=>{
+    const enP=row.querySelector('.en p');
+    const thP=row.querySelector('.th p');
+    if(!enP||!thP){pIdx++;return;}
+    const enSents=splitSentences(enP.textContent.trim());
+    const thSents=splitSentences(thP.textContent.trim());
+    enP.innerHTML=enSents.map((s,i)=>{
+      const th=thSents[i]||thSents[thSents.length-1]||'';
+      return `<span class="en-sent" data-en="${s.replace(/"/g,'&quot;')}" data-th="${th.replace(/"/g,'&quot;')}">${s}</span>`;
+    }).join(' ');
+    pIdx++;
+  });
   const grid=document.querySelector('.translation-grid');
-  if(!grid)return;
-  // mouseover: reveal matching TH sentence
   grid.addEventListener('mouseover',e=>{
     const s=e.target.closest('.en-sent');
-    if(!s)return;
-    const id=s.dataset.sent;
-    s.classList.add('active');
-    document.querySelectorAll(`.th-sent[data-sent="${id}"]`).forEach(t=>{
-      if(!t.classList.contains('locked'))t.classList.add('reveal');
-    });
+    if(!s||s.classList.contains('locked'))return;
+    if(!s._origHTML) s._origHTML=s.innerHTML;
+    s.textContent=s.dataset.th;
+    s.classList.add('showing-th');
   });
-  // mouseout: hide TH sentence unless locked
   grid.addEventListener('mouseout',e=>{
     const s=e.target.closest('.en-sent');
-    if(!s)return;
-    const id=s.dataset.sent;
-    s.classList.remove('active');
-    document.querySelectorAll(`.th-sent[data-sent="${id}"]`).forEach(t=>{
-      if(!t.classList.contains('locked'))t.classList.remove('reveal');
-    });
+    if(!s||s.classList.contains('locked'))return;
+    if(s._origHTML!==undefined){s.innerHTML=s._origHTML;}
+    s.classList.remove('showing-th');
   });
-  // click: toggle lock (amber = locked visible; click again to unlock)
   grid.addEventListener('click',e=>{
-    const s=e.target.closest('.en-sent');
-    if(!s)return;
-    const id=s.dataset.sent;
-    document.querySelectorAll(`.th-sent[data-sent="${id}"]`).forEach(t=>{
-      const wasLocked=t.classList.contains('locked');
-      t.classList.toggle('locked');
-      if(wasLocked){t.classList.remove('reveal');}else{t.classList.add('reveal');}
-    });
+    const s=e.target.closest('.en-sent');if(!s)return;
+    if(s.classList.contains('locked')){
+      if(s._origHTML!==undefined) s.innerHTML=s._origHTML;
+      s.classList.remove('locked','showing-th');
+    } else {
+      if(!s._origHTML) s._origHTML=s.innerHTML;
+      s.textContent=s.dataset.th;
+      s.classList.add('locked','showing-th');
+    }
   });
 }
 </script>
