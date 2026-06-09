@@ -1,0 +1,548 @@
+[
+  {
+    "type": "heading",
+    "tag": "h1",
+    "class": [
+      "ltx_title",
+      "ltx_title_document"
+    ],
+    "text": "Multi-LLM Collaborative Caption Generation in Scientific Documents"
+  },
+  {
+    "type": "heading",
+    "tag": "h6",
+    "class": [
+      "ltx_title",
+      "ltx_title_abstract"
+    ],
+    "text": "Abstract"
+  },
+  {
+    "type": "paragraph",
+    "text": "Scientific figure captioning is a complex task that requires generating contextually appropriate descriptions of visual content. However, existing methods often fall short by utilizing incomplete information, treating the task solely as either an image-to-text or text summarization problem. This limitation hinders the generation of high-quality captions that fully capture the necessary details. Moreover, existing data sourced from arXiv papers contain low-quality captions, posing significant challenges for training large language models (LLMs). In this paper, we introduce a framework called Multi-LLM Collaborative Figure Caption Generation (MLBCAP) to address these challenges by leveraging specialized LLMs for distinct sub-tasks. Our approach unfolds in three key modules: (Quality Assessment) We utilize multimodal LLMs to assess the quality of training data, enabling the filtration of low-quality captions. (Diverse Caption Generation) We then employ a strategy of fine-tuning/prompting multiple LLMs on the captioning task to generate candidate captions. (Judgment) Lastly, we prompt a prominent LLM to select the highest quality caption from the candidates, followed by refining any remaining inaccuracies. Human evaluations demonstrate that informative captions produced by our approach rank better than human-written captions, highlighting its effectiveness. Our code is available at https://github.com/teamreboott/MLBCAP"
+  },
+  {
+    "type": "heading",
+    "tag": "h6",
+    "class": [
+      "ltx_title",
+      "ltx_title_keywords"
+    ],
+    "text": "Keywords:"
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_section"
+    ],
+    "text": "1 Introduction"
+  },
+  {
+    "type": "paragraph",
+    "text": "Scientific figures are integral to academic communication, offering a concise and effective means of presenting complex information. However, the value of a figure is largely determined by the quality of its accompanying caption. Captions provide essential context, elucidate visual elements, and enable readers to fully grasp the insights conveyed by the figure. Consequently, the generation of accurate and informative captions for scientific documents is critical to effectively communicating key findings to domain experts. Automated captioning not only aids researchers by improving the clarity of figure descriptions but also contributes to the overall enhancement of scholarly communication [9]."
+  },
+  {
+    "type": "paragraph",
+    "text": "Existing approaches to automatic figure captioning have predominantly treated the task either as an image-to-text problem [8, 21] or a text summarization task [11, 4]. Image-to-text methods focus on extracting information directly from visual content, but they often lack the domain-specific understanding required to interpret abbreviations, symbols, and implicit relationships. On the other hand, text summarization approaches rely on textual metadata such as figure-mentioning paragraphs or optical character recognition (OCR) outputs from figures. While these methods can capture textual context, they frequently overlook crucial visual details, such as trends, patterns, and color-coded elements that are vital for a comprehensive understanding of the figure. Consequently, these fragmented approaches fail to produce captions that are both accurate and informative, underscoring the need for a unified framework capable of leveraging both textual and visual modalities."
+  },
+  {
+    "type": "paragraph",
+    "text": "Another major challenge in figure captioning lies in the quality of available training data. Many existing datasets [14, 13, 8, 26], particularly those sourced from platforms like arXiv, contain captions that are incomplete, verbose, or poorly written. A recent study [11] reports that over 50% of captions in arXiv papers are unhelpful to domain experts. These low-quality captions can hinder model training and result in sub-optimal caption generation, complicating the accurate assessment of model performance."
+  },
+  {
+    "type": "paragraph",
+    "text": "To this end, we propose a unified framework named Multi-LLM Collaborative Figure Caption Generation (MLBCAP). Unlike previous methods, MLBCAP integrates textual and visual information through a carefully orchestrated pipeline comprising three key components: quality assessment, diverse caption generation, and judgment. The quality assessment module filters out low-quality training captions, ensuring that the models are trained on reliable data. In the caption generation stage, multiple LLMs, each specializing in different aspects of figure captioning, collaborate to produce diverse candidate captions. Finally, a judgment module utilizes a prominent LLM to select the best candidate caption and refine it for accuracy and coherence."
+  },
+  {
+    "type": "paragraph",
+    "text": "While prior studies find that longer captions are generally more beneficial to readers [7, 11], scientific journals and conference papers often impose strict page limits. To accommodate this, our framework is designed to generate both long and short versions of captions. In the final step, we utilize GPT-4o with specific instructions regarding caption length to achieve that both versions are concise yet informative. In a human evaluation by domain experts, captions generated by our method are preferred over the original author-written captions, demonstrating the effectiveness of our approach. Our main contributions are as follows:"
+  },
+  {
+    "type": "paragraph",
+    "text": "We propose a unified framework that includes data cleaning, caption generation, and post-editing processes to generate high-quality captions."
+  },
+  {
+    "type": "paragraph",
+    "text": "Our approach integrates both textual and visual features, leveraging multi-modal models to produce contextually rich and accurate captions."
+  },
+  {
+    "type": "paragraph",
+    "text": "Through human evaluations, we show that our approach ranked better than author-written captions, demonstrating its effectiveness."
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_section"
+    ],
+    "text": "2 Related Work"
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "2.1 Collaboration Techniques with LLMs"
+  },
+  {
+    "type": "paragraph",
+    "text": "LLMs have shown exceptional performance across a wide range of tasks, benefiting from their ability to comprehend instructions [1, 28]. However, despite their versatility, individual LLMs exhibit distinct strengths and limitations due to differences in training data and architectural design [12]. To mitigate this issue, recent work [23] trained a classifier to select the best response generated by different reasoning models. Another related work [6] proposed an algorithm that combines outputs from multiple LLMs for attribute extraction through weight assignment. Despite the growing application of collaborative methods in various fields, a significant research gap exists in exploring their potential for figure captioning in scientific documents."
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "2.2 Figure Captioning in Scientific Documents"
+  },
+  {
+    "type": "paragraph",
+    "text": "To facilitate the generation of captions by neural networks, previous research developed a variety of datasets, such as FigureSeer [24], FigureQA [14], DVQA [13], and SciCap [8]. More recently, an enhanced version of SciCap was introduced, incorporating both figures and their associated textual information [11]. This dataset advances caption generator capabilities, enabling them to produce contextually relevant captions for scientific figures. Based on this dataset, a recent study [11] discovered that more than 76% of the words in figure captions matched those in figure-mentioning paragraphs and OCR text. Based on this empirical observation, they formulated the figure captioning task as a text summarization task. Contemporaneously, SciCap+ [26] was proposed as an extension of SciCap, integrating OCR-derived textual data to further enhance the generation of figure captions. However, text summarization models, which depend on textual data from figure-related paragraphs and OCR outputs, often fail to capture essential visual details, including patterns and colors in graphs."
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "2.3 Evaluating Natural Language Generation (NLG) Tasks"
+  },
+  {
+    "type": "paragraph",
+    "text": "In NLG tasks, traditional automatic metrics such as BLEU [20] and ROUGE [16] are widely used for evaluation. However, these metrics often exhibit a relatively low correlation with human judgments in text generation tasks [18], mainly because they depend on human-preferred reference outputs to fairly evaluate the performance of NLG models. Recent studies have advocated for using LLMs as reference-free evaluation metrics, achieving higher correspondence with human evaluations than traditional metrics [30, 18]. Notably, SciCap-Eval [10] employed LLMs to assess caption quality and demonstrated that GPT-4, as a zero-shot caption evaluator, positively correlates with Ph.D. students’ assessments (Pearson correlation coefficient of 0.5)."
+  },
+  {
+    "type": "figure",
+    "id": "S2.F1",
+    "caption": "Figure 1: Overview of the collaborative framework integrating multiple LLMs for caption generation in scientific documents. Initially, two MLLMs generate figure descriptions. Next, three fine-tuned models and GPT-4o generate candidate captions. Finally, GPT-4o selects and refines the best caption from the candidates.",
+    "src": "https://ar5iv.labs.arxiv.org/html/2501.02552/assets/x1.png"
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_section"
+    ],
+    "text": "3 Problem Statement"
+  },
+  {
+    "type": "paragraph",
+    "text": "Consider an arXiv paper DD with nn captions {Ci}i=1n\\{C_{i}\\}_{i=1}^{n}. For each caption CiC_{i}, several related sources from DD are used to assist in caption generation. These sources include the corresponding figure FiF_{i} and mm paragraphs {Pij}j=1m\\{P_{i}^{j}\\}_{j=1}^{m} that mention FiF_{i}. Specifically, kk sentences {Mij}j=1k\\{M_{i}^{j}\\}_{j=1}^{k} within these paragraphs explicitly refer to FiF_{i} (e.g., “As shown in Fig. 1, …”). 111For simplicity, superscripts for PiP_{i} and MiM_{i} are omitted in the following sections, as multiple instances may exist. Additionally, textual information extracted using OCR from the figure is denoted as OiO_{i}, and the figure’s type (e.g., bar chart, node diagram) is represented as TiT_{i}. Finally, the subject category of DD (e.g., “cs.AI” for Computer Science - Artificial Intelligence) is denoted as SS. The objective of this work is to generate high-quality CiC_{i} for FiF_{i} utilizing the aforementioned figure-relevant features."
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_section"
+    ],
+    "text": "4 Multi-LLM Collaborative Figure Caption Generation"
+  },
+  {
+    "type": "paragraph",
+    "text": "Our overall pipeline is illustrated in Figure 1, and the following sections provide a description of each component. The actual prompts are described in the Appendix."
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "4.1 Quality Assessment"
+  },
+  {
+    "type": "paragraph",
+    "text": "We employ GPT-4o to generate a synthetic quality assessment dataset using 3k subset of the training data. Following the approach of SciCap-Eval, we prompt GPT-4o to score captions on a scale of 1 to 6 based on the given CiC_{i}, FiF_{i}, and PiP_{i} (higher scores indicate better quality)."
+  },
+  {
+    "type": "paragraph",
+    "text": "Next, we fine-tune LLaVA [17] on the constructed dataset. After fine-tuning, LLaVA predicts the caption quality across the entire training dataset. We then collect samples 𝒟high\\mathcal{D}_{\\text{high}} with quality scores of 5 and 6. For the evaluation of 200 samples, the fine-tuned LLaVA showed agreement in quality assessment with GPT-4o, achieving Kendall’s tau coefficient of 0.5502."
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "4.2 Diverse Caption Generation"
+  },
+  {
+    "type": "paragraph",
+    "text": "To capture diverse perspectives and generate a varied set of candidate captions, we utilize four distinct models: GPT-4o, LLaMA-3-8B [2], Yi-1.5-9B [28], and Pegasus [29]. Each model offers unique viewpoints that contribute to the diversity of the generated captions. Specifically, GPT-4o leverages its advanced reasoning capabilities as a large-scale LLM. LLaMA-3-8B and Yi-1.5-9B are fine-tuned on the figure captioning task, enhancing domain-specific knowledge. Pegasus excels in abstractive summarization of textual content, capturing essential information from figure-mentioning paragraphs and OCR text."
+  },
+  {
+    "type": "paragraph",
+    "text": "GPT-4o. For a test sample, we use few-shot prompting by providing GPT-4o with ten example captions, EE, randomly selected from 𝒟h​i​g​h\\mathcal{D}_{high}. These examples have the same subject as the test sample and have a quality score of 6. We first instruct GPT-4o to generate a figure description ZiZ_{i} for FiF_{i} by providing the FiF_{i}, TiT_{i} and SS. Then, GPT-4o generates a candidate caption based on EE, PiP_{i}, MiM_{i}, TiT_{i}, OiO_{i}, SS, and ZiZ_{i}."
+  },
+  {
+    "type": "paragraph",
+    "text": "LLaMA-3-8B and Yi-1.5-9B are fine-tuned with visual and textual features from the 𝒟high\\mathcal{D}_{\\text{high}} dataset. Figure descriptions are generated by MiniCPM-V [27], which outperforms GPT-4V-1106 and Gemini-Pro [22] for OpenCompass benchmarks [5]. The prompts used for LLaMA-3-8B and Yi-1.5-9B are identical to the prompts used for GPT-4o, except for the exclusion of the few-shot examples."
+  },
+  {
+    "type": "paragraph",
+    "text": "Pegasus is fine-tuned on figure-mentioning paragraphs and OCR-text from 𝒟high\\mathcal{D}_{\\text{high}}. Apart from the dataset, this model follows the previous work [11]."
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "4.3 Judgement"
+  },
+  {
+    "type": "paragraph",
+    "text": "We ask GPT-4o to select the best quality caption from four candidate captions and edit inaccuracies in the selected caption leveraging both visual and textual information. To generate both long and short captions, we set a word limit using the placeholder [MAX_LEN] in the prompt. To maintain the conciseness while sufficiently conveying figure information, we define [MAX_LEN] as 50 words for long captions and 30 words for short captions. These limits are based on the training data, where the average caption length is 41.85 words. Here, we refer to the generation of long captions as MLBCAP (long) and short captions as MLBCAP (short)."
+  },
+  {
+    "type": "table",
+    "id": "S4.T1",
+    "caption": "Table 1: Statistics of the original and preprocessed datasets used for training, validation, and testing.",
+    "table_html": ""
+  },
+  {
+    "type": "table",
+    "id": "S4.T2",
+    "caption": "Table 2: The result of caption quality evaluation using GPT-4o. The highest quality captions have a low percentage of 27.11%.",
+    "table_html": ""
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_section"
+    ],
+    "text": "5 Experiments"
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "5.1 Dataset"
+  },
+  {
+    "type": "paragraph",
+    "text": "One of the goals of this study is to evaluate whether MLBCAP can generate captions that align with human preferences. To enhance the richness of the training data, we have chosen to combine the SciCap222https://huggingface.co/datasets/CrowdAILab/scicap/tree/main and SciCap+ [26] datasets for training. These datasets include caption-relevant metadata extracted from the original arXiv papers. Detailed statistics of the datasets is provided in Table 1."
+  },
+  {
+    "type": "paragraph",
+    "text": "Data Preprocessing. Since both SciCap and SciCap+ are built on arXiv papers, we first conducted deduplication using the arXiv paper ID. To obtain high-quality examples, the following preprocessing steps were applied. First, figures with captions that do not end with a period were excluded. Second, captions that were either too long or too short, specifically those exceeding 100 words in length or consisting of a single sentence, were removed. Lastly, figures with captions rated below 5, as described in Section 4, were filtered out. After these preprocessing steps, we could get 135,935 samples."
+  },
+  {
+    "type": "paragraph",
+    "text": "Caption Quality Dataset. We employ GPT-4o to generate a synthetic quality assessment dataset using 3k subset samples for the training data since there is no publicly available dataset. The quality distribution of the 3k captions is shown in Table 2, which shows that the training data contains low-quality captions."
+  },
+  {
+    "type": "table",
+    "id": "S5.T3",
+    "caption": "Table 3: The example of figure descriptions between GPT-4o and MiniCPM-V.",
+    "table_html": ""
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "5.2 Training Details"
+  },
+  {
+    "type": "paragraph",
+    "text": "Prompts. The specific prompts employed in our study are detailed in the Appendix. To elicit figure descriptions from the MiniCPM-V model, we employed a direct and intuitive prompt: “What is in the image?”. We also tried extracting figure descriptions with the prompts used in GPT-4o, however, the quality of the generated descriptions was inferior compared to descriptions obtained using the more intuitive prompts. A representative example of the figure descriptions generated is illustrated in Table 3."
+  },
+  {
+    "type": "paragraph",
+    "text": "Models. Here are the models we used in our experiments. The fine-tuned models were tuned for 5 epochs."
+  },
+  {
+    "type": "paragraph",
+    "text": "GPT-4o. We used gpt-4o-2024-05-13 with a temperature setting of 0. All experimental procedures were conducted between May 2024 and August 2024."
+  },
+  {
+    "type": "paragraph",
+    "text": "LLaVA. We used llava-llama-3-8b-v1_1-hf model 333https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-transformers, which is fine-tuned from the LLaMA-3-8B architecture. This variant of LLaVA was optimized using the AdamW [19] optimizer, with a learning rate set to 1​e−51e-5 and a batch size of 4."
+  },
+  {
+    "type": "paragraph",
+    "text": "MiniCPM-V. For the task of figure description extraction, we used the latest model (MiniCPM-Llama3-V 2.5 444https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5) in the MiniCPM-V families without the fine-tuning."
+  },
+  {
+    "type": "paragraph",
+    "text": "LLaMA-3-8B. To generate a caption, we used Meta-Llama-3-8B-Instruct 555https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct model. The model was trained with AdamW, a learning rate of 1​e−51e-5 and a batch size of 1."
+  },
+  {
+    "type": "paragraph",
+    "text": "Yi-1.5-9B is an upgraded version of Yi. For generating captions, we used Yi-1.5-9B-Chat 666https://huggingface.co/01-ai/Yi-1.5-9B-Chat. The training configuration is the same as LLaMa-3-8B."
+  },
+  {
+    "type": "paragraph",
+    "text": "Pegasus. We trained the pegasus-large 777https://huggingface.co/google/pegasus-large model using the AdamW optimizer, with a batch size of 32 and a learning rate of 5​e−55e-5."
+  },
+  {
+    "type": "paragraph",
+    "text": "When fine-tuning the caption generation models, we concatenated all figure-mentioning paragraphs. In cases where the cumulative length of these paragraphs exceeded 512 tokens, the text was truncated to fit within this limit. For text generation, we utilized greedy search to ensure the generation of coherent."
+  },
+  {
+    "type": "table",
+    "id": "S5.T4",
+    "caption": "Table 4: Comparison of generated captions. MLBCAP includes key information and provides comprehensive descriptions, whereas Pegasus tends to produce shorter captions that lack sufficient detail.",
+    "table_html": ""
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "5.3 Human Evaluation Results"
+  },
+  {
+    "type": "paragraph",
+    "text": "We evaluate MLBCAP with a human evaluation to accurately assess the quality of generated captions. The baseline models used for evaluation include LLaMA-3-8B, Yi-1.5-9B, and Pegasus. All baselines were fine-tuned on the high-quality captions from the SciCap and SciCap+ datasets, specifically captions with a quality score of 5 or higher. The qualitative results for generated captions are illustrated in Table 4."
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "5.4 Comparison with Baselines"
+  },
+  {
+    "type": "paragraph",
+    "text": "We recruited three computer vision (CV) experts, each with over five years of experience in the field. These experts were asked to select the best and worst quality captions generated by LLMs. We used 91 CV figures from the SciCap test dataset, with the candidate captions de-identified and randomly shuffled for each figure before being presented to the experts."
+  },
+  {
+    "type": "paragraph",
+    "text": "Figure 2(a) presents the results of the human evaluation. Notably, captions generated by MLBCAP (long) were consistently selected as high-quality by all three experts, indicating a strong preference compared to baselines. To understand the high preference for the MLBCAP, we investigated which LLM-generated captions were selected during the best caption selection phase. The percentages of captions selected from the GPT-4o, Yi-1.5-9B, LLaMA-3-8B, and Pegasus models were 89.38%, 4.23%, 6.17%, and 0.19%, respectively. As expected, GPT-4o performed exceptionally well in generating high-quality captions."
+  },
+  {
+    "type": "paragraph",
+    "text": "Interestingly, the assessment of MLBCAP (short) captions revealed variability in expert opinion. Despite this variance, Figure 2(b) demonstrates that MLBCAP (short) captions were rarely selected as the worst quality, suggesting that the differences in preference may stem more from individual biases towards caption length rather than from a significant discrepancy in caption quality."
+  },
+  {
+    "type": "figure",
+    "id": "S5.F2",
+    "caption": "Figure 2: The human evaluation results for selecting captions based on quality. Captions generated by MLBCAP (long) are most frequently selected as high quality.",
+    "src": "https://ar5iv.labs.arxiv.org/html/2501.02552/assets/imgs/high_quality_he_last.png"
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "5.5 Comparison with Author Captions"
+  },
+  {
+    "type": "paragraph",
+    "text": "Another human evaluation was conducted as part of the 2nd SciCap challenge 888http://scicap.ai/. To account for the natural distinctions and ensure equitable assessment between short and long captions, the task was divided into two tracks. Participants in the short caption track were required to submit results where at least 30% of the captions were no longer than the original author-written captions from the SciCap test dataset. Similarly, teams in the long caption track were required to submit results where at least 30% of the captions exceeded the length of the original author-written captions. In the case of MLBCAP, 68.15% of the captions in the long caption track were longer than the author-written captions, while 46.53% of the captions in the short caption track were shorter than the author’s captions."
+  },
+  {
+    "type": "paragraph",
+    "text": "Three judges (who are not the CV experts), all native American English speakers with expertise in technical academic writing, were recruited to rank the captions. They ranked captions for the same 200 figures, randomly selected from the challenge test set, based on how effectively they convey the figure’s message for each track. The selection of these figures adhered to the following criteria: (1) For the long caption track, figures were selected where the author-written captions were shorter than the generated captions submitted by participants. (2) For the short caption track, figures were chosen where the author-written captions exceeded the length of the generated captions submitted by participants. (3) For both the long and short caption tracks, only figures with a SciCap-Eval score of 4 or higher were included."
+  },
+  {
+    "type": "paragraph",
+    "text": "As shown in Table 5, in the long caption track, MLBCAP (long) outperformed all others, receiving the best score of 1.27. This result presents the effectiveness of our approach in generating comprehensive captions that resonated well with expert evaluators. Additionally, although the MLBCAP’s caption in the short caption track ranked marginally lower than the author-written captions, it still placed our method ahead of other methods."
+  },
+  {
+    "type": "table",
+    "id": "S5.T5",
+    "caption": "Table 5: The human evaluation results for the SciCap challenge and MLBCAP is compared with the second-best solutions for each track. Lower average ranks indicate higher preference by the judges.",
+    "table_html": ""
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "5.6 Analysis"
+  },
+  {
+    "type": "paragraph",
+    "text": "Here we conduct an analysis focused on the components of MLBCAP to examine their impact on caption quality, using a random sample of 200 instances from the SciCap test dataset. Table 6 illustrates the significant improvements in caption quality across all models when figure descriptions and a robust filtering process are incorporated. While models such as LLaMA-3-8B and Yi-1.5-9B perform well in generating high-quality captions, GPT-4o emerges as the best model for providing top-tier candidate captions."
+  },
+  {
+    "type": "paragraph",
+    "text": "However, Table 7 reveals a crucial insight; the highest caption quality score (5.440) is achieved not solely by relying on the individual model (GPT-4o) but through a strategic combination of multiple LLMs and subsequent post-editing. This approach demonstrates that even with the availability of a powerful model like GPT-4o, the incorporation of diverse perspectives from smaller LLMs can yield improved results."
+  },
+  {
+    "type": "table",
+    "id": "S5.T6",
+    "caption": "Table 6: The impact of including figure descriptions and the filtering process. Each value is the caption quality score (SciCap-Eval).",
+    "table_html": ""
+  },
+  {
+    "type": "table",
+    "id": "S5.T7",
+    "caption": "Table 7: Ablation study analyzing the effect of the best caption selection and post-editing on caption quality.",
+    "table_html": ""
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_section"
+    ],
+    "text": "6 Discussion"
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "6.1 Caption Preferences"
+  },
+  {
+    "type": "paragraph",
+    "text": "While MLBCAP rarely produced low-quality captions in human evaluations, we observed variability among experts when selecting the best and worst captions. This challenge was reflected in the low inter-rater agreement metrics. For instance, Fleiss’ kappa for selecting high-quality captions among baseline models was 0.154, indicating low agreement, while for low-quality captions, the kappa improved to 0.382, signifying moderate agreement. Similarly, in the SciCap Challenge, Kendall’s tau for inter-rater agreement, provided by the challenge organizers, was 0.3589 for long captions and 0.1100 for short captions, highlighting the difficulty of reaching a consensus even among experienced judges."
+  },
+  {
+    "type": "paragraph",
+    "text": "These findings align with previous research [11], which has shown that caption ranking tasks inherently elicit varied judgments from evaluators. The low agreement underscores the complexity of defining “quality” in figure captioning, where multiple factors interplay, such as the caption’s informativeness, length, detail, and overall style."
+  },
+  {
+    "type": "paragraph",
+    "text": "A plausible explanation for the observed discrepancies lies in the subjective nature of caption preferences. Evaluators may prioritize different attributes, such as the level of detail versus brevity, or favor stylistic differences in language. For instance, one expert might value a caption that provides exhaustive detail, while another might prefer concise summaries that align with the space constraints typical in scientific publications. This subjectivity in preferences naturally leads to variability in judgments, reducing inter-rater reliability."
+  },
+  {
+    "type": "paragraph",
+    "text": "These observations highlight the importance of developing clearer guidelines and evaluation criteria for figure captions. A more standardized framework could help align evaluators’ judgments and establish a consensus on what constitutes a “high-quality” caption. Future work could explore leveraging LLMs not only for caption generation but also as assistive tools for evaluating captions in a more consistent manner, thereby addressing some of the subjectivity inherent in human evaluations. This would ensure that assessments of caption quality are both rigorous and aligned with the needs of diverse scientific communities."
+  },
+  {
+    "type": "table",
+    "id": "S6.T8",
+    "caption": "Table 8: Evaluation results for the SciCap test dataset. The ROUGE (F1-score) and BLEU (4-gram) scores of MLBCAP are opposite to the human preference (Figure 2).",
+    "table_html": ""
+  },
+  {
+    "type": "heading",
+    "tag": "h3",
+    "class": [
+      "ltx_title",
+      "ltx_title_subsection"
+    ],
+    "text": "6.2 Evaluation with Traditional Metrics"
+  },
+  {
+    "type": "paragraph",
+    "text": "Furthermore, we found a discrepancy between traditional metric-based evaluations and human judgments. In Table 8, while MLBCAP was preferred over the author-written captions in the human evaluations, traditional metrics failed to capture the perceived quality of captions. This divergence presents the limitations of relying solely on conventional metrics for evaluating caption quality. Similar observations have been made in the natural image captioning task [3], where BLEU and ROUGE scores showed low correlation with human judgments (Kendall’s tau of approximately 0.3 for both metrics)."
+  },
+  {
+    "type": "paragraph",
+    "text": "This inconsistency can be attributed to the inherent limitations of BLEU and ROUGE metrics, which focus on n-gram overlap between the generated caption and the reference caption. In scientific figure captioning, there are multiple valid ways to describe the same content using different terminologies or phrasings. As a result, even high-quality captions may receive low scores if they do not closely match the reference."
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_section"
+    ],
+    "text": "7 Limitations"
+  },
+  {
+    "type": "paragraph",
+    "text": "While our experiments indicate the potential of MLBCAP in the figure captioning task, there are some limitations that point to possible directions for future work."
+  },
+  {
+    "type": "paragraph",
+    "text": "Firstly, the integration of multiple LLMs in our framework introduces a trade-off between performance and efficiency. The reliance on multiple models not only reduces inference speed but also increases the demand for computational resources. This may limit the practical scalability of MLBCAP, particularly in environments with restricted computational capabilities or in real-time applications."
+  },
+  {
+    "type": "paragraph",
+    "text": "Secondly, MLBCAP incorporates a closed-source LLM as a critical component of the caption generation pipeline. This inclusion imposes inherent limitations, particularly in terms of transparency and interpretability. The closed-source nature restricts our ability to fully understand and analyze the model’s reasoning processes and decision-making behavior, which may hinder trust and adoption in certain scientific communities where explainability is crucial."
+  },
+  {
+    "type": "paragraph",
+    "text": "Lastly, our evaluation was primarily conducted through human assessments on arXiv papers, which, while valuable, does not fully capture the generalization capabilities of MLBCAP across a broader range of scientific literature. To rigorously validate the robustness and adaptability of the model, future evaluations should include a diverse set of scientific documents."
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_section"
+    ],
+    "text": "8 Conclusion"
+  },
+  {
+    "type": "paragraph",
+    "text": "In this paper, we presented MLBCAP, a novel framework for generating high-quality captions for scientific figures through the collaborative utilization of multiple Large Language Models (LLMs). Unlike prior approaches that rely on isolated modalities or limited data perspectives, MLBCAP uniquely integrates textual and visual features alongside a filtering mechanism to ensure that only high-quality training data is utilized. By combining the complementary strengths of multiple LLMs with candidate caption generation and a post-editing stage, our framework generates captions that are not only preferred over author-written captions in informativeness but also cater to diverse needs through long and short caption formats. In addition, our results highlight the effectiveness of a multi-LLM approach, demonstrating higher caption quality compared to a single prominent LLM like GPT-4o."
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_section"
+    ],
+    "text": "9 Acknowledgement"
+  },
+  {
+    "type": "paragraph",
+    "text": "We are grateful to the anonymous reviewers for their valuable feedback. This research, along with the SciCap Challenge 2024, was partially supported by the Alfred P. Sloan Foundation (Grant Number: 2024-22721)."
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_bibliography"
+    ],
+    "text": "References"
+  },
+  {
+    "type": "heading",
+    "tag": "h2",
+    "class": [
+      "ltx_title",
+      "ltx_title_appendix"
+    ],
+    "text": "Appendix"
+  },
+  {
+    "type": "table",
+    "id": "Pt0.Ax1.T9",
+    "caption": "Table 9: The actual prompts we used and the text in magenta is a placeholder. In part, [Figure] is an image that is used as an input for MLLMs.",
+    "table_html": "<table class=\"ltx_tabular ltx_guessed_headers ltx_align_middle\">\n<thead class=\"ltx_thead\">\n<tr class=\"ltx_tr\">\n<th class=\"ltx_td ltx_align_justify ltx_th ltx_th_column ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p ltx_align_center\"><span class=\"ltx_text ltx_font_bold\">Purpose</span></span>\n</span>\n</th>\n<th class=\"ltx_td ltx_align_justify ltx_th ltx_th_column ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p\"><span class=\"ltx_text ltx_font_bold\">Prompt</span></span>\n</span>\n</th>\n</tr>\n</thead>\n<tbody class=\"ltx_tbody\">\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_align_justify ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p ltx_align_center\">Quality Assessment</span>\n</span>\n</td>\n<td class=\"ltx_td ltx_align_justify ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p\"><span class=\"ltx_text ltx_font_typewriter\" style=\"font-size:90%;color:#FF00FF;\">[Figure]</span><span class=\"ltx_text\" style=\"font-size:90%;\"></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Paragraphs</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text ltx_font_typewriter\" style=\"font-size:90%;color:#FF00FF;\">[Paragraphs]</span><span class=\"ltx_text\" style=\"font-size:90%;\"></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Caption</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text ltx_font_typewriter\" style=\"font-size:90%;color:#FF00FF;\">[Caption]</span><span class=\"ltx_text\" style=\"font-size:90%;\"></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Given the figure, paragraphs and caption, please rate the level of usefulness of the caption from 1 to 6 based on how well the caption could help readers understand the important information. 6 is the highest. 1 is the lowest. The answer should be JSON format: {“rating”: }.</span></span>\n</span>\n</td>\n</tr>\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_align_justify ltx_border_t\">\n<table class=\"ltx_tabular ltx_centering ltx_align_top\">\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_nopad_r ltx_align_center\">Figure Description</td>\n</tr>\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_nopad_r ltx_align_center\">(GPT-4o)</td>\n</tr>\n</table>\n</td>\n<td class=\"ltx_td ltx_align_justify ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p\"><span class=\"ltx_text ltx_font_typewriter\" style=\"font-size:90%;color:#FF00FF;\">[Figure]</span><span class=\"ltx_text\" style=\"font-size:90%;\"></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Your task is to describe a figure from a scientific paper.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Answer your results in JSON format.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Background</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Figure is a <span class=\"ltx_text ltx_font_typewriter\" style=\"color:#FF00FF;\">[Figure Type]</span>.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">It is a figure about the topic <span class=\"ltx_text ltx_font_typewriter\" style=\"color:#FF00FF;\">[Subject]</span>.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Rule</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Description of the figure should be accurate and clear. If in doubt, avoid numerical expressions. Provide the description in JSON format with the following key: description.</span></span>\n</span>\n</td>\n</tr>\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_align_justify ltx_border_b ltx_border_t\">\n<table class=\"ltx_tabular ltx_centering ltx_align_top\">\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_nopad_r ltx_align_center\">Figure Description</td>\n</tr>\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_nopad_r ltx_align_center\">(MiniCPM-V)</td>\n</tr>\n</table>\n</td>\n<td class=\"ltx_td ltx_align_justify ltx_border_b ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p\"><span class=\"ltx_text ltx_font_typewriter\" style=\"font-size:90%;color:#FF00FF;\">[Figure]</span><span class=\"ltx_text\" style=\"font-size:90%;\"></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">What is in the image?</span></span>\n</span>\n</td>\n</tr>\n</tbody>\n</table>"
+  },
+  {
+    "type": "table",
+    "id": "Pt0.Ax1.T10",
+    "caption": "Table 10: The prompt for the caption generation. In part, [Figure] is an image that is used as an input for MLLMs.",
+    "table_html": "<table class=\"ltx_tabular ltx_align_middle\">\n<tbody class=\"ltx_tbody\">\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_align_justify ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p ltx_align_center\"><span class=\"ltx_text ltx_font_bold\">Purpose</span></span>\n</span>\n</td>\n<td class=\"ltx_td ltx_align_justify ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p\"><span class=\"ltx_text ltx_font_bold\">Prompt</span></span>\n</span>\n</td>\n</tr>\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_align_justify ltx_border_b ltx_border_t\">\n<table class=\"ltx_tabular ltx_centering ltx_align_top\">\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_nopad_r ltx_align_center\">Caption Generation</td>\n</tr>\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_nopad_r ltx_align_center\">(Few-shot)</td>\n</tr>\n</table>\n</td>\n<td class=\"ltx_td ltx_align_justify ltx_border_b ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Your task is to create a caption that summarizes based on a paragraph.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Figure Caption</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">The format of a Figure Caption is Declarative title + Description + Statistical\ninformation (optional).</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Declarative title: summarises the result or major finding of the data you are presenting in the\nfigure. (A mere representation of the x and y axes cannot be a title.)</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Description: a brief description of the results necessary for understanding the figure without\nhaving to refer to the main text</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Statistical information: for example, number of replicates, asterisks denoting P-values,\nstatistical tests, etc.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Background</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Figure is a <span class=\"ltx_text ltx_font_typewriter\" style=\"color:#FF00FF;\">[Figure Type]</span>.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Figure is a category related to <span class=\"ltx_text ltx_font_typewriter\" style=\"color:#FF00FF;\">[Subject]</span>.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Rule</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Caption MUST have a word count of 60 words or less.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Caption MUST have a tone and sentence structure appropriate for a top-tier conference (e.g.,\nNeurIPS, ICLR, CVPR, ACL, EMNLP).</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">It is not a caption to describe the x-axis y-axis.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Caption MUST be clear, concise, consistent, and provide specific information, especially not\nfalse.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">If the given paragraph uses abbreviations, use them in the caption.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Best Caption Examples</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;color:#FF00FF;\">[Few-shot Examples]<span class=\"ltx_text\" style=\"color:#000000;\"></span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Input</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Paragraph:\n<span class=\"ltx_text\" style=\"color:#FF00FF;\">[Paragraphs]</span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Figure Summary:\n<span class=\"ltx_text\" style=\"color:#FF00FF;\">[Figure Description]</span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Mention:\n<span class=\"ltx_text\" style=\"color:#FF00FF;\">[Mentions]</span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">OCR text:\n<span class=\"ltx_text\" style=\"color:#FF00FF;\">[OCR]</span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Output format</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">Answer results in JSON format: {“caption”: }.</span></span>\n</span>\n</td>\n</tr>\n</tbody>\n</table>"
+  },
+  {
+    "type": "table",
+    "id": "Pt0.Ax1.T11",
+    "caption": "Table 11: The prompt for the selecting best caption and post-editing process. The [Max Len] is the constraint of caption lengths (Long: 50, Short: 30).",
+    "table_html": "<table class=\"ltx_tabular ltx_align_middle\">\n<tbody class=\"ltx_tbody\">\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_align_justify ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p ltx_align_center\"><span class=\"ltx_text ltx_font_bold\">Purpose</span></span>\n</span>\n</td>\n<td class=\"ltx_td ltx_align_justify ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p\"><span class=\"ltx_text ltx_font_bold\">Prompt</span></span>\n</span>\n</td>\n</tr>\n<tr class=\"ltx_tr\">\n<td class=\"ltx_td ltx_align_justify ltx_border_b ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p ltx_align_center\">Judgement</span>\n</span>\n</td>\n<td class=\"ltx_td ltx_align_justify ltx_border_b ltx_border_t\">\n<span class=\"ltx_inline-block ltx_align_top\">\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">A good figure caption should include the following elements:</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">1. **Clear Description**: Clearly describe what the figure represents so that readers can understand\nthe main point of the figure just by reading the caption.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">2. **Conciseness**: Keep it concise while including all essential information. The caption MUST be\nbrief yet informative (important!!).</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">3. **Relevant Information**: Include background information, experimental conditions, or methods\nused that are necessary to understand the figure. This helps the reader interpret the data correctly.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">4. **Consistency**: Maintain consistency with the rest of the paper in terms of terminology and style.\nEnsure that the terms used in the caption match those used in the text.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">5. **Citation**: If necessary, include citations of related research or references in the paragraph.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">You are given a summarization of the figure, relevant paragraphs, a mentioned sentences, and four\ncaption candidates:</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Summarization of the Figure</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;color:#FF00FF;\">[Figure Description]<span class=\"ltx_text\" style=\"color:#000000;\"></span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Paragraph</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;color:#FF00FF;\">[Paragraphs]<span class=\"ltx_text\" style=\"color:#000000;\"></span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Mention</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;color:#FF00FF;\">[Mentions]<span class=\"ltx_text\" style=\"color:#000000;\"></span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Caption A</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;color:#FF00FF;\">[Pegasus Caption]<span class=\"ltx_text\" style=\"color:#000000;\"></span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Caption B</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;color:#FF00FF;\">[LLaMA-3-8B Caption]<span class=\"ltx_text\" style=\"color:#000000;\"></span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Caption C</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;color:#FF00FF;\">[Yi-1.5-9B Caption]<span class=\"ltx_text\" style=\"color:#000000;\"></span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">### Caption D</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;color:#FF00FF;\">[GPT-4o Caption]<span class=\"ltx_text\" style=\"color:#000000;\"></span></span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">1. Choose the best and worst caption and answer in JSON format (For example, if A is the best and B\nis the worst, the answer is: \"Good\": \"A\", \"Bad\": \"B). Candidate captions shouldn’t be scored low\njust because they’re concise.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">2. If even the best caption could be improved, use the candidate captions and paragraphs to improve it\n(math symbols, legend, grammar, etc.).</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">3. The improved sentence should have a tone and sentence structure appropriate for a top-tier\nconference (e.g., NeurIPS, ICLR, CVPR, ACL, EMNLP) and MUST have a word count of <span class=\"ltx_text\" style=\"color:#FF00FF;\">[Max Len]</span> words or less.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">4. If you find that sentences are becoming long and complex, making it difficult for readers to\nunderstand, break the sentences up to effectively convey the important information.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">5. If you already provided a perfect caption, keep it the same.</span></span>\n<span class=\"ltx_p\"><span class=\"ltx_text\" style=\"font-size:90%;\">6. Do not omit the figure numbers, such as in \"Fig. 3\" or \"Figure 5\".\nProvide them in JSON format with the following keys: Good, Bad,\nImproved Caption\n\"Good\" : \"\", \"Bad\" : \"\", \"Improved Caption\": \"\"</span></span>\n</span>\n</td>\n</tr>\n</tbody>\n</table>"
+  }
+]
