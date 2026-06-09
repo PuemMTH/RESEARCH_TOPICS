@@ -1,4 +1,4 @@
-﻿---
+---
 name: paper-translate
 description: Generate a full bilingual EN|TH side-by-side translation HTML from a paper source HTML or PDF. Every paragraph, figure, and table gets a Thai translation column. Hover tooltips use assets/translations.js. TRIGGER when user asks to translate a paper, create a bilingual view, or make a side-by-side EN/TH version.
 version: 1.0.0
@@ -246,48 +246,131 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.row .en').forEach(walkAndWrap);
   updateProgress();
 });
-function splitSentences(text){
-  return text.replace(/([.!?])\s+([A-Z\u0E00-\u0E7F"])/g,'$1\x00$2').split('\x00').map(s=>s.trim()).filter(Boolean);
+function splitEngSentences(text) {
+  const regex = /(?<!\b(?:e\.g|i\.e|vs|Fig|fig|Dr|Mr|Mrs|Ms|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\.)(?<=[.!?])\s+(?=[A-Z0-9])/g;
+  return text.split(regex).map(s => s.trim()).filter(Boolean);
 }
-function initSentenceReveal(){
-  let pIdx=0;
-  document.querySelectorAll('.row.para').forEach(row=>{
-    const enP=row.querySelector('.en p');
-    const thP=row.querySelector('.th p');
-    if(!enP||!thP){pIdx++;return;}
-    const enSents=splitSentences(enP.textContent.trim());
-    const thSents=splitSentences(thP.textContent.trim());
-    enP.innerHTML=enSents.map((s,i)=>{
-      const th=thSents[i]||thSents[thSents.length-1]||'';
-      return `<span class="en-sent" data-en="${s.replace(/"/g,'&quot;')}" data-th="${th.replace(/"/g,'&quot;')}">${s}</span>`;
-    }).join(' ');
-    pIdx++;
-  });
-  const grid=document.querySelector('.translation-grid');
-  grid.addEventListener('mouseover',e=>{
-    const s=e.target.closest('.en-sent');
-    if(!s||s.classList.contains('locked'))return;
-    if(!s._origHTML) s._origHTML=s.innerHTML;
-    s.textContent=s.dataset.th;
-    s.classList.add('showing-th');
-  });
-  grid.addEventListener('mouseout',e=>{
-    const s=e.target.closest('.en-sent');
-    if(!s||s.classList.contains('locked'))return;
-    if(s._origHTML!==undefined){s.innerHTML=s._origHTML;}
-    s.classList.remove('showing-th');
-  });
-  grid.addEventListener('click',e=>{
-    const s=e.target.closest('.en-sent');if(!s)return;
-    if(s.classList.contains('locked')){
-      if(s._origHTML!==undefined) s.innerHTML=s._origHTML;
-      s.classList.remove('locked','showing-th');
+function alignThaiSentences(enSents, thText) {
+  const thRawSegments = [];
+  let current = '';
+  let inParen = 0;
+  let inQuote = false;
+  for (let i = 0; i < thText.length; i++) {
+    const char = thText[i];
+    if (char === '(' || char === '[' || char === '{') {
+      inParen++;
+      current += char;
+    } else if (char === ')' || char === ']' || char === '}') {
+      inParen = Math.max(0, inParen - 1);
+      current += char;
+    } else if (char === '"' || char === "'") {
+      inQuote = !inQuote;
+      current += char;
+    } else if (/\s/.test(char)) {
+      if (inParen > 0 || inQuote) {
+        current += char;
+      } else {
+        if (current.trim()) {
+          thRawSegments.push(current.trim());
+        }
+        current = '';
+      }
     } else {
-      if(!s._origHTML) s._origHTML=s.innerHTML;
-      s.textContent=s.dataset.th;
-      s.classList.add('locked','showing-th');
+      current += char;
+    }
+  }
+  if (current.trim()) {
+    thRawSegments.push(current.trim());
+  }
+  const N = enSents.length;
+  if (thRawSegments.length <= N) {
+    const result = [...thRawSegments];
+    while (result.length < N) {
+      result.push('');
+    }
+    return result;
+  }
+  const totalThLen = thRawSegments.reduce((sum, s) => sum + s.length, 0);
+  const totalEnLen = enSents.reduce((sum, s) => sum + s.length, 0);
+  const targetLens = enSents.map(s => (s.length / totalEnLen) * totalThLen);
+  const result = [];
+  let segIdx = 0;
+  for (let i = 0; i < N; i++) {
+    if (i === N - 1) {
+      result.push(thRawSegments.slice(segIdx).join(' '));
+      break;
+    }
+    let currentSent = thRawSegments[segIdx];
+    segIdx++;
+    const target = targetLens[i];
+    while (segIdx < thRawSegments.length - (N - 1 - i)) {
+      const nextSeg = thRawSegments[segIdx];
+      const starters = ["อย่างไรก็ตาม", "ในงานนี้", "ในงานวิจัยนี้", "เพื่อจุดประสงค์นี้", "เรา", "ผลการทดลอง", "หลัง", "นอกจากนี้", "ดังนั้น", "งานวิจัยนี้", "โมเดล", "ตัวจำแนก", "จากผล", "โดยสรุป", "ในอนาคต", "เพื่อ", "การ", "ผู้", "นักวิจัย", "ตัวอย่างเช่น", "เช่น", "แต่", "หนึ่งใน", "ด้วย"];
+      const startsWithStarter = starters.some(word => nextSeg.startsWith(word));
+      const currentDiff = Math.abs(currentSent.length - target);
+      const nextDiff = Math.abs((currentSent + ' ' + nextSeg).length - target);
+      if (startsWithStarter && currentSent.length > target * 0.5) {
+        break;
+      }
+      if (nextDiff < currentDiff || currentSent.length < target * 0.7) {
+        currentSent += ' ' + nextSeg;
+        segIdx++;
+      } else {
+        break;
+      }
+    }
+    result.push(currentSent);
+  }
+  return result;
+}
+function initSentenceReveal() {
+  document.querySelectorAll('.row.para').forEach(row => {
+    const enS = row.querySelectorAll('.en p, .en li');
+    const thS = row.querySelectorAll('.th p, .th li');
+    for (let k = 0; k < enS.length; k++) {
+      const enEl = enS[k];
+      const thEl = thS[k];
+      if (!thEl) continue;
+      const enText = enEl.textContent.trim();
+      const thText = thEl.textContent.trim();
+      const enSents = splitEngSentences(enText);
+      const thSents = alignThaiSentences(enSents, thText);
+      enEl.innerHTML = enSents.map((s, i) => {
+        const th = thSents[i] || '';
+        return `<span class="en-sent" data-th="${th.replace(/"/g, '&quot;')}">${s}</span>`;
+      }).join(' ');
     }
   });
+  const grid = document.querySelector('.translation-grid');
+  if (grid) {
+    grid.addEventListener('mouseover', e => {
+      const s = e.target.closest('.en-sent');
+      if (!s || s.classList.contains('locked')) return;
+      if (!s._origHTML) s._origHTML = s.innerHTML;
+      s.textContent = s.dataset.th;
+      s.classList.add('showing-th');
+    });
+    grid.addEventListener('mouseout', e => {
+      const s = e.target.closest('.en-sent');
+      if (!s || s.classList.contains('locked')) return;
+      if (s._origHTML !== undefined) {
+        s.innerHTML = s._origHTML;
+      }
+      s.classList.remove('showing-th');
+    });
+    grid.addEventListener('click', e => {
+      const s = e.target.closest('.en-sent');
+      if (!s) return;
+      if (s.classList.contains('locked')) {
+        if (s._origHTML !== undefined) s.innerHTML = s._origHTML;
+        s.classList.remove('locked', 'showing-th');
+      } else {
+        if (!s._origHTML) s._origHTML = s.innerHTML;
+        s.textContent = s.dataset.th;
+        s.classList.add('locked', 'showing-th');
+      }
+    });
+  }
 }
 </script>
 </body>
