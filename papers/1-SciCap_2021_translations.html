@@ -21,7 +21,7 @@
   <p class="meta">Ting-Yao Hsu, C. Lee Giles, Ting-Hao Huang · Pennsylvania State University · ACL Findings 2021 · arXiv:2110.11624</p>
 </header>
 
-<div class="hover-hint"><span>🇬🇧 EN — hover ประโยคเพื่อดูภาษาไทย · คลิกเพื่อล็อก</span></div>
+<div class="hover-hint"><span>🇬🇧 EN — hover คำเพื่อแปลศัพท์ · Shift + hover เพื่อแปลประโยค · คลิกเพื่อล็อก</span></div>
 
 <div class="translation-grid">
 
@@ -482,33 +482,82 @@ function initSentenceReveal() {
       }).join(' ');
     }
   });
+
+  let shiftPressed = false;
+  let activeSent = null;
+
+  function showThai(s) {
+    if (!s._origHTML) s._origHTML = s.innerHTML;
+    s.textContent = s.dataset.th;
+    s.classList.add('showing-th');
+  }
+
+  function showEnglish(s) {
+    if (s._origHTML !== undefined) {
+      s.innerHTML = s._origHTML;
+    }
+    s.classList.remove('showing-th');
+  }
+
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Shift') {
+      shiftPressed = true;
+      document.body.classList.add('shift-active');
+      if (activeSent && !activeSent.classList.contains('locked')) {
+        showThai(activeSent);
+      }
+    }
+  });
+
+  window.addEventListener('keyup', e => {
+    if (e.key === 'Shift') {
+      shiftPressed = false;
+      document.body.classList.remove('shift-active');
+      if (activeSent && !activeSent.classList.contains('locked')) {
+        showEnglish(activeSent);
+      }
+    }
+  });
+
+  window.addEventListener('blur', () => {
+    shiftPressed = false;
+    document.body.classList.remove('shift-active');
+    if (activeSent && !activeSent.classList.contains('locked')) {
+      showEnglish(activeSent);
+    }
+  });
+
   const grid = document.querySelector('.translation-grid');
   if (grid) {
     grid.addEventListener('mouseover', e => {
       const s = e.target.closest('.en-sent');
-      if (!s || s.classList.contains('locked')) return;
-      if (!s._origHTML) s._origHTML = s.innerHTML;
-      s.textContent = s.dataset.th;
-      s.classList.add('showing-th');
+      if (!s) return;
+      activeSent = s;
+      if (shiftPressed && !s.classList.contains('locked')) {
+        showThai(s);
+      }
     });
+
     grid.addEventListener('mouseout', e => {
       const s = e.target.closest('.en-sent');
-      if (!s || s.classList.contains('locked')) return;
-      if (s._origHTML !== undefined) {
-        s.innerHTML = s._origHTML;
+      if (!s) return;
+      if (activeSent === s) activeSent = null;
+      if (!s.classList.contains('locked')) {
+        showEnglish(s);
       }
-      s.classList.remove('showing-th');
     });
+
     grid.addEventListener('click', e => {
       const s = e.target.closest('.en-sent');
       if (!s) return;
-      if (s.classList.contains('locked')) {
-        if (s._origHTML !== undefined) s.innerHTML = s._origHTML;
-        s.classList.remove('locked', 'showing-th');
-      } else {
-        if (!s._origHTML) s._origHTML = s.innerHTML;
-        s.textContent = s.dataset.th;
-        s.classList.add('locked', 'showing-th');
+      if (shiftPressed || s.classList.contains('showing-th')) {
+        if (s.classList.contains('locked')) {
+          showEnglish(s);
+          s.classList.remove('locked');
+        } else {
+          showThai(s);
+          s.classList.add('locked');
+        }
       }
     });
   }
