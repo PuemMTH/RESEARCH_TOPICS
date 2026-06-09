@@ -76,41 +76,18 @@ For every block produce a Thai translation following these rules:
 
 Quality bar: Thai should read as natural academic Thai, not machine-translated English. Aim for the register of a Thai university thesis.
 
-#### Sentence-level alignment (required for hover-reveal)
+#### Sentence-level alignment (handled at runtime)
 
-For every **paragraph** (including abstract), split both the EN and TH text into individual sentences and wrap each one in a paired `<span>`:
+To optimize token usage and simplify HTML generation, the bilingual HTML output should NOT contain manual `<span>` wraps or pre-split sentences. Write standard paragraphs:
 
-- Each EN sentence → `<span class="en-sent" data-sent="{P}-{S}">sentence text.</span>`
-- Each TH sentence → `<span class="th-sent" data-sent="{P}-{S}">คำแปลประโยค</span>`
-
-Where `{P}` is a sequential integer for the paragraph row (starting from 0, counting only `.row.para` blocks), and `{S}` is the sentence index within that paragraph (0-based). Both spans with the same `data-sent` value are linked by JS for hover-reveal.
-
-**Sentence splitting rules:**
-- Split on `.` `?` `!` followed by a space and capital letter (standard sentence boundaries).
-- Keep the terminal punctuation attached to the sentence it ends.
-- If a paragraph has only one sentence, `{S}=0`.
-- Never split inside parentheses, brackets, or quoted strings.
-- Keep bullet list items as individual sentences (one `en-sent`/`th-sent` per item).
-
-**Example output for one paragraph row:**
 ```html
 <div class="row para">
-  <div class="en">
-    <p>
-      <span class="en-sent" data-sent="3-0">First sentence in English.</span>
-      <span class="en-sent" data-sent="3-1">Second sentence continues.</span>
-      <span class="en-sent" data-sent="3-2">Third sentence concludes.</span>
-    </p>
-  </div>
-  <div class="th">
-    <p>
-      <span class="th-sent" data-sent="3-0">ประโยคแรกเป็นภาษาไทย</span>
-      <span class="th-sent" data-sent="3-1">ประโยคที่สองดำเนินต่อ</span>
-      <span class="th-sent" data-sent="3-2">ประโยคที่สามสรุป</span>
-    </p>
-  </div>
+  <div class="en"><p>First sentence in English. Second sentence continues. Third sentence concludes.</p></div>
+  <div class="th"><p>ประโยคแรกเป็นภาษาไทย ประโยคที่สองดำเนินต่อ ประโยคที่สามสรุป</p></div>
 </div>
 ```
+
+The script `assets/translation.js` loaded at the end of the HTML will dynamically split sentences for both EN and TH columns, align them 1-to-1 at runtime (using a greedy grouping matcher), and wrap them in the interactive spans `<span class="en-sent" data-th="...">` for the Shift+hover sentence translation swap. This avoids manual pre-processing errors, reduces token usage, and keeps the generated HTML files clean.
 
 ### Step E — Find and add new dictionary terms
 
@@ -141,7 +118,6 @@ Use this complete template:
 <title>{ShortTitle} — Translation</title>
 <link rel="stylesheet" href="../assets/translation.css">
 <script src="../assets/translations.js"></script>
-<script src="../assets/translation.js"></script>
 </head>
 <body>
 <div id="progress-bar"></div>
@@ -166,17 +142,9 @@ Use this complete template:
     <div class="en"><h2>Abstract</h2></div>
     <div class="th"><h2>บทคัดย่อ (Abstract)</h2></div>
   </div>
-  <!-- Paragraphs: JS splits sentences at runtime, stores TH in data-th attr -->
-  <!-- Hover an EN sentence → EN text swaps to TH inline; click → locks (amber) -->
   <div class="row para">
-    <div class="en"><p>
-      <span class="en-sent" data-sent="0-0">{ABSTRACT_SENT_1_EN}</span>
-      <span class="en-sent" data-sent="0-1">{ABSTRACT_SENT_2_EN}</span>
-    </p></div>
-    <div class="th"><p>
-      <span class="th-sent" data-sent="0-0">{ABSTRACT_SENT_1_TH}</span>
-      <span class="th-sent" data-sent="0-1">{ABSTRACT_SENT_2_TH}</span>
-    </p></div>
+    <div class="en"><p>{ABSTRACT_EN}</p></div>
+    <div class="th"><p>{ABSTRACT_TH}</p></div>
   </div>
 
   <!-- ── SECTION: Introduction ── -->
@@ -185,14 +153,8 @@ Use this complete template:
     <div class="th"><h2>1. บทนำ (Introduction)</h2></div>
   </div>
   <div class="row para">
-    <div class="en"><p>
-      <span class="en-sent" data-sent="1-0">{PARA_SENT_1_EN}</span>
-      <span class="en-sent" data-sent="1-1">{PARA_SENT_2_EN}</span>
-    </p></div>
-    <div class="th"><p>
-      <span class="th-sent" data-sent="1-0">{PARA_SENT_1_TH}</span>
-      <span class="th-sent" data-sent="1-1">{PARA_SENT_2_TH}</span>
-    </p></div>
+    <div class="en"><p>{PARA_EN}</p></div>
+    <div class="th"><p>{PARA_TH}</p></div>
   </div>
 
   <!-- ── FIGURE example ── -->
