@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FigCaps-HF — Paper Analysis</title>
+<link rel="stylesheet" href="../assets/summary.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+<div class="container">
+  <a class="nav-brand" href="#">✦ <span>Research</span> Notes</a>
+  <ul class="nav-links">
+    <li><a href="#overview">Overview</a></li>
+    <li><a href="#methodology">Methodology</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#thesis">Thesis</a></li>
+  </ul>
+</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="container">
+  <h1>FigCaps-HF: A Figure-to-Caption Generative Framework and Benchmark with Human Feedback</h1>
+  <p class="subtitle">เสนอ framework ที่ใช้ RLHF (แบบ offline, Upside-Down RL) เพื่อ fine-tune โมเดล figure-captioning ให้ caption ตรงกับความชอบของผู้อ่าน (reader preference) พร้อม benchmark dataset 106,834 figure-caption pairs ที่มี feedback score กำกับ</p>
+  <div class="hero-meta">
+    <span class="badge">Ashish Singh, Ryan A. Rossi, et al. (UMass Amherst / Adobe Research)</span>
+    <span class="badge coral">arXiv preprint 2023</span>
+    <span class="badge"><a href="https://arxiv.org/abs/2307.10867" style="color:inherit">arXiv:2307.10867</a></span>
+  </div>
+</div>
+</section>
+
+<!-- OVERVIEW -->
+<section class="section" id="overview">
+<div class="container">
+<div class="section-header"><span class="overline">Abstract & Contributions</span><h2>ภาพรวม</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">!</span><h3>ปัญหาที่ Paper นี้แก้</h3></div>
+<div class="detail-body">
+<div class="key-box"><ul>
+<li>โมเดล figure-captioning ส่วนใหญ่ train จาก figure-caption pairs ที่ดึงมาจาก paper จริง (เช่น SciCap) แต่ caption เหล่านี้จำนวนมาก "generic" และไม่ informative — งานก่อนหน้าพบว่า caption กว่า 50% ใน arXiv cs.CL ถูกผู้เชี่ยวชาญตัดสินว่า "ไม่ช่วยอะไร" (unhelpful)</li>
+<li>การ train บนข้อมูลคุณภาพต่ำแบบนี้ทำให้โมเดล generalize ได้ไม่ดีและไม่สอดคล้องกับสิ่งที่ผู้อ่านต้องการจริง ๆ</li>
+<li>คำถามหลัก 2 ข้อที่ paper ตอบ: (1) จะใส่ expert feedback เข้าไปใน training โดยไม่เพิ่ม compute overhead ได้อย่างไร (2) จะ scale การสร้าง feedback ได้อย่างไรโดยใช้แรงงาน annotation มนุษย์น้อยที่สุด</li>
+</ul></div>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">★</span><h3>Key Contributions</h3></div>
+<div class="detail-body">
+<ul>
+  <li><strong>RLHF framework แบบ offline:</strong> ใช้ Upside-Down RL (reward-conditioned behavioral cloning) แทน on-policy RL (เช่น PPO) — เทรน reward model ครั้งเดียวแล้วไม่ต้องใช้ระหว่าง train captioning model ทำให้ประหยัด compute</li>
+  <li><strong>Human-Feedback Prediction Model:</strong> label ข้อมูลจริงแค่ 438 ตัวอย่างด้วยผู้เชี่ยวชาญ (4 มิติ: Helpfulness, Takeaway, Visual-descriptiveness, OCR) แล้วเทรนโมเดล regression ไป predict score ให้กับ dataset ทั้งหมด 106,834 pairs</li>
+  <li><strong>Benchmark dataset สาธารณะ:</strong> ปล่อย dataset ที่มี feedback score กำกับทุก figure-caption pair เพื่อให้ชุมชนวิจัยใช้ต่อ</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<!-- METHODOLOGY -->
+<section class="section section-alt" id="methodology">
+<div class="container">
+<div class="section-header"><span class="overline">How It Works</span><h2>Methodology</h2></div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">1</span><h3>Pipeline ภาพรวม</h3></div>
+<div class="detail-body">
+<div class="method-box">
+<span class="label">3 ขั้นตอนหลัก</span>
+<p>(1) Standard figure-captioning pipeline — vision encoder + language encoder-decoder train ด้วย LM loss ปกติ &rarr; (2) เทรน Human-Feedback Prediction Model จาก labeled subset เล็ก ๆ เพื่อ infer feedback score ให้ data ทั้งหมด &rarr; (3) ใช้ score เหล่านั้นเป็น reward เพื่อ fine-tune captioning model ด้วย offline RLHF (UDRL)</p>
+</div>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">2</span><h3>Human Feedback Prediction Model</h3></div>
+<div class="detail-body">
+<p>เทรนบน control set $D_h$ (438 pairs ที่ rate โดยผู้เชี่ยวชาญแบบ 5-point Likert scale บน 4 มิติ: Helpfulness, Takeaway, Visual, OCR) ใช้ MCSE เป็น embedding function (frozen) ต่อด้วย 2-layer MLP เป็น regression head เทรนด้วย MSE loss แล้วนำไป predict score แบบ continuous ให้ caption ทุกตัวใน dataset ใหญ่ $D_w$ (106,834 pairs)</p>
+</div>
+</div>
+
+<div class="detail-block">
+<div class="detail-header"><span class="num">3</span><h3>Offline RLHF ด้วย Upside-Down RL</h3></div>
+<div class="detail-body">
+<p>มองปัญหาเป็น RL: figure = state, caption = action, predicted feedback score = reward เลือกใช้ offline UDRL (reward-conditioned behavioral cloning) แทน on-policy RL เพราะง่ายกว่าและไม่ต้องเทรน reward model ระหว่าง policy optimization จากนั้น binarize reward score เป็น control token <code>&lt;|good|&gt;</code> / <code>&lt;|bad|&gt;</code> ด้วย threshold แล้ว prepend/append เข้ากับ caption ตอน fine-tune captioning model ด้วย LM loss ที่ condition บน control token นี้</p>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- RESULTS -->
+<section class="section" id="results">
+<div class="container">
+<div class="section-header"><span class="overline">Experiments</span><h2>Results & Benchmarks</h2></div>
+<div class="detail-block">
+<div class="detail-body">
+<table class="comparison-table">
+<thead><tr><th>Model</th><th>Setting</th><th>ROUGE-L</th><th>BLEU</th><th>CIDEr</th><th>METEOR</th></tr></thead>
+<tbody>
+<tr><td>BLIP</td><td>Fine-tune ปกติ</td><td>0.130</td><td>0.014</td><td>0.438</td><td>0.132</td></tr>
+<tr><td>BLIP</td><td>+ RLHF (ของ paper นี้)</td><td><strong>0.152</strong></td><td><strong>0.019</strong></td><td><strong>0.552</strong></td><td><strong>0.145</strong></td></tr>
+<tr><td>ViT+GPT2</td><td>Fine-tune ปกติ</td><td>0.142</td><td>0.018</td><td>0.427</td><td>0.126</td></tr>
+<tr><td>ViT+GPT2</td><td>+ RLHF (ของ paper นี้)</td><td>0.138</td><td><strong>0.020</strong></td><td>0.489</td><td>0.126</td></tr>
+</tbody>
+</table>
+<div class="key-box teal"><h5>Key Numbers</h5><ul>
+<li>BLIP + RLHF: BLEU +35.7%, ROUGE-L +16.9%, METEOR +9%, CIDEr +11.4% เทียบกับ fine-tune ปกติ</li>
+<li>ViT+GPT2 + RLHF: BLEU +11.1%, CIDEr +5.1%</li>
+<li>BLIP ได้ผลดีกว่า ViT+GPT2 เพราะ image encoder กับ text decoder ถูก pre-train ร่วมกันมาแต่แรก (jointly aligned) ขณะที่ ViT+GPT2 เพิ่งมาเรียนรู้ alignment ตอน fine-tune</li>
+<li>Human-feedback prediction model มี out-of-sample MSE ต่ำ (0.076–0.095) แสดงว่า generalize ดีไปยัง caption ที่ไม่เคยเห็น</li>
+</ul></div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- LIMITATIONS -->
+<section class="section section-alt" id="limitations">
+<div class="container">
+<div class="section-header"><span class="overline">Gaps & Future Work</span><h2>ข้อจำกัดและทิศทางต่อไป</h2></div>
+<div class="detail-block"><div class="detail-body">
+<div class="key-box amber"><h5>Limitations (จาก paper)</h5><ul>
+<li>UDRL fine-tuning ต้อง update ทุก parameter ของโมเดล ไม่ใช่ parameter-efficient (เช่น LoRA) จึงใช้ compute เยอะกว่าที่ควร</li>
+<li>Feedback ที่ใช้ปรับ alignment เป็น feedback ของ "ผู้อ่านทั่วไป" เท่านั้น ยังไม่ครอบคลุม use case เฉพาะกลุ่ม เช่น assistive tool สำหรับผู้พิการทางสายตา</li>
+<li>Reward score ต้อง binarize เป็น good/bad ก่อนใช้ ทำให้สูญเสีย granularity ของ feedback ที่เป็น continuous</li>
+<li>Context ที่ใช้ generate caption คือ "รูป" อย่างเดียว (figure-only หรือ figure+OCR) — ไม่ได้ดึง context จากเนื้อหารอบข้างของเอกสาร เช่น mention paragraph, section, abstract</li>
+</ul></div>
+</div></div>
+</div>
+</section>
+
+<!-- THESIS RELEVANCE -->
+<section class="section section-dark" id="thesis">
+<div class="container">
+<div class="section-header"><span class="overline">Connection to My Research</span><h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2></div>
+<div class="synthesis-grid">
+  <div class="synthesis-card"><h4>What I Borrow</h4><p>แนวคิดเรื่อง evaluation ที่แยกมิติชัดเจน (Helpfulness, Takeaway, Visual-descriptiveness, OCR/text-alignment) ตรงกับ objective ข้อ 4 ของ thesis ที่ต้องการประเมิน caption ทั้งด้านความถูกต้อง ความสอดคล้องกับบริบท และความสามารถถ่ายทอดสาระสำคัญ — สามารถยืมกรอบ 4 มิตินี้มาออกแบบ evaluation rubric ของ thesis ได้โดยตรง แทนที่จะวัดแค่ BLEU/ROUGE</p></div>
+  <div class="synthesis-card"><h4>Where I Diverge</h4><p>FigCaps-HF เน้นแก้ปัญหาที่ "training signal" (reader-preference alignment ผ่าน RLHF) ไม่ได้แตะเรื่อง context จากเอกสารเลย — ใช้แค่ภาพ (+OCR) เป็น input ส่วน thesis ของเราเน้นที่ "input context" คือดึง context จากเนื้อหาเอกสาร (paragraph, section, การอ้างอิงรูป) มาเสริมการสร้าง caption ดังนั้นทั้งสองงานแก้คนละจุดของปัญหาเดียวกัน และอาจ complement กันได้ — ใช้ context-aware generation ของเราเป็น base model แล้วเสริมด้วย RLHF-style alignment ของ FigCaps-HF ทีหลังเพื่อ refine คุณภาพเพิ่มอีกชั้น</p></div>
+  <div class="synthesis-card"><h4>Open Questions</h4><p>ถ้าใช้ context-aware caption เป็น input ของ human-feedback prediction model แบบ FigCaps-HF จะช่วยให้ reward signal แม่นขึ้นไหม? และ scoring scheme 4 มิติแบบนี้ scale ไปใช้กับ caption ที่มี context ยาวขึ้น (เช่น ดึงมาจากทั้ง section) ได้โดยไม่ต้อง re-annotate ใหม่หรือไม่?</p></div>
+</div>
+</div>
+</section>
+
+<footer class="footer">
+<div class="container">
+  <p>Analysis generated 2026-06-17 · arXiv:2307.10867</p>
+</div>
+</footer>
+</body>
+</html>

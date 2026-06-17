@@ -1,0 +1,189 @@
+
+
+\begin{table}[h!]
+\centering
+\vspace{4mm}
+% \vspace{-2mm}
+% \caption{%
+% Results with multi-labeled human feedback.
+% % \todo{Fix table captions, for NeurIPS I think need to be on top of table, not bottom}
+% }
+\renewcommand{\arraystretch}{1.15} 
+% \setlength{\tabcolsep}{3.9pt} 
+\small
+% \footnotesize
+% \scriptsize
+% \begin{tabularx}{1.0\linewidth}{l @{}c HH HH cc cc cccc}
+\begin{tabularx}{0.8\linewidth}{l l H HH HH Hc cH Hccc}
+\toprule
+% & 
+% % \multirow{2}{*}{\sc \# Trainable} 
+% &
+% \multicolumn{2}{c}{ROUGE-1} & 
+% \multicolumn{2}{c}{\sc ROUGE-2} &
+% % &&&&
+% \multicolumn{2}{c}{\sc ROUGE-L} & \\
+% \cmidrule(r){3-4} \cmidrule(r){5-6} \cmidrule(r){7-8}
+&
+\textsc{Model} & 
+% \textsc{Parameters} & 
+\textbf{\#Params} & 
+R@1 & \sc Norm. & %R@1 & 
+R@2 & \sc Norm. & %R@2 & 
+R@L & 
+% \sc Norm. & %R@L &
+\textbf{ROUGE-L} &
+\textbf{BLEU} & 
+\textbf{CIDEr} & 
+\textbf{SPICE} &
+\textbf{METEOR} &
+\\ \midrule
+
+% & \textbf{BLIP with Multi-labeled feedback(10 epochs multi label)} 
+% & \textbf{BLIP with Multi-labeled feedback(10 epochs multi label)} 
+& \textbf{Binary Feedback} 
+& 0.25B & 0 & 0 & 0 & 0 & 0 & 0.152 & 0.019 & TODO &  0 & 0.145 \\ 
+
+& \textbf{Multi-label Feedback}
+& 0.25B & 0 & 0 & 0 & 0 & 0 &   0.153 &  \textbf{0.022} & 0.000  & 0 & \textbf{0.151} \\ 
+% & \textbf{BLIP with Multi-labeled feedback (5 epoch binary +5 epochs multi label)} 
+& \textbf{Binary + Multi-label Feedback}
+% & \textbf{BLIP (5 epoch binary +5 epochs multi label) \ryan{need better name}}
+% , which the name can be described in text}} 
+& 0.25B & 0 & 0 & 0 & 0 & 0 &  \textbf{0.156} &  0.019 & 0.0  & 0.0 & 0.148 \\ 
+% & 0.25B & 0 & 0 & 0 & 0 & 0 &  \textbf{0.156} &  0.0191 & 0.0  & 0.0 & 0.1484 \\ 
+% & \textbf{BLIP with Multi-labeled feedback (bad/neutral/good)} & 0.25B & 0 & 0 & 0 & 0 & 0 &  0.151 &  0.01747 & 0.0  & 0.0 & 0.1438 \\ 
+% & \textbf{Ours-BLIP-RLHF} 
+
+\bottomrule
+\end{tabularx}
+% \vspace{-1mm}
+% \vspace{-2mm}
+% \vspace{-2mm}
+\caption{%
+Results with multi-labeled human feedback.
+% \todo{Fix table captions, for NeurIPS I think need to be on top of table, not bottom}
+}
+\label{table:results-comparison-multihf}
+\end{table}
+
+
+
+
+
+\begin{table}[b!]
+\centering
+% \vspace{-2mm}
+% \caption{%
+% Results with different human feedback metrics (BLIP-RLHF).
+% }
+% \label{table:results-comparison-metrics}
+\renewcommand{\arraystretch}{1.1} 
+\setlength{\tabcolsep}{6.9pt} 
+\small
+% \footnotesize
+% \scriptsize
+%\begin{tabularx}{1.0\linewidth}{l @{}c HH HH cc cc cccc}
+\begin{tabularx}{0.6\linewidth}{l l H HH HH Hc cH Hccc}
+\toprule
+% & 
+% % \multirow{2}{*}{\sc \# Trainable} 
+% &
+% \multicolumn{2}{c}{ROUGE-1} & 
+% \multicolumn{2}{c}{\sc ROUGE-2} &
+% % &&&&
+% \multicolumn{2}{c}{\sc ROUGE-L} & \\
+% \cmidrule(r){3-4} \cmidrule(r){5-6} \cmidrule(r){7-8}
+&
+% \textsc{Human Feedback Model} 
+& 
+% \textsc{Parameters} & 
+\textbf{\#Params} & 
+R@1 & \sc Norm. & %R@1 & 
+R@2 & \sc Norm. & %R@2 & 
+R@L & 
+% \sc Norm. & %R@L &
+\textbf{ROUGE-L} &
+\textbf{BLEU} & 
+\textbf{CIDEr} & 
+\textbf{SPICE} &
+\textbf{METEOR} &
+\\ \midrule
+
+& \textbf{Helpfulness} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.1520 & 0.0186 & TODO &  0 & 0.1450 \\ 
+% & \textbf{Helpfulness} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.152 & 0.019 & TODO &  0 & 0.145 \\ 
+& \textbf{Takeaway} & 0.25B & 0 & 0 & 0 & 0 & 0 &   0.1676 &  0.0230 & 0.000  & 0 & 0.1598 \\ 
+& \textbf{Visual} & 0.25B & 0 & 0 & 0 & 0 & 0 &  0.1678 &  0.0230 & 0.0  & 0.0 & 0.1595 \\ 
+& \textbf{OCR} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.1654 & 0.0223 & TODO &  0 & 0.1565 \\ 
+
+% \midrule
+% & \textbf{Helpfulness} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.152 & 0.019 & TODO &  0 & 0.145 \\ 
+% & \textbf{Takeaway} & 0.25B & 0 & 0 & 0 & 0 & 0 &   0.168 &  0.023 & 0.000  & 0 & 0.160 \\ 
+% & \textbf{Visual} & 0.25B & 0 & 0 & 0 & 0 & 0 &  0.168 &  0.023 & 0.0  & 0.0 & 0.160 \\ 
+% & \textbf{OCR} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.165 & 0.022 & TODO &  0 & 0.157 \\ 
+
+\bottomrule
+\end{tabularx}
+% \vspace{3mm}
+% \vspace{-2mm}
+% \vspace{-2mm}
+\caption{%
+Results with different human feedback metrics (BLIP-RLHF).
+}
+\label{table:results-comparison-metrics}
+\end{table}
+
+
+
+
+
+
+\begin{table}%[t!]
+\centering
+\renewcommand{\arraystretch}{1.1} 
+\setlength{\tabcolsep}{6.9pt} 
+\small
+% \footnotesize
+% \scriptsize
+%\begin{tabularx}{1.0\linewidth}{l @{}c HH HH cc cc cccc}
+\begin{tabularx}{0.6\linewidth}{l l H HH HH Hc cH Hccc}
+\toprule
+% & 
+% % \multirow{2}{*}{\sc \# Trainable} 
+% &
+% \multicolumn{2}{c}{ROUGE-1} & 
+% \multicolumn{2}{c}{\sc ROUGE-2} &
+% % &&&&
+% \multicolumn{2}{c}{\sc ROUGE-L} & \\
+% \cmidrule(r){3-4} \cmidrule(r){5-6} \cmidrule(r){7-8}
+&
+% \textsc{Human Feedback Model} 
+& 
+% \textsc{Parameters} & 
+\textbf{\#Params} & 
+R@1 & \sc Norm. & %R@1 & 
+R@2 & \sc Norm. & %R@2 & 
+R@L & 
+% \sc Norm. & %R@L &
+\textbf{ROUGE-L} &
+\textbf{BLEU} & 
+\textbf{CIDEr} & 
+\textbf{SPICE} &
+\textbf{METEOR} &
+\\ \midrule
+
+& \textbf{BERT} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.1565 & 0.01927 & TODO &  0 & 0.1473 \\ 
+% & \textbf{Helpfulness} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.152 & 0.019 & TODO &  0 & 0.145 \\ 
+& \textbf{SciBERT} & 0.25B & 0 & 0 & 0 & 0 & 0 &   0.1577 &  0.02010 & 0.000  & 0 & 0.1509 \\ 
+& \textbf{BLIP} & 0.25B & 0 & 0 & 0 & 0 & 0 &  0.1573 &  0.01977 & 0.0  & 0.0 & 0.1494 \\
+
+\bottomrule
+\end{tabularx}
+% \vspace{-3mm}
+% \vspace{2mm}
+\caption{%
+Results with different embedding models for the human-feedback model.
+}
+\label{table:results-comparison-diff-embedding-models}
+\end{table}
+

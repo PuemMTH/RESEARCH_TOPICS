@@ -1,0 +1,35 @@
+{
+  "arxiv_id": "2307.10867",
+  "title": "FigCaps-HF: A Figure-to-Caption Generative Framework and Benchmark with Human Feedback",
+  "authors": [
+    "Ashish Singh1Prateek Agarwal111footnotemark:1Zixuan Huang111footnotemark:1Arpita Singh111footnotemark:1Tong Yu2Sungchul Kim2Victor Bursztyn2Nikos Vlassis2Ryan A. Rossi21CICS, University of Massachusetts Amherst2Adobe ResearchBenchmark:https://figshare.com/s/c034fd77bea9475319cbCode:https://github.com/FigCapsHF/FigCapsHFDocumentation:https://figcapshf.github.io/"
+  ],
+  "abstract": "Captions are crucial for understanding scientific visualizations and documents. Existing captioning methods for scientific figures rely on figure-caption pairs extracted from documents for training, many of which fall short with respect to metrics like helpfulness, explainability, and visual-descriptiveness [ 15 ] leading to generated captions being misaligned with reader preferences. To enable the generation of high-quality figure captions, we introduce FigCaps-HF a new framework for figure-caption generation that can incorporate domain expert feedback in generating captions optimized for reader preferences. Our framework comprises of 1) an automatic method for evaluating quality of figure-caption pairs, 2) a novel reinforcement learning with human feedback (RLHF) method to optimize a generative figure-to-caption model for reader preferences. We demonstrate the effectiveness of our simple learning framework by improving performance over standard fine-tuning across different types of models. In particular, when using BLIP as the base model, our RLHF framework achieves a mean gain of 35.7%, 16.9%, and 9% in ROUGE, BLEU, and Meteor, respectively. Finally, we release a large-scale benchmark dataset with human feedback on figure-caption pairs to enable further evaluation and development of RLHF techniques for this problem.",
+  "year": "2023",
+  "figure_count": 4,
+  "figure_captions": [
+    {
+      "id": "S3.F1",
+      "caption": "Figure 1:RLHF Framework for Figure-Caption Generative Models",
+      "src": "/html/2307.10867/assets/x1.png"
+    },
+    {
+      "id": "S5.F2",
+      "caption": "Figure 2:Results of our Human Feedback Prediction Model. Here we show the three figure-caption pairs with the highest (left; green) and smallest (right; red) “helpfulness” human feedback score from our trained HF model.\nNotably, the figure-caption pairs rated highly by our human-feedback predictive model are those that are obviously better as they mention specific takeaways, as well as OCR from the figure, and even visual aspects are often mentioned.\nIn contrast, the figure-caption pairs with lowest scores by our predictive model are those that are extremely vague, without actual takeaways, OCR mentions, and without mentioning any visual aspects from the figure.",
+      "src": "/html/2307.10867/assets/x2.png"
+    },
+    {
+      "id": "S5.F3",
+      "caption": "Figure 3:Generated captions from our RLHF framework using BLIP as the base model compared to BLIP without RLHF.",
+      "src": "/html/2307.10867/assets/x3.png"
+    },
+    {
+      "id": "A4.F4",
+      "caption": "Figure 4:Human Feedback Benchmark Data Example for Figure-Caption Generation with RLHF",
+      "src": "/html/2307.10867/assets/x4.png"
+    }
+  ],
+  "paper_number": 18,
+  "slug": "FigCaps",
+  "base_name": "18-FigCaps_2023"
+}

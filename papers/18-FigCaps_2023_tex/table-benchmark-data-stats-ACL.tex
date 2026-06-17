@@ -1,0 +1,87 @@
+% train, validate, test
+% 106,834 	13,354 	13,355
+% train=106,834 	validate=13,354 	test=13,355
+\begin{table*}[t]
+\centering
+\renewcommand{\arraystretch}{1.15} 
+% \setlength{\tabcolsep}{3.9pt} 
+\small
+% \footnotesize
+% \scriptsize
+% \begin{tabularx}{1.0\linewidth}{l @{}c HH HH cc cc cccc}
+\begin{tabularx}{0.9\linewidth}{l @{}c l c cc Hc c H HH HH}
+\toprule
+% & 
+% % \multirow{2}{*}{\sc \# Trainable} 
+% &
+% \multicolumn{2}{c}{ROUGE-1} & 
+% \multicolumn{2}{c}{\sc ROUGE-2} &
+% % &&&&
+% \multicolumn{2}{c}{\sc ROUGE-L} & \\
+% \cmidrule(r){3-4} \cmidrule(r){5-6} \cmidrule(r){7-8}
+
+% INFERRED HUMAN FEEDBACK
+% | Category  | Median    | Mean      | Standard Deviation | Minimum   | 25th Percentile | 75th Percentile | Maximum   |
+% |-----------|-----------|-----------|--------------------|-----------|----------------|----------------|-----------|
+% | Helpfulness | 2.887949 | 2.891968 | 1.067641           | -1.271212 | 2.167202       | 3.610363       | 7.605054 |
+% | Takeaway  | 1.948700 | 2.058931 | 1.028708           | -1.061640 | 1.330719       | 2.660354       | 8.144583 |
+% | Visual    | 1.913612 | 2.024573 | 1.010477           | -1.233484 | 1.307569       | 2.625947       | 7.971579 |
+% | OCR       | 3.882775 | 3.840144 | 0.828866           | 0.017950  | 3.319476       | 4.406052       | 7.505501 |
+
+% & \textbf{\# Fig-Caption} & \\
+% & \textbf{Pairs} & 
+& \textbf{\# Fig-Caption Pairs} &
+\textbf{Human Feedback}  & \textbf{Median}    & \textbf{Mean}      & \textbf{Std} & \textbf{Min}   & \textbf{Q1} & \textbf{Q3} & \textbf{Max}   &\\
+\midrule
+
+
+\multirow{3}{*}{\textsc{Actual}} % HF (400)}}
+& \multirow{4}{*}{\textbf{438}}
+% ACTUAL HUMAN FEEDBACK
+	   % Median	Mean	Std	Min	25%	50%	75%	Max
+&  \textbf{Helpfulness}	 & 3	 & 3.01	 & 1.19	 & 1	 & 2	 & 3		 & 5\\
+ \multirow{3}{*}{\textsc{Human Feedback}}
+& & \textbf{Takeaway}	 & 	2 & 	2.16 & 	1.22 & 	1	 & 1	 & 2 & 		5\\
+& & \textbf{Visual}	&	2	 & 2.11	 & 1.08	 & 1 & 	1	 & 2	 &  	5\\
+& & \textbf{OCR}	 & 	4	 & 3.83 & 	0.80 & 	1	 & 4 & 	4	 &  	5\\
+
+\midrule
+% train=106,834 	validate=13,354 	test=13,355
+\multirow{3}{*}{\textsc{Predicted}} % (100K+)}}
+& \multirow{4}{*}{\textbf{106,834}} % (100K+)}}
+& \textbf{Helpfulness} & 2.89 & 2.89 & 1.07           & -1.271212 & 2.17       & 3.61       & 7.605054 &\\
+\multirow{3}{*}{\textsc{Human Feedback}}
+&& \textbf{Takeaway}  & 1.95 & 2.06 & 1.03           & -1.061640 & 1.33       & 2.66       & 8.144583 &\\
+&& \textbf{Visual}    & 1.91 & 2.02 & 1.01           & -1.233484 & 1.31       & 2.63       & 7.971579 &\\
+&& \textbf{OCR}       & 3.88 & 3.84 & 0.83           & 0.017950  & 3.32      & 4.41       & 7.505501 &\\
+
+
+\bottomrule
+\end{tabularx}
+\caption{%
+Summary of our benchmark dataset for figure-caption generative models with RLHF.
+}
+\label{table:benchmark-data-stats}
+\end{table*}
+
+
+
+
+
+% \begin{table*}
+% % \begin{adjustbox}{width=\columnwidth}
+% \begin{tabular}{lll}
+% \hline
+% \textbf{Filtering method} & \textbf{CER \%} & \textbf{WER \%}\\
+% \hline
+% Original Model & 24.22 & 35.76 \\
+% Prediction Uncertainty & 19.43 & 26.63 \\
+% Phrase Log-Likelihood & 21.4 & 31.5 \\
+% Union & 20.25 & 30.43 \\
+% Intersection & 16.47 & 25.64 \\
+% \hline
+% \end{tabular}
+% % \end{adjustbox}
+% \caption{Evaluation of OCR model after fine-tuning on that target dataset.}
+% \label{t2}
+% \end{table*}

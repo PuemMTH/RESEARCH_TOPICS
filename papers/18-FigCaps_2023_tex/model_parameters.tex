@@ -1,0 +1,54 @@
+
+% \begin{table}
+% \centering
+% \caption{
+% Model hyperparameter details 
+% \todo{FIX!! actually add hyperparam details}
+% }
+% \label{table:model-parameters}
+% \renewcommand{\arraystretch}{1.15} 
+% % \setlength{\tabcolsep}{3.9pt} 
+% \small
+
+% \begin{tabularx}{1.0\linewidth}{l l c HH HH Hc cH Hccc}
+% \toprule
+% &
+% \textsc{Model} &  
+% \textbf{\#Params} & 
+% \textbf{Generation Strategy} &
+% R@1 & \sc Norm. & %R@1 & 
+% R@2 & \sc Norm. & %R@2 & 
+% % \sc Norm. & %R@L &
+% \textbf{Generation} &
+% \textbf{lr} &
+% \textbf{Epochs} &
+% \\ \midrule
+
+% \multirow{1}{*}{\textsc{ocr-only}}
+% & \textbf{Pegasus}~\cite{zhang2020pegasus} & 0.27B &&&&&& TODO \\ 
+
+% \midrule
+% \multirow{4}{*}{\textsc{Figure-Only}}
+% & \textbf{TrOCR}~\cite{li2021trocr} & 0.23B &&&&&& TODO\\ 
+% & \textbf{BEiT+GPT2}~\cite{} & 0.24B &&&&&& Greedy \\ 
+% & \textbf{ViT\cite{dosovitskiy2020vit} + RoBERTA\cite{liu2019roberta}} & 0.23B &&&&&& TODO\\ 
+% & \textbf{ViT\cite{dosovitskiy2020vit} + GPT2} & 0.24B &&&&&& Greedy \\ 
+% \midrule
+% \multirow{5}{*}{\textsc{Figure-Caption}}
+% & \textbf{PromptCap}~\cite{hu2022promptcap} & 0.47B &&&&&& TODO \\ 
+% & \textbf{Flamingo}~\cite{alayrac2022flamingo} & 1.14B &&&&&& Greedy  \\ 
+% & \textbf{GIT~\cite{wang2022git}} & 0.17B &&&&&& Greedy \\
+% & \textbf{BLIP \cite{li2022blip}} & 0.25B &&&&&& Nucleus  \\ 
+% & \textbf{CLIPCap} & 0.15B &&&&&& Greedy  \\ 
+% \midrule
+% \multirow{4}{*}{\textsc{rlhf}}
+% % \multirow{4}{*}{\textsc{Feedback-Prompt (Prepend)}}
+% % PREPENDED & 'good' prompt during inference.
+% & \textbf{Ours-BLIP-RLHF} & 0.25B &&&&&& Nucleus  \\ 
+% % & \textbf{Ours-CLIPCap-RLHF} & 0.15B &&&&&& TODO \\ 
+% & \textbf{Ours-ViT+GPT2-RLHF} & 0.24B &&&&&& Greedy  \\  
+
+
+% \bottomrule
+% \end{tabularx}
+% \end{table}

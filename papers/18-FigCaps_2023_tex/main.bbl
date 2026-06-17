@@ -1,0 +1,260 @@
+\begin{thebibliography}{51}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Alayrac et~al.(2022)Alayrac, Donahue, Luc, Miech, Barr, Hasson, Lenc, Mensch, Millican, Reynolds et~al.}]{alayrac2022flamingo}
+Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Mensch, Katie Millican, Malcolm Reynolds, et~al. 2022.
+\newblock Flamingo: a visual language model for few-shot learning.
+\newblock \emph{arXiv preprint arXiv:2204.14198}.
+
+\bibitem[{Bahdanau et~al.(2016)Bahdanau, Brakel, Xu, Goyal, Lowe, Pineau, Courville, and Bengio}]{bahdanau2016actor}
+Dzmitry Bahdanau, Philemon Brakel, Kelvin Xu, Anirudh Goyal, Ryan Lowe, Joelle Pineau, Aaron Courville, and Yoshua Bengio. 2016.
+\newblock An actor-critic algorithm for sequence prediction.
+\newblock \emph{arXiv preprint arXiv:1607.07086}.
+
+\bibitem[{Banerjee and Lavie(2005)}]{banerjee2005meteor}
+Satanjeev Banerjee and Alon Lavie. 2005.
+\newblock Meteor: An automatic metric for mt evaluation with improved correlation with human judgments.
+\newblock In \emph{Proceedings of the acl workshop on intrinsic and extrinsic evaluation measures for machine translation and/or summarization}, pages 65--72.
+
+\bibitem[{Bao et~al.(2022)Bao, Dong, Piao, and Wei}]{bao2022beit}
+Hangbo Bao, Li~Dong, Songhao Piao, and Furu Wei. 2022.
+\newblock \href {https://openreview.net/forum?id=p-BhZSz59o4} {{BE}it: {BERT} pre-training of image transformers}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Chaudhry et~al.(2020)Chaudhry, Shekhar, Gupta, Maneriker, Bansal, and Joshi}]{chaudhry2020leaf}
+Ritwick Chaudhry, Sumit Shekhar, Utkarsh Gupta, Pranav Maneriker, Prann Bansal, and Ajay Joshi. 2020.
+\newblock Leaf-qa: Locate, encode \& attend for figure question answering.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision}, pages 3512--3521.
+
+\bibitem[{Chen et~al.(2019)Chen, Zhang, Kim, Cohen, Yu, Rossi, and Bunescu}]{chen2019neural}
+Charles Chen, Ruiyi Zhang, Sungchul Kim, Scott Cohen, Tong Yu, Ryan Rossi, and Razvan Bunescu. 2019.
+\newblock Neural caption generation over figures.
+\newblock In \emph{Adjunct Proceedings of the 2019 ACM International Joint Conference on Pervasive and Ubiquitous Computing and Proceedings of the 2019 ACM International Symposium on Wearable Computers}, pages 482--485.
+
+\bibitem[{Chen et~al.(2020{\natexlab{a}})Chen, Zhang, Koh, Kim, Cohen, and Rossi}]{chen2019figure}
+Charles Chen, Ruiyi Zhang, Eunyee Koh, Sungchul Kim, Scott Cohen, and Ryan Rossi. 2020{\natexlab{a}}.
+\newblock \href {https://doi.org/10.1109/WACV45572.2020.9093592} {Figure captioning with relation maps for reasoning}.
+\newblock In \emph{2020 IEEE Winter Conference on Applications of Computer Vision (WACV)}, pages 1526--1534.
+
+\bibitem[{Chen et~al.(2020{\natexlab{b}})Chen, Zhang, Koh, Kim, Cohen, and Rossi}]{chen2020figure}
+Charles Chen, Ruiyi Zhang, Eunyee Koh, Sungchul Kim, Scott Cohen, and Ryan Rossi. 2020{\natexlab{b}}.
+\newblock Figure captioning with relation maps for reasoning.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision}, pages 1537--1545.
+
+\bibitem[{Devlin et~al.(2018)Devlin, Chang, Lee, and Toutanova}]{devlin2018bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2018.
+\newblock Bert: Pre-training of deep bidirectional transformers for language understanding.
+\newblock \emph{arXiv preprint arXiv:1810.04805}.
+
+\bibitem[{Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn, Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and Houlsby}]{dosovitskiy2020vit}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby. 2021.
+\newblock An image is worth 16x16 words: Transformers for image recognition at scale.
+\newblock \emph{ICLR}.
+
+\bibitem[{Emmons et~al.(2021)Emmons, Eysenbach, Kostrikov, and Levine}]{emmons2021rvs}
+Scott Emmons, Benjamin Eysenbach, Ilya Kostrikov, and Sergey Levine. 2021.
+\newblock Rvs: What is essential for offline rl via supervised learning?
+\newblock \emph{arXiv preprint arXiv:2112.10751}.
+
+\bibitem[{Gebru et~al.(2021)Gebru, Morgenstern, Vecchione, Vaughan, Wallach, Iii, and Crawford}]{gebru2021datasheets}
+Timnit Gebru, Jamie Morgenstern, Briana Vecchione, Jennifer~Wortman Vaughan, Hanna Wallach, Hal~Daum{\'e} Iii, and Kate Crawford. 2021.
+\newblock Datasheets for datasets.
+\newblock \emph{Communications of the ACM}, 64(12):86--92.
+
+\bibitem[{Hsu et~al.(2021)Hsu, Giles, and Huang}]{hsu-etal-2021-scicap-generating}
+Ting-Yao Hsu, C~Lee Giles, and Ting-Hao Huang. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.findings-emnlp.277} {{S}ci{C}ap: Generating captions for scientific figures}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2021}, pages 3258--3264, Punta Cana, Dominican Republic. Association for Computational Linguistics.
+
+\bibitem[{Hu et~al.(2022)Hu, Hua, Yang, Shi, Smith, and Luo}]{hu2022promptcap}
+Yushi Hu, Hang Hua, Zhengyuan Yang, Weijia Shi, Noah~A Smith, and Jiebo Luo. 2022.
+\newblock Promptcap: Prompt-guided task-aware image captioning.
+\newblock \emph{arXiv:2211.09699}.
+
+\bibitem[{Huang et~al.(2023)}]{summaries-as-captions-preprint}
+Chieh-Yang Huang et~al. 2023.
+\newblock Summaries as captions: Generating figure captions for scientific documents with automated text summarization.
+\newblock \emph{Open Review}.
+\newblock \url{https://openreview.net/pdf?id=80R7RVLcsf}.
+
+\bibitem[{Ibarz et~al.(2018)Ibarz, Leike, Pohlen, Irving, Legg, and Amodei}]{ibarz2018reward}
+Borja Ibarz, Jan Leike, Tobias Pohlen, Geoffrey Irving, Shane Legg, and Dario Amodei. 2018.
+\newblock Reward learning from human preferences and demonstrations in atari.
+\newblock \emph{Advances in neural information processing systems}, 31.
+
+\bibitem[{Kafle et~al.(2018)Kafle, Price, Cohen, and Kanan}]{kafle2018dvqa}
+Kushal Kafle, Brian Price, Scott Cohen, and Christopher Kanan. 2018.
+\newblock Dvqa: Understanding data visualizations via question answering.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and pattern recognition}, pages 5648--5656.
+
+\bibitem[{Kafle et~al.(2020)Kafle, Shrestha, Cohen, Price, and Kanan}]{kafle2020answering}
+Kushal Kafle, Robik Shrestha, Scott Cohen, Brian Price, and Christopher Kanan. 2020.
+\newblock Answering questions about data visualizations using efficient bimodal fusion.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter conference on applications of computer vision}, pages 1498--1507.
+
+\bibitem[{Kahou et~al.(2017)Kahou, Michalski, Atkinson, K{\'a}d{\'a}r, Trischler, and Bengio}]{kahou2017figureqa}
+Samira~Ebrahimi Kahou, Vincent Michalski, Adam Atkinson, {\'A}kos K{\'a}d{\'a}r, Adam Trischler, and Yoshua Bengio. 2017.
+\newblock Figureqa: An annotated figure dataset for visual reasoning.
+\newblock \emph{Sixth International Conference on Learning Representations Workshop}.
+
+\bibitem[{Korbak et~al.(2023)Korbak, Shi, Chen, Bhalerao, Buckley, Phang, Bowman, and Perez}]{korbak2023pretraining}
+Tomasz Korbak, Kejian Shi, Angelica Chen, Rasika Bhalerao, Christopher~L Buckley, Jason Phang, Samuel~R Bowman, and Ethan Perez. 2023.
+\newblock Pretraining language models with human preferences.
+\newblock \emph{arXiv preprint arXiv:2302.08582}.
+
+\bibitem[{Kreutzer et~al.(2018)Kreutzer, Khadivi, Matusov, and Riezler}]{kreutzer2018can}
+Julia Kreutzer, Shahram Khadivi, Evgeny Matusov, and Stefan Riezler. 2018.
+\newblock Can neural machine translation be improved with user feedback?
+\newblock \emph{arXiv preprint arXiv:1804.05958}.
+
+\bibitem[{Lee et~al.(2023)Lee, Liu, Ryu, Watkins, Du, Boutilier, Abbeel, Ghavamzadeh, and Gu}]{lee2023aligning}
+Kimin Lee, Hao Liu, Moonkyung Ryu, Olivia Watkins, Yuqing Du, Craig Boutilier, Pieter Abbeel, Mohammad Ghavamzadeh, and Shixiang~Shane Gu. 2023.
+\newblock Aligning text-to-image models using human feedback.
+\newblock \emph{arXiv preprint arXiv:2302.12192}.
+
+\bibitem[{Lee et~al.(2021)Lee, Smith, and Abbeel}]{lee2021pebble}
+Kimin Lee, Laura Smith, and Pieter Abbeel. 2021.
+\newblock Pebble: Feedback-efficient interactive reinforcement learning via relabeling experience and unsupervised pre-training.
+\newblock \emph{arXiv preprint arXiv:2106.05091}.
+
+\bibitem[{Li et~al.(2022{\natexlab{a}})Li, Li, Xiong, and Hoi}]{li2022blip}
+Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi. 2022{\natexlab{a}}.
+\newblock Blip: Bootstrapping language-image pre-training for unified vision-language understanding and generation.
+\newblock In \emph{International Conference on Machine Learning}, pages 12888--12900. PMLR.
+
+\bibitem[{Li et~al.(2021)Li, Lv, Cui, Lu, Florencio, Zhang, Li, and Wei}]{li2021trocr}
+Minghao Li, Tengchao Lv, Lei Cui, Yijuan Lu, Dinei Florencio, Cha Zhang, Zhoujun Li, and Furu Wei. 2021.
+\newblock Trocr: Transformer-based optical character recognition with pre-trained models.
+\newblock \emph{arXiv preprint arXiv:2109.10282}.
+
+\bibitem[{Li et~al.(2022{\natexlab{b}})Li, Wu, and Chen}]{li2022multi}
+Ying Li, Qingfeng Wu, and Bin Chen. 2022{\natexlab{b}}.
+\newblock Multi-attention relation network for figure question answering.
+\newblock In \emph{Knowledge Science, Engineering and Management: 15th International Conference, KSEM 2022, Singapore, August 6--8, 2022, Proceedings, Part II}, pages 667--680. Springer.
+
+\bibitem[{Lin(2004)}]{lin-2004-rouge}
+Chin-Yew Lin. 2004.
+\newblock \href {https://aclanthology.org/W04-1013} {{ROUGE}: A package for automatic evaluation of summaries}.
+\newblock In \emph{Text Summarization Branches Out}, pages 74--81, Barcelona, Spain. Association for Computational Linguistics.
+
+\bibitem[{Liu et~al.(2019)Liu, Ott, Goyal, Du, Joshi, Chen, Levy, Lewis, Zettlemoyer, and Stoyanov}]{liu2019roberta}
+Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. 2019.
+\newblock Roberta: A robustly optimized bert pretraining approach.
+\newblock \emph{arXiv preprint arXiv:1907.11692}.
+
+\bibitem[{Lu et~al.(2022)Lu, Welleck, Hessel, Jiang, Qin, West, Ammanabrolu, and Choi}]{lu2022quark}
+Ximing Lu, Sean Welleck, Jack Hessel, Liwei Jiang, Lianhui Qin, Peter West, Prithviraj Ammanabrolu, and Yejin Choi. 2022.
+\newblock Quark: Controllable text generation with reinforced unlearning.
+\newblock \emph{Advances in neural information processing systems}, 35:27591--27609.
+
+\bibitem[{MacGlashan et~al.(2017)MacGlashan, Ho, Loftin, Peng, Wang, Roberts, Taylor, and Littman}]{macglashan2017interactive}
+James MacGlashan, Mark~K Ho, Robert Loftin, Bei Peng, Guan Wang, David~L Roberts, Matthew~E Taylor, and Michael~L Littman. 2017.
+\newblock Interactive learning from policy-dependent human feedback.
+\newblock In \emph{International Conference on Machine Learning}, pages 2285--2294. PMLR.
+
+\bibitem[{Masry et~al.(2022)Masry, Long, Tan, Joty, and Hoque}]{masry2022chartqa}
+Ahmed Masry, Do~Xuan Long, Jia~Qing Tan, Shafiq Joty, and Enamul Hoque. 2022.
+\newblock Chartqa: A benchmark for question answering about charts with visual and logical reasoning.
+\newblock \emph{arXiv preprint arXiv:2203.10244}.
+
+\bibitem[{Methani et~al.(2020)Methani, Ganguly, Khapra, and Kumar}]{methani2020plotqa}
+Nitesh Methani, Pritha Ganguly, Mitesh~M Khapra, and Pratyush Kumar. 2020.
+\newblock Plotqa: Reasoning over scientific plots.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision}, pages 1527--1536.
+
+\bibitem[{Mokady et~al.(2021)Mokady, Hertz, and Bermano}]{mokady2021clipcap}
+Ron Mokady, Amir Hertz, and Amit~H Bermano. 2021.
+\newblock Clipcap: Clip prefix for image captioning.
+\newblock \emph{arXiv preprint arXiv:2111.09734}.
+
+\bibitem[{Papineni et~al.(2002)Papineni, Roukos, Ward, and Zhu}]{papineni2002bleu}
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu. 2002.
+\newblock Bleu: a method for automatic evaluation of machine translation.
+\newblock In \emph{Proceedings of the 40th annual meeting of the Association for Computational Linguistics}, pages 311--318.
+
+\bibitem[{Qian et~al.(2020)Qian, Koh, Du, Kim, and Chan}]{qian2020formative}
+Xin Qian, Eunyee Koh, Fan Du, Sungchul Kim, and Joel Chan. 2020.
+\newblock A formative study on designing accurate and natural figure captioning systems.
+\newblock In \emph{Extended Abstracts of the 2020 CHI Conference on Human Factors in Computing Systems}, pages 1--8.
+
+\bibitem[{Qian et~al.(2021)Qian, Koh, Du, Kim, Chan, Rossi, Malik, and Lee}]{capunits2021}
+Xin Qian, Eunyee Koh, Fan Du, Sungchul Kim, Joel Chan, Ryan~A. Rossi, Sana Malik, and Tak~Yeon Lee. 2021.
+\newblock \href {https://doi.org/10.1145/3442381.3449923} {Generating accurate caption units for figure captioning}.
+\newblock In \emph{Proceedings of the Web Conference 2021}, WWW '21, page 2792–2804, New York, NY, USA. Association for Computing Machinery.
+
+\bibitem[{Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, Sutskever et~al.}]{radford2019language}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et~al. 2019.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{OpenAI blog}, 1(8):9.
+
+\bibitem[{Roberts et~al.(2024)Roberts, Han, Houlsby, and Albanie}]{roberts2024scifibench}
+Jonathan Roberts, Kai Han, Neil Houlsby, and Samuel Albanie. 2024.
+\newblock Scifibench: Benchmarking large multimodal models for scientific figure interpretation.
+\newblock \emph{arXiv preprint arXiv:2405.08807}.
+
+\bibitem[{Schulman et~al.(2017)Schulman, Wolski, Dhariwal, Radford, and Klimov}]{schulman2017proximal}
+John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov. 2017.
+\newblock Proximal policy optimization algorithms.
+\newblock \emph{arXiv preprint arXiv:1707.06347}.
+
+\bibitem[{Siegel et~al.(2016)Siegel, Horvitz, Levin, Divvala, and Farhadi}]{siegel2016figureseer}
+Noah Siegel, Zachary Horvitz, Roie Levin, Santosh Divvala, and Ali Farhadi. 2016.
+\newblock Figureseer: Parsing result-figures in research papers.
+\newblock In \emph{European Conference on Computer Vision}, pages 664--680. Springer.
+
+\bibitem[{Singh and Shekhar(2020)}]{singh2020stl}
+Hrituraj Singh and Sumit Shekhar. 2020.
+\newblock Stl-cqa: Structure-based transformers with localization and encoding for chart question answering.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pages 3275--3284.
+
+\bibitem[{Srivastava et~al.(2019)Srivastava, Shyam, Mutz, Ja{\'s}kowski, and Schmidhuber}]{srivastava2019training}
+Rupesh~Kumar Srivastava, Pranav Shyam, Filipe Mutz, Wojciech Ja{\'s}kowski, and J{\"u}rgen Schmidhuber. 2019.
+\newblock Training agents using upside-down reinforcement learning.
+\newblock \emph{arXiv preprint arXiv:1912.02877}.
+
+\bibitem[{Stefanini et~al.(2022)Stefanini, Cornia, Baraldi, Cascianelli, Fiameni, and Cucchiara}]{stefanini2022show}
+Matteo Stefanini, Marcella Cornia, Lorenzo Baraldi, Silvia Cascianelli, Giuseppe Fiameni, and Rita Cucchiara. 2022.
+\newblock From show to tell: a survey on deep learning-based image captioning.
+\newblock \emph{IEEE transactions on pattern analysis and machine intelligence}, 45(1):539--559.
+
+\bibitem[{Stiennon et~al.(2020)Stiennon, Ouyang, Wu, Ziegler, Lowe, Voss, Radford, Amodei, and Christiano}]{stiennon2020learning}
+Nisan Stiennon, Long Ouyang, Jeffrey Wu, Daniel Ziegler, Ryan Lowe, Chelsea Voss, Alec Radford, Dario Amodei, and Paul~F Christiano. 2020.
+\newblock Learning to summarize with human feedback.
+\newblock \emph{Advances in Neural Information Processing Systems}, 33:3008--3021.
+
+\bibitem[{Vedantam et~al.(2015)Vedantam, Lawrence~Zitnick, and Parikh}]{vedantam2015cider}
+Ramakrishna Vedantam, C~Lawrence~Zitnick, and Devi Parikh. 2015.
+\newblock Cider: Consensus-based image description evaluation.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and pattern recognition}, pages 4566--4575.
+
+\bibitem[{Wang et~al.(2022{\natexlab{a}})Wang, Yang, Hu, Li, Lin, Gan, Liu, Liu, and Wang}]{wang2022git}
+Jianfeng Wang, Zhengyuan Yang, Xiaowei Hu, Linjie Li, Kevin Lin, Zhe Gan, Zicheng Liu, Ce~Liu, and Lijuan Wang. 2022{\natexlab{a}}.
+\newblock Git: A generative image-to-text transformer for vision and language.
+\newblock \emph{arXiv preprint arXiv:2205.14100}.
+
+\bibitem[{Wang et~al.(2022{\natexlab{b}})Wang, Yang, Men, Lin, Bai, Li, Ma, Zhou, Zhou, and Yang}]{wang2022ofa}
+Peng Wang, An~Yang, Rui Men, Junyang Lin, Shuai Bai, Zhikang Li, Jianxin Ma, Chang Zhou, Jingren Zhou, and Hongxia Yang. 2022{\natexlab{b}}.
+\newblock Ofa: Unifying architectures, tasks, and modalities through a simple sequence-to-sequence learning framework.
+\newblock In \emph{International Conference on Machine Learning}, pages 23318--23340. PMLR.
+
+\bibitem[{Zhang et~al.(2020)Zhang, Zhao, Saleh, and Liu}]{zhang2020pegasus}
+Jingqing Zhang, Yao Zhao, Mohammad Saleh, and Peter Liu. 2020.
+\newblock Pegasus: Pre-training with extracted gap-sentences for abstractive summarization.
+\newblock In \emph{International Conference on Machine Learning}, pages 11328--11339. PMLR.
+
+\bibitem[{Zhang et~al.(2022)Zhang, Mosbach, Adelani, Hedderich, and Klakow}]{zhang2022mcse}
+Miaoran Zhang, Marius Mosbach, David~Ifeoluwa Adelani, Michael~A Hedderich, and Dietrich Klakow. 2022.
+\newblock Mcse: Multimodal contrastive learning of sentence embeddings.
+\newblock \emph{arXiv preprint arXiv:2204.10931}.
+
+\bibitem[{Zhang et~al.(2023)Zhang, Yang, Feng, Qin, Chen, Yu, Chen, Wang, Savarese, Ermon et~al.}]{zhang2023hive}
+Shu Zhang, Xinyi Yang, Yihao Feng, Can Qin, Chia-Chih Chen, Ning Yu, Zeyuan Chen, Huan Wang, Silvio Savarese, Stefano Ermon, et~al. 2023.
+\newblock Hive: Harnessing human feedback for instructional visual editing.
+\newblock \emph{arXiv preprint arXiv:2303.09618}.
+
+\bibitem[{Zou et~al.(2020)Zou, Wu, Xue, and Wu}]{zou2020affinity}
+Jialong Zou, Guoli Wu, Taofeng Xue, and Qingfeng Wu. 2020.
+\newblock An affinity-driven relation network for figure question answering.
+\newblock In \emph{2020 IEEE International Conference on Multimedia and Expo (ICME)}, pages 1--6. IEEE.
+
+\end{thebibliography}

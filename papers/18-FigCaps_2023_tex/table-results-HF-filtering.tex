@@ -1,0 +1,109 @@
+
+
+\begin{table}
+\centering
+\caption{%
+Results with filtering via predicted human feedback.
+% Comparison with state-of-the-art methods. 
+% \todo{add more context, keep it short}
+% \todo{Please make sure all methods are listed correctly, caption-only, figure-only, figure-caption}
+% \ryan{Is BLEU score correct for TrOCR? 
+% Also, I think these numbers need to be multipled by 100 (See BLIP and other papers)?}
+% For all the metrics, higher values are better ($\uparrow$).
+% BLEU=BLEU@4 (add somewhere in paper to clarify)
+}
+\label{table:results-comparison-filtering}
+\renewcommand{\arraystretch}{1.15} 
+% \setlength{\tabcolsep}{3.9pt} 
+\small
+% \footnotesize
+% \scriptsize
+% \begin{tabularx}{1.0\linewidth}{l @{}c HH HH cc cc cccc}
+\begin{tabularx}{0.8\linewidth}{l l H HH HH Hc cH Hccc}
+\toprule
+% & 
+% % \multirow{2}{*}{\sc \# Trainable} 
+% &
+% \multicolumn{2}{c}{ROUGE-1} & 
+% \multicolumn{2}{c}{\sc ROUGE-2} &
+% % &&&&
+% \multicolumn{2}{c}{\sc ROUGE-L} & \\
+% \cmidrule(r){3-4} \cmidrule(r){5-6} \cmidrule(r){7-8}
+&
+\textsc{Model} & 
+% \textsc{Parameters} & 
+\textbf{\#Params} & 
+R@1 & \sc Norm. & %R@1 & 
+R@2 & \sc Norm. & %R@2 & 
+R@L & 
+% \sc Norm. & %R@L &
+\textbf{ROUGE-L} &
+\textbf{BLEU} & 
+\textbf{CIDEr} & 
+\textbf{SPICE} &
+\textbf{METEOR} &
+\\ \midrule
+
+
+% \multirow{1}{*}{\textsc{OCR-Only}}
+% & \textbf{Pegasus TODO (pretrained)}~\cite{zhang2020pegasus} & 0.27B & 0 & 0 & 0 & 0 & 0 & 0.026 & 7.8e-5 & 0.01 & 0.0 & 0.042 \\ 
+% % & \textbf{Pegasus (pretrained)}~\cite{zhang2020pegasus} & 0.27B & 0 & 0 & 0 & 0 & 0 & 0.435 & 0.271 & 1.741 & 0 & 0.413 \\ 
+
+% \midrule
+% \multirow{1}{*}{\textsc{Figure-Only}}
+% & \textbf{TrOCR}~\cite{li2021trocr} & 0.23B & 0 & 0 & 0 & 0 & 0 & 0.025 & 0.0 & 0.001 & 0.0 & 0.018 \\ 
+% & \textbf{ViT\cite{dosovitskiy2020vit} + RoBERTA\cite{liu2019roberta}} & 0.23B & 0 & 0. & 0 & 0 & 0 & 0.140 & 0.005 & 0.059 & 0 & 0.121\\ 
+% & \textbf{ViT\cite{dosovitskiy2020vit} + GPT2} & 0.24B & 0 & 0 & 0 & 0 & 0 & 0.142 & 0.006 & 0.061 & 0 & 0.126 \\ 
+
+% & \textbf{BEiT+GPT2}~\cite{} & 0.24B & 0 & 0 & 0 & 0 & 0 &  0.142 & 0.005 & 0.054  & 0 & 0.124 \\ 
+% & \textbf{BEiT+GPT2 with BLIP Filter dataset (50 percentile)} & 0.24B & 0 & 0 & 0 & 0 & 0 &  0.127 & 0.002 & 0.000  & 0 & 0.111 \\ 
+% & \textbf{BEiT+GPT2 with MCSE Filtered dataset (50\% @ 5 epochs)} & 0.24B & 0 & 0 & 0 & 0 & 0 &  0.132 & 0.003 & 0.054  & 0.0 & 0.121 \\ 
+% & \textbf{BEiT+GPT2 with MCSE Filtered dataset (50\% @ 10 epochs)} & 0.24B & 0 & 0 & 0 & 0 & 0 &  0.135 & 0.016 & 0.054  & 0.0 & 0.125 \\ 
+
+
+& \textbf{BEiT+GPT2} & 0.24B & 0 & 0 & 0 & 0 & 0 &  \textbf{0.142} & {0.005} & 0.054  & 0 & 0.124 \\ 
+\midrule
+& \textbf{BEiT+GPT2 with BLIP Filtering} & 0.24B & 0 & 0 & 0 & 0 & 0 &  0.127 & {0.002} & 0.000  & 0 & 0.111 \\ 
+% & \textbf{BEiT+GPT2 w/ MCSE Filtered dataset (50\% @ 5 epochs)} & 0.24B & 0 & 0 & 0 & 0 & 0 &  0.132 & 0.003 & 0.054  & 0.0 & 0.121 \\ 
+& \textbf{BEiT+GPT2 with MCSE Filtering} & 0.24B & 0 & 0 & 0 & 0 & 0 &  0.135 & \textbf{0.016} & 0.054  & 0.0 & \textbf{0.125} \\ 
+
+% \midrule
+% \multirow{5}{*}{\textsc{Figure-Caption}}
+% % https://huggingface.co/vqascore/promptcap-coco-vqa (check if another version exists)
+% % & \textbf{PromptCap(0-shot)}~\cite{hu2022promptcap} & 0.47B & 0 & 0 & 0 & 0 & 0 & 0.130 & 0.004 & 0.121 & 0 & 0.082\\ 
+% & \textbf{PromptCap}~\cite{hu2022promptcap} & 0.47B & 0 & 0 & 0 & 0 & 0 & 0.130 & 0.004 & 0.121 & 0 & 0.082\\ 
+
+
+% % https://huggingface.co/dhansmair/flamingo-mini
+% & \textbf{Flamingo}~\cite{alayrac2022flamingo} & 1.14B & 0 & 0 & 0 & 0 & 0 & 0.0865 & 0.0002 & 0.0152 & 0 & 0.0459\\ 
+% % & \textbf{Flamingo-mini}~\cite{alayrac2022flamingo} & 1.14B & 0 & 0 & 0 & 0 & 0 & 0.0865 & 0.0002 & 0.0152 & 0 & 0.0459\\ 
+% % % https://huggingface.co/allenai/scibert_scivocab_uncased
+% % & \textbf{SciBERT}~\cite{zhang2021vinvl} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0\\ 
+
+% & \textbf{GIT~\cite{wang2022git}} & 0.17B & 0 & 0 & 0 & 0 & 0 & 0.119 & 0.0018 & 4.8e-7 & 0 & 0.0906 \\
+% % & \textbf{GIT (fine-tuned)~\cite{wang2022git}} & 0.17B & 0 & 0 & 0 & 0 & 0 & 0.119 & 0.0018 & 4.8e-7 & 0 & 0.0906 \\
+% % & \textbf{GIT (pretrained)\cite{wang2022git}} & 0.17B & 0 & 0 & 0 & 0 & 0 & 0.106 & 0.001 & 0.0179 & 0 & 0.057 \\ 
+
+% & \textbf{BLIP \cite{li2022blip}} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.13 & 0.0143 & TODO & 0 & 0.132 \\ 
+
+% % & \textbf{BLIP \cite{li2022blip}} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.169 & 0.027 & 0.17 & 0 & 0.139 \\ 
+
+% % & \textbf{BLIP \cite{li2022blip}+OCR} & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.169 & 0.028 & 0.169 & 0 & 0.140 \\ 
+% \midrule
+% % OCR-caption contrastive loss + others fine-tuned as well, inference uses only figure+OCR
+% % OCR-caption contrastive loss + others fine-tuned as well, inference uses only figure
+% % & \textbf{Ours-OCR-Caption-CLoss+others fine-tuned} & 0.27B & 0 & 0 & 0 & 0 & 0 & 0.116 & 0.0008 & TODO &  0 & 0.09 \\ 
+% % & \textbf{Ours-OCR-Caption-CLoss+others fine-tuned (Epoch 2)} & 0.27B & 0 & 0 & 0 & 0 & 0 & 0.112 & 0.008 & TODO &  0 & 0.11267 \\ 
+% & \textbf{Ours-BLIP-RLHF (MLP) } & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.212 & 0.034 & TODO &  0 & 0.18 \\ 
+% & \textbf{Ours-VIT-GPT2-RLHF (MLP) } & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.151 & 0.007 & TODO &  0 & 0.14 \\ 
+% % & \textbf{Ours-BLIP-RLHF (MLPRegressor Scoring) } & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.212 & 0.034 & TODO &  0 & 0.18 \\ 
+% % & \textbf{Ours-VIT-GPT2-RLHF (MLPRegressor Scoring) } & 0.25B & 0 & 0 & 0 & 0 & 0 & 0.151 & 0.007 & TODO &  0 & 0.14 \\ 
+% % OCR-caption contrastive loss + language fine-tuned (same as BLIP+OCR), inference uses only figure
+% % & \textbf{Ours-OCR-Caption-CLoss} & 0.27B & 0 & 0 & 0 & 0 & 0 & 0.10794 & 0.000855 & TODO & 0 &  0.09758 \\ 
+% % OCR-caption contrastive loss + language fine-tuned (same as BLIP+OCR), inference uses only figure+OCR
+% % & \textbf{Ours-OCR-Caption-CLoss} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+% % & \textbf{Ours} & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\ 
+
+\bottomrule
+\end{tabularx}
+\end{table}
