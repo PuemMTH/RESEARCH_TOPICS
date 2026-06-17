@@ -1,7 +1,0 @@
-{
-  "tool_name": "Read",
-  "tool_input_preview": "{\"file_path\":\"/Users/puem/Documents/projects/RESEARCH_TOPICS/papers/18-FigCaps_2023_source.html\"}",
-  "error": "File content (346.9KB) exceeds maximum allowed size (256KB). Use offset and limit parameters to read specific portions of the file, or search for specific content instead of reading the whole file.",
-  "timestamp": "2026-06-17T09:35:14.388Z",
-  "retry_count": 1
-}
