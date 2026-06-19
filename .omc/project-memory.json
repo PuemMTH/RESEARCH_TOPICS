@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
-  "lastScanned": 1781688211302,
-  "projectRoot": "/Users/puem/Documents/projects/RESEARCH_TOPICS",
+  "lastScanned": 1781788680383,
+  "projectRoot": "C:\\Users\\admin\\Desktop\\RESEARCH_TOPICS",
   "techStack": {
     "languages": [],
     "frameworks": [],
@@ -40,7 +40,7 @@
       "path": "assets",
       "purpose": "Static assets",
       "fileCount": 4,
-      "lastAccessed": 1781688211288,
+      "lastAccessed": 1781788680369,
       "keyFiles": [
         "summary.css",
         "translation.css",
@@ -52,14 +52,14 @@
       "path": "docs",
       "purpose": "Documentation",
       "fileCount": 0,
-      "lastAccessed": 1781688211289,
+      "lastAccessed": 1781788680370,
       "keyFiles": []
     },
     "papers": {
       "path": "papers",
       "purpose": null,
-      "fileCount": 69,
-      "lastAccessed": 1781688211290,
+      "fileCount": 73,
+      "lastAccessed": 1781788680370,
       "keyFiles": [
         "1-SciCap_2021.pdf",
         "1-SciCap_2021_source.html",
@@ -71,8 +71,8 @@
     "scratch": {
       "path": "scratch",
       "purpose": null,
-      "fileCount": 8,
-      "lastAccessed": 1781688211290,
+      "fileCount": 7,
+      "lastAccessed": 1781788680370,
       "keyFiles": [
         "check_keys.py",
         "combine_translation.py",
@@ -85,11 +85,11 @@
       "path": "src",
       "purpose": "Source code",
       "fileCount": 4,
-      "lastAccessed": 1781688211290,
+      "lastAccessed": 1781788680371,
       "keyFiles": [
-        "README.md",
         "extract_keywords.py",
         "fetch_paper.py",
+        "README.md",
         "requirements.txt"
       ]
     }
