@@ -1,0 +1,180 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{mdframed}
+
+%% ─── Design system tokens (@docs/design/design.md) ──────────
+\definecolor{primary}{HTML}{cc785c}
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{primary-active}{HTML}{a9583e}
+\definecolor{primary-disabled}{HTML}{e6dfd8}
+\definecolor{ink}{HTML}{141413}
+\definecolor{body-strong}{HTML}{252523}
+\definecolor{body}{HTML}{3d3d3a}
+\definecolor{muted}{HTML}{6c6a64}
+\definecolor{muted-soft}{HTML}{8e8b82}
+\definecolor{canvas}{HTML}{faf9f5}
+\definecolor{surface-soft}{HTML}{f5f0e8}
+\definecolor{surface-card}{HTML}{efe9de}
+\definecolor{surface-cream-strong}{HTML}{e8e0d2}
+\definecolor{surface-dark}{HTML}{181715}
+\definecolor{surface-dark-elevated}{HTML}{252320}
+\definecolor{surface-dark-soft}{HTML}{1f1e1b}
+\definecolor{hairline}{HTML}{e6dfd8}
+\definecolor{on-dark}{HTML}{faf9f5}
+\definecolor{on-dark-soft}{HTML}{a09d96}
+\definecolor{accent-teal}{HTML}{5db8a6}
+\definecolor{accent-amber}{HTML}{e8a55a}
+\definecolor{success}{HTML}{5db872}
+\definecolor{warning}{HTML}{d4a017}
+\definecolor{error}{HTML}{c64545}
+%% alias for mdframed highlight
+\definecolor{lightbg}{HTML}{f5f0e8}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+\newmdenv[
+  backgroundcolor=lightbg,
+  linecolor=coral,
+  linewidth=2pt,
+  topline=false, rightline=false, bottomline=false,
+  innerleftmargin=12pt, innerrightmargin=8pt,
+  innertopmargin=8pt, innerbottommargin=8pt,
+]{highlight}
+
+\begin{document}
+
+\begin{center}
+  {\Large \textbf{การจัดอันดับบทความวิจัยสำหรับการค้นหาภาพทั่วไปในคลังเอกสาร}}\\[6pt]
+  {\color{muted}\small Literature Recommendation for Multimodal Search in Document Repositories}
+\end{center}
+
+\noindent\rule{\textwidth}{1.5pt}
+
+%% ─── Introduction ─────────────────────────────────────────────
+\section*{บทนำและความต้องการทางวิจัย}
+
+เมื่อเป้าหมายของระบบคือการพัฒนา **คลังเอกสารวิชาการ (Paper Repository)** ที่สามารถค้นหาข้อมูลเชิงข้อความและภาพประกอบได้ โดยที่รูปภาพภายในเอกสารไม่ได้จำกัดเฉพาะกราฟิกเชิงข้อมูล (Charts/Graphs) แต่ครอบคลุมถึง **ภาพทั่วไป (Natural/Generic Images)** เช่น ภาพถ่ายสัตว์ (สุนัข, แมว) พืชพรรณ หรือป่าไม้ โครงสร้างสถาปัตยกรรมของโมเดลสำหรับการประมวลผลจึงต้องมีความสามารถในการผสานข้อมูลข้ามโมดาลิตี้ (Multimodal Fusion) และสืบค้นเชิงบริบท (Context-Aware Retrieval) ที่ยืดหยุ่นกว่าเดิม
+
+บทความวิจัยต่าง ๆ ในคลังจึงถูกจัดลำดับความสำคัญตามความสอดคล้องกับโจทย์นี้ เพื่ออำนวยความสะดวกในการศึกษาและออกแบบระบบ
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─── Raking Table ─────────────────────────────────────────────
+\section*{ลำดับการอ่านเปเปอร์ที่แนะนำ (Paper Reading Ranking)}
+
+\begin{tabular}{@{}clll@{}}
+  \textbf{อันดับ} & \textbf{ชื่อบทความวิจัย} & \textbf{จุดโฟกัสหลัก} & \textbf{ความเชื่อมโยงกับระบบสืบค้นภาพทั่วไป} \\ \hline
+  1 & \textbf{MIND-RAG (2025)} & Multimodal RAG & แปลงภาพทั่วไปเป็นข้อความเชิงบริบทเพื่อเสิร์ช \\
+  2 & \textbf{LaMPCap (2025)} & Diverse Figures & ชุดข้อมูลภาพหลากหลายประเภทพร้อมโปรไฟล์ \\
+  3 & \textbf{AuthorContextSciCap (2025)} & Multi-stage Pipeline & การกรองบริบทและการออปติไมซ์ตามประเภทภาพ \\
+  4 & \textbf{FigCaps-HF (2023)} & Descriptive Captions & การเขียนคำอธิบายภาพระดับคุณภาพเพื่อเสิร์ช \\
+  5 & \textbf{SciCap+ (2023)} & Context Importance & การใช้ย่อหน้าที่อ้างอิงรูปภาพแทนพิกเซลดิบ \\
+  6 & \textbf{RAG Survey (2024)} & System Architecture & โครงสร้างระบบฐานข้อมูลและการค้นคืนข้อมูลทั่วไป \\
+\end{tabular}
+
+\vspace{12pt}
+
+%% ─── Detailed Analysis ─────────────────────────────────────────
+\section*{การวิเคราะห์เปเปอร์เชิงลึก (Detailed Analysis)}
+
+\subsection*{อันดับที่ 1: MIND-RAG (2025)}
+\begin{highlight}
+  \textbf{MIND-RAG: Multimodal Context-Aware and Intent-Aware Retrieval-Augmented Generation for Educational Publications}
+\end{highlight}
+* \textbf{ทำไมต้องอ่านอันดับแรก:} เป็นงานวิจัยชิ้นที่ใกล้เคียงกับแนวคิดคลังเอกสารสืบค้นรูปภาพมากที่สุด โดยพัฒนาขึ้นเพื่อแก้ปัญหาด้านความซับซ้อนของรูปภาพวิชาการที่ระบบ RAG ทั่วไปสืบค้นไม่ได้ผล
+* \textbf{เทคโนโลยีที่ตอบโจทย์:} นำเสนอแนวคิด \textbf{Context-Aware Image Summarization} โดยนำรูปภาพทั่วไปผสานเข้ากับย่อหน้าข้างเคียงหรือคำอธิบายภาพ เพื่อป้อนให้โมเดลประมวลผลภาษารวมภาพ (MLLM) สร้างเป็นข้อความสรุปความหมายความหนาแน่นสูง (Semantic Summary) จากนั้นจึงทำการฝังเวกเตอร์ (Embedding) ทำให้เราสามารถค้นหารูปภาพทั่วไป (เช่น ภาพหมา แมว หรือป่าไม้) ผ่านคีย์เวิร์ดที่เป็นข้อความธรรมดาได้อย่างแม่นยำ
+
+\subsection*{อันดับที่ 2: LaMPCap (2025)}
+\begin{highlight}
+  \textbf{LaMPCap: Personalized Figure Caption Generation With Multimodal Figure Profiles}
+\end{highlight}
+* \textbf{ทำไมต้องอ่านอันดับสอง:} เปเปอร์นี้ขยายขอบเขตของการประมวลผลรูปภาพประกอบในเปเปอร์วิชาการจากการเน้นเฉพาะกราฟฟิกสถิติ (Graph Plots) ไปสู่ภาพประเภทอื่น ๆ ที่มีความหลากหลายในเอกสาร (เช่น ภาพถ่ายสัตว์ แผนผัง ไดอะแกรม หรือสมการ)
+* \textbf{เทคโนโลยีที่ตอบโจทย์:} โครงสร้างของข้อมูลมีระบบประวัติภาพประกอบ (Figure Profiles) ในเปเปอร์เดียวกัน ซึ่งช่วยสร้างคุณลักษณะเชิงบริบทหลายมิติที่เป็นประโยชน์ต่อการสร้างดัชนีภาพประกอบที่มีความหลากหลายในเล่มวิชาการ
+
+\subsection*{อันดับที่ 3: AuthorContextSciCap (2025)}
+\begin{highlight}
+  \textbf{Leveraging Author-Specific Context for Scientific Figure Caption Generation: 3rd SciCap Challenge}
+\end{highlight}
+* \textbf{ทำไมต้องอ่านอันดับสาม:} เป็นการพัฒนาต่อยอดบนฐานชุดข้อมูลของ LaMPCap โดยมุ่งเน้นไปที่ท่อส่งข้อมูลการประมวลผลรูปภาพแบบสองขั้นตอน (Two-stage Pipeline)
+* \textbf{เทคโนโลยีที่ตอบโจทย์:} การใช้กระบวนการ **Category-Specific Prompt Optimization** เพื่อกรองบริบทและแยกจัดการรูปภาพตามประเภทของภาพอย่างเป็นสัดส่วน ช่วยลดข้อจำกัดเมื่อระบบต้องรองรับภาพทั่วไปที่มีความหมายแตกต่างกันอย่างสิ้นเชิง
+
+\subsection*{อันดับที่ 4: FigCaps-HF (2023)}
+\begin{highlight}
+  \textbf{FigCaps-HF: A Figure-to-Caption Generative Framework and Benchmark with Human Feedback}
+\end{highlight}
+* \textbf{ทำไมต้องอ่านอันดับสี่:} การที่ระบบจะสืบค้นภาพถ่ายธรรมชาติทั่วไปได้ดี ข้อความบรรยายประกอบ (Caption) ต้องมีประสิทธิภาพในการบ่งบอกลักษณะเด่นของรูปภาพได้สอดคล้องกับพฤติกรรมมนุษย์
+* \textbf{เทคโนโลยีที่ตอบโจทย์:} วิธีการปรับจูนน้ำหนักโมเดลด้วยคำวิจารณ์ของมนุษย์ (RLHF) เพื่อลดความคลุมเครือของคำบรรยาย และกระตุ้นให้เกิดการดึงข้อมูลเชิงทัศนศิลป์ (Visual aspects) และข้อความอักษรบนภาพออกมาช่วยในการทำดัชนีสืบค้น
+
+\subsection*{อันดับที่ 5: SciCap+ (2023)}
+\begin{highlight}
+  \textbf{SciCap+: A Knowledge-Augmented Dataset for Scientific Figure Captioning}
+\end{highlight}
+* \textbf{ทำไมต้องอ่านอันดับห้า:} เปเปอร์นี้นำเสนอข้อมูลการทดลองสำคัญที่ว่า ย่อหน้าที่อ้างอิงรูปภาพ (Figure-mentioning paragraphs) ส่งผลต่อประสิทธิภาพในการเข้าใจและอธิบายความหมายรูปภาพมากกว่าข้อมูลเชิงพิกเซลของภาพ (Visual features) จากโมเดลแบบ ResNet
+* \textbf{เทคโนโลยีที่ตอบโจทย์:} ยืนยันแนวทางการสร้างคลังข้อมูลที่จำเป็นต้องผูกรูปภาพเข้ากับข้อความอ้างอิงในเอกสารต้นฉบับ เพื่อใช้เป็นฐานการค้นคืนที่มีความสัมพันธ์เชิงความหมาย (Semantic relation)
+
+\subsection*{อันดับที่ 6: RAG Survey (2024)}
+\begin{highlight}
+  \textbf{Retrieval Augmented Generation (RAG) and Beyond: A Comprehensive Survey...}
+\end{highlight}
+* \textbf{ทำไมต้องอ่านอันดับหก:} เหมาะสำหรับการทำความเข้าใจโครงสร้างเชิงระบบของการจัดเก็บข้อมูล การแบ่งส่วน (Chunking) และการจัดทำดัชนีระบบสืบค้น RAG ในภาพรวม
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─── Non-recommended Papers ────────────────────────────────────
+\section*{กลุ่มบทความที่ไม่ตรงกับความต้องการในโจทย์นี้}
+
+มีบทความบางส่วนที่เน้นไปที่ทักษะเฉพาะเจาะจงทางสถิติและคณิตศาสตร์ ซึ่งไม่ควรนำมาใช้เป็นฐานสำหรับโจทย์ภาพทั่วไป (เช่น ภาพหมา แมว หรือสิ่งแวดล้อม):
+\begin{itemize}[nosep]
+  \item \textbf{DePlot (2023) / MatCha (2022) / UniChart (2023)}: มุ่งเน้นการแก้ปัญหาประเภท Plot-to-Table หรือการแปลงภาพแผนภูมิแท่ง/แผนภูมิเส้นให้กลับไปเป็นตารางข้อมูลเพื่อทำความเข้าใจเชิงตัวเลข (Numerical Reasoning) โมเดลประเภทนี้จะล้มเหลวทันทีเมื่อประมวลผลภาพทั่วไป
+  \item \textbf{SciCap (2021) [Original]}: ทำการคัดกรองรูปภาพประเภทอื่น ๆ ออกจากชุดข้อมูลทั้งหมด คงเหลือไว้เพียงกราฟเชิงข้อมูลทางคอมพิวเตอร์เท่านั้น
+\end{itemize}
+
+\vspace{16pt}
+\noindent\rule{\textwidth}{1pt}
+\noindent{\color{muted}\small จัดทำโดย Antigravity (Gemini 3.5 Flash) · \today}
+
+\end{document}
