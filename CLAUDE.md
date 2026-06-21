@@ -39,8 +39,7 @@ Flat — all paper-related files live here. Naming: `<N>-<ShortTitle>_<Year>_<ty
 | Type suffix | What it is |
 |---|---|
 | `_source` | ar5iv source HTML: `6-MyPaper_2024_source.html` |
-| `_analysis` | bilingual analysis HTML: `6-MyPaper_2024_analysis.html` |
-| `_reader` | self-contained reader HTML: `6-MyPaper_2024_reader.html` |
+| `_translations` | bilingual EN\|TH side-by-side HTML: `6-MyPaper_2024_translations.html` |
 | *(none)* | PDF and JSON: `6-MyPaper_2024.pdf`, `6-MyPaper_2024.json` |
 | `_tex/` | LaTeX source folder (only subfolder allowed): `6-MyPaper_2024_tex/` |
 

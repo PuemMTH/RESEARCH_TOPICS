@@ -1,0 +1,14 @@
+name: research-topics
+
+services:
+  web:
+    image: nginx:alpine
+    container_name: research-topics
+    restart: unless-stopped
+    ports:
+      - "8788:80"
+    volumes:
+      # Bind-mount the whole repo as docroot — new/edited papers show up
+      # immediately, no rebuild needed.
+      - .:/usr/share/nginx/html:ro
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro

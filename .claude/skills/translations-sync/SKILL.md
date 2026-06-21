@@ -77,5 +77,5 @@ git commit -m "docs: sync translations dictionary for Paper #{N}"
 ## Verification Checklist
 
 - [ ] Run `python src/extract_keywords.py` again to confirm that the newly added terms no longer appear in the top untranslated list.
-- [ ] Open the corresponding `_translations.html` or `_reader.html` file in a browser and hover over the newly added terms in the English column to verify the tooltips display the correct Thai translation and context.
+- [ ] Open the corresponding `_translations.html` file in a browser and hover over the newly added terms in the English column to verify the tooltips display the correct Thai translation and context.
 - [ ] Verify the Javascript file structure is valid (no trailing comma syntax errors that break parsing in old browsers).

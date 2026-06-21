@@ -27,7 +27,7 @@ Accept either:
 
 Derive `base_name` (e.g. `14-ChartQA_2022`).  
 Prefer `_source.html` (richer structure). Fall back to the PDF if source HTML is absent.  
-Also read the `_analysis.html` or `_reader.html` if available — use it for title, authors, venue, year metadata.
+For title, authors, venue, year metadata, read the corresponding `papers/{base_name}.json` if present.
 
 ### Step B — Parse content blocks from source HTML
 
@@ -93,7 +93,7 @@ The script `assets/translation.js` loaded at the end of the HTML will dynamicall
 
 After translation:
 1. Collect all technical terms in the paper that are **not already in `assets/translations.js`**: model names, dataset names, domain-specific compound phrases (e.g. "relaxed accuracy", "visual reasoning", "arithmetic reasoning").
-2. For each new term, write an entry following the **Semantic Waves** principle (see paper-reader SKILL.md for full explanation):
+2. For each new term, write an entry following the **Semantic Waves** principle (see translations-sync SKILL.md for full explanation):
    - Simple terms (common English academic words) → plain string: `"term": "คำแปล"`
    - Significant terms (model names, dataset names, paper-specific concepts) → enriched object:
      ```js
@@ -236,4 +236,4 @@ When invoked via `/paper-translate [input]`:
 - Figures show identical image in both EN and TH columns; only the caption differs
 - Responsive: on mobile (`max-width: 768px`) columns stack vertically, TH below EN with a dashed accent top border
 - Do not translate: author names, institution names, arXiv IDs, model names, dataset names (keep EN, add Thai in parentheses on first appearance)
-- Reference file for CSS/JS patterns: `papers/14-ChartQA_2022_reader.html`
+- Reference file for CSS/JS patterns: `papers/2-MLBCAP_2025_translations.html`

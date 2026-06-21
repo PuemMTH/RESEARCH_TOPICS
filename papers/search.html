@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="th" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilingual Concordance & Search — Academic Papers</title>
+  
+  <!-- Import Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Load Dictionary Database -->
+  <script src="../assets/translations.js"></script>
+
+  <style>
+    /* CSS variables for themed aesthetics */
+    :root {
+      --bg-primary: #0b0f19;
+      --bg-secondary: #131b2e;
+      --card-bg: rgba(22, 31, 56, 0.6);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --accent-color: #6366f1; /* Indigo */
+      --accent-hover: #4f46e5;
+      --accent-glow: rgba(99, 102, 241, 0.15);
+      
+      --highlight-bg: rgba(245, 158, 11, 0.2);
+      --highlight-text: #f59e0b; /* Amber */
+      
+      --text-primary: #f3f4f6;
+      --text-secondary: #9ca3af;
+      --text-muted: #6b7280;
+      
+      --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-thai: 'Sarabun', sans-serif;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 8px;
+      
+      --transition-fast: 0.2s ease;
+      --transition-normal: 0.3s ease;
+    }
+
+    [data-theme="light"] {
+      --bg-primary: #f8fafc;
+      --bg-secondary: #f1f5f9;
+      --card-bg: rgba(255, 255, 255, 0.8);
+      --border-color: rgba(0, 0, 0, 0.08);
+      --accent-color: #4f46e5;
+      --accent-hover: #3730a3;
+      --accent-glow: rgba(79, 70, 229, 0.1);
+      
+      --highlight-bg: rgba(217, 119, 6, 0.15);
+      --highlight-text: #b45309;
+      
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+    }
+
+    /* Base reset & styling */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      background-image: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.05) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.03) 0%, transparent 45%);
+      background-attachment: fixed;
+      transition: background-color var(--transition-normal), color var(--transition-normal);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 40px 20px;
+      flex: 1;
+    }
+
+    /* Header section */
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInDown 0.6s ease;
+    }
+
+    .title-area {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      background: linear-gradient(135deg, var(--text-primary) 30%, var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      font-family: var(--font-thai);
+      max-width: 600px;
+      margin: 8px auto 0;
+    }
+
+    .stats-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    .stats-badge span {
+      font-weight: 600;
+      color: var(--accent-color);
+    }
+
+    /* Controls Panel */
+    .search-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      animation: fadeInUp 0.6s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      color: var(--text-secondary);
+      pointer-events: none;
+      width: 20px;
+      height: 20px;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--border-color);
+      padding: 16px 20px 16px 52px;
+      border-radius: var(--radius-md);
+      font-size: 1.15rem;
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    [data-theme="light"] .search-input {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+    }
+
+    .filters-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .filters-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .filter-select {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+      transition: border-color var(--transition-fast);
+    }
+
+    .filter-select:focus {
+      border-color: var(--accent-color);
+    }
+
+    /* Toggle Switches and Mode Choices */
+    .mode-pills {
+      display: flex;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 4px;
+    }
+
+    .mode-pill {
+      border: none;
+      background: transparent;
+      padding: 6px 14px;
+      border-radius: calc(var(--radius-sm) - 2px);
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all var(--transition-fast);
+    }
+
+    .mode-pill.active {
+      background: var(--accent-color);
+      color: #fff;
+    }
+
+    .theme-toggle {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: transform var(--transition-fast), background-color var(--transition-fast);
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.05);
+      background-color: var(--bg-secondary);
+    }
+
+    /* Results layout */
+    .section-title {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .section-title span {
+      background: var(--accent-color);
+      color: white;
+      font-size: 0.8rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    /* Dictionary Terms Area */
+    .dict-section {
+      margin-bottom: 40px;
+      display: none;
+    }
+
+    .dict-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .dict-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(8px);
+    }
+
+    .dict-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent-color);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.1);
+    }
+
+    .dict-word-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .dict-en {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .dict-th {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--accent-color);
+      font-family: var(--font-thai);
+      text-align: right;
+    }
+
+    .dict-ctx {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-family: var(--font-thai);
+      border-top: 1px dashed var(--border-color);
+      padding-top: 8px;
+      margin-top: 4px;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .dict-ctx::before {
+      content: "💡";
+      font-size: 0.9rem;
+    }
+
+    /* Concordance / Sentence Aligned Matches */
+    .sentences-section {
+      margin-bottom: 40px;
+    }
+
+    .sentence-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+      animation: fadeIn 0.4s ease;
+    }
+
+    .sentence-card:hover {
+      border-color: var(--accent-color);
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .sentence-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .sentence-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .dict-grid {
+        grid-template-columns: 1fr;
+      }
+      .filters-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .sentence-lang-header {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .en-col, .th-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sentence-text {
+      font-size: 1.05rem;
+      color: var(--text-primary);
+    }
+
+    .th-col .sentence-text {
+      font-family: var(--font-thai);
+      font-weight: 400;
+    }
+
+    /* Card Footer & Paper Reference */
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border-color);
+      padding-top: 12px;
+      margin-top: 4px;
+      color: var(--text-secondary);
+    }
+
+    .paper-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .paper-badge {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .paper-title {
+      font-weight: 500;
+    }
+
+    .paper-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color var(--transition-fast), transform var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .paper-link:hover {
+      color: var(--accent-hover);
+      transform: translateX(2px);
+    }
+
+    /* Highlight mark */
+    mark.highlight {
+      background-color: var(--highlight-bg);
+      color: var(--highlight-text);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--card-bg);
+      border: 1px dashed var(--border-color);
+      border-radius: var(--radius-lg);
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="title-area">
+        <h1>Bilingual Concordance Search</h1>
+      </div>
+      <div class="subtitle">ระบบสืบค้นคำศัพท์และประโยคแปลทวิภาษา (อังกฤษ-ไทย) จากบทความวิจัย</div>
+      
+      <div class="stats-badge" id="stats-badge">
+        <span>0</span> papers indexed · <span>0</span> aligned sentences · <span>0</span> dictionary terms
+      </div>
+    </header>
+
+    <!-- Controls Panel -->
+    <div class="search-panel">
+      <div class="search-wrapper">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.637 10.636z" />
+        </svg>
+        <input type="text" id="search-input" class="search-input" placeholder="พิมพ์คำศัพท์ หรือ ประโยคเพื่อเริ่มต้นสืบค้น..." autofocus autocomplete="off">
+      </div>
+
+      <div class="filters-wrapper">
+        <div class="filters-group">
+          <!-- Paper Selector -->
+          <select id="paper-select" class="filter-select">
+            <option value="all">All Papers (ทุกบทความ)</option>
+          </select>
+          
+          <!-- Search Match Operator Pill -->
+          <div class="mode-pills">
+            <button class="mode-pill active" id="mode-and" onclick="setSearchMode('AND')">Match All Words</button>
+            <button class="mode-pill" id="mode-or" onclick="setSearchMode('OR')">Match Any Word</button>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <!-- Theme Toggle Button -->
+          <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()" title="สลับธีม สว่าง/มืด">
+            🌙
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Results Display -->
+    <main>
+      <!-- Terms section -->
+      <section class="dict-section" id="dict-section">
+        <h2 class="section-title">Matched Dictionary Terms <span id="dict-count">0</span></h2>
+        <div class="dict-grid" id="dict-grid"></div>
+      </section>
+
+      <!-- Sentences section -->
+      <section class="sentences-section" id="sentences-section">
+        <h2 class="section-title">Matched Aligned Sentences <span id="sentences-count">0</span></h2>
+        <div id="sentences-container"></div>
+      </section>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="empty-state" style="display: none;">
+        <div class="empty-state-icon">🔍</div>
+        <h3>ไม่พบผลลัพธ์การสืบค้น</h3>
+        <p>ทดลองสืบค้นด้วยคำสำคัญทางเทคนิคอื่น เช่น RAG, caption, figure, attention, DePlot หรือ alignment</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Core state
+    let searchMode = 'AND'; // 'AND' or 'OR'
+    let selectedPaper = 'all';
+    
+    // UI Elements
+    const searchInput = document.getElementById('search-input');
+    const paperSelect = document.getElementById('paper-select');
+    const dictSection = document.getElementById('dict-section');
+    const dictGrid = document.getElementById('dict-grid');
+    const dictCount = document.getElementById('dict-count');
+    const sentencesSection = document.getElementById('sentences-section');
+    const sentencesContainer = document.getElementById('sentences-container');
+    const sentencesCount = document.getElementById('sentences-count');
+    const emptyState = document.getElementById('empty-state');
+    const statsBadge = document.getElementById('stats-badge');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    // Safe load databases
+    const DICT = window.DICT || {};
+    const SENTENCES = window.SENTENCES || [];
+
+    // Initialize stats and filters
+    function init() {
+      // 1. Gather all unique papers from sentences
+      const paperMap = new Map();
+      SENTENCES.forEach(item => {
+        if (item.paper && !paperMap.has(item.paper)) {
+          paperMap.set(item.paper, item.title || item.paper);
+        }
+      });
+
+      // 2. Populate paper selector
+      paperMap.forEach((title, code) => {
+        const opt = document.createElement('option');
+        opt.value = code;
+        opt.textContent = `[${code.split('_')[0]}] ${title.substring(0, 50)}${title.length > 50 ? '...' : ''}`;
+        paperSelect.appendChild(opt);
+      });
+
+      // 3. Render stats badge
+      const dictKeysCount = Object.keys(DICT).length;
+      statsBadge.innerHTML = `<span>${paperMap.size}</span> papers indexed · <span>${SENTENCES.length}</span> aligned sentences · <span>${dictKeysCount}</span> dictionary terms`;
+
+      // 4. Bind events
+      searchInput.addEventListener('input', runSearch);
+      paperSelect.addEventListener('change', (e) => {
+        selectedPaper = e.target.value;
+        runSearch();
+      });
+
+      // 5. Run initial search with empty to show all or empty message
+      runSearch();
+    }
+
+    // Set Search operator
+    window.setSearchMode = function(mode) {
+      searchMode = mode;
+      document.getElementById('mode-and').classList.toggle('active', mode === 'AND');
+      document.getElementById('mode-or').classList.toggle('active', mode === 'OR');
+      runSearch();
+    };
+
+    // Toggle Dark/Light Theme
+    window.toggleTheme = function() {
+      const html = document.documentElement;
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      themeToggleBtn.textContent = isDark ? '☀️' : '🌙';
+    };
+
+    // Escape regex helpers
+    function escapeRegExp(string) {
+      return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    // Highlighting text matching keywords
+    function highlight(text, keywords) {
+      if (!text || !keywords || keywords.length === 0) return text;
+      
+      // Sort keywords by length descending to match longest terms first
+      const sortedKeywords = [...keywords].sort((a, b) => b.length - a.length);
+      const escaped = sortedKeywords.map(k => escapeRegExp(k)).filter(Boolean);
+      
+      if (escaped.length === 0) return text;
+      
+      const regex = new RegExp(`(${escaped.join('|')})`, 'gi');
+      return text.replace(regex, '<mark class="highlight">$1</mark>');
+    }
+
+    // Find Thai translations of English keywords in DICT to highlight in Thai column
+    function getThaiKeywords(enKeywords) {
+      const results = new Set();
+      enKeywords.forEach(word => {
+        const cleanWord = word.toLowerCase();
+        
+        // Search in DICT keys
+        for (const [key, val] of Object.entries(DICT)) {
+          if (key.toLowerCase() === cleanWord || key.toLowerCase().includes(cleanWord)) {
+            if (typeof val === 'string') {
+              results.add(val);
+            } else if (val && typeof val === 'object' && val.th) {
+              results.add(val.th);
+            }
+          }
+        }
+      });
+      return Array.from(results);
+    }
+
+    // Match checking
+    function matchesQuery(text, queryWords) {
+      if (queryWords.length === 0) return true;
+      const textLower = text.toLowerCase();
+      
+      if (searchMode === 'AND') {
+        return queryWords.every(word => textLower.includes(word));
+      } else {
+        return queryWords.some(word => textLower.includes(word));
+      }
+    }
+
+    // Run Search Loop
+    function runSearch() {
+      const rawQuery = searchInput.value.trim();
+      const queryWords = rawQuery.toLowerCase()
+        .replace(/[.,;:!?()_+\-\[\]"']/g, ' ')
+        .split(/\s+/)
+        .filter(Boolean);
+
+      // If empty query, show helper instructions or recent entries
+      if (queryWords.length === 0) {
+        // Render top few sentences and all dict keys
+        renderResults([], []);
+        dictSection.style.display = 'none';
+        sentencesSection.style.display = 'none';
+        emptyState.style.display = 'flex';
+        return;
+      }
+
+      // 1. Search Dictionary Terms
+      const matchedTerms = [];
+      for (const [key, val] of Object.entries(DICT)) {
+        const keyLower = key.toLowerCase();
+        const thVal = (typeof val === 'string') ? val : val.th;
+        const ctxVal = (typeof val === 'object') ? (val.ctx || '') : '';
+        
+        // Search in English term, Thai term, or context notes
+        const allText = `${keyLower} ${thVal.toLowerCase()} ${ctxVal.toLowerCase()}`;
+        if (matchesQuery(allText, queryWords)) {
+          matchedTerms.push({
+            en: key,
+            th: thVal,
+            ctx: ctxVal
+          });
+        }
+      }
+
+      // 2. Search Aligned Sentences
+      let matchedSentences = SENTENCES.filter(item => {
+        // Filter by paper selection if applicable
+        if (selectedPaper !== 'all' && item.paper !== selectedPaper) {
+          return false;
+        }
+
+        const searchableText = `${item.en} ${item.th} ${item.title || ''}`;
+        return matchesQuery(searchableText, queryWords);
+      });
+
+      // Sort sentences by relevance (number of query terms matched in en + th)
+      matchedSentences.sort((a, b) => {
+        const getScore = (item) => {
+          const combined = (item.en + ' ' + item.th).toLowerCase();
+          return queryWords.filter(word => combined.includes(word)).length;
+        };
+        return getScore(b) - getScore(a);
+      });
+
+      // Render items
+      renderResults(matchedTerms, matchedSentences, queryWords);
+    }
+
+    // Render results on HTML DOM
+    function renderResults(terms, sentences, queryWords) {
+      // Clear current listings
+      dictGrid.innerHTML = '';
+      sentencesContainer.innerHTML = '';
+
+      const hasTerms = terms.length > 0;
+      const hasSentences = sentences.length > 0;
+
+      if (!hasTerms && !hasSentences) {
+        dictSection.style.display = 'none';
+        sentencesSection.style.display = 'none';
+        emptyState.style.display = 'flex';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+
+      // Gather Thai translations of keywords for highlighting Thai text
+      const thKeywords = queryWords ? getThaiKeywords(queryWords) : [];
+      const combinedKeywords = queryWords ? [...queryWords, ...thKeywords] : [];
+
+      // 1. Render Terms
+      if (hasTerms) {
+        dictSection.style.display = 'block';
+        dictCount.textContent = terms.length;
+        
+        // Render top 30 matched terms to avoid browser slowdown, with alert if truncated
+        const displayTerms = terms.slice(0, 50);
+        displayTerms.forEach(term => {
+          const card = document.createElement('div');
+          card.className = 'dict-card';
+          
+          const hlEn = highlight(term.en, queryWords);
+          const hlTh = highlight(term.th, combinedKeywords);
+          
+          let ctxHtml = '';
+          if (term.ctx) {
+            const hlCtx = highlight(term.ctx, combinedKeywords);
+            ctxHtml = `<div class="dict-ctx">${hlCtx}</div>`;
+          }
+
+          card.innerHTML = `
+            <div class="dict-word-row">
+              <span class="dict-en">${hlEn}</span>
+              <span class="dict-th">${hlTh}</span>
+            </div>
+            ${ctxHtml}
+          `;
+          dictGrid.appendChild(card);
+        });
+
+        if (terms.length > 50) {
+          const note = document.createElement('div');
+          note.style.gridColumn = '1 / -1';
+          note.style.fontSize = '0.85rem';
+          note.style.color = 'var(--text-muted)';
+          note.style.textAlign = 'center';
+          note.style.padding = '8px';
+          note.textContent = `Showing first 50 out of ${terms.length} terms...`;
+          dictGrid.appendChild(note);
+        }
+      } else {
+        dictSection.style.display = 'none';
+      }
+
+      // 2. Render Sentences
+      if (hasSentences) {
+        sentencesSection.style.display = 'block';
+        sentencesCount.textContent = sentences.length;
+        
+        // Limit rendering to 150 items to keep UI snappy
+        const displaySentences = sentences.slice(0, 150);
+        displaySentences.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'sentence-card';
+          
+          const hlEn = highlight(item.en, queryWords);
+          const hlTh = highlight(item.th, combinedKeywords);
+          
+          // Generate a scroll-to-text fragment URL to deep link to target translations page
+          // Use first 5 words of English sentence
+          const wordSnippet = item.en.split(/\s+/).slice(0, 6).join(' ');
+          const textFragment = encodeURIComponent(wordSnippet);
+          const deepLinkUrl = `${item.paper}_translations.html#:~:text=${textFragment}`;
+
+          card.innerHTML = `
+            <div class="sentence-grid">
+              <div class="en-col">
+                <div class="sentence-lang-header">🇬🇧 English</div>
+                <div class="sentence-text">${hlEn}</div>
+              </div>
+              <div class="th-col">
+                <div class="sentence-lang-header">🇹🇭 ภาษาไทย</div>
+                <div class="sentence-text">${hlTh}</div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <div class="paper-info">
+                <span class="paper-badge">${item.paper.split('_')[0]}</span>
+                <span class="paper-title">${item.title || item.paper}</span>
+              </div>
+              <a href="${deepLinkUrl}" target="_blank" class="paper-link">
+                Open Reader
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M6 2H2C1.44772 2 1 2.44772 1 3V10C1 10.5523 1.44772 11 2 11H9C9.55228 11 10 10.5523 10 10V6M11 1V4M11 1H8M11 1L6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          `;
+          sentencesContainer.appendChild(card);
+        });
+
+        if (sentences.length > 150) {
+          const note = document.createElement('div');
+          note.className = 'empty-state';
+          note.style.padding = '20px';
+          note.style.marginTop = '16px';
+          note.innerHTML = `<h3>Showing top 150 out of ${sentences.length} matching sentences</h3><p>Please refine your keywords if you don't see what you're looking for.</p>`;
+          sentencesContainer.appendChild(note);
+        }
+      } else {
+        sentencesSection.style.display = 'none';
+      }
+    }
+
+    // Trigger on load
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+[{
+  "caption": "Table 3: The experimental results of models using Vision-Only, Text-Only, and Vision+Text features. Vision-Only and Text-Only features yielded similar performance. (All the subfigure-filtering and textnormalization steps were applied.)",
+  "captionBoundary": {
+    "x1": 70.50699615478516,
+    "x2": 290.8799743652344,
+    "y1": 511.8225402832031,
+    "y2": 565.64599609375
+  },
+  "figType": "Table",
+  "imageText": ["Text", "Only", ".0165", "Vision+Text", ".0168", "Caption", "w/", "<=100", "words", "Vision", "Only", ".0172", "Text", "Only", ".0212", "Vision+Text", ".0202", "Single-Sent", "Caption", "Vision", "Only", ".0207", "Text", "Only", ".0213", "Vision+Text", ".0205", "First", "Sentence", "Vision", "Only", ".0219", "Data", "Collection", "Feature", "BLEU-4"],
+  "name": "3",
+  "page": 4,
+  "regionBoundary": {
+    "x1": 84.96,
+    "x2": 275.03999999999996,
+    "y1": 342.71999999999997,
+    "y2": 500.15999999999997
+  },
+  "renderDpi": 150,
+  "renderURL": "output/figures/1-SciCap_2021-Table3-1.png"
+}, {
+  "caption": "Figure 2: Example outputs of the baseline models trained and tested on the Single-Sentence Caption Only collection. Intensive research will be needed to create models that can caption scientific figures reliably. [Figure sources: (1) (Zhang et al., 2020), (2) (Baswana et al., 2017), and (3) (Brubaker et al., 2015).]",
+  "captionBoundary": {
+    "x1": 70.53699493408203,
+    "x2": 526.0670166015625,
+    "y1": 289.5525207519531,
+    "y2": 319.46600341796875
+  },
+  "figType": "Figure",
+  "imageText": [],
+  "name": "2",
+  "page": 4,
+  "regionBoundary": {
+    "x1": 90.72,
+    "x2": 504.0,
+    "y1": 69.6,
+    "y2": 277.92
+  },
+  "renderDpi": 150,
+  "renderURL": "output/figures/1-SciCap_2021-Figure2-1.png"
+}, {
+  "caption": "Table 2: The baseline model’s performance on SCICAP, using Vision-Only features. Models trained on the Single-Sentence Caption collection performed the best. The low BLEU-4 scores indicate that more research is needed to reliably generate captions for scientific figures. (The vocabulary sizes were calculated after dropping words with a frequency below 5.)",
+  "captionBoundary": {
+    "x1": 305.8330078125,
+    "x2": 526.06640625,
+    "y1": 412.00054931640625,
+    "y2": 489.73394775390625
+  },
+  "figType": "Table",
+  "imageText": ["3", "3", "3", "15,642", ".0173", "3", "3", "3", "3", "132,120", "14,974", ".0172", "3", "3", "341,350", "30,316", ".0098", "395,024", "37,885", ".0231", "Rule", "FigSep", "B.", "A.", "#Fig.", "Vocab", "Size", "BLEU-4", "Subﬁg", "Filter", "Norm.", "Caption", "with", "<=", "100", "Words", "3", "3", "3", "9,760", ".0234", "3", "3", "3", "3", "92,021", "9,232", ".0207", "3", "3", "218,655", "17,685", ".0228", "247,649", "21,765", ".0291", "Rule", "FigSep", "B.", "A.", "#Fig.", "Vocab", "Size", "BLEU-4", "Subﬁg", "Filter", "Norm.", "Single-Sentence", "Caption", "Only", "3", "3", "3", "12,666", ".0224", "3", "3", "3", "3", "133,543", "11,946", ".0219", "3", "3", "352,719", "24,355", ".0236", "416,804", "30,776", ".0259", "Rule", "FigSep", "B.", "A.", "#Fig.", "Vocab", "Size", "BLEU-4", "Subﬁg", "Filter", "Norm.", "First", "Sentence"],
+  "name": "2",
+  "page": 3,
+  "regionBoundary": {
+    "x1": 305.76,
+    "x2": 525.12,
+    "y1": 70.56,
+    "y2": 400.32
+  },
+  "renderDpi": 150,
+  "renderURL": "output/figures/1-SciCap_2021-Table2-1.png"
+}, {
+  "caption": "Table 1: The tools used to construct SCICAP evaluated on 1,926 labeled images. For figure type classification, the overall performance over graph plots was reliable. Regarding identifying the graph plots (as labeled automatically in Step 3) that do not contain subfigures, FigureSeparator achieved an exceptionally high precision.",
+  "captionBoundary": {
+    "x1": 305.8330078125,
+    "x2": 526.1558837890625,
+    "y1": 219.65853881835938,
+    "y2": 285.43707275390625
+  },
+  "figType": "Table",
+  "imageText": ["Rule-Based+FigureSeparator", ".98", ".62", ".76", ".81", "FigureSeparator", ".98", ".66", ".79", ".83", "Rule-Based", ".54", ".95", ".69", ".59", "Approach", "P", "R", "F", "Acc", "Non-Subﬁgure", "Figure", "Classiﬁcation", "(For", "ﬁgures", "labeled", "as", "graph", "plots", "in", "Step", "3.)", "(Siegel", "et", "al.,", "2016)", ".90", ".83", ".87", ".95", "Approach", "P", "R", "F", "Acc", "Figure", "Type", "Classiﬁcation", "(Class", "=", "Graph", "Plot)"],
+  "name": "1",
+  "page": 2,
+  "regionBoundary": {
+    "x1": 314.88,
+    "x2": 516.0,
+    "y1": 70.56,
+    "y2": 208.32
+  },
+  "renderDpi": 150,
+  "renderURL": "output/figures/1-SciCap_2021-Table1-1.png"
+}, {
+  "caption": "Figure 1: The figure captioning model takes a scientific figure (e.g., a graph plot) as input and generate captions that describes the figure.",
+  "captionBoundary": {
+    "x1": 306.1419982910156,
+    "x2": 524.4129638671875,
+    "y1": 273.8365173339844,
+    "y2": 303.7490234375
+  },
+  "figType": "Figure",
+  "imageText": [],
+  "name": "1",
+  "page": 0,
+  "regionBoundary": {
+    "x1": 305.76,
+    "x2": 525.12,
+    "y1": 211.67999999999998,
+    "y2": 262.08
+  },
+  "renderDpi": 150,
+  "renderURL": "output/figures/1-SciCap_2021-Figure1-1.png"
+}]

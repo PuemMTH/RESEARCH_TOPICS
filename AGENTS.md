@@ -54,7 +54,18 @@ Trigger this skill when the user provides a paper title, arXiv ID/URL, or GitHub
 pip install -r src/requirements.txt   # httpx, beautifulsoup4, lxml — Python 3.10+
 ```
 
+### `paper-search-indexer` — Index paper sentences and terms
+
+Skill: `paper-search-indexer` (spec lives in `.claude/skills/paper-search-indexer/SKILL.md`)
+
+Trigger this skill when you want to compile or update the bilingual search database (`assets/translations.js`) from translated paper files.
+
+**What it does:**
+1. Runs `uv run python src/index_sentences.py` to scan translated papers, align English and Thai sentences, and append/update `window.SENTENCES` in `assets/translations.js`.
+2. Enables search functionality in `papers/search.html` for all updated items.
+
 ---
+
 
 ## Commit & Pull Request Guidelines
 

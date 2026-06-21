@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "entries": {
+    "841d12833ce4f3d4e242c760c0e8858829600a3125508b54681cca95ee681fee": {
+      "last_emitted_at_ms": 1781931208872,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Translate paper 4"
+    },
+    "5959e37fdcf3b618a66188c9e0e6983599db71ed60cd3bd359cd8b6ff0db60e6": {
+      "last_emitted_at_ms": 1781931201747,
+      "message": "Spawning agent: general-purpose (inherit) | Task: Translate paper 4 to bilingual HTML"
+    },
+    "1e342bbcf8a6c300378725b311b47243c373e566cf3e450f0e88a705bc7bf046": {
+      "last_emitted_at_ms": 1781931192094,
+      "message": "Spawning agent: unknown (inherit) | Task: Translate paper 4 to bilingual HTML"
+    },
+    "9a420695f2b43e1227cd333b6fb0447f7b08491bb511a5a2725e83fb6f4c00b8": {
+      "last_emitted_at_ms": 1781931175200,
+      "message": "Spawning agent: unknown (inherit) | Task: Translate paper 4-SciCap_Plus_2023"
+    },
+    "79a93d4a2f8f50b95f852280616242fee1855dc99a3c75211917f55e72e95fae": {
+      "last_emitted_at_ms": 1781931100092,
+      "message": "Use parallel execution for independent tasks. Use run_in_background for long operations (npm install, builds, tests)."
+    },
+    "b8187646e778b0de8cb776cd8ff4830d671c6f80aa8d222a83fa4a14381f1001": {
+      "last_emitted_at_ms": 1781930910180,
+      "message": "Spawning agent: unknown (inherit) | Task: Translate paper 4-SciCap_Plus_2023 to bilingual HTML"
+    },
+    "466399dafa2d20f60587180bad0a07358eb7f2bce724df0ff682f038ad33f5ad": {
+      "last_emitted_at_ms": 1781930738266,
+      "message": "Read multiple files in parallel when possible for faster analysis."
+    },
+    "445ed27a3872b681d98190bae61ccb84954e1bc4e140df5370be958dee776b3a": {
+      "last_emitted_at_ms": 1781930709144,
+      "message": "Verify changes work after editing. Test functionality before marking complete."
+    },
+    "459c54e5f35d6a58dcd90d2aecc21fa6d1f35d241bc5b134c506f87dc7b6d67b": {
+      "last_emitted_at_ms": 1781929223858,
+      "message": "Combine searches in parallel when investigating multiple patterns."
+    },
+    "ad86a9dbbf5a55735edbf54ded4aa083ec37478f91511b4158a0604f92ee8970": {
+      "last_emitted_at_ms": 1781929193192,
+      "message": "Spawning agent: unknown (inherit) | Task: Translate paper 3-DePlot_2023 to bilingual HTML"
+    }
+  },
+  "updated_at": "2026-06-20T04:53:28.872Z"
+}

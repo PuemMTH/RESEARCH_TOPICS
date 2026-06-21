@@ -1,4 +1,4 @@
-Fetch, process, and deeply analyse a new academic paper into the RESEARCH_TOPICS repo at C:\Users\admin\Desktop\RESEARCH_TOPICS. TRIGGER when the user provides a paper title, arXiv ID/URL, or GitHub repository URL and wants it added. Downloads ar5iv HTML, LaTeX source, PDF, and all figure images locally; then generates a bilingual Thai-English analysis HTML.
+Fetch and process a new academic paper into the RESEARCH_TOPICS repo at C:\Users\admin\Desktop\RESEARCH_TOPICS. TRIGGER when the user provides a paper title, arXiv ID/URL, or GitHub repository URL and wants it added. Downloads ar5iv HTML, LaTeX source, PDF, and all figure images locally. Use the `/paper-translate` skill afterward if a bilingual translation HTML is wanted.
 
 $ARGUMENTS
 
@@ -54,153 +54,13 @@ Focus on: methodology (exact architecture, training, loss functions), figure/tab
 
 ---
 
-## Step 3 — Generate the analysis HTML
-
-Create `papers/{base_name}_analysis.html`.
-
-**Language:** Thai-English mixed — Thai for narrative/commentary, English for technical terms, model names, benchmark names, metrics, and direct quotes.
-
-**CSS:** `<link rel="stylesheet" href="../assets/summary.css">` (relative from `papers/`).
-
-### HTML Template
-
-```html
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{Title} — Paper Analysis</title>
-<link rel="stylesheet" href="../assets/summary.css">
-</head>
-<body>
-
-<!-- NAV -->
-<nav class="top-nav">
-<div class="container">
-  <a class="nav-brand" href="#">✦ <span>Research</span> Notes</a>
-  <ul class="nav-links">
-    <li><a href="#overview">Overview</a></li>
-    <li><a href="#methodology">Methodology</a></li>
-    <li><a href="#results">Results</a></li>
-    <li><a href="#thesis">Thesis</a></li>
-  </ul>
-</div>
-</nav>
-
-<!-- HERO -->
-<section class="hero">
-<div class="container">
-  <h1>{Full Paper Title}</h1>
-  <p class="subtitle">{1-2 sentence Thai summary}</p>
-  <div class="hero-meta">
-    <span class="badge">{Author1}, {Author2} et al.</span>
-    <span class="badge coral">{Venue} {Year}</span>
-    <span class="badge"><a href="https://arxiv.org/abs/{arxiv_id}" style="color:inherit">arXiv:{arxiv_id}</a></span>
-  </div>
-</div>
-</section>
-
-<!-- OVERVIEW -->
-<section class="section" id="overview">
-<div class="container">
-<div class="section-header"><span class="overline">Abstract & Contributions</span><h2>ภาพรวม</h2></div>
-
-<div class="detail-block">
-<div class="detail-header"><span class="num">!</span><h3>ปัญหาที่ Paper นี้แก้</h3></div>
-<div class="detail-body">
-<div class="key-box"><ul><li>...</li></ul></div>
-</div>
-</div>
-
-<div class="detail-block">
-<div class="detail-header"><span class="num">★</span><h3>Key Contributions</h3></div>
-<div class="detail-body">
-<ul>
-  <li><strong>Contribution 1:</strong> ...</li>
-  <li><strong>Contribution 2:</strong> ...</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-
-<!-- METHODOLOGY -->
-<section class="section section-alt" id="methodology">
-<div class="container">
-<div class="section-header"><span class="overline">How It Works</span><h2>Methodology</h2></div>
-<div class="detail-block">
-<div class="detail-header"><span class="num">1</span><h3>Architecture Overview</h3></div>
-<div class="detail-body">
-<div class="method-box">
-<span class="label">Pipeline</span>
-<p>{Overall pipeline in Thai}</p>
-</div>
-<!-- Add one detail-block per sub-component -->
-</div>
-</div>
-</div>
-</section>
-
-<!-- RESULTS -->
-<section class="section" id="results">
-<div class="container">
-<div class="section-header"><span class="overline">Experiments</span><h2>Results & Benchmarks</h2></div>
-<div class="detail-block">
-<div class="detail-body">
-<table class="comparison-table">
-<thead><tr><th>Model</th><th>Dataset</th><th>Metric</th><th>Score</th></tr></thead>
-<tbody><tr><td>...</td><td>...</td><td>...</td><td>...</td></tr></tbody>
-</table>
-<div class="key-box teal"><h5>Key Numbers</h5><ul><li>...</li></ul></div>
-</div>
-</div>
-</div>
-</section>
-
-<!-- LIMITATIONS -->
-<section class="section section-alt" id="limitations">
-<div class="container">
-<div class="section-header"><span class="overline">Gaps & Future Work</span><h2>ข้อจำกัดและทิศทางต่อไป</h2></div>
-<div class="detail-block"><div class="detail-body">
-<div class="key-box amber"><h5>Limitations</h5><ul><li>...</li></ul></div>
-</div></div>
-</div>
-</section>
-
-<!-- THESIS RELEVANCE -->
-<section class="section section-dark" id="thesis">
-<div class="container">
-<div class="section-header"><span class="overline">Connection to My Research</span><h2>ความเกี่ยวข้องกับวิทยานิพนธ์</h2></div>
-<div class="synthesis-grid">
-  <div class="synthesis-card"><h4>What I Borrow</h4><p>...</p></div>
-  <div class="synthesis-card"><h4>Where I Diverge</h4><p>...</p></div>
-  <div class="synthesis-card"><h4>Open Questions</h4><p>...</p></div>
-</div>
-</div>
-</section>
-
-<footer class="footer">
-<div class="container">
-  <p>Analysis generated {date} · arXiv:{arxiv_id}</p>
-</div>
-</footer>
-</body>
-</html>
-```
-
-Fill every section with real content. Do not leave placeholder text.
-
----
-
-## Step 4 — Commit
+## Step 3 — Commit
 
 ```bash
 git add papers/{base_name}_source.html papers/{base_name}.pdf papers/{base_name}.json
 git add papers/{base_name}_tex/
 git add assets/papers/{base_name}/
-git add papers/{base_name}_analysis.html
-git commit -m "feat: add {base_name} paper + analysis"
+git commit -m "feat: add {base_name} paper"
 ```
 
 ---
@@ -219,7 +79,6 @@ git commit -m "feat: add {base_name} paper + analysis"
 - [ ] `assets/papers/{base_name}/` — PNG files present, count matches `image_count`
 - [ ] `papers/{base_name}.pdf` — non-zero bytes
 - [ ] `papers/{base_name}_tex/` — at least one `.tex` file
-- [ ] `papers/{base_name}_analysis.html` — renders correctly in browser, all sections filled
 - [ ] `papers/{base_name}.json` — valid JSON with title, authors, abstract
 
 ---
@@ -231,8 +90,6 @@ papers/          → {N}-{Slug}_{Year}_source.html    (ar5iv source)
                    {N}-{Slug}_{Year}.pdf
                    {N}-{Slug}_{Year}.json
                    {N}-{Slug}_{Year}_tex/           (LaTeX source folder)
-                   {N}-{Slug}_{Year}_analysis.html  (bilingual analysis)
-                   {N}-{Slug}_{Year}_reader.html    (self-contained reader)
 assets/papers/   → {N}-{Slug}_{Year}/              (figure images)
 ```
 

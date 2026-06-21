@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DePlot — Translation</title>
+<link rel="stylesheet" href="../assets/translation.css">
+<script src="../assets/translations.js"></script>
+</head>
+<body>
+<div id="progress-bar"></div>
+<div id="toolbar">
+  <button onclick="changeFont(-1)">A−</button>
+  <span id="font-size-val">16px</span>
+  <button onclick="changeFont(1)">A+</button>
+  <button onclick="toggleTheme()">◐ Theme</button>
+</div>
+
+<header class="paper-header">
+  <h1>DePlot: One-shot visual language reasoning by plot-to-table translation</h1>
+  <p class="meta">Fangyu Liu, Julian Martin Eisenschlos, Francesco Piccinno, Syrine Krichene, Chenxi Pang, Kenton Lee, Mandar Joshi, Wenhu Chen, Nigel Collier, Yasemin Altun · Google DeepMind / University of Cambridge · ACL 2023 (Findings) · arXiv:2212.10505</p>
+</header>
+
+<div class="hover-hint"><span>🇬🇧 EN — hover คำเพื่อแปลศัพท์ · Shift + hover เพื่อแปลประโยค · คลิกเพื่อล็อก</span></div>
+
+<div class="translation-grid">
+
+  <!-- ── ABSTRACT ── -->
+  <div class="row heading">
+    <div class="en"><h2>Abstract</h2></div>
+    <div class="th"><h2>บทคัดย่อ (Abstract)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Visual language such as charts and plots is ubiquitous in the human world. Comprehending plots and charts requires strong reasoning skills. Prior state-of-the-art (SOTA) models require at least tens of thousands of training examples and their reasoning capabilities are still much limited, especially on complex human-written queries. This paper presents the first few(one)-shot solution to visual language reasoning. We decompose the challenge of visual language reasoning into two steps: (1) plot-to-text translation, and (2) reasoning over the translated text. The key in this method is a modality conversion module, named as DePlot, which translates the image of a plot or chart to a linearized table. The output of DePlot can then be directly used to prompt a pretrained large language model (LLM), exploiting the few-shot reasoning capabilities of LLMs. To obtain DePlot, we standardize the plot-to-table task by establishing unified task formats and metrics, and train DePlot end-to-end on this task. DePlot can then be used off-the-shelf together with LLMs in a plug-and-play fashion. Compared with a SOTA model finetuned on thousands of data points, DePlot+LLM with just one-shot prompting achieves a 29.4% improvement over finetuned SOTA on human-written queries from the task of chart QA.</p></div>
+    <div class="th"><p>ภาษาเชิงภาพ (visual language) เช่น แผนภูมิและกราฟ ปรากฏอยู่ทั่วไปในโลกของมนุษย์ การทำความเข้าใจกราฟและแผนภูมิต้องอาศัยทักษะการใช้เหตุผลที่แข็งแกร่ง โมเดลที่ดีที่สุด ณ ปัจจุบัน (SOTA) ต้องใช้ตัวอย่างฝึกฝนอย่างน้อยหลายหมื่นตัวอย่าง และความสามารถในการใช้เหตุผลของโมเดลเหล่านั้นยังมีข้อจำกัดมาก โดยเฉพาะกับคำถามที่มนุษย์เขียนขึ้นซึ่งมีความซับซ้อน บทความนี้นำเสนอวิธีการแก้ปัญหาการใช้เหตุผลเชิงภาพแบบ few(one)-shot เป็นครั้งแรก เราแบ่งปัญหาการใช้เหตุผลเชิงภาพออกเป็นสองขั้นตอน ได้แก่ (1) การแปลงกราฟเป็นข้อความ (plot-to-text translation) และ (2) การใช้เหตุผลบนข้อความที่แปลงแล้ว หัวใจสำคัญของวิธีนี้คือโมดูลแปลงรูปแบบข้อมูล (modality conversion module) ที่ชื่อว่า DePlot ซึ่งแปลงภาพของกราฟหรือแผนภูมิให้เป็นตารางในรูปแบบข้อความเรียงเส้นตรง (linearized table) ผลลัพธ์จาก DePlot สามารถนำไปใช้เป็น prompt ให้กับโมเดลภาษาขนาดใหญ่ (LLM) ที่ผ่านการฝึกมาแล้วได้โดยตรง โดยอาศัยความสามารถในการใช้เหตุผลแบบ few-shot ของ LLM ในการสร้าง DePlot เราได้สร้างมาตรฐานให้กับงาน plot-to-table โดยกำหนดรูปแบบงานและตัวชี้วัดที่เป็นหนึ่งเดียว และฝึก DePlot แบบครบวงจร (end-to-end) บนงานนี้ DePlot สามารถนำไปใช้ร่วมกับ LLM ได้ทันทีในรูปแบบ plug-and-play เมื่อเทียบกับโมเดล SOTA ที่ปรับแต่ง (finetuned) ด้วยข้อมูลนับพันจุด DePlot+LLM ที่ใช้เพียง one-shot prompting ทำได้ดีกว่า SOTA ที่ปรับแต่งแล้วถึง 29.4% บนคำถามที่มนุษย์เขียนขึ้นจากงาน chart QA</p></div>
+  </div>
+
+  <!-- ── SECTION 1 ── -->
+  <div class="row heading">
+    <div class="en"><h2>1. Introduction</h2></div>
+    <div class="th"><h2>1. บทนำ (Introduction)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Multimodal reasoning on visual language such as plots and charts is an extremely complex task. For downstream tasks such as question answering (QA) on plots/charts, a model needs to first extract relevant information from the image, organize them in a sensible manner, then perform reasoning over the entries extracted. Previous studies have proposed end-to-end solutions to such methods [Lee et al., 2023; Liu et al., 2023a]. Whilst being an effective solution, end-to-end methods need to be finetuned on large amounts of task data and they still lag behind on queries that require complex reasoning even after finetuning. As an example, the current SOTA model MatCha [Liu et al., 2023a] achieves only 38.2% accuracy on ChartQA [Masry et al., 2022] (human written queries).</p></div>
+    <div class="th"><p>การใช้เหตุผลแบบหลายรูปแบบ (multimodal reasoning) บนภาษาเชิงภาพเช่นกราฟและแผนภูมิเป็นงานที่ซับซ้อนอย่างยิ่ง สำหรับงานปลายทาง (downstream tasks) เช่นการถาม-ตอบ (QA) บนกราฟ/แผนภูมิ โมเดลต้องสกัดข้อมูลที่เกี่ยวข้องจากภาพก่อน จัดระเบียบข้อมูลเหล่านั้นอย่างเหมาะสม แล้วจึงใช้เหตุผลบนรายการข้อมูลที่สกัดได้ งานวิจัยก่อนหน้านี้ได้เสนอวิธีแก้ปัญหาแบบครบวงจร (end-to-end) [Lee et al., 2023; Liu et al., 2023a] แม้จะเป็นวิธีที่ได้ผลดี แต่วิธีแบบ end-to-end ต้องอาศัยการปรับแต่ง (finetune) ด้วยข้อมูลปริมาณมาก และยังตามหลังอยู่ในคำถามที่ต้องใช้เหตุผลซับซ้อนแม้หลังปรับแต่งแล้ว ตัวอย่างเช่น โมเดล SOTA ปัจจุบัน MatCha [Liu et al., 2023a] ทำได้แม่นยำเพียง 38.2% บน ChartQA [Masry et al., 2022] (คำถามที่มนุษย์เขียนขึ้น)</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In the meantime, large language models (LLMs) such as GPT-3 [Brown et al., 2020] and PaLM [Chowdhery et al., 2022] have demonstrated exceptional few-shot reasoning skills, without requiring expensive human annotations. However, it is an open question how multimodal reasoning tasks could benefit from LLMs. In this work, we propose to decompose the multimodal visual language reasoning problem into: (1) converting the input plot image to a linearized table and (2) passing the linearized table to LLMs for one-shot reasoning.</p></div>
+    <div class="th"><p>ในขณะเดียวกัน โมเดลภาษาขนาดใหญ่ (LLM) เช่น GPT-3 [Brown et al., 2020] และ PaLM [Chowdhery et al., 2022] ได้แสดงให้เห็นถึงทักษะการใช้เหตุผลแบบ few-shot ที่ยอดเยี่ยม โดยไม่จำเป็นต้องใช้การติดป้ายกำกับโดยมนุษย์ที่มีค่าใช้จ่ายสูง อย่างไรก็ตาม ยังเป็นคำถามเปิดอยู่ว่างานการใช้เหตุผลแบบหลายรูปแบบจะได้ประโยชน์จาก LLM ได้อย่างไร ในงานนี้ เราเสนอให้แบ่งปัญหาการใช้เหตุผลเชิงภาพแบบหลายรูปแบบออกเป็น (1) การแปลงภาพกราฟที่นำเข้าให้เป็นตารางแบบเรียงเส้นตรง และ (2) การส่งตารางที่แปลงแล้วไปให้ LLM ใช้เหตุผลแบบ one-shot</p></div>
+  </div>
+
+  <!-- ── FIGURE 1 ── -->
+  <div class="row figure">
+    <div class="en">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/x1.png" alt="Figure 1" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Figure 1</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Figure 1:</strong> An illustration of the DePlot+LLM method. This is a real example using FlanPaLM [Chung et al., 2022] with Chain-of-Thoughts prompting [Wei et al., 2022] and Codex [Chen et al., 2021] with Program-of-Thoughts prompting [Chen et al., 2022]. The light blue boxes are input (or intermediate forms of the input) to the LLM and the light red box contains the answer generated by the LLMs. Key reasoning steps are highlighted.</p>
+    </div>
+    <div class="th">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/x1.png" alt="รูปที่ 1" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">รูปที่ 1</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>รูปที่ 1:</strong> ภาพประกอบของวิธี DePlot+LLM นี่เป็นตัวอย่างจริงที่ใช้ FlanPaLM [Chung et al., 2022] ร่วมกับ Chain-of-Thoughts prompting [Wei et al., 2022] และ Codex [Chen et al., 2021] ร่วมกับ Program-of-Thoughts prompting [Chen et al., 2022] กล่องสีฟ้าอ่อนคือข้อมูลนำเข้า (หรือรูปแบบกึ่งกลางของข้อมูลนำเข้า) ที่ส่งให้ LLM และกล่องสีแดงอ่อนคือคำตอบที่ LLM สร้างขึ้น ขั้นตอนการใช้เหตุผลที่สำคัญถูกเน้นไว้</p>
+    </div>
+  </div>
+
+  <div class="row para">
+    <div class="en"><p>The key of the method is a modality conversion module called DePlot that maps charts and plots to the underlying data table. While there has been prior works in chart information extraction, they are usually hybrid systems combining complex hand-designed rules, OCR, keypoint detection, and object segmentation modules [Siegel et al., 2016; Luo et al., 2021; Masry et al., 2022]. For different types of charts, distinct approaches have been used [Rane et al., 2021; Kato et al., 2022]. Besides, there does not exist a unified, consistent, and accurate framework for evaluating chart information extraction – metrics specific to certain types of charts [Siegel et al., 2016] or overly-simplified number matching metrics [Luo et al., 2021] have been used. Our proposed DePlot is an end-to-end image-to-text Transformer model trained with the task of plot-to-table translation. A combination of synthetic and web-crawled charts and plots and their underlying data table are collected as the training corpus. We demonstrate that DePlot significantly outperforms hybrid systems and can uniformly handle all types of charts. To accurately capture plot-to-table systems' effectiveness (and avoid error propagation to downstream tasks), we propose a novel table matching metric that considers both textual and numeric entries with relative error tolerance, and is invariant to transpositions, row and column permutations.</p></div>
+    <div class="th"><p>หัวใจของวิธีการนี้คือโมดูลแปลงรูปแบบข้อมูลที่เรียกว่า DePlot ซึ่งแปลงแผนภูมิและกราฟให้เป็นตารางข้อมูลที่อยู่เบื้องหลัง แม้จะมีงานวิจัยก่อนหน้านี้ด้านการสกัดข้อมูลจากแผนภูมิ (chart information extraction) แต่ส่วนใหญ่เป็นระบบไฮบริดที่ผสมผสานกฎที่ออกแบบด้วยมือซึ่งซับซ้อน, OCR, การตรวจจับจุดสำคัญ (keypoint detection) และโมดูลแบ่งส่วนวัตถุ (object segmentation) [Siegel et al., 2016; Luo et al., 2021; Masry et al., 2022] สำหรับแผนภูมิแต่ละประเภทก็ใช้แนวทางที่แตกต่างกัน [Rane et al., 2021; Kato et al., 2022] นอกจากนี้ยังไม่มีกรอบการประเมินการสกัดข้อมูลจากแผนภูมิที่เป็นหนึ่งเดียว สอดคล้องกัน และแม่นยำ — มีการใช้ตัวชี้วัดที่เฉพาะเจาะจงกับแผนภูมิบางประเภท [Siegel et al., 2016] หรือตัวชี้วัดการจับคู่ตัวเลขที่ง่ายเกินไป [Luo et al., 2021] DePlot ที่เราเสนอเป็นโมเดล Transformer แบบ image-to-text ที่ฝึกแบบครบวงจรด้วยงาน plot-to-table translation โดยรวบรวมแผนภูมิและกราฟทั้งแบบสังเคราะห์และที่เก็บมาจากเว็บพร้อมตารางข้อมูลเบื้องหลังเป็นชุดข้อมูลฝึกฝน เราแสดงให้เห็นว่า DePlot มีประสิทธิภาพดีกว่าระบบไฮบริดอย่างมีนัยสำคัญ และสามารถจัดการแผนภูมิทุกประเภทได้อย่างสม่ำเสมอ เพื่อจับประสิทธิผลของระบบ plot-to-table ได้อย่างแม่นยำ (และหลีกเลี่ยงการแพร่กระจายของข้อผิดพลาดไปยังงานปลายทาง) เราเสนอตัวชี้วัดการจับคู่ตารางแบบใหม่ที่พิจารณาทั้งรายการข้อความและตัวเลขโดยมีค่าความคลาดเคลื่อนสัมพัทธ์ที่ยอมรับได้ และไม่ขึ้นกับการสลับตำแหน่งแถว/คอลัมน์หรือการสลับแถวเป็นคอลัมน์ (transposition)</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>After accurately translating plot images to texts (as linearized tables), we can pass the output from DePlot in conjunction with a query to LLMs to compute the answer. We take advantage of novel prompting techniques such as Chain of Thoughts (CoT) [Wei et al., 2022], Self-Consistency (SC) [Wang et al., 2023], and Program of Thoughts (PoT) [Chen et al., 2022] to elicit more accurate answers. An illustration of the whole process can be seen in Figure 1.</p></div>
+    <div class="th"><p>หลังจากแปลงภาพกราฟเป็นข้อความ (ในรูปตารางแบบเรียงเส้นตรง) อย่างแม่นยำแล้ว เราสามารถส่งผลลัพธ์จาก DePlot พร้อมกับคำถามให้ LLM เพื่อคำนวณคำตอบได้ เราใช้ประโยชน์จากเทคนิคการ prompt ใหม่ ๆ เช่น Chain of Thoughts (CoT) [Wei et al., 2022], Self-Consistency (SC) [Wang et al., 2023] และ Program of Thoughts (PoT) [Chen et al., 2022] เพื่อให้ได้คำตอบที่แม่นยำยิ่งขึ้น ภาพประกอบของกระบวนการทั้งหมดแสดงอยู่ในรูปที่ 1</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>To summarize, this work has the following contributions: (1) We standardize the plot-to-table task and propose a unified and informative metric for table comparison. (2) We propose a highly-effective modality conversion model DePlot to translate a multimodal task into a language-only task and then leverage LLMs to solve it with just one shot. (3) DePlot+LLM achieves SOTA on ChartQA with just one-shot supervision, outperforming the second best method (which is fully supervised) by 29.4% on human-written queries.</p></div>
+    <div class="th"><p>สรุปได้ว่างานวิจัยนี้มีผลงานหลักดังนี้ (1) เราสร้างมาตรฐานให้กับงาน plot-to-table และเสนอตัวชี้วัดที่เป็นหนึ่งเดียวและให้ข้อมูลครบถ้วนสำหรับการเปรียบเทียบตาราง (2) เราเสนอโมเดลแปลงรูปแบบข้อมูล DePlot ที่มีประสิทธิภาพสูง ซึ่งแปลงงานแบบหลายรูปแบบให้เป็นงานเชิงภาษาอย่างเดียว แล้วใช้ประโยชน์จาก LLM ในการแก้ปัญหาด้วยเพียง one-shot (3) DePlot+LLM ทำได้ดีที่สุด (SOTA) บน ChartQA ด้วยการกำกับดูแลแบบ one-shot เพียงอย่างเดียว โดยทำได้ดีกว่าวิธีอันดับสอง (ซึ่งเป็นแบบ fully supervised) ถึง 29.4% บนคำถามที่มนุษย์เขียนขึ้น</p></div>
+  </div>
+
+  <!-- ── SECTION 2 ── -->
+  <div class="row heading">
+    <div class="en"><h2>2. Background</h2></div>
+    <div class="th"><h2>2. งานวิจัยพื้นฐาน (Background)</h2></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h4>Plug-and-play of multimodal pretrained models.</h4></div>
+    <div class="th"><h4>การใช้โมเดลที่ฝึกล่วงหน้าแบบหลายรูปแบบในลักษณะ Plug-and-play</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Numerous large pretrained models, either for cross-modal tasks such as CLIP [Radford et al., 2021], or single-modal tasks, such as GPT-3 and PaLM, have been introduced in the past few years. These pretrained models' strong zero/few-shot inference capabilities have enabled creative solutions to more complex multimodal tasks. Socratic Models [Zeng et al., 2023] combine multimodal pretrained models using multimodal prompts for tasks such as multimodal assistive dialogue and robot perception & planning. Minds' Eyes [Liu et al., 2023b] converts physical reasoning queries into code that could be executed in physical engines. MAGIC [Su et al., 2022] inserts visual control using CLIP in text generation models for unsupervised image captioning. Similar our work, Yang et al. (2022) also translates natural images into texts and leverage GPT-3 for knowledge-based VQA.</p></div>
+    <div class="th"><p>โมเดลที่ฝึกล่วงหน้าขนาดใหญ่จำนวนมาก ทั้งสำหรับงานข้ามรูปแบบข้อมูล (cross-modal) เช่น CLIP [Radford et al., 2021] หรืองานรูปแบบเดียว เช่น GPT-3 และ PaLM ได้ถูกนำเสนอในช่วงไม่กี่ปีที่ผ่านมา ความสามารถในการอนุมานแบบ zero/few-shot ที่แข็งแกร่งของโมเดลเหล่านี้ทำให้เกิดวิธีแก้ปัญหาที่สร้างสรรค์สำหรับงานหลายรูปแบบที่ซับซ้อนยิ่งขึ้น Socratic Models [Zeng et al., 2023] รวมโมเดลที่ฝึกล่วงหน้าแบบหลายรูปแบบโดยใช้ prompt แบบหลายรูปแบบสำหรับงานเช่นบทสนทนาช่วยเหลือแบบหลายรูปแบบ และการรับรู้/วางแผนของหุ่นยนต์ Minds' Eyes [Liu et al., 2023b] แปลงคำถามการใช้เหตุผลเชิงฟิสิกส์เป็นโค้ดที่สามารถรันได้ในเอนจินจำลองฟิสิกส์ MAGIC [Su et al., 2022] แทรกการควบคุมเชิงภาพโดยใช้ CLIP ในโมเดลสร้างข้อความสำหรับการสร้างคำบรรยายภาพแบบไม่มีการกำกับดูแล (unsupervised) เช่นเดียวกับงานของเรา Yang et al. (2022) ก็แปลงภาพธรรมชาติเป็นข้อความและใช้ประโยชน์จาก GPT-3 สำหรับงาน VQA ที่อิงความรู้</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>However, all above approaches focus on natural images and the tasks of interest usually only require capturing very basic visual information such as types of objects. Visual language reasoning poses a different set of challenges from natural image reasoning – it requires, first, accurate and detailed information extraction (IE) from complex visual language data (plots and charts in this work); and secondly very strong numerical reasoning skills to answer queries based on information extracted. While end-to-end fully-supervised models struggle to answer complex human-written queries, DePlot when combined with LLMs can outperform the supervised SOTA by 29.4%. This is achieved by decomposing the two key challenges in visual language reasoning into leveraging two strong pretrained models that excel at their own respective tasks.</p></div>
+    <div class="th"><p>อย่างไรก็ตาม แนวทางข้างต้นทั้งหมดมุ่งเน้นไปที่ภาพธรรมชาติ และงานที่สนใจมักต้องการเพียงการจับข้อมูลเชิงภาพพื้นฐานมาก เช่น ประเภทของวัตถุ การใช้เหตุผลเชิงภาษาภาพ (visual language reasoning) มีความท้าทายที่แตกต่างจากการใช้เหตุผลบนภาพธรรมชาติ — ก่อนอื่นต้องมีการสกัดข้อมูล (IE) ที่แม่นยำและละเอียดจากข้อมูลภาษาภาพที่ซับซ้อน (กราฟและแผนภูมิในงานนี้) และต้องมีทักษะการใช้เหตุผลเชิงตัวเลขที่แข็งแกร่งมากในการตอบคำถามโดยอิงจากข้อมูลที่สกัดได้ ในขณะที่โมเดล fully-supervised แบบ end-to-end ยังลำบากในการตอบคำถามที่มนุษย์เขียนขึ้นซึ่งซับซ้อน DePlot เมื่อรวมกับ LLM สามารถทำได้ดีกว่า SOTA แบบ supervised ถึง 29.4% สิ่งนี้เกิดขึ้นได้จากการแบ่งความท้าทายหลักสองประการในการใช้เหตุผลเชิงภาษาภาพ ออกเป็นการใช้ประโยชน์จากโมเดลที่ฝึกล่วงหน้าที่แข็งแกร่งสองตัวซึ่งเชี่ยวชาญในงานของตัวเองตามลำดับ</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h4>Zero &amp; few-shot reasoning over tables.</h4></div>
+    <div class="th"><h4>การใช้เหตุผลแบบ Zero และ Few-shot บนตาราง</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Traditionally, table reasoning tasks are dominated by end-to-end neural models with table-specific architectural designs [Herzig et al., 2020; Yin et al., 2020; Andrejczuk et al., 2022]. Recently, there has been a surge in using LLMs to process tables for downstream tasks such as QA. Chen (2023) shows that with just one-shot in-context demonstration, GPT-3 could reach near SOTA performance on table QA datasets, on par with end-to-end models trained with at least thousands of training examples. Beyond pure LLM approaches, Binder [Cheng et al., 2023], Program of Thoughts [Chen et al., 2022], and Program-Aided Language models [Gao et al., 2022] all combine LLMs with compilers/program executors for table reasoning tasks and have achieved SOTA performance. DePlot can be combined with pure LLMs and also any of the aforementioned neural-symbolic methods in a plug-and-play style.</p></div>
+    <div class="th"><p>โดยทั่วไป งานการใช้เหตุผลบนตารางถูกครอบงำโดยโมเดลโครงข่ายประสาทเทียมแบบ end-to-end ที่ออกแบบโครงสร้างเฉพาะสำหรับตาราง [Herzig et al., 2020; Yin et al., 2020; Andrejczuk et al., 2022] เมื่อไม่นานมานี้มีการใช้ LLM ในการประมวลผลตารางสำหรับงานปลายทางเช่น QA เพิ่มขึ้นอย่างมาก Chen (2023) แสดงให้เห็นว่าด้วยการสาธิตแบบ one-shot in-context เพียงครั้งเดียว GPT-3 สามารถทำประสิทธิภาพใกล้เคียง SOTA บนชุดข้อมูล table QA ได้ เทียบเท่ากับโมเดลแบบ end-to-end ที่ฝึกด้วยตัวอย่างฝึกฝนอย่างน้อยหลายพันตัวอย่าง นอกเหนือจากแนวทางที่ใช้ LLM อย่างเดียว Binder [Cheng et al., 2023], Program of Thoughts [Chen et al., 2022] และ Program-Aided Language models [Gao et al., 2022] ต่างรวม LLM เข้ากับคอมไพเลอร์/ตัวรันโปรแกรมสำหรับงานการใช้เหตุผลบนตาราง และทำได้ประสิทธิภาพระดับ SOTA DePlot สามารถใช้ร่วมกับ LLM อย่างเดียว และวิธี neural-symbolic ที่กล่าวมาข้างต้นได้ในรูปแบบ plug-and-play</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h4>Information extraction from plots and charts.</h4></div>
+    <div class="th"><h4>การสกัดข้อมูลจากกราฟและแผนภูมิ</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Prior works on plot/chart IE is usually pipeline-based, combining OCR, object detection/segmentation systems, and hand-crafted rules. Such specialized systems are frequently designed for specific types of graphs, e.g., Kato et al. (2022) for line graphs, and Rane et al. (2021) for bar plots. ChartBERT [Akhtar et al., 2023] adopts an OCR-based method for text extraction from charts and uses two more stages of neural methods for processing the extracted texts. ChartOCR [Luo et al., 2021] is a hybrid system that accepts all types of chart inputs and has been adopted by downstream task models for chart QA [Masry et al., 2022] and summarization [Kantharaj et al., 2022]. DePlot, as an end-to-end neural model, outperforms ChartOCR by very large margins on plot-to-table conversion.</p></div>
+    <div class="th"><p>งานวิจัยก่อนหน้าด้าน plot/chart IE มักเป็นแบบไปป์ไลน์ (pipeline-based) ที่ผสมผสาน OCR ระบบตรวจจับ/แบ่งส่วนวัตถุ และกฎที่สร้างด้วยมือ ระบบเฉพาะทางเหล่านี้มักออกแบบมาสำหรับกราฟประเภทใดประเภทหนึ่ง เช่น Kato et al. (2022) สำหรับกราฟเส้น และ Rane et al. (2021) สำหรับแผนภูมิแท่ง ChartBERT [Akhtar et al., 2023] ใช้วิธีอิง OCR ในการสกัดข้อความจากแผนภูมิ และใช้ขั้นตอนเชิงโครงข่ายประสาทอีกสองขั้นตอนในการประมวลผลข้อความที่สกัดได้ ChartOCR [Luo et al., 2021] เป็นระบบไฮบริดที่รับแผนภูมิทุกประเภท และถูกนำไปใช้ในโมเดลงานปลายทางสำหรับ chart QA [Masry et al., 2022] และการสรุปความ [Kantharaj et al., 2022] DePlot ในฐานะโมเดลโครงข่ายประสาทแบบ end-to-end มีประสิทธิภาพดีกว่า ChartOCR อย่างมากในงานแปลง plot-to-table</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Beyond methodology, the evaluation of plot data extraction tasks has traditionally been ununified. Siegel et al. (2016); Luo et al. (2021); Kato et al. (2022) design different metrics for different types of charts and the metrics can be defined upon coordinates, bounding boxes, or keypoints of the graphs' objects. However, this measures only the intermediate steps of the data extraction process rather than the quality of data extraction itself. We formulate chart data extraction as a plot-to-table translation task since the ultimate goal of chart IE is obtaining the underlying data table. Besides our work, Masry et al. (2022) also considers chart IE as plot-to-table conversion. However, the metric used in Masry et al. (2022) is a number set matching metric, ignoring table structure (i.e., correct organization of the extracted numbers). We propose a better table comparison metric and discuss more in Section 3.</p></div>
+    <div class="th"><p>นอกเหนือจากวิธีการแล้ว การประเมินงานสกัดข้อมูลจากกราฟยังไม่เป็นมาตรฐานเดียวกันมาโดยตลอด Siegel et al. (2016); Luo et al. (2021); Kato et al. (2022) ออกแบบตัวชี้วัดที่แตกต่างกันสำหรับแผนภูมิแต่ละประเภท และตัวชี้วัดเหล่านั้นอาจถูกกำหนดบนพิกัด กรอบล้อมรอบ (bounding box) หรือจุดสำคัญของวัตถุในกราฟ อย่างไรก็ตาม สิ่งนี้วัดเพียงขั้นตอนกึ่งกลางของกระบวนการสกัดข้อมูล ไม่ใช่คุณภาพของการสกัดข้อมูลเอง เราตั้งกรอบปัญหาการสกัดข้อมูลจากแผนภูมิเป็นงานแปล plot-to-table เนื่องจากเป้าหมายสุดท้ายของ chart IE คือการได้มาซึ่งตารางข้อมูลที่อยู่เบื้องหลัง นอกจากงานของเราแล้ว Masry et al. (2022) ก็มองว่า chart IE คือการแปลง plot-to-table เช่นกัน แต่ตัวชี้วัดที่ใช้ใน Masry et al. (2022) เป็นตัวชี้วัดการจับคู่ชุดตัวเลข ซึ่งมองข้ามโครงสร้างของตาราง (คือการจัดเรียงตัวเลขที่สกัดได้อย่างถูกต้อง) เราเสนอตัวชี้วัดการเปรียบเทียบตารางที่ดีกว่า และจะกล่าวถึงรายละเอียดเพิ่มเติมในส่วนที่ 3</p></div>
+  </div>
+
+  <!-- ── SECTION 3 ── -->
+  <div class="row heading">
+    <div class="en"><h2>3. Standardizing the Plot-to-table Task</h2></div>
+    <div class="th"><h2>3. การสร้างมาตรฐานให้กับงาน Plot-to-table</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>To perform visual language reasoning, we propose to decompose a visual language reasoning task on plots into two steps: (1) converting plots to texts (in the form of linearized tables) using DePlot and (2) inputing the linearized table to LLMs for reasoning. Accurately performing plot-to-table translation is essential for the downstream visual language reasoning tasks. Plot-to-table is also an important task standalone as it addresses IE from plots/charts, which can benefit applications such as automatic reports and documents digitization. We will standardize the plot-to-table conversion task in Section 3.1 and propose a new metric for evaluating plot-to-table conversion quality. Then in Section 3.2, we introduce the DePlot model and training procedure for performing plot-to-table conversion.</p></div>
+    <div class="th"><p>เพื่อทำการใช้เหตุผลเชิงภาษาภาพ เราเสนอให้แบ่งงานการใช้เหตุผลเชิงภาษาภาพบนกราฟออกเป็นสองขั้นตอน ได้แก่ (1) การแปลงกราฟเป็นข้อความ (ในรูปตารางแบบเรียงเส้นตรง) โดยใช้ DePlot และ (2) การส่งตารางที่แปลงแล้วให้ LLM ใช้เหตุผล การแปล plot-to-table อย่างแม่นยำเป็นสิ่งจำเป็นสำหรับงานการใช้เหตุผลเชิงภาษาภาพปลายทาง plot-to-table ยังเป็นงานสำคัญในตัวของมันเองด้วย เนื่องจากแก้ปัญหาการสกัดข้อมูลจากกราฟ/แผนภูมิ ซึ่งเป็นประโยชน์ต่อแอปพลิเคชันเช่นการสร้างรายงานอัตโนมัติและการแปลงเอกสารเป็นดิจิทัล เราจะสร้างมาตรฐานให้กับงานแปลง plot-to-table ในส่วนที่ 3.1 และเสนอตัวชี้วัดใหม่สำหรับประเมินคุณภาพของการแปลง plot-to-table จากนั้นในส่วนที่ 3.2 เราจะนำเสนอโมเดล DePlot และขั้นตอนการฝึกฝนสำหรับการแปลง plot-to-table</p></div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h3>3.1 Task Definition</h3></div>
+    <div class="th"><h3>3.1 คำจำกัดความของงาน (Task Definition)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Prior research in table similarity metric is limited. Masry et al. (2022) has introduced a metric based on the graph IE metric proposed in Luo et al. (2021), which we denote Relative Number Set Similarity or RNSS. The metric looks only at the unordered set of numeric entries predicted and measures how the predicted set matches the target set of numbers. In the following, we first introduce RNSS more formally and then discuss our rationales of proposing a more well-rounded metric Relative Mapping Similarity or RMS.</p></div>
+    <div class="th"><p>งานวิจัยก่อนหน้าด้านตัวชี้วัดความคล้ายคลึงของตาราง (table similarity metric) ยังมีอยู่จำกัด Masry et al. (2022) ได้แนะนำตัวชี้วัดที่อิงจากตัวชี้วัดด้าน graph IE ที่เสนอใน Luo et al. (2021) ซึ่งเราเรียกว่า Relative Number Set Similarity หรือ RNSS ตัวชี้วัดนี้พิจารณาเพียงชุดตัวเลขที่ทำนายได้แบบไม่มีลำดับ และวัดว่าชุดที่ทำนายได้ตรงกับชุดตัวเลขเป้าหมายมากเพียงใด ต่อไปนี้เราจะอธิบาย RNSS อย่างเป็นทางการมากขึ้นก่อน แล้วจึงอธิบายเหตุผลของการเสนอตัวชี้วัดที่รอบด้านยิ่งขึ้นคือ Relative Mapping Similarity หรือ RMS</p></div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h4>Relative Number Set Similarity (RNSS).</h4></div>
+    <div class="th"><h4>Relative Number Set Similarity (RNSS)</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Let the model predicted numbers in table be $\mathcal{P}=\{p_{i}\}_{1\leq i\leq N}$ and numbers in target tables be $\mathcal{T}=\{t_{j}\}_{1\leq j\leq M}$. We compute the pairwise set of relative distances between them: $\text{D}(p,t)=\min(1,\|p-t\|/\|t\|)$. Then the $N\times M$ matrix of distances can be used to find a minimal cost matching between the elements in $\mathcal{P}$ and $\mathcal{T}$, expressed in the form of binary matrix $\mathbf{X}\in\mathbb{R}^{N\times M}$. The final score is computed as $\texttt{RNSS}=1-\frac{\sum_{i,j}\mathbf{X}_{ij}\text{D}(p_{i},t_{j})}{\max(N,M)}$ (Eq. 1).</p></div>
+    <div class="th"><p>กำหนดให้ตัวเลขที่โมเดลทำนายได้ในตารางคือ $\mathcal{P}=\{p_{i}\}_{1\leq i\leq N}$ และตัวเลขในตารางเป้าหมายคือ $\mathcal{T}=\{t_{j}\}_{1\leq j\leq M}$ เราคำนวณชุดของระยะห่างสัมพัทธ์ (relative distance) แบบจับคู่ระหว่างทั้งสองชุด: $\text{D}(p,t)=\min(1,\|p-t\|/\|t\|)$ จากนั้นเมทริกซ์ระยะห่างขนาด $N\times M$ จะถูกใช้หาการจับคู่ที่มีค่าใช้จ่ายต่ำที่สุด (minimal cost matching) ระหว่างสมาชิกใน $\mathcal{P}$ และ $\mathcal{T}$ ซึ่งแสดงในรูปเมทริกซ์ฐานสอง $\mathbf{X}\in\mathbb{R}^{N\times M}$ คะแนนสุดท้ายคำนวณได้จาก $\texttt{RNSS}=1-\frac{\sum_{i,j}\mathbf{X}_{ij}\text{D}(p_{i},t_{j})}{\max(N,M)}$ (สมการที่ 1)</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>However, RNSS has several key limitations: it does not distinguish the position of numbers within the table; it completely ignores all non numeric content; it gives credit to very high relative errors; and it does not distinguish precision versus recall losses in table reconstruction.</p></div>
+    <div class="th"><p>อย่างไรก็ตาม RNSS มีข้อจำกัดสำคัญหลายประการ ได้แก่ ไม่แยกแยะตำแหน่งของตัวเลขภายในตาราง มองข้ามเนื้อหาที่ไม่ใช่ตัวเลขทั้งหมด ให้คะแนนแม้มีค่าความคลาดเคลื่อนสัมพัทธ์ที่สูงมาก และไม่แยกแยะระหว่างการสูญเสีย precision กับ recall ในการสร้างตารางขึ้นใหม่</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In contrast, we argue that a metric to measure similarity between tables should satisfy the following desiderata: (1) Be invariant to transpositions, as well as permutations of column and rows. (2) Allow but penalize small errors in numeric or textual values up to a certain threshold. (3) Clearly reflect losses in precision or recall.</p></div>
+    <div class="th"><p>ในทางตรงกันข้าม เราเสนอว่าตัวชี้วัดสำหรับวัดความคล้ายคลึงระหว่างตารางควรมีคุณสมบัติดังนี้ (1) ไม่ขึ้นกับการสลับแถวเป็นคอลัมน์ (transposition) และการสลับลำดับคอลัมน์/แถว (2) ยอมรับแต่ลงโทษความผิดพลาดเล็กน้อยในค่าตัวเลขหรือข้อความได้ในระดับหนึ่ง (3) สะท้อนการสูญเสีย precision หรือ recall ได้อย่างชัดเจน</p></div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h4>Relative Mapping Similarity (RMS).</h4></div>
+    <div class="th"><h4>Relative Mapping Similarity (RMS)</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In order to address all of these requirements, we propose RMS, which views tables not as sets of numbers but as unordered collection of mappings from row and column headers $(r,c)$ to a single value $v$, which we write $p_{i}=(p^{r}_{i},p^{c}_{i},p^{v}_{i})$ and $t_{j}=(t^{r}_{j},t^{c}_{j},t^{v}_{j})$ for each entry in the predicted table $\mathcal{P}$ and the target table $\mathcal{T}$ respectively.</p></div>
+    <div class="th"><p>เพื่อตอบสนองความต้องการทั้งหมดนี้ เราเสนอ RMS ซึ่งมองตารางไม่ใช่ในรูปชุดตัวเลข แต่เป็นกลุ่มการจับคู่ (mapping) แบบไม่มีลำดับจากส่วนหัวแถวและคอลัมน์ $(r,c)$ ไปยังค่า $v$ ค่าเดียว ซึ่งเราเขียนเป็น $p_{i}=(p^{r}_{i},p^{c}_{i},p^{v}_{i})$ และ $t_{j}=(t^{r}_{j},t^{c}_{j},t^{v}_{j})$ สำหรับแต่ละรายการในตารางที่ทำนาย $\mathcal{P}$ และตารางเป้าหมาย $\mathcal{T}$ ตามลำดับ</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Following Biten et al. (2019), the distance between textual entries can be measured with Normalized Levenshtein Distance, or $\texttt{NL}_{\tau}$ where the variable $\tau$ is such that values above $\tau$ are set to the maximum of 1, in order to prevent partial credit for very dissimilar texts. Therefore the distance of two keys $p_{i}$ and $t_{j}$ is $\texttt{NL}_{\tau}(p^{r}||p^{c},t^{r}||t^{c})$ where $||$ denotes string concatenation. The distance between numeric entries is computed using relative distance $\text{D}_{\theta}(p,t)=\min(1,\|p-t\|/\|t\|)$ and distances above $\theta$ are set to the maximum of 1. Combining this two distances we can compute the similarity between two entries in a mapping $\text{D}_{\tau,\theta}(p,t)$ as $(1-\texttt{NL}_{\tau}(p^{r}||p^{c},t^{r}||t^{c}))(1-\text{D}_{\theta}(p^{v},t^{v}))$. When both the keys and values are similar, the similarity $\text{D}_{\tau,\theta}$ is close to 1 (close to 0 when dissimilar).</p></div>
+    <div class="th"><p>ตามแนวทางของ Biten et al. (2019) ระยะห่างระหว่างรายการข้อความสามารถวัดได้ด้วย Normalized Levenshtein Distance หรือ $\texttt{NL}_{\tau}$ โดยตัวแปร $\tau$ กำหนดว่าค่าที่สูงกว่า $\tau$ จะถูกตั้งเป็นค่าสูงสุดคือ 1 เพื่อป้องกันไม่ให้ข้อความที่ต่างกันมากได้คะแนนบางส่วน ดังนั้นระยะห่างของคีย์สองตัว $p_{i}$ และ $t_{j}$ คือ $\texttt{NL}_{\tau}(p^{r}||p^{c},t^{r}||t^{c})$ โดย $||$ หมายถึงการต่อสตริง ส่วนระยะห่างระหว่างรายการตัวเลขคำนวณด้วยระยะห่างสัมพัทธ์ $\text{D}_{\theta}(p,t)=\min(1,\|p-t\|/\|t\|)$ และค่าที่สูงกว่า $\theta$ จะถูกตั้งเป็นค่าสูงสุดคือ 1 เมื่อรวมระยะห่างทั้งสองแบบเข้าด้วยกัน เราสามารถคำนวณความคล้ายคลึงระหว่างสองรายการในการจับคู่ $\text{D}_{\tau,\theta}(p,t)$ ได้เป็น $(1-\texttt{NL}_{\tau}(p^{r}||p^{c},t^{r}||t^{c}))(1-\text{D}_{\theta}(p^{v},t^{v}))$ เมื่อทั้งคีย์และค่าคล้ายกัน ความคล้ายคลึง $\text{D}_{\tau,\theta}$ จะมีค่าใกล้ 1 (ใกล้ 0 เมื่อต่างกัน)</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>To compute RMS, we first compute the pairwise similarity between keys in $\mathcal{P}$ and $\mathcal{T}$ using the cost function $1-\texttt{NL}_{\tau}(p^{r}||p^{c},t^{r}||t^{c})$. We obtain a similarity matrix with shape $N\times M$ and with the matrix we can identify the minimal cost matching $\mathbf{X}\in\mathbb{R}^{N\times M}$ between the keys (in the form of a binary matrix). Then we can compute the precision and recall between two full mappings as the total similarities of the correspondingly matched entries: $\texttt{RMS}_{\text{precision}}=1-\frac{\sum_{i,j}\mathbf{X}_{ij}\text{D}_{\tau,\theta}(p_{i},t_{j})}{N}$ (Eq. 2), $\texttt{RMS}_{\text{recall}}=1-\frac{\sum_{i,j}\mathbf{X}_{ij}\text{D}_{\tau,\theta}(p_{i},t_{j})}{M}$ (Eq. 3).</p></div>
+    <div class="th"><p>ในการคำนวณ RMS เราคำนวณความคล้ายคลึงแบบจับคู่ระหว่างคีย์ใน $\mathcal{P}$ และ $\mathcal{T}$ ก่อน โดยใช้ฟังก์ชันค่าใช้จ่าย $1-\texttt{NL}_{\tau}(p^{r}||p^{c},t^{r}||t^{c})$ เราจะได้เมทริกซ์ความคล้ายคลึงขนาด $N\times M$ และใช้เมทริกซ์นี้หาการจับคู่ที่มีค่าใช้จ่ายต่ำที่สุด $\mathbf{X}\in\mathbb{R}^{N\times M}$ ระหว่างคีย์ (ในรูปเมทริกซ์ฐานสอง) จากนั้นเราคำนวณ precision และ recall ระหว่างการจับคู่แบบสมบูรณ์ทั้งสองชุดได้จากผลรวมความคล้ายคลึงของรายการที่จับคู่กัน: $\texttt{RMS}_{\text{precision}}=1-\frac{\sum_{i,j}\mathbf{X}_{ij}\text{D}_{\tau,\theta}(p_{i},t_{j})}{N}$ (สมการที่ 2), $\texttt{RMS}_{\text{recall}}=1-\frac{\sum_{i,j}\mathbf{X}_{ij}\text{D}_{\tau,\theta}(p_{i},t_{j})}{M}$ (สมการที่ 3)</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>The $\texttt{RMS}_{\text{F1}}$ score can be computed the harmonic mean of the precision and recall. Because permutations of columns and rows yield the same set of column header, row header, value entries, the resulting metric is invariant to them. In order to allow for table transpositions, we just consider both the table and its transposed version and return the one that corresponds to highest $\texttt{RMS}_{\text{F1}}$ score.</p></div>
+    <div class="th"><p>คะแนน $\texttt{RMS}_{\text{F1}}$ คำนวณได้จากค่าเฉลี่ยฮาร์มอนิก (harmonic mean) ของ precision และ recall เนื่องจากการสลับลำดับคอลัมน์และแถวให้ชุดส่วนหัวคอลัมน์ ส่วนหัวแถว และค่าข้อมูลเดียวกัน ตัวชี้วัดที่ได้จึงไม่ขึ้นกับการสลับนั้น เพื่อให้รองรับการสลับแถวเป็นคอลัมน์ของตาราง เราพิจารณาทั้งตารางต้นฉบับและตารางที่สลับแถวเป็นคอลัมน์แล้ว และเลือกค่าที่ให้คะแนน $\texttt{RMS}_{\text{F1}}$ สูงที่สุด</p></div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h3>3.2 Training Plot-to-table Conversion Models</h3></div>
+    <div class="th"><h3>3.2 การฝึกโมเดลแปลง Plot-to-table</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Unlike prior works that combine rule-based heuristics, OCR systems, and object/keypoint segmentation/detection systems [Siegel et al., 2016; Luo et al., 2021; Kato et al., 2022], we propose DePlot as an end-to-end solution to plot information extraction. DePlot is conceptually simple yet can robustly work for all types of charts (line, dot, bar, and pie charts) without requiring type-specific engineering and hybrid components. Specifically, we initialize an image-to-text encode-decoder Transformer model with the architecture and weights of the SOTA visual language model MatCha [Liu et al., 2023a]. We continue finetuning the MatCha checkpoint with the task of mapping plots to their underlying data tables. The table is linearized as a textual sequence (markdown format) with | separating cells and \n separating rows. DePlot is trained to generate the table from left to right autoregressively.</p></div>
+    <div class="th"><p>แตกต่างจากงานก่อนหน้าที่ผสมผสานวิธีฮิวริสติกแบบกฎ ระบบ OCR และระบบแบ่งส่วน/ตรวจจับวัตถุหรือจุดสำคัญ [Siegel et al., 2016; Luo et al., 2021; Kato et al., 2022] เราเสนอ DePlot เป็นทางออกแบบ end-to-end สำหรับการสกัดข้อมูลจากกราฟ DePlot มีแนวคิดที่เรียบง่ายแต่สามารถทำงานได้อย่างมั่นคงกับแผนภูมิทุกประเภท (กราฟเส้น กราฟจุด แผนภูมิแท่ง และแผนภูมิวงกลม) โดยไม่ต้องออกแบบเฉพาะตามประเภทหรือใช้องค์ประกอบแบบไฮบริด โดยเฉพาะอย่างยิ่ง เราตั้งค่าเริ่มต้นโมเดล Transformer แบบ encode-decoder ที่แปลงภาพเป็นข้อความด้วยโครงสร้างและน้ำหนักของโมเดลภาษาภาพ SOTA คือ MatCha [Liu et al., 2023a] แล้วทำการปรับแต่ง (finetune) checkpoint ของ MatCha ต่อด้วยงานแปลงกราฟให้เป็นตารางข้อมูลเบื้องหลัง ตารางถูกแปลงให้เป็นลำดับข้อความ (รูปแบบ markdown) โดยใช้ | แยกเซลล์ และ \n แยกแถว DePlot ถูกฝึกให้สร้างตารางจากซ้ายไปขวาแบบถดถอยอัตโนมัติ (autoregressive)</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>The training corpus is a set of parallel plot-table pairs collected similar to Liu et al. (2023a) – both synthetic data and real world plot-table pairs are combined to form a finetuning corpus. Specifically, three sources of plot-table pairs are used: (1) synthetic data generated by Liu et al. (2023a); (2) synthetic data generated by Methani et al. (2020) (also used in PlotQA dataset); (3) real-world data crawled by Masry et al. (2022) (also used in ChartQA). (3) is sourced from four websites: statista.com, pewresearch.com, ourworldindata.org, and oecd.org. The three corpora are mixed with the rate of 1:1:1. To avoid data leakage in downstream evaluation, only training set charts from the above datasets are used. We call our finetuned checkpoint DePlot.</p></div>
+    <div class="th"><p>ชุดข้อมูลฝึกฝนคือชุดคู่กราฟ-ตารางแบบคู่ขนานที่รวบรวมในลักษณะคล้ายกับ Liu et al. (2023a) — โดยรวมข้อมูลสังเคราะห์และคู่กราฟ-ตารางจากโลกจริงเข้าด้วยกันเป็นชุดข้อมูลปรับแต่ง โดยเฉพาะอย่างยิ่งใช้แหล่งข้อมูลคู่กราฟ-ตารางสามแหล่ง ได้แก่ (1) ข้อมูลสังเคราะห์จาก Liu et al. (2023a) (2) ข้อมูลสังเคราะห์จาก Methani et al. (2020) (ใช้ใน PlotQA dataset เช่นกัน) (3) ข้อมูลจากโลกจริงที่เก็บมาโดย Masry et al. (2022) (ใช้ใน ChartQA เช่นกัน) ข้อมูลในส่วน (3) มาจากสี่เว็บไซต์ ได้แก่ statista.com, pewresearch.com, ourworldindata.org และ oecd.org ทั้งสามชุดข้อมูลถูกผสมกันในอัตรา 1:1:1 เพื่อหลีกเลี่ยงการรั่วไหลของข้อมูล (data leakage) ในการประเมินผลปลายทาง มีการใช้เฉพาะกราฟจากชุดฝึกฝนของชุดข้อมูลข้างต้นเท่านั้น เราเรียก checkpoint ที่ปรับแต่งแล้วนี้ว่า DePlot</p></div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h3>3.3 Human Eval of Plot-to-table Metrics</h3></div>
+    <div class="th"><h3>3.3 การประเมินโดยมนุษย์สำหรับตัวชี้วัด Plot-to-table</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>To verify that RMS is indeed more sensitive and robust than previously proposed table comparison metric, we conduct human evaluation to compare $\texttt{RMS}_{\text{F1}}$ with the previously used RNSS metric. Specifically, we sample 50 plot-table pairs where the tables are predictions of the plot-to-table conversion models. We score the 50 pairs with RNSS and $\texttt{RMS}_{\text{F1}}$. Then we collect human judgment of the table prediction quality from 6 human annotators on the 50 examples. For each instance, the human annotators are given a plot, the model's predicted table, and three questions regarding different aspects of the quality of the predicted table. The three questions are (1) "Does the model overgenerate columns/rows or some rows/columns are missing?", (2) "Are the x, y label/index names, and title correct?", and (3) "Are numbers close to the true values and associated with the correct column, row labels/indexes?". Annotators should rate the table from 1–5 (the higher the better). The final human score for a plot-table pair is the average of the scores across the three questions across all human annotators. We compute the Pearson's $r$ and Spearman's $\rho$ correlations between metric scores and human scores. As shown in Table 1, under both correlation metrics, we can observe a great improvement of $\texttt{RMS}_{\text{F1}}$ over the baseline RNSS, suggesting that $\texttt{RMS}_{\text{F1}}$ is a much more sensitive and informative metric for evaluating the model generated tables.</p></div>
+    <div class="th"><p>เพื่อยืนยันว่า RMS มีความไวและความน่าเชื่อถือมากกว่าตัวชี้วัดเปรียบเทียบตารางที่เสนอไว้ก่อนหน้านี้จริง เราได้ทำการประเมินโดยมนุษย์เพื่อเปรียบเทียบ $\texttt{RMS}_{\text{F1}}$ กับตัวชี้วัด RNSS ที่ใช้กันมาก่อน โดยเฉพาะอย่างยิ่ง เราสุ่มตัวอย่างคู่กราฟ-ตาราง 50 คู่ ซึ่งตารางเป็นผลทำนายจากโมเดลแปลง plot-to-table เราให้คะแนน 50 คู่นี้ด้วย RNSS และ $\texttt{RMS}_{\text{F1}}$ จากนั้นรวบรวมการตัดสินของมนุษย์เกี่ยวกับคุณภาพการทำนายตารางจากผู้ประเมิน 6 คน บนตัวอย่างทั้ง 50 รายการ สำหรับแต่ละตัวอย่าง ผู้ประเมินจะได้รับกราฟ ตารางที่โมเดลทำนาย และคำถามสามข้อเกี่ยวกับคุณภาพของตารางที่ทำนายในแง่มุมต่าง ๆ คำถามทั้งสามข้อคือ (1) "โมเดลสร้างคอลัมน์/แถวเกินหรือขาดหรือไม่?" (2) "ป้ายชื่อ/ดัชนีแกน x, y และชื่อเรื่องถูกต้องหรือไม่?" และ (3) "ตัวเลขใกล้เคียงค่าจริงและสัมพันธ์กับป้ายกำกับคอลัมน์/แถวที่ถูกต้องหรือไม่?" ผู้ประเมินให้คะแนนตารางในช่วง 1–5 (สูงกว่าคือดีกว่า) คะแนนสุดท้ายของแต่ละคู่กราฟ-ตารางคือค่าเฉลี่ยของคะแนนทั้งสามคำถามจากผู้ประเมินทุกคน เราคำนวณค่าสหสัมพันธ์ Pearson's $r$ และ Spearman's $\rho$ ระหว่างคะแนนตัวชี้วัดกับคะแนนจากมนุษย์ ดังแสดงในตารางที่ 1 พบว่าทั้งสองค่าสหสัมพันธ์ $\texttt{RMS}_{\text{F1}}$ ดีกว่า RNSS อย่างมาก แสดงว่า $\texttt{RMS}_{\text{F1}}$ เป็นตัวชี้วัดที่มีความไวและให้ข้อมูลที่เป็นประโยชน์มากกว่าสำหรับการประเมินตารางที่โมเดลสร้างขึ้น</p></div>
+  </div>
+
+  <!-- ── TABLE 1 ── -->
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 1 — ตารางที่ 1: ค่าสหสัมพันธ์ระหว่างการตัดสินของมนุษย์กับคะแนนตัวชี้วัด (ทั้ง RNSS และ RMS_F1)</div>
+      <table>
+        <thead><tr><th>Metric</th><th>RNSS</th><th>RMS<sub>F1</sub></th></tr></thead>
+        <tbody>
+          <tr><td>Pearson's r</td><td>0.46</td><td><strong>0.87</strong></td></tr>
+          <tr><td>Spearman's ρ</td><td>0.84</td><td><strong>0.96</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4 ── -->
+  <div class="row heading">
+    <div class="en"><h2>4. Prompting LLMs for Reasoning</h2></div>
+    <div class="th"><h2>4. การ Prompt LLM ให้ใช้เหตุผล</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>With DePlot introduced in Section 3, we can convert a given chart/plot into its textual form (as a linearized table). We can then construct textual prompts by concatenating the linearized tables and the questions for QA tasks. We follow the typical in-context learning paradigm to prepend a one-shot example before the current prompt.</p></div>
+    <div class="th"><p>เมื่อมี DePlot ที่นำเสนอในส่วนที่ 3 แล้ว เราสามารถแปลงแผนภูมิ/กราฟที่กำหนดให้เป็นรูปแบบข้อความ (ในรูปตารางแบบเรียงเส้นตรง) ได้ จากนั้นเราสามารถสร้าง prompt เชิงข้อความได้โดยการต่อตารางที่แปลงแล้วกับคำถามสำหรับงาน QA เราใช้รูปแบบการเรียนรู้แบบ in-context ทั่วไป โดยวางตัวอย่าง one-shot ไว้ก่อนหน้า prompt ปัจจุบัน</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>The full prompts use either Chain-of-Thoughts (CoT) [Wei et al., 2022] or Program-of-Thoughts (PoT) [Chen et al., 2022] and can be seen in Appendix C. They are slightly modified versions of the ones used by Chen (2023) and Chen et al. (2022) for evaluating reasoning on tabular data. Besides CoT prompting, we also explore combining DePlot+LLM with self-consistency (SC) [Wang et al., 2023], which samples a diverse set of reasoning paths and choose the majority-voted answer instead of relying on one greedily-decoded answer as in CoT. In order to simplify performing arithmetic on large numbers, we also tested prompting the models to generate python code that can be passed through an interpreter. In order to do that, we adapt the paradigm from Chen et al. (2022); Gao et al. (2022) to the context of tables. Future work could alternatively take advantage of finetuned tabular QA models such as Herzig et al. (2020) or use LLMs that generate SQL programs [Cheng et al., 2023] and might require multiple LLM iterative invocations to perform different atomic operations.</p></div>
+    <div class="th"><p>prompt แบบเต็มใช้ทั้ง Chain-of-Thoughts (CoT) [Wei et al., 2022] หรือ Program-of-Thoughts (PoT) [Chen et al., 2022] ดูได้ในภาคผนวก C ซึ่งเป็นรูปแบบที่ปรับเล็กน้อยจากที่ Chen (2023) และ Chen et al. (2022) ใช้ในการประเมินการใช้เหตุผลบนข้อมูลตาราง นอกจากการ prompt แบบ CoT แล้ว เรายังสำรวจการรวม DePlot+LLM กับ self-consistency (SC) [Wang et al., 2023] ซึ่งสุ่มตัวอย่างแนวทางการใช้เหตุผลที่หลากหลาย และเลือกคำตอบที่ได้รับเสียงข้างมาก แทนการพึ่งพาคำตอบเดียวที่ถอดรหัสแบบ greedy เหมือนใน CoT เพื่อให้การคำนวณทางคณิตศาสตร์กับตัวเลขขนาดใหญ่ง่ายขึ้น เรายังทดสอบการ prompt ให้โมเดลสร้างโค้ด python ที่สามารถส่งผ่านตัวแปลภาษาได้ โดยปรับใช้แนวทางจาก Chen et al. (2022); Gao et al. (2022) มาใช้กับบริบทของตาราง งานในอนาคตอาจใช้ประโยชน์จากโมเดล tabular QA ที่ปรับแต่งแล้ว เช่น Herzig et al. (2020) หรือใช้ LLM ที่สร้างโปรแกรม SQL [Cheng et al., 2023] ซึ่งอาจต้องเรียกใช้ LLM ซ้ำหลายครั้งเพื่อทำการดำเนินการพื้นฐานต่าง ๆ</p></div>
+  </div>
+
+  <!-- ── SECTION 5 ── -->
+  <div class="row heading">
+    <div class="en"><h2>5. Experiment</h2></div>
+    <div class="th"><h2>5. การทดลอง (Experiment)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We introduce the experimental setup in Section 5.1 and then the results in Section 5.2 including both plot-to-table translation and downstream QA tasks.</p></div>
+    <div class="th"><p>เรานำเสนอการตั้งค่าการทดลองในส่วนที่ 5.1 และผลลัพธ์ในส่วนที่ 5.2 ซึ่งครอบคลุมทั้งงานแปล plot-to-table และงาน QA ปลายทาง</p></div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h3>5.1 Experimental Setup</h3></div>
+    <div class="th"><h3>5.1 การตั้งค่าการทดลอง (Experimental Setup)</h3></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h4>Training and inference.</h4></div>
+    <div class="th"><h4>การฝึกและการอนุมาน</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>DePlot is trained for 10k steps with a maximum sequence length of 512. The other hyperparameters are identical to MatCha pretraining as introduced in Liu et al. (2023a). In DePlot inference we set temperature to 0 (so the output is deterministic). For LLM prompting, in all cases we use temperature of 0.4.</p></div>
+    <div class="th"><p>DePlot ถูกฝึกเป็นจำนวน 10,000 steps โดยมีความยาวลำดับสูงสุดที่ 512 ไฮเปอร์พารามิเตอร์อื่น ๆ เหมือนกับการฝึกล่วงหน้าของ MatCha ตามที่นำเสนอใน Liu et al. (2023a) ในการอนุมานของ DePlot เรากำหนด temperature เป็น 0 (เพื่อให้ผลลัพธ์คงที่แน่นอน) สำหรับการ prompt LLM เราใช้ temperature ที่ 0.4 ในทุกกรณี</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h4>Datasets and metrics.</h4></div>
+    <div class="th"><h4>ชุดข้อมูลและตัวชี้วัด</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We evaluate on two chart/plot question answering benchmarks ChartQA [Masry et al., 2022] and PlotQA [Methani et al., 2020]. ChartQA contains two sets: augmented (aug.) and human where the augmented set is synthetically generated and the human set is human written. Human written queries usually are more diverse and complex, requiring more reasoning while synthetic questions are usually highly templatic. PlotQA is purely synthetic. It contains v1 & v2 sets where v1 is mostly extractive questions and v2 focuses more on numerical reasoning. Both RNSS and $\texttt{RMS}_{\text{F1}}$ are used for evaluating plot-to-table translation (though we have argued that $\texttt{RMS}_{\text{F1}}$ is the more informative metric). Following Masry et al. (2022); Methani et al. (2020), exact match accuracy with 5% tolerance on numerical error is used to report all QA numbers.</p></div>
+    <div class="th"><p>เราประเมินบนเกณฑ์มาตรฐานการถาม-ตอบกราฟ/แผนภูมิสองชุด ได้แก่ ChartQA [Masry et al., 2022] และ PlotQA [Methani et al., 2020] ChartQA มีสองชุด คือ augmented (aug.) ซึ่งสร้างขึ้นแบบสังเคราะห์ และ human ซึ่งมนุษย์เขียนขึ้น คำถามที่มนุษย์เขียนมักหลากหลายและซับซ้อนกว่า ต้องใช้เหตุผลมากกว่า ขณะที่คำถามสังเคราะห์มักมีรูปแบบตายตัว (templatic) PlotQA เป็นข้อมูลสังเคราะห์ทั้งหมด มีชุด v1 และ v2 โดย v1 ส่วนใหญ่เป็นคำถามเชิงสกัดข้อมูล (extractive) และ v2 เน้นการใช้เหตุผลเชิงตัวเลขมากกว่า ใช้ทั้ง RNSS และ $\texttt{RMS}_{\text{F1}}$ ในการประเมินการแปล plot-to-table (แม้เราจะได้อธิบายไปแล้วว่า $\texttt{RMS}_{\text{F1}}$ เป็นตัวชี้วัดที่ให้ข้อมูลมากกว่า) ตามแนวทางของ Masry et al. (2022); Methani et al. (2020) เราใช้ความแม่นยำแบบจับคู่ตรงทุกประการโดยมีค่าความคลาดเคลื่อนตัวเลข 5% ในการรายงานตัวเลข QA ทั้งหมด</p></div>
+  </div>
+
+  <!-- ── TABLE 2 ── -->
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 2 — ตารางที่ 2: สถิติข้อมูลของชุดข้อมูลฝึกฝนสำหรับงาน plot-to-table</div>
+      <table>
+        <thead><tr><th>Component</th><th>Rate</th><th>Size</th></tr></thead>
+        <tbody>
+          <tr><td>synthetic (by us)</td><td>33.3%</td><td>270K</td></tr>
+          <tr><td>ChartQA</td><td>33.3%</td><td>22K</td></tr>
+          <tr><td>PlotQA</td><td>33.3%</td><td>224K</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h4>Hardware.</h4></div>
+    <div class="th"><h4>ฮาร์ดแวร์</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We train and evaluate our models using 64 GCP-TPUv3. The training of DePlot can be completed in roughly 5 hours.</p></div>
+    <div class="th"><p>เราฝึกและประเมินโมเดลของเราโดยใช้ TPUv3 ของ GCP จำนวน 64 ตัว การฝึก DePlot สามารถเสร็จสิ้นได้ในเวลาประมาณ 5 ชั่วโมง</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h4>Parameters.</h4></div>
+    <div class="th"><h4>พารามิเตอร์</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>DePlot has 282M parameters. FlanPaLM has 540B parameters. Codex and GPT3 have roughly 175B parameters.</p></div>
+    <div class="th"><p>DePlot มีพารามิเตอร์ 282 ล้านตัว FlanPaLM มีพารามิเตอร์ 5.4 แสนล้านตัว Codex และ GPT3 มีพารามิเตอร์ประมาณ 1.75 แสนล้านตัว</p></div>
+  </div>
+
+  <!-- ── TABLE 3 ── -->
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 3 — ตารางที่ 3: สถิติชุดข้อมูลทดสอบสำหรับ ChartQA และ PlotQA</div>
+      <table>
+        <thead><tr><th>Dataset</th><th># Tables</th><th># QA Pairs</th></tr></thead>
+        <tbody>
+          <tr><td>ChartQA (Human)</td><td>625</td><td>1,250</td></tr>
+          <tr><td>ChartQA (Machine)</td><td>987</td><td>1,250</td></tr>
+          <tr><td>PlotQA (v1)</td><td>33K</td><td>1.2M</td></tr>
+          <tr><td>PlotQA (v2)</td><td>33K</td><td>4.3M</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h3>5.2 Main Results</h3></div>
+    <div class="th"><h3>5.2 ผลลัพธ์หลัก (Main Results)</h3></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h4>Plot-to-table translation.</h4></div>
+    <div class="th"><h4>การแปล Plot-to-table</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We evaluate plot-to-table conversion against an OCR and keypoint detection based system proposed by Luo et al. (2021) called ChartOCR. This system also relies on multiple hand-crafted rules that depend on the type of chart. We also compare against two PaLI models [Chen et al., 2023] (of different input resolutions) finetuned with the same plot-to-table corpus as DePlot. Finally, we compare with the MatCha base model off-the-shelf. The results are shown in Table 4.</p></div>
+    <div class="th"><p>เราประเมินการแปลง plot-to-table เปรียบเทียบกับระบบที่อิง OCR และการตรวจจับจุดสำคัญที่เสนอโดย Luo et al. (2021) เรียกว่า ChartOCR ระบบนี้พึ่งพากฎที่สร้างด้วยมือหลายข้อซึ่งขึ้นกับประเภทของแผนภูมิ เรายังเปรียบเทียบกับโมเดล PaLI สองตัว [Chen et al., 2023] (ที่มีความละเอียดของข้อมูลนำเข้าต่างกัน) ที่ปรับแต่งด้วยชุดข้อมูล plot-to-table เดียวกันกับ DePlot สุดท้าย เราเปรียบเทียบกับโมเดลพื้นฐาน MatCha แบบสำเร็จรูป (off-the-shelf) ผลลัพธ์แสดงอยู่ในตารางที่ 4</p></div>
+  </div>
+
+  <!-- ── TABLE 4 ── -->
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 4 — ตารางที่ 4: การเปรียบเทียบความแม่นยำของการแปลง plot-to-table บนชุดข้อมูล PlotQA (ทุกกราฟเดี่ยวในชุดทดสอบ PlotQA)</div>
+      <table>
+        <thead><tr><th>Model ↓, Metric →</th><th>RNSS</th><th>RMS<sub>F1</sub></th></tr></thead>
+        <tbody>
+          <tr><td>ChartOCR [Luo et al., 2021]</td><td>81.0</td><td>60.1</td></tr>
+          <tr><td>PaLI-17B (res. 224) + plot-to-table</td><td>77.2</td><td>24.8</td></tr>
+          <tr><td>PaLI-17B (res. 588) + plot-to-table</td><td>90.5</td><td>74.9</td></tr>
+          <tr><td>MatCha [Liu et al., 2023a]</td><td>95.4</td><td>92.3</td></tr>
+          <tr><td><strong>DePlot</strong></td><td><strong>97.1</strong></td><td><strong>94.2</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row para">
+    <div class="en"><p>On both metrics, DePlot outperforms the baseline ChartOCR by very significant margins. The gap is especially large on $\texttt{RMS}_{\text{F1}}$ since ChartOCR might suffice to extract numbers from the plot but can struggle to organize the extracted numbers into a structured table with the correct row and column labels. When compared against PaLI and MatCha, DePlot is also better, suggesting that a visual-language-specific architecture/initialization and task-specific finetuning can both boost plot-to-table accuracy. It is also worth noting that PaLI-17B (res. 588) performs much better than the 224-resolution variant, indicating that high input resolution is a key ingredient for chart information extraction.</p></div>
+    <div class="th"><p>ในทั้งสองตัวชี้วัด DePlot มีประสิทธิภาพดีกว่าเส้นฐาน ChartOCR อย่างมีนัยสำคัญ ช่องว่างนี้กว้างเป็นพิเศษบน $\texttt{RMS}_{\text{F1}}$ เนื่องจาก ChartOCR อาจสกัดตัวเลขจากกราฟได้เพียงพอ แต่ลำบากในการจัดระเบียบตัวเลขที่สกัดได้ให้เป็นตารางที่มีโครงสร้างพร้อมป้ายกำกับแถวและคอลัมน์ที่ถูกต้อง เมื่อเทียบกับ PaLI และ MatCha แล้ว DePlot ก็ดีกว่าเช่นกัน แสดงว่าทั้งสถาปัตยกรรม/การตั้งค่าเริ่มต้นเฉพาะภาษาภาพและการปรับแต่งเฉพาะงานต่างช่วยเพิ่มความแม่นยำของ plot-to-table ได้ นอกจากนี้ยังน่าสังเกตว่า PaLI-17B (res. 588) ทำได้ดีกว่ารุ่นความละเอียด 224 มาก แสดงว่าความละเอียดของข้อมูลนำเข้าที่สูงเป็นปัจจัยสำคัญสำหรับการสกัดข้อมูลจากแผนภูมิ</p></div>
+  </div>
+
+  <!-- ── TABLE 5 ── -->
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 5 — ตารางที่ 5: ผลการทดลองหลักบนเกณฑ์มาตรฐาน chart/plot QA สองชุด คือ ChartQA และ PlotQA ("aug." หมายถึงคำถามสังเคราะห์ "human" หมายถึงคำถามที่มนุษย์เขียน CoT = chain-of-thought prompting, SC = self-consistency, PoT = program-of-thought prompting หกแถวสุดท้ายแสดงผล DePlot+LLM ซึ่งเป็นรูปแบบ one-shot เพียงอย่างเดียว ผลลัพธ์ที่ดีที่สุดสำหรับ ChartQA ได้จากการโหวตเสียงข้างมากข้าม 10 CoT และ 10 PoT predictions ร่วมกัน</div>
+      <table>
+        <thead>
+          <tr><th rowspan="2">Setup</th><th rowspan="2">Model ↓</th><th colspan="3">ChartQA</th><th colspan="3">PlotQA</th></tr>
+          <tr><th>aug.</th><th>human</th><th>avg.</th><th>v1</th><th>v2</th><th>avg.</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>—</td><td>human ceiling</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>80.5</td></tr>
+          <tr><td rowspan="8">Fully-supervised</td><td>CRCT</td><td>-</td><td>-</td><td>-</td><td>76.9</td><td>34.4</td><td>55.7</td></tr>
+          <tr><td>VL-T5-OCR</td><td>-</td><td>-</td><td>41.6</td><td>75.9</td><td>56.0</td><td>66.0</td></tr>
+          <tr><td>T5-OCR</td><td>-</td><td>-</td><td>41.0</td><td>72.6</td><td>56.2</td><td>64.4</td></tr>
+          <tr><td>VisionTapas-OCR</td><td>-</td><td>-</td><td>45.5</td><td>65.3</td><td>42.5</td><td>53.9</td></tr>
+          <tr><td>PaLI-17B (res. 224)</td><td>6.2</td><td>12.6</td><td>9.4</td><td>56.9</td><td>13.1</td><td>35.0</td></tr>
+          <tr><td>PaLI-17B (res. 588)</td><td>64.9</td><td>30.4</td><td>47.6</td><td>64.5</td><td>15.2</td><td>39.8</td></tr>
+          <tr><td>Pix2Struct</td><td>81.6</td><td>30.5</td><td>56.0</td><td>73.2</td><td>71.9</td><td>72.5</td></tr>
+          <tr><td>MatCha</td><td>90.2</td><td>38.2</td><td>64.2</td><td><strong>92.3</strong></td><td><strong>90.7</strong></td><td><strong>91.5</strong></td></tr>
+          <tr><td rowspan="6">One-shot (OURS)</td><td>DePlot+GPT3 CoT</td><td>37.3</td><td>36.5</td><td>36.9</td><td>31.9</td><td>51.3</td><td>41.6</td></tr>
+          <tr><td>DePlot+GPT3 SC</td><td>42.6</td><td>41.9</td><td>42.3</td><td>35.0</td><td>51.6</td><td>43.3</td></tr>
+          <tr><td>DePlot+FlanPaLM CoT</td><td>76.7</td><td>57.8</td><td>67.3</td><td>51.3</td><td>44.9</td><td>48.1</td></tr>
+          <tr><td>DePlot+FlanPaLM SC</td><td>78.8</td><td>62.2</td><td>70.5</td><td>57.8</td><td>50.1</td><td>53.9</td></tr>
+          <tr><td>DePlot+Codex PoT SC</td><td><strong>91.8</strong></td><td>61.6</td><td>76.7</td><td>58.8</td><td>69.8</td><td>64.3</td></tr>
+          <tr><td>DePlot+FlanPaLM+Codex PoT SC</td><td>91.0</td><td><strong>67.6</strong></td><td><strong>79.3</strong></td><td>62.2</td><td>71.0</td><td>66.6</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h4>Downstream tasks.</h4></div>
+    <div class="th"><h4>งานปลายทาง</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We list the main results on ChartQA [Masry et al., 2022] and PlotQA [Methani et al., 2020] in Table 5. We evaluate different DePlot+LLM setups. We evaluate chain-of-thoughts (CoT) [Wei et al., 2022] prompts for GPT-3 [Brown et al., 2020] (text-davinci-003) and FlanPaLM [Chung et al., 2022] (540B). In addition, we use self-consistency (SC) [Wang et al., 2023] across 10 predictions. Finally, we use program-of-thoughts (PoT) [Chen et al., 2022] to prompt Codex [Chen et al., 2021] (code-davinci-002) to generate python snippets that can be subsequently executed by an interpreter to extract an answer. Since some reasoning operations are better done by plain language (like computing an argmax) and some by code snippets (like floating point arithmetic), we find optimal results by doing self-consistency across both CoT and PoT predictions.</p></div>
+    <div class="th"><p>เรารายงานผลลัพธ์หลักบน ChartQA [Masry et al., 2022] และ PlotQA [Methani et al., 2020] ในตารางที่ 5 เราประเมินการตั้งค่า DePlot+LLM ที่แตกต่างกัน โดยประเมิน prompt แบบ chain-of-thoughts (CoT) [Wei et al., 2022] สำหรับ GPT-3 [Brown et al., 2020] (text-davinci-003) และ FlanPaLM [Chung et al., 2022] (540B) นอกจากนี้เราใช้ self-consistency (SC) [Wang et al., 2023] ข้าม 10 การทำนาย สุดท้ายเราใช้ program-of-thoughts (PoT) [Chen et al., 2022] เพื่อ prompt Codex [Chen et al., 2021] (code-davinci-002) ให้สร้างโค้ด python ที่สามารถรันด้วยตัวแปลภาษาเพื่อหาคำตอบได้ เนื่องจากการดำเนินการใช้เหตุผลบางอย่างทำได้ดีกว่าด้วยภาษาธรรมดา (เช่นการคำนวณ argmax) และบางอย่างทำได้ดีกว่าด้วยโค้ด (เช่นการคำนวณทศนิยม) เราพบว่าผลลัพธ์ที่ดีที่สุดได้จากการทำ self-consistency ข้ามทั้งการทำนายแบบ CoT และ PoT</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>DePlot+LLM performs especially strong on the ChartQA human set which contains complex human written queries. Compared with prior SOTA MatCha, DePlot+LLM when combined with FlanPaLM and Codex and Self-Consistency (SC) achieves an improvement of 29.4% (38.2%→67.6%). This is also the best setup for PlotQA. On the heavily synthetic queries from PlotQA v1 and v2, DePlot+LLM models underperform the end-to-end SOTA MatCha.</p></div>
+    <div class="th"><p>DePlot+LLM ทำงานได้ดีเป็นพิเศษบนชุด human ของ ChartQA ซึ่งมีคำถามที่มนุษย์เขียนขึ้นซึ่งซับซ้อน เมื่อเทียบกับ SOTA เดิมคือ MatCha แล้ว DePlot+LLM เมื่อรวมกับ FlanPaLM, Codex และ Self-Consistency (SC) ทำได้ดีขึ้น 29.4% (38.2% → 67.6%) นี่ยังเป็นการตั้งค่าที่ดีที่สุดสำหรับ PlotQA ด้วย ในคำถามสังเคราะห์ล้วน ๆ จาก PlotQA v1 และ v2 โมเดล DePlot+LLM ทำได้แย่กว่า SOTA แบบ end-to-end คือ MatCha</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In summary, DePlot+LLM significantly outperforms finetuned SOTA on human-written chart QA queries and overall underperforms finetuned SOTA on synthetic QA queries. We believe it is especially important to achieve good performance on the human set as it is much more diverse and reflects the real-world challenges. The results suggest DePlot+LLM's strong capability in solving novel human queries unseen in demonstration. It is also worth emphasizing again that DePlot+LLM requires much less supervision than the finetuned SOTA methods (one shot vs. tens of thousands of training examples). We will discuss why DePlot+LLM underperforms on PlotQA in error analysis (Section 6.1).</p></div>
+    <div class="th"><p>กล่าวโดยสรุป DePlot+LLM ทำได้ดีกว่า SOTA ที่ปรับแต่งแล้วอย่างมีนัยสำคัญบนคำถาม chart QA ที่มนุษย์เขียนขึ้น และโดยรวมทำได้แย่กว่า SOTA ที่ปรับแต่งแล้วบนคำถามสังเคราะห์ เราเชื่อว่าการทำได้ดีบนชุด human เป็นสิ่งสำคัญอย่างยิ่ง เนื่องจากมีความหลากหลายมากกว่าและสะท้อนความท้าทายในโลกจริง ผลลัพธ์เหล่านี้แสดงให้เห็นถึงความสามารถที่แข็งแกร่งของ DePlot+LLM ในการแก้คำถามของมนุษย์รูปแบบใหม่ที่ไม่เคยเห็นในตัวอย่างสาธิต และยังเน้นย้ำได้ว่า DePlot+LLM ต้องการการกำกับดูแลน้อยกว่าวิธี SOTA ที่ปรับแต่งแล้วมาก (one-shot เทียบกับตัวอย่างฝึกฝนหลายหมื่นตัวอย่าง) เราจะอธิบายว่าทำไม DePlot+LLM ทำได้แย่กว่าบน PlotQA ในการวิเคราะห์ข้อผิดพลาด (ส่วนที่ 6.1)</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Besides one-shot learning, we also experimented with zero- and few-shot inference. We found the models generally fail without demonstration and few-shot has similar performance as one-shot. After the submission of this paper, we experimented with RLHF-ed LLMs such as ChatGPT, GPT-4 [OpenAI, 2023], and Bard, finding that such aligned conversational models are capable of processing the DePlot-generated tables in a zero-shot manner. This can potentially further improve DePlot+LLM's performance on academic benchmarks by large margins.</p></div>
+    <div class="th"><p>นอกเหนือจากการเรียนรู้แบบ one-shot แล้ว เรายังทดลองกับการอนุมานแบบ zero-shot และ few-shot ด้วย เราพบว่าโมเดลโดยทั่วไปจะล้มเหลวหากไม่มีตัวอย่างสาธิต และ few-shot มีประสิทธิภาพคล้ายกับ one-shot หลังจากส่งบทความนี้แล้ว เราได้ทดลองกับ LLM ที่ผ่านการปรับด้วย RLHF เช่น ChatGPT, GPT-4 [OpenAI, 2023] และ Bard พบว่าโมเดลสนทนาที่ผ่านการปรับแนว (aligned) เหล่านี้สามารถประมวลผลตารางที่ DePlot สร้างขึ้นแบบ zero-shot ได้ ซึ่งอาจช่วยเพิ่มประสิทธิภาพของ DePlot+LLM บนเกณฑ์มาตรฐานวิชาการได้อีกมาก</p></div>
+  </div>
+
+  <!-- ── SECTION 6 ── -->
+  <div class="row heading">
+    <div class="en"><h2>6. Analyses and Discussions</h2></div>
+    <div class="th"><h2>6. การวิเคราะห์และอภิปราย (Analyses and Discussions)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In this section, we first conduct case studies and error analysis in Section 6.1 to better understand DePlot's wins and losses against end-to-end methods. Then in Section 6.2 we study the performance of DePlot when exposed to out-of-distribution web charts and plots.</p></div>
+    <div class="th"><p>ในส่วนนี้ เราจะทำการศึกษากรณีตัวอย่างและวิเคราะห์ข้อผิดพลาดในส่วนที่ 6.1 ก่อน เพื่อให้เข้าใจจุดเด่นและจุดด้อยของ DePlot เมื่อเทียบกับวิธีแบบ end-to-end ได้ดีขึ้น จากนั้นในส่วนที่ 6.2 เราจะศึกษาประสิทธิภาพของ DePlot เมื่อเจอกับกราฟและแผนภูมิจากเว็บที่อยู่นอกการกระจายข้อมูล (out-of-distribution)</p></div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h3>6.1 Case Study and Error Analysis</h3></div>
+    <div class="th"><h3>6.1 กรณีศึกษาและการวิเคราะห์ข้อผิดพลาด</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>To more concretely demonstrate the strengths and weaknesses of DePlot+LLM, we present two case studies for the downstream task ChartQA. We compare DePlot+FlanPaLM using either PoT or CoT.</p></div>
+    <div class="th"><p>เพื่อแสดงให้เห็นจุดแข็งและจุดอ่อนของ DePlot+LLM อย่างเป็นรูปธรรมมากขึ้น เราขอนำเสนอกรณีศึกษาสองกรณีสำหรับงานปลายทาง ChartQA โดยเปรียบเทียบ DePlot+FlanPaLM ที่ใช้ทั้ง PoT และ CoT</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>First, in Table 6 we show an example demonstrating the benefit of using LLM and prompting techniques for stronger numerical reasoning. While the finetuned SOTA MatCha wrongly predicts the answer, DePlot+FlanPaLM (using either CoT or PoT) produces accurately the answer.</p></div>
+    <div class="th"><p>ตัวอย่างแรก ในตารางที่ 6 เราแสดงตัวอย่างที่แสดงประโยชน์ของการใช้ LLM และเทคนิคการ prompt สำหรับการใช้เหตุผลเชิงตัวเลขที่แข็งแกร่งกว่า ในขณะที่ SOTA ที่ปรับแต่งแล้วคือ MatCha ทำนายคำตอบผิด DePlot+FlanPaLM (ทั้งแบบ CoT หรือ PoT) ให้คำตอบที่ถูกต้อง</p></div>
+  </div>
+
+  <!-- ── TABLE 6 (case study) ── -->
+  <div class="row figure">
+    <div class="en">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_case_study_m1.png" alt="Table 6" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Table 6</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Table 6:</strong> DePlot+LLM shows much stronger numerical reasoning skills than the finetuned MatCha.<br><br>
+      <em>Question:</em> What is the difference between the sum shares of Indonesia and Ireland and the share of Mauritania?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">0.07</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> Let's find the sum of shares of Indonesia and Ireland: 2.88+2.33=5.21. Let's subtract the share of Mauritania: 5.21-4.15=1.06. The answer is <span style="color:#66CC00;font-weight:bold;">1.06</span>.<br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>indonesia = 2.88
+ireland = 2.33
+mauritania = 4.15
+ans=(indonesia+ireland)-mauritania</pre>
+      <p class="fig-caption">Compiler output: <span style="color:#66CC00;font-weight:bold;">1.06</span></p>
+    </div>
+    <div class="th">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_case_study_m1.png" alt="ตารางที่ 6" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">ตารางที่ 6</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>ตารางที่ 6:</strong> DePlot+LLM แสดงทักษะการใช้เหตุผลเชิงตัวเลขที่แข็งแกร่งกว่า MatCha ที่ปรับแต่งแล้วมาก<br><br>
+      <em>คำถาม:</em> ผลต่างระหว่างผลรวมสัดส่วนของอินโดนีเซียและไอร์แลนด์ กับสัดส่วนของมอริเตเนียคือเท่าใด?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">0.07</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> หาผลรวมสัดส่วนของอินโดนีเซียและไอร์แลนด์ก่อน: 2.88+2.33=5.21 จากนั้นลบสัดส่วนของมอริเตเนีย: 5.21-4.15=1.06 คำตอบคือ <span style="color:#66CC00;font-weight:bold;">1.06</span><br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>indonesia = 2.88
+ireland = 2.33
+mauritania = 4.15
+ans=(indonesia+ireland)-mauritania</pre>
+      <p class="fig-caption">ผลลัพธ์จากการรันโค้ด: <span style="color:#66CC00;font-weight:bold;">1.06</span></p>
+    </div>
+  </div>
+
+  <div class="row para">
+    <div class="en"><p>Second, we show an example where the DePlot+LLM framework fails in Table 7. The LLMs are unable to accurately identify the "highest value of the gray bar" since they do not have information about the color of bars. In Table 7, though DePlot+FlanPaLM correctly predicted "Yes", it is correct for the wrong reason – FlanPaLM randomly chose the highest value in light blue bars which also happens to be smaller than the average of "identity theft". This is a typical failure mode where the query refers to a visual attribute but such attribute is lost in plot-to-table translation. In future work, we plan to develop a table encoding scheme that also considers visual attributes to avoid such errors.</p></div>
+    <div class="th"><p>ตัวอย่างที่สอง เราแสดงตัวอย่างที่กรอบงาน DePlot+LLM ล้มเหลวในตารางที่ 7 LLM ไม่สามารถระบุ "ค่าสูงสุดของแถบสีเทา" ได้อย่างแม่นยำ เนื่องจากไม่มีข้อมูลเกี่ยวกับสีของแถบ ในตารางที่ 7 แม้ DePlot+FlanPaLM ทำนาย "Yes" ได้ถูกต้อง แต่ถูกด้วยเหตุผลที่ผิด — FlanPaLM เลือกค่าสูงสุดในแถบสีฟ้าอ่อนแบบสุ่ม ซึ่งบังเอิญมีค่าน้อยกว่าค่าเฉลี่ยของ "identity theft" ด้วย นี่เป็นรูปแบบความล้มเหลวทั่วไปที่คำถามอ้างถึงคุณลักษณะเชิงภาพ แต่คุณลักษณะนั้นสูญหายไปในการแปล plot-to-table ในงานอนาคต เราวางแผนจะพัฒนาวิธีการเข้ารหัสตารางที่พิจารณาคุณลักษณะเชิงภาพด้วย เพื่อหลีกเลี่ยงข้อผิดพลาดเช่นนี้</p></div>
+  </div>
+
+  <!-- ── TABLE 7 (case study) ── -->
+  <div class="row figure">
+    <div class="en">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_error_analysis_right4wrong_reason.png" alt="Table 7" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Table 7</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Table 7:</strong> DePlot+LLM struggles with queries related to visual attributes such as color (which is lost in plot-to-table translation).<br><br>
+      <em>Question:</em> Is the average of all the bars in "identity theft" greater than the highest value of the gray bar?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">No</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> Let's find the average of all the bars in "Identity theft". The sum of all the bars is 66+17+16 = 99. The average is 99/3 = 33. The highest value of the gray bar is 26. 33 is greater than 26. The answer is <span style="color:#66CC00;font-weight:bold;">Yes</span>.<br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#Identity theft corresponds to row 5
+#Numbers on row 5 are [66, 17, 16]
+#Highest value of the gray bar is 79
+ans = 66 &gt; 79</pre>
+      <p class="fig-caption">Compiler output: <span style="color:#FF0000;font-weight:bold;">No</span></p>
+    </div>
+    <div class="th">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_error_analysis_right4wrong_reason.png" alt="ตารางที่ 7" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">ตารางที่ 7</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>ตารางที่ 7:</strong> DePlot+LLM มีปัญหากับคำถามที่เกี่ยวข้องกับคุณลักษณะเชิงภาพ เช่น สี (ซึ่งสูญหายไปในการแปล plot-to-table)<br><br>
+      <em>คำถาม:</em> ค่าเฉลี่ยของแถบทั้งหมดใน "identity theft" มากกว่าค่าสูงสุดของแถบสีเทาหรือไม่?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">No</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> หาค่าเฉลี่ยของแถบทั้งหมดใน "Identity theft" ผลรวมของแถบทั้งหมดคือ 66+17+16 = 99 ค่าเฉลี่ยคือ 99/3 = 33 ค่าสูงสุดของแถบสีเทาคือ 26 ค่า 33 มากกว่า 26 คำตอบคือ <span style="color:#66CC00;font-weight:bold;">Yes</span><br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#identity theft อยู่ที่แถวที่ 5
+#ตัวเลขในแถวที่ 5 คือ [66, 17, 16]
+#ค่าสูงสุดของแถบสีเทาคือ 79
+ans = 66 &gt; 79</pre>
+      <p class="fig-caption">ผลลัพธ์จากการรันโค้ด: <span style="color:#FF0000;font-weight:bold;">No</span></p>
+    </div>
+  </div>
+
+  <div class="row para">
+    <div class="en"><p>While DePlot+LLM has surpassed finetuned SOTA on ChartQA, we notice that the picture on PlotQA is different – DePlot underperforms finetuned SOTA MatCha by a large margin (66.6% vs. 91.5%). Through error analysis, we observe that there are two major reasons. First, synthetic queries are highly templatic and covers only restricted types of questions. Models finetuned with thousands of examples can learn to solve such templatic questions, even better than humans do (human ceiling on PlotQA is just 80.5% compared with MatCha performance of 91.5%). However, DePlot+LLMs only learn from one-shot in-context example and thus cannot exploit such bias encoded in the training set. The second reason is the loss of information in plot-to-table translation. Synthetic queries are usually highly extractive and include questions asking visual attributes such as color, shape, or direction of objects in a plot. When plots are converted to tables, such information is lost. We plan to also decode visual attributes in future work when training the plot-to-table model.</p></div>
+    <div class="th"><p>แม้ DePlot+LLM จะทำได้ดีกว่า SOTA ที่ปรับแต่งแล้วบน ChartQA แต่เราพบว่าภาพรวมบน PlotQA นั้นแตกต่างกัน — DePlot ทำได้แย่กว่า SOTA ที่ปรับแต่งแล้วคือ MatCha อย่างมาก (66.6% เทียบกับ 91.5%) จากการวิเคราะห์ข้อผิดพลาด เราพบสาเหตุหลักสองประการ ประการแรก คำถามสังเคราะห์มีรูปแบบตายตัวมากและครอบคลุมเพียงประเภทคำถามที่จำกัด โมเดลที่ปรับแต่งด้วยตัวอย่างหลายพันตัวอย่างสามารถเรียนรู้แก้คำถามรูปแบบตายตัวเหล่านี้ได้ดีกว่ามนุษย์เสียอีก (เพดานความสามารถของมนุษย์บน PlotQA อยู่ที่เพียง 80.5% เทียบกับประสิทธิภาพของ MatCha ที่ 91.5%) แต่ DePlot+LLM เรียนรู้จากตัวอย่าง one-shot in-context เพียงตัวอย่างเดียว จึงไม่สามารถใช้ประโยชน์จากความเอนเอียง (bias) ที่ฝังอยู่ในชุดข้อมูลฝึกฝนได้ สาเหตุที่สองคือการสูญเสียข้อมูลในการแปล plot-to-table คำถามสังเคราะห์มักเป็นแบบสกัดข้อมูล (extractive) สูง และมีคำถามเกี่ยวกับคุณลักษณะเชิงภาพ เช่น สี รูปร่าง หรือทิศทางของวัตถุในกราฟ เมื่อกราฟถูกแปลงเป็นตาราง ข้อมูลเหล่านี้จะสูญหายไป เราวางแผนจะถอดรหัสคุณลักษณะเชิงภาพด้วยในงานอนาคตเมื่อฝึกโมเดล plot-to-table</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>More successful and failure case analyses are available in Appendix D.</p></div>
+    <div class="th"><p>การวิเคราะห์กรณีตัวอย่างที่สำเร็จและล้มเหลวเพิ่มเติมมีอยู่ในภาคผนวก D</p></div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h3>6.2 Out-of-distribution Analysis</h3></div>
+    <div class="th"><h3>6.2 การวิเคราะห์ข้อมูลนอกการกระจาย (Out-of-distribution Analysis)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>One limitation of our evaluation setup is that the kind and style of charts that are part of DePlot's training corpus are in the same domain as those in the evaluation sets from ChartQA and PlotQA. This raises the question of whether DePlot will generalize to charts sourced from different websites or built using completely different tools. However, few public resources exist containing both charts and their associated tables.</p></div>
+    <div class="th"><p>ข้อจำกัดหนึ่งของการตั้งค่าการประเมินของเราคือประเภทและสไตล์ของแผนภูมิที่อยู่ในชุดข้อมูลฝึกฝนของ DePlot เป็นโดเมนเดียวกันกับชุดประเมินจาก ChartQA และ PlotQA ซึ่งทำให้เกิดคำถามว่า DePlot จะสามารถนำไปใช้ทั่วไป (generalize) กับแผนภูมิจากเว็บไซต์อื่นหรือที่สร้างด้วยเครื่องมือที่แตกต่างไปโดยสิ้นเชิงได้หรือไม่ อย่างไรก็ตาม มีแหล่งข้อมูลสาธารณะน้อยมากที่มีทั้งแผนภูมิและตารางที่เกี่ยวข้องอยู่ด้วยกัน</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In order to estimate the out-of-distribution capabilities of DePlot we annotate 10 charts from the recently released TaTa dataset [Gehrmann et al., 2022], sourced from dhsprogram.com. We skip choropleth maps since none have been seen during training. We find DePlot obtains an average 78% $\texttt{RMS}_{\text{F1}}$ score in reconstructing the underlying tables. We observed two limitations in DePlot which we outline below and can attributed to the nature of the training datasets used. First the model could get distracted by adjacent text, such as references to external sources, and it benefited from cropping the chart in advance. Secondly, DePlot struggled to understand labels or values linked to their corresponding bar/pie section by an arrow. We will address these issues in future work by making the synthetic data creation pipeline more robust.</p></div>
+    <div class="th"><p>เพื่อประมาณความสามารถของ DePlot บนข้อมูลนอกการกระจาย เราติดป้ายกำกับแผนภูมิ 10 แผนภูมิจากชุดข้อมูล TaTa [Gehrmann et al., 2022] ที่เพิ่งเผยแพร่ ซึ่งมาจาก dhsprogram.com เราข้าม choropleth maps เนื่องจากไม่มีรูปแบบนี้ในข้อมูลฝึกฝนเลย เราพบว่า DePlot ได้คะแนน $\texttt{RMS}_{\text{F1}}$ เฉลี่ย 78% ในการสร้างตารางเบื้องหลังขึ้นใหม่ เราสังเกตข้อจำกัดสองประการใน DePlot ซึ่งสรุปไว้ด้านล่าง และสามารถอธิบายได้จากธรรมชาติของชุดข้อมูลฝึกฝนที่ใช้ ประการแรก โมเดลอาจถูกรบกวนจากข้อความที่อยู่ใกล้เคียง เช่น การอ้างอิงแหล่งข้อมูลภายนอก และได้ประโยชน์จากการครอปแผนภูมิไว้ก่อน ประการที่สอง DePlot มีปัญหาในการเข้าใจป้ายกำกับหรือค่าที่เชื่อมโยงกับส่วนแถบ/วงกลมที่สัมพันธ์กันด้วยลูกศร เราจะแก้ไขปัญหาเหล่านี้ในงานอนาคตโดยทำให้ไปป์ไลน์การสร้างข้อมูลสังเคราะห์มีความทนทานมากขึ้น</p></div>
+  </div>
+
+  <!-- ── SECTION 7 ── -->
+  <div class="row heading">
+    <div class="en"><h2>7. Conclusion</h2></div>
+    <div class="th"><h2>7. บทสรุป (Conclusion)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We have proposed DePlot+LLM, a method for visual language reasoning by decomposing the task into two steps. The first step is converting a plot into linearized table using an image-to-text Transformer model finetuned for the conversion. The second step is combining the plot-to-text model with an off-the-shelf LLM to reason on the linearized table with just one-shot supervision.</p></div>
+    <div class="th"><p>เราได้เสนอ DePlot+LLM ซึ่งเป็นวิธีการใช้เหตุผลเชิงภาษาภาพโดยแบ่งงานออกเป็นสองขั้นตอน ขั้นตอนแรกคือการแปลงกราฟให้เป็นตารางแบบเรียงเส้นตรงโดยใช้โมเดล Transformer แบบ image-to-text ที่ปรับแต่งสำหรับการแปลงนี้ ขั้นตอนที่สองคือการรวมโมเดลแปลง plot-to-text กับ LLM แบบสำเร็จรูปเพื่อใช้เหตุผลบนตารางที่แปลงแล้วด้วยการกำกับดูแลแบบ one-shot เพียงอย่างเดียว</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We standardize the plot-to-table conversion task by proposing a new table similarity comparison metric that considers the structure of the table and the numeric values but is invariant to column/row permutation. With the new metric, we compare our image-to-text model DePlot's performance with an OCR-based baseline and three end-to-end baselines, achieving the best improvement. The conversion model is then used for downstream tasks of ChartQA and PlotQA. On ChartQA human-query set, the one-shot DePlot+LLM model achieves +29.4% performance compared with end-to-end SOTA finetuned with thousands of examples. We have also conducted comprehensive analyses to understand the wins and loses of the DePlot+LLM framework and highlight that encoding visual attributes can be a fruitful direction for future exploration.</p></div>
+    <div class="th"><p>เราสร้างมาตรฐานให้กับงานแปลง plot-to-table โดยเสนอตัวชี้วัดเปรียบเทียบความคล้ายคลึงของตารางแบบใหม่ที่พิจารณาทั้งโครงสร้างของตารางและค่าตัวเลข แต่ไม่ขึ้นกับการสลับลำดับคอลัมน์/แถว ด้วยตัวชี้วัดใหม่นี้ เราเปรียบเทียบประสิทธิภาพของโมเดล image-to-text คือ DePlot กับเส้นฐานที่อิง OCR และเส้นฐานแบบ end-to-end อีกสามตัว ซึ่งให้ผลลัพธ์ที่ดีที่สุด จากนั้นโมเดลแปลงนี้ถูกนำไปใช้ในงานปลายทางของ ChartQA และ PlotQA บนชุดคำถามมนุษย์ของ ChartQA โมเดล DePlot+LLM แบบ one-shot ทำได้ดีขึ้น +29.4% เมื่อเทียบกับ SOTA แบบ end-to-end ที่ปรับแต่งด้วยตัวอย่างหลายพันตัวอย่าง เรายังได้ทำการวิเคราะห์อย่างครอบคลุมเพื่อเข้าใจจุดเด่นและจุดด้อยของกรอบงาน DePlot+LLM และเน้นว่าการเข้ารหัสคุณลักษณะเชิงภาพอาจเป็นทิศทางที่น่าสนใจสำหรับการศึกษาในอนาคต</p></div>
+  </div>
+
+  <!-- ── LIMITATIONS ── -->
+  <div class="row heading">
+    <div class="en"><h2>Limitations</h2></div>
+    <div class="th"><h2>ข้อจำกัด (Limitations)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>DePlot's strength is highly dependent on the accuracy of plot-to-text(table) conversion. To obtain effective plot-to-text conversion, large amounts of diverse and in-domain plot-table parallel data are usually needed. It is unknown to which extent DePlot can work for out-of-domain (OOD) plot-to-text conversion. We investigated this in Section 6.2 but in the future a wider range of web charts can be used to gain a deeper understanding into DePlot's robustness for OOD plots.</p></div>
+    <div class="th"><p>จุดแข็งของ DePlot ขึ้นอยู่กับความแม่นยำของการแปลง plot-to-text (table) เป็นอย่างมาก การแปลง plot-to-text ที่มีประสิทธิภาพมักต้องใช้ข้อมูลคู่ plot-table ที่หลากหลายและอยู่ในโดเมนเดียวกันปริมาณมาก ยังไม่เป็นที่แน่ชัดว่า DePlot จะทำงานได้ดีเพียงใดกับการแปลง plot-to-text ที่อยู่นอกโดเมน (OOD) เราได้ศึกษาเรื่องนี้ในส่วนที่ 6.2 แต่ในอนาคตอาจใช้แผนภูมิจากเว็บที่หลากหลายยิ่งขึ้นเพื่อทำความเข้าใจความทนทานของ DePlot ต่อกราฟ OOD ได้ลึกซึ้งยิ่งขึ้น</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Beyond, DePlot does not work for visual language that does not have a clear latent textual representation such as textbook figures where the visual illustrations are created using specialized software and do not have clear structured representations.</p></div>
+    <div class="th"><p>นอกจากนี้ DePlot ยังไม่สามารถทำงานได้กับภาษาภาพที่ไม่มีการแทนค่าเชิงข้อความที่แอบแฝงอยู่อย่างชัดเจน เช่น รูปภาพในหนังสือเรียนที่ภาพประกอบถูกสร้างขึ้นด้วยซอฟต์แวร์เฉพาะทาง และไม่มีการแทนค่าเชิงโครงสร้างที่ชัดเจน</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Another limitation of the current DePlot approach is that we ignore any layout information such as orientation and color of the visual elements/objects. In future work, we can incorporate such attributional information by including them in the decoding target.</p></div>
+    <div class="th"><p>ข้อจำกัดอีกประการของแนวทาง DePlot ในปัจจุบันคือเรามองข้ามข้อมูลการจัดวาง (layout) เช่น การวางแนวและสีขององค์ประกอบ/วัตถุเชิงภาพ ในงานอนาคต เราสามารถรวมข้อมูลคุณลักษณะเหล่านี้เข้าไปในเป้าหมายการถอดรหัส (decoding target) ได้</p></div>
+  </div>
+
+  <!-- ── ETHICS STATEMENT ── -->
+  <div class="row heading">
+    <div class="en"><h2>Ethics Statement</h2></div>
+    <div class="th"><h2>แถลงการณ์ด้านจริยธรรม (Ethics Statement)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>To the best of our knowledge, DePlot is of low risk to the society since it is an information extraction model that converts graphics information from image to textual information in the form of table. That said, when combined with LLMs, DePlot+LLM can demonstrate potential risk such as generating toxic content similar to when LLMs are used standalone. As a result, we should proceed with caution when deploying DePlot+LLM in the real-world and take necessary precautions such as having a filtering stage after the generation.</p></div>
+    <div class="th"><p>ตามความเข้าใจของเราที่ดีที่สุด DePlot มีความเสี่ยงต่ำต่อสังคม เนื่องจากเป็นโมเดลสกัดข้อมูลที่แปลงข้อมูลกราฟิกจากภาพให้เป็นข้อมูลเชิงข้อความในรูปตาราง อย่างไรก็ตาม เมื่อรวมกับ LLM แล้ว DePlot+LLM อาจแสดงความเสี่ยงที่อาจเกิดขึ้นได้ เช่นการสร้างเนื้อหาที่เป็นพิษ (toxic content) เช่นเดียวกับเมื่อใช้ LLM เพียงอย่างเดียว ดังนั้นเราควรดำเนินการด้วยความระมัดระวังเมื่อนำ DePlot+LLM ไปใช้ในโลกจริง และมีมาตรการป้องกันที่จำเป็น เช่น การมีขั้นตอนกรองเนื้อหาหลังจากการสร้าง</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In terms of data used, all training and evaluation data are either synthetically created using rules or publicly available data on the web with appropriate permissive licenses.</p></div>
+    <div class="th"><p>ในด้านข้อมูลที่ใช้ ข้อมูลฝึกฝนและประเมินทั้งหมดเป็นข้อมูลที่สร้างขึ้นแบบสังเคราะห์โดยใช้กฎ หรือข้อมูลที่เปิดเผยต่อสาธารณะบนเว็บโดยมีสัญญาอนุญาตที่เหมาะสม</p></div>
+  </div>
+
+  <!-- ── APPENDIX A ── -->
+  <div class="row heading">
+    <div class="en"><h2>Appendix A. Details of Baselines</h2></div>
+    <div class="th"><h2>ภาคผนวก A. รายละเอียดของเส้นฐาน (Details of Baselines)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We introduce below the details of the baselines used in Table 5. T5 is an encode-decoder Transformer model proposed by Raffel et al. (2020). The baseline model T5 takes the concatenation of a linearized table (and a query, when the task is QA) as input, and aims to decode the target (answer or summarization). When the gold table is available, the gold table is used as the input and the chart image is not used directly. VL-T5 proposed by Cho et al. (2021) is similar to T5 but also takes a visual input (i.e., the chart image) on the encoder side. VisionTaPas [Masry et al., 2022] is modified from TaPas [Herzig et al., 2020] to incorporate the visual modality by adding a ViT model [Dosovitskiy et al., 2021] and cross-modal fusion layers. T5-OCR, VL-T5-OCR, and VisionTaPas-OCR are the same model as T5, VL-T5, and VisionTaPas, respectively. However, they do not assume the existence of gold table but use an OCR-based system to extract the data table from the chart image. The above mentioned models and their performance numbers are all extracted from Masry et al. (2022) and Kantharaj et al. (2022). Classification - Regression Chart Transformer (CRCT) [Levy et al., 2022] is the best performing model on PlotQA according to the PlotQA benchmark on paperswithcode.com. It uses a detector that extracts all textual and visual elements of chart then processes these elements with a multimodal Transformer. PaLI [Chen et al., 2023] with 17B parameters is a SOTA on multiple vision-language tasks in the natural image domain however fails significantly on chart understanding tasks. MatCha [Liu et al., 2023a] is the strongest supervised baseline and uses a mixture of image-to-text tasks as pretraining to inject math reasoning and chart layout understanding knowledge to the base model. In downstream tasks ChartQA and PlotQA, the full-supervised models are finetuned with the corresponding training sets (ChartQA has ~33k data points and PlotQA has ~37M). The fully supervised results are collected from Liu et al. (2023a).</p></div>
+    <div class="th"><p>เรานำเสนอรายละเอียดของเส้นฐาน (baseline) ที่ใช้ในตารางที่ 5 ด้านล่างนี้ T5 เป็นโมเดล Transformer แบบ encode-decoder ที่เสนอโดย Raffel et al. (2020) โมเดลเส้นฐาน T5 รับข้อมูลนำเข้าเป็นการต่อตารางแบบเรียงเส้นตรง (และคำถาม สำหรับงาน QA) และมีเป้าหมายถอดรหัสคำตอบหรือบทสรุป เมื่อมีตารางต้นฉบับ (gold table) ตารางนั้นจะถูกใช้เป็นข้อมูลนำเข้าโดยไม่ใช้ภาพแผนภูมิโดยตรง VL-T5 ที่เสนอโดย Cho et al. (2021) คล้ายกับ T5 แต่รับข้อมูลภาพ (คือภาพแผนภูมิ) ที่ส่วน encoder ด้วย VisionTaPas [Masry et al., 2022] ปรับปรุงจาก TaPas [Herzig et al., 2020] เพื่อรวมรูปแบบข้อมูลเชิงภาพโดยเพิ่มโมเดล ViT [Dosovitskiy et al., 2021] และชั้นผสานข้ามรูปแบบข้อมูล (cross-modal fusion) T5-OCR, VL-T5-OCR และ VisionTaPas-OCR เป็นโมเดลเดียวกับ T5, VL-T5 และ VisionTaPas ตามลำดับ แต่ไม่สมมติว่ามีตารางต้นฉบับอยู่ และใช้ระบบที่อิง OCR ในการสกัดตารางข้อมูลจากภาพแผนภูมิแทน โมเดลที่กล่าวมาข้างต้นและตัวเลขประสิทธิภาพทั้งหมดดึงมาจาก Masry et al. (2022) และ Kantharaj et al. (2022) Classification - Regression Chart Transformer (CRCT) [Levy et al., 2022] เป็นโมเดลที่ทำได้ดีที่สุดบน PlotQA ตามเกณฑ์มาตรฐาน PlotQA บน paperswithcode.com ใช้ตัวตรวจจับที่สกัดองค์ประกอบเชิงข้อความและเชิงภาพทั้งหมดของแผนภูมิ แล้วประมวลผลองค์ประกอบเหล่านี้ด้วย Transformer แบบหลายรูปแบบข้อมูล PaLI [Chen et al., 2023] ที่มีพารามิเตอร์ 17 พันล้านตัวเป็น SOTA บนงานภาพ-ภาษาหลายงานในโดเมนภาพธรรมชาติ แต่ล้มเหลวอย่างมากในงานทำความเข้าใจแผนภูมิ MatCha [Liu et al., 2023a] เป็นเส้นฐานแบบ supervised ที่แข็งแกร่งที่สุด และใช้ส่วนผสมของงาน image-to-text เป็นการฝึกล่วงหน้าเพื่อฝังความรู้ด้านการใช้เหตุผลทางคณิตศาสตร์และความเข้าใจการจัดวางแผนภูมิให้กับโมเดลพื้นฐาน ในงานปลายทาง ChartQA และ PlotQA โมเดลแบบ fully-supervised ถูกปรับแต่งด้วยชุดฝึกฝนที่สัมพันธ์กัน (ChartQA มีข้อมูลประมาณ 33,000 จุด และ PlotQA มีประมาณ 37 ล้านจุด) ผลลัพธ์แบบ fully supervised รวบรวมมาจาก Liu et al. (2023a)</p></div>
+  </div>
+
+  <!-- ── APPENDIX B ── -->
+  <div class="row heading">
+    <div class="en"><h2>Appendix B. Human Evaluation Questions</h2></div>
+    <div class="th"><h2>ภาคผนวก B. คำถามสำหรับการประเมินโดยมนุษย์ (Human Evaluation Questions)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We list below (Figure 2) the annotation form of the three questions asked when producing the human judgment scores of plot-table pairs. Each question asks one aspect regarding the quality of the generated table and the annotator needs to rate the table from 1 to 5. The final table score is the average score from the three questions.</p></div>
+    <div class="th"><p>เราแสดงรายการ (รูปที่ 2) แบบฟอร์มการให้คะแนนสามคำถามที่ใช้ในการสร้างคะแนนการตัดสินของมนุษย์สำหรับคู่กราฟ-ตาราง คำถามแต่ละข้อถามถึงแง่มุมหนึ่งของคุณภาพตารางที่สร้างขึ้น และผู้ประเมินต้องให้คะแนนตารางในช่วง 1 ถึง 5 คะแนนสุดท้ายของตารางคือค่าเฉลี่ยของคะแนนทั้งสามคำถาม</p></div>
+  </div>
+
+  <div class="row figure">
+    <div class="en">
+      <svg class="fig-dummy" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Figure 2</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Figure 2:</strong> Questions for producing human scores of plot-table pairs.</p>
+      <pre>[plot]
+
+[generated table]
+
+Questions (rate 1 to 5; the higher the better):
+
+1. Does the model overgenerate columns/rows or some rows/columns are
+missing? (1 means lots of extra or missing columns/rows, 5 means no
+extra columns/rows and all necessary columns/rows are presented)
+Answer:
+
+2. Are the x, y label/index names, and title correct? (1 means
+nothing is accurate, 5 means all information are exactly correct)
+Answer:
+
+3. Are numbers close to the true values and associated with the
+correct column, row labels/indexes? (1 means nothing is accurate,
+5 means all values and their associated labels/indexes are accurate)
+Answer:</pre>
+    </div>
+    <div class="th">
+      <svg class="fig-dummy" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">รูปที่ 2</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>รูปที่ 2:</strong> คำถามสำหรับสร้างคะแนนของมนุษย์สำหรับคู่กราฟ-ตาราง</p>
+      <pre>[กราฟ]
+
+[ตารางที่สร้างขึ้น]
+
+คำถาม (ให้คะแนน 1 ถึง 5; สูงกว่าคือดีกว่า):
+
+1. โมเดลสร้างคอลัมน์/แถวเกิน หรือมีแถว/คอลัมน์ขาดหายไปหรือไม่?
+(1 หมายถึงมีคอลัมน์/แถวเกินหรือขาดมาก, 5 หมายถึงไม่มีคอลัมน์/แถวเกิน
+และมีคอลัมน์/แถวที่จำเป็นครบทั้งหมด)
+คำตอบ:
+
+2. ป้ายชื่อ/ดัชนีแกน x, y และชื่อเรื่องถูกต้องหรือไม่?
+(1 หมายถึงไม่มีอะไรถูกต้องเลย, 5 หมายถึงข้อมูลทั้งหมดถูกต้องสมบูรณ์)
+คำตอบ:
+
+3. ตัวเลขใกล้เคียงกับค่าจริง และสัมพันธ์กับป้ายกำกับคอลัมน์/แถวที่ถูกต้องหรือไม่?
+(1 หมายถึงไม่มีอะไรถูกต้องเลย, 5 หมายถึงค่าทั้งหมดและป้ายกำกับที่สัมพันธ์กันถูกต้อง)
+คำตอบ:</pre>
+    </div>
+  </div>
+
+  <!-- ── APPENDIX C ── -->
+  <div class="row heading">
+    <div class="en"><h2>Appendix C. Chain-of-thoughts and Program-of-thoughts Prompt</h2></div>
+    <div class="th"><h2>ภาคผนวก C. Prompt แบบ Chain-of-thoughts และ Program-of-thoughts</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In Figure 3 we show the one-shot prompt used across all experiments CoT. It is taken from development set examples in combination with prompts used by Chen (2023). We also modified this prompt to output Python code when needing to compute arithmetic operations in Figure 4.</p></div>
+    <div class="th"><p>ในรูปที่ 3 เราแสดง prompt แบบ one-shot ที่ใช้ในการทดลอง CoT ทั้งหมด ซึ่งนำมาจากตัวอย่างชุด development ผสมกับ prompt ที่ Chen (2023) ใช้ เรายังปรับ prompt นี้ให้ส่งออกโค้ด Python เมื่อต้องคำนวณการดำเนินการทางคณิตศาสตร์ ดังแสดงในรูปที่ 4</p></div>
+  </div>
+
+  <div class="row figure">
+    <div class="en">
+      <svg class="fig-dummy" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Figure 3</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Figure 3:</strong> Prompt used for question answering on tables.</p>
+      <pre>Read the table below to answer the following questions.
+
+Header: Year | Democrats | Republicans | Independents
+Row 1: 2004 | 68.1% | 45.0% | 53.0%
+Row 2: 2006 | 58.0% | 42.0% | 53.0%
+Row 3: 2007 | 59.0% | 38.0% | 45.0%
+Row 4: 2009 | 72.0% | 49.0% | 60.0%
+Row 5: 2011 | 71.0% | 51.2% | 58.0%
+Row 6: 2012 | 70.0% | 48.0% | 53.0%
+Row 7: 2013 | 72.0% | 41.0% | 60.0%
+
+Q: In which year republicans have the lowest favor rate?
+A: Let's find the column of republicans. Then let's extract the favor rates, they
+[45.0, 42.0, 38.0, 49.0, 51.2, 48.0, 41.0]. The smallest number is 38.0, that's
+Row 3. Row 3 is year 2007. The answer is 2007.
+
+Q: What is the sum of Democrats' favor rates of 2004, 2012, and 2013?
+A: Let's find the rows of years 2004, 2012, and 2013. We find Row 1, 6, 7. The
+favor dates of Democrats on that 3 rows are 68.1, 70.0, and 72.0.
+68.1+70.0+72=210.1. The answer is 210.1.
+
+Q: By how many points do Independents surpass Republicans in the year of 2011?
+A: Let's find the row with year = 2011. We find Row 5. We extract Independents
+and Republicans' numbers. They are 58.0 and 51.2. 58.0-51.2=6.8. The answer is
+6.8.
+
+Q: Which group has the overall worst performance?
+A: Let's sample a couple of years. In Row 1, year 2004, we find Republicans
+having the lowest favor rate 45.0 (since 45.0&lt;68.1, 45.0&lt;53.0). In year 2006, Row
+2, we find Republicans having the lowest favor rate 42.0 (42.0&lt;58.0, 42.0&lt;53.0).
+The trend continues to other years. The answer is Republicans.
+
+Q: Which party has the second highest favor rates in 2007?
+A: Let's find the row of year 2007, that's Row 3. Let's extract the numbers on
+Row 3: [59.0, 38.0, 45.0]. 45.0 is the second highest. 45.0 is the number of
+Independents. The answer is Independents.</pre>
+    </div>
+    <div class="th">
+      <svg class="fig-dummy" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">รูปที่ 3</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>รูปที่ 3:</strong> Prompt ที่ใช้สำหรับการถาม-ตอบบนตาราง</p>
+      <pre>อ่านตารางด้านล่างเพื่อตอบคำถามต่อไปนี้
+
+หัวตาราง: ปี | เดโมแครต | รีพับลิกัน | อิสระ
+แถว 1: 2004 | 68.1% | 45.0% | 53.0%
+แถว 2: 2006 | 58.0% | 42.0% | 53.0%
+แถว 3: 2007 | 59.0% | 38.0% | 45.0%
+แถว 4: 2009 | 72.0% | 49.0% | 60.0%
+แถว 5: 2011 | 71.0% | 51.2% | 58.0%
+แถว 6: 2012 | 70.0% | 48.0% | 53.0%
+แถว 7: 2013 | 72.0% | 41.0% | 60.0%
+
+ถาม: ปีใดที่รีพับลิกันมีคะแนนนิยมต่ำที่สุด?
+ตอบ: หาคอลัมน์ของรีพับลิกันก่อน แล้วสกัดคะแนนนิยมออกมา ได้
+[45.0, 42.0, 38.0, 49.0, 51.2, 48.0, 41.0] ตัวเลขที่น้อยที่สุดคือ 38.0 ซึ่งอยู่ที่
+แถว 3 แถว 3 คือปี 2007 คำตอบคือ 2007
+
+ถาม: ผลรวมคะแนนนิยมของเดโมแครตในปี 2004, 2012 และ 2013 คือเท่าใด?
+ตอบ: หาแถวของปี 2004, 2012 และ 2013 ได้แถว 1, 6, 7 คะแนนนิยมของ
+เดโมแครตในสามแถวนั้นคือ 68.1, 70.0 และ 72.0
+68.1+70.0+72=210.1 คำตอบคือ 210.1
+
+ถาม: อิสระมีคะแนนนิยมมากกว่ารีพับลิกันกี่จุดในปี 2011?
+ตอบ: หาแถวที่ปี = 2011 ได้แถว 5 สกัดตัวเลขของอิสระและรีพับลิกันออกมา
+ได้ 58.0 และ 51.2 58.0-51.2=6.8 คำตอบคือ 6.8
+
+ถาม: กลุ่มใดมีประสิทธิภาพแย่ที่สุดโดยรวม?
+ตอบ: ลองสุ่มดูสองสามปี ในแถว 1 ปี 2004 พบว่ารีพับลิกันมีคะแนนนิยมต่ำสุด
+45.0 (เพราะ 45.0&lt;68.1, 45.0&lt;53.0) ในปี 2006 แถว 2 พบว่ารีพับลิกันมีคะแนน
+นิยมต่ำสุด 42.0 (42.0&lt;58.0, 42.0&lt;53.0) แนวโน้มนี้ต่อเนื่องไปในปีอื่น ๆ
+คำตอบคือรีพับลิกัน
+
+ถาม: พรรคใดมีคะแนนนิยมสูงเป็นอันดับสองในปี 2007?
+ตอบ: หาแถวของปี 2007 ได้แถว 3 สกัดตัวเลขในแถว 3: [59.0, 38.0, 45.0]
+45.0 เป็นอันดับสองสูงสุด 45.0 คือตัวเลขของอิสระ คำตอบคืออิสระ</pre>
+    </div>
+  </div>
+
+  <div class="row figure">
+    <div class="en">
+      <svg class="fig-dummy" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Figure 4</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Figure 4:</strong> Prompt used for question answering on tables using Python code.</p>
+      <pre>Read the table below and write code to answer the following questions
+using the variable ans.
+
+Header: Year | Democrats | Republicans | Independents
+Row 1: 2004 | 68.1% | 45.0% | 53.0%
+...
+
+Q: In which year republicans have the lowest favor rate?
+favor_rates = [45.0, 42.0, 38.0, 49.0, 51.2, 48.0, 41.0]
+years = [2004, 2006, 2007, 2009, 2011, 2012, 2013]
+ans = years[favor_rates.index(min(favor_rates))]</pre>
+    </div>
+    <div class="th">
+      <svg class="fig-dummy" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">รูปที่ 4</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>รูปที่ 4:</strong> Prompt ที่ใช้สำหรับการถาม-ตอบบนตารางโดยใช้โค้ด Python</p>
+      <pre>อ่านตารางด้านล่างและเขียนโค้ดเพื่อตอบคำถามต่อไปนี้
+โดยใช้ตัวแปร ans
+
+หัวตาราง: ปี | เดโมแครต | รีพับลิกัน | อิสระ
+แถว 1: 2004 | 68.1% | 45.0% | 53.0%
+...
+
+ถาม: ปีใดที่รีพับลิกันมีคะแนนนิยมต่ำที่สุด?
+favor_rates = [45.0, 42.0, 38.0, 49.0, 51.2, 48.0, 41.0]
+years = [2004, 2006, 2007, 2009, 2011, 2012, 2013]
+ans = years[favor_rates.index(min(favor_rates))]</pre>
+    </div>
+  </div>
+
+  <!-- ── APPENDIX D ── -->
+  <div class="row heading">
+    <div class="en"><h2>Appendix D. More Case Study</h2></div>
+    <div class="th"><h2>ภาคผนวก D. กรณีศึกษาเพิ่มเติม (More Case Study)</h2></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h4>Successes.</h4></div>
+    <div class="th"><h4>กรณีที่สำเร็จ</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In Table 8 and Table 9 we demonstrate two more cases where DePlot+LLM are successful due to its stronger numerical reasoning capabilities.</p></div>
+    <div class="th"><p>ในตารางที่ 8 และตารางที่ 9 เราแสดงอีกสองกรณีที่ DePlot+LLM ประสบความสำเร็จ เนื่องจากความสามารถในการใช้เหตุผลเชิงตัวเลขที่แข็งแกร่งกว่า</p></div>
+  </div>
+
+  <!-- ── TABLE 8 (case study) ── -->
+  <div class="row figure">
+    <div class="en">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_case_study.png" alt="Table 8" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Table 8</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Table 8:</strong> A line plot example that requires numerical reasoning which is easily solved by DePlot+LLM but failed by MatCha.<br><br>
+      <em>Question:</em> Can you identify how many points the female data moved from 2009 to 2019?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">0.8</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> Let's find the row of year 2009, that's Row 11. Let's extract the number on Row 11, that's 5.27. Let's find the row of year 2019, that's Row 1. Let's extract the number on Row 1, that's 5.9. 5.9-5.27=0.63. The answer is <span style="color:#66CC00;font-weight:bold;">0.63</span>.<br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#year 2009 corresponds to row 11
+#year 2019 corresponds to row 1
+female_2009 = 5.27
+female_2019 = 5.9
+ans = female_2019 - female_2009</pre>
+      <p class="fig-caption">Compiler output: <span style="color:#66CC00;font-weight:bold;">0.63</span></p>
+    </div>
+    <div class="th">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_case_study.png" alt="ตารางที่ 8" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">ตารางที่ 8</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>ตารางที่ 8:</strong> ตัวอย่างกราฟเส้นที่ต้องใช้การใช้เหตุผลเชิงตัวเลข ซึ่ง DePlot+LLM แก้ได้ง่ายแต่ MatCha ทำผิด<br><br>
+      <em>คำถาม:</em> คุณสามารถระบุได้ไหมว่าข้อมูลของผู้หญิงเปลี่ยนไปกี่จุดจากปี 2009 ถึง 2019?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">0.8</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> หาแถวของปี 2009 ก่อน คือแถว 11 สกัดตัวเลขในแถว 11 ได้ 5.27 หาแถวของปี 2019 คือแถว 1 สกัดตัวเลขในแถว 1 ได้ 5.9 จากนั้น 5.9-5.27=0.63 คำตอบคือ <span style="color:#66CC00;font-weight:bold;">0.63</span><br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#ปี 2009 อยู่ที่แถว 11
+#ปี 2019 อยู่ที่แถว 1
+female_2009 = 5.27
+female_2019 = 5.9
+ans = female_2019 - female_2009</pre>
+      <p class="fig-caption">ผลลัพธ์จากการรันโค้ด: <span style="color:#66CC00;font-weight:bold;">0.63</span></p>
+    </div>
+  </div>
+
+  <!-- ── TABLE 9 (case study) ── -->
+  <div class="row figure">
+    <div class="en">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_case_study_x2.png" alt="Table 9" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Table 9</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Table 9:</strong> DePlot+LLM is especially suitable for more complex numerical computations such as computing the average for multiple numbers as shown in this example.<br><br>
+      <em>Question:</em> What is the average penetration rate?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">43</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> Let's add all the penetration rates: 48% + 43% + 33% + 26% + 18% = 168%. There are 5 years, so the average is 168% / 5 = 33.6%. The answer is <span style="color:#66CC00;font-weight:bold;">33.6</span>.<br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#Years 2013, 2011, 2009, 2007, and 2005 correspond to rows 1,2,3,4,5.
+penetration_2013 = 48
+penetration_2011 = 43
+penetration_2009 = 33
+penetration_2007 = 26
+penetration_2005 = 18
+ans = (penetration_2013 + penetration_2011 + penetration_2009 + penetration_2007 + penetration_2005) / 5</pre>
+      <p class="fig-caption">Compiler output: <span style="color:#66CC00;font-weight:bold;">33.6</span></p>
+    </div>
+    <div class="th">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_case_study_x2.png" alt="ตารางที่ 9" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">ตารางที่ 9</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>ตารางที่ 9:</strong> DePlot+LLM เหมาะเป็นพิเศษสำหรับการคำนวณเชิงตัวเลขที่ซับซ้อนกว่า เช่นการคำนวณค่าเฉลี่ยของตัวเลขหลายตัวดังตัวอย่างนี้<br><br>
+      <em>คำถาม:</em> อัตราการเข้าถึง (penetration rate) เฉลี่ยคือเท่าใด?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">43</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> บวกอัตราการเข้าถึงทั้งหมด: 48% + 43% + 33% + 26% + 18% = 168% มีทั้งหมด 5 ปี ดังนั้นค่าเฉลี่ยคือ 168% / 5 = 33.6% คำตอบคือ <span style="color:#66CC00;font-weight:bold;">33.6</span><br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#ปี 2013, 2011, 2009, 2007 และ 2005 อยู่ที่แถว 1,2,3,4,5
+penetration_2013 = 48
+penetration_2011 = 43
+penetration_2009 = 33
+penetration_2007 = 26
+penetration_2005 = 18
+ans = (penetration_2013 + penetration_2011 + penetration_2009 + penetration_2007 + penetration_2005) / 5</pre>
+      <p class="fig-caption">ผลลัพธ์จากการรันโค้ด: <span style="color:#66CC00;font-weight:bold;">33.6</span></p>
+    </div>
+  </div>
+
+  <div class="row heading">
+    <div class="en"><h4>Failures.</h4></div>
+    <div class="th"><h4>กรณีที่ล้มเหลว</h4></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>For questions concerning color or other visual attributes of the graph, the DePlot+LLM framework is unable to handle since such information is lost in modality translation and not considered in the current textual table encoding scheme. We show an additional examples in Table 10.</p></div>
+    <div class="th"><p>สำหรับคำถามที่เกี่ยวข้องกับสีหรือคุณลักษณะเชิงภาพอื่น ๆ ของกราฟ กรอบงาน DePlot+LLM ไม่สามารถจัดการได้ เนื่องจากข้อมูลดังกล่าวสูญหายไปในการแปลงรูปแบบข้อมูล และไม่ได้ถูกพิจารณาในวิธีเข้ารหัสตารางเชิงข้อความปัจจุบัน เราแสดงตัวอย่างเพิ่มเติมในตารางที่ 10</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Besides color, plot-to-table conversion can ignore other visual attributes such as the example in Table 11. There does not exist a one-to-one alignment between dots on the line graphs and x labels. The DePlot model produces a table that, while reasonable, does not align perfectly with the ground truth dots and labels, leading to downstream reasoning errors.</p></div>
+    <div class="th"><p>นอกจากสีแล้ว การแปลง plot-to-table อาจมองข้ามคุณลักษณะเชิงภาพอื่น ๆ ได้ ดังตัวอย่างในตารางที่ 11 ซึ่งไม่มีการจับคู่แบบหนึ่งต่อหนึ่งระหว่างจุดบนกราฟเส้นกับป้ายกำกับแกน x โมเดล DePlot สร้างตารางที่ดูสมเหตุสมผล แต่ไม่ตรงกับจุดและป้ายกำกับจริงอย่างสมบูรณ์ ส่งผลให้เกิดข้อผิดพลาดในการใช้เหตุผลขั้นปลายทาง</p></div>
+  </div>
+
+  <!-- ── TABLE 10 (case study) ── -->
+  <div class="row figure">
+    <div class="en">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_error_x1.png" alt="Table 10" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Table 10</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Table 10:</strong> All models made mistakes. For the finetuned model MatCha, the error seems to be numerical reasoning since its 10.3 is from the correct graph. However, for DePlot+LLMs, the error originates from identifying the wrong graph as the red graph.<br><br>
+      <em>Question:</em> What's the median value of the red graph?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">10.3</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> Let's find the median value of red graph. The median is the middle value of the data set. The data set is [2, 2, 3.5, 0, 4.5, 5.6, 6.6, 6.8, 0]. The middle value is 4.5. The answer is <span style="color:#FF0000;font-weight:bold;">4.5</span>.<br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#The median of the red graph is the number in the middle of the sorted list of values.
+#The values are 2, 2, 3.5, 0, 4.5, 5.6, 6.6, 6.8, 0.
+#The median is 4.5.
+ans = 4.5</pre>
+      <p class="fig-caption">Compiler output: <span style="color:#FF0000;font-weight:bold;">4.5</span></p>
+    </div>
+    <div class="th">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_error_x1.png" alt="ตารางที่ 10" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">ตารางที่ 10</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>ตารางที่ 10:</strong> ทุกโมเดลทำผิดพลาด สำหรับโมเดลที่ปรับแต่งแล้ว MatCha ข้อผิดพลาดดูเหมือนมาจากการใช้เหตุผลเชิงตัวเลข เนื่องจากค่า 10.3 มาจากกราฟที่ถูกต้อง แต่สำหรับ DePlot+LLM ข้อผิดพลาดมาจากการระบุกราฟผิด (เลือกกราฟสีแดงผิดเส้น)<br><br>
+      <em>คำถาม:</em> ค่ามัธยฐาน (median) ของกราฟสีแดงคือเท่าใด?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">10.3</span><br>
+      <strong>DePlot+FlanPaLM CoT:</strong> หาค่ามัธยฐานของกราฟสีแดง มัธยฐานคือค่ากึ่งกลางของชุดข้อมูล ชุดข้อมูลคือ [2, 2, 3.5, 0, 4.5, 5.6, 6.6, 6.8, 0] ค่ากึ่งกลางคือ 4.5 คำตอบคือ <span style="color:#FF0000;font-weight:bold;">4.5</span><br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#มัธยฐานของกราฟสีแดงคือตัวเลขกึ่งกลางของรายการค่าที่เรียงแล้ว
+#ค่าต่าง ๆ คือ 2, 2, 3.5, 0, 4.5, 5.6, 6.6, 6.8, 0
+#มัธยฐานคือ 4.5
+ans = 4.5</pre>
+      <p class="fig-caption">ผลลัพธ์จากการรันโค้ด: <span style="color:#FF0000;font-weight:bold;">4.5</span></p>
+    </div>
+  </div>
+
+  <!-- ── TABLE 11 (case study) ── -->
+  <div class="row figure">
+    <div class="en">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_error_x2.png" alt="Table 11" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Table 11</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Table 11:</strong> An error caused by plot-to-table translation. The dots on the lines and the x labels (years) are not exactly aligned, causing challenges in the translation.<br><br>
+      <em>Question:</em> Which country's line bar shows three data points in the same place between 2010 and 2014?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">Belize</span><br>
+      <strong>DePlot:</strong></p>
+      <pre>Entity | 2004 | 2006 | 2008 | 2010 | 2012 | 2014 | 2016 | 2017
+Belize | 65.0 | 65.0 | 61.0 | 61.0 | 58.0 | 55.0 | 62.0 | 62.0
+Papua New Guinea | 44.0 | 52.0 | 44.0 | 41.0 | 37.0 | 46.0 | 47.0 | 43.0</pre>
+      <p class="fig-caption"><strong>DePlot+FlanPaLM CoT:</strong> Let's find the rows with countries. We find Row 1, 2. Let's find the years between 2010 to 2014. We find Row 6, 7. We find the data in the same place between 2010 to 2014. We find 61.0, 61.0, 41.0, 41.0. The answer is <span style="color:#FF0000;font-weight:bold;">Belize</span>.<br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#Row 1 corresponds to Belize. Numbers on row 1 are [65.0, 65.0, 61.0, 61.0, 58.0, 55.0, 62.0, 62.0]
+#Row 2 corresponds to Papua New Guinea. Numbers on row 2 are [44.0, 52.0, 44.0, 41.0, 37.0, 46.0, 47.0, 43.0]
+#Belize has three data in the same place between 2010 to 2014.
+ans = "Belize"</pre>
+      <p class="fig-caption">Compiler output: <span style="color:#FF0000;font-weight:bold;">Belize</span></p>
+    </div>
+    <div class="th">
+      <img src="https://ar5iv.labs.arxiv.org/html/2212.10505/assets/figs/deplot_error_x2.png" alt="ตารางที่ 11" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">ตารางที่ 11</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>ตารางที่ 11:</strong> ข้อผิดพลาดที่เกิดจากการแปล plot-to-table จุดบนเส้นกราฟและป้ายกำกับแกน x (ปี) ไม่ตรงกันพอดี ทำให้เกิดความท้าทายในการแปล<br><br>
+      <em>คำถาม:</em> เส้นกราฟของประเทศใดที่มีจุดข้อมูลซ้ำตำแหน่งเดียวกันสามจุดระหว่างปี 2010 ถึง 2014?<br>
+      <strong>MatCha:</strong> <span style="color:#FF0000;font-weight:bold;">Belize</span><br>
+      <strong>DePlot:</strong></p>
+      <pre>Entity | 2004 | 2006 | 2008 | 2010 | 2012 | 2014 | 2016 | 2017
+Belize | 65.0 | 65.0 | 61.0 | 61.0 | 58.0 | 55.0 | 62.0 | 62.0
+Papua New Guinea | 44.0 | 52.0 | 44.0 | 41.0 | 37.0 | 46.0 | 47.0 | 43.0</pre>
+      <p class="fig-caption"><strong>DePlot+FlanPaLM CoT:</strong> หาแถวที่มีชื่อประเทศ ได้แถว 1, 2 หาปีระหว่าง 2010 ถึง 2014 ได้แถว 6, 7 หาข้อมูลที่อยู่ตำแหน่งเดียวกันระหว่าง 2010 ถึง 2014 ได้ 61.0, 61.0, 41.0, 41.0 คำตอบคือ <span style="color:#FF0000;font-weight:bold;">Belize</span><br>
+      <strong>DePlot+Codex PoT:</strong></p>
+      <pre>#แถว 1 คือ Belize ตัวเลขในแถว 1 คือ [65.0, 65.0, 61.0, 61.0, 58.0, 55.0, 62.0, 62.0]
+#แถว 2 คือ Papua New Guinea ตัวเลขในแถว 2 คือ [44.0, 52.0, 44.0, 41.0, 37.0, 46.0, 47.0, 43.0]
+#Belize มีข้อมูลซ้ำตำแหน่งเดียวกันสามจุดระหว่างปี 2010 ถึง 2014
+ans = "Belize"</pre>
+      <p class="fig-caption">ผลลัพธ์จากการรันโค้ด: <span style="color:#FF0000;font-weight:bold;">Belize</span></p>
+    </div>
+  </div>
+
+</div><!-- /translation-grid -->
+
+<footer>
+  Bilingual translation generated 2026-06-20 · arXiv:2212.10505 ·
+  <span style="color:var(--teal)">Hover an English sentence → shows Thai · Click to lock</span>
+  · <span style="color:var(--accent)">Hover underlined words for term tooltips</span>
+</footer>
+<script src="../assets/translation.js"></script>
+</body>
+</html>
