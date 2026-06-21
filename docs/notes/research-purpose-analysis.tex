@@ -1,0 +1,169 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{babel}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{mdframed}
+
+%% ─── Design system tokens (@docs/design/design.md) ──────────
+\definecolor{primary}{HTML}{cc785c}
+\definecolor{coral}{HTML}{cc785c}
+\definecolor{primary-active}{HTML}{a9583e}
+\definecolor{primary-disabled}{HTML}{e6dfd8}
+\definecolor{ink}{HTML}{141413}
+\definecolor{body-strong}{HTML}{252523}
+\definecolor{body}{HTML}{3d3d3a}
+\definecolor{muted}{HTML}{6c6a64}
+\definecolor{muted-soft}{HTML}{8e8b82}
+\definecolor{canvas}{HTML}{faf9f5}
+\definecolor{surface-soft}{HTML}{f5f0e8}
+\definecolor{surface-card}{HTML}{efe9de}
+\definecolor{surface-cream-strong}{HTML}{e8e0d2}
+\definecolor{surface-dark}{HTML}{181715}
+\definecolor{surface-dark-elevated}{HTML}{252320}
+\definecolor{surface-dark-soft}{HTML}{1f1e1b}
+\definecolor{hairline}{HTML}{e6dfd8}
+\definecolor{on-dark}{HTML}{faf9f5}
+\definecolor{on-dark-soft}{HTML}{a09d96}
+\definecolor{accent-teal}{HTML}{5db8a6}
+\definecolor{accent-amber}{HTML}{e8a55a}
+\definecolor{success}{HTML}{5db872}
+\definecolor{warning}{HTML}{d4a017}
+\definecolor{error}{HTML}{c64545}
+%% alias for mdframed highlight
+\definecolor{lightbg}{HTML}{f5f0e8}
+
+\hypersetup{colorlinks=true, linkcolor=coral, urlcolor=coral}
+
+\babelprovide[import, onchar=ids fonts]{thai}
+\babelprovide[import, onchar=ids fonts]{english}
+
+\babelfont{rm}{Noto Sans}
+\babelfont[thai]{rm}{Noto Sans Thai}
+\babelfont{tt}{Noto Sans Mono}
+\babelfont[thai]{tt}{Noto Sans Thai}
+
+\directlua{
+  local glyph_id = node.id("glyph")
+  local penalty_id = node.id("penalty")
+
+  local function is_thai(c)
+    return c >= 0x0E01 and c <= 0x0E5B
+  end
+
+  local function is_thai_combining(c)
+    return (c >= 0x0E31 and c <= 0x0E3A) or (c >= 0x0E47 and c <= 0x0E4E)
+  end
+
+  luatexbase.add_to_callback("pre_linebreak_filter", function(head)
+    for n in node.traverse_id(glyph_id, head) do
+      local prev = n.prev
+      if prev and prev.id == glyph_id and is_thai(prev.char)
+         and is_thai(n.char) and not is_thai_combining(n.char) then
+        local p = node.new(penalty_id)
+        p.penalty = 0
+        node.insert_before(head, n, p)
+      end
+    end
+    return head
+  end, "thai_break")
+}
+
+\emergencystretch=1em
+
+\newmdenv[
+  backgroundcolor=lightbg,
+  linecolor=coral,
+  linewidth=2pt,
+  topline=false, rightline=false, bottomline=false,
+  innerleftmargin=12pt, innerrightmargin=8pt,
+  innertopmargin=8pt, innerbottommargin=8pt,
+]{highlight}
+
+\begin{document}
+
+\begin{center}
+  {\Large \textbf{การวิเคราะห์วัตถุประสงค์เชิงวิจัยและการขยายขอบเขตโครงการ}}\\[6pt]
+  {\color{muted}\small Analysis of Research Purpose and Project Scope Expansion}
+\end{center}
+
+\noindent\rule{\textwidth}{1.5pt}
+
+%% ─── Metadata ─────────────────────────────────────────────────
+\vspace{12pt}
+\noindent
+\begin{tabular}{@{}ll@{}}
+  \textbf{หัวข้อวิทยานิพนธ์} & การสร้างคำอธิบายรูปภาพและกราฟในเอกสารวิชาการโดยใช้บริบทจากเนื้อหาเอกสาร \\
+  \textbf{ผู้เขียน}          & ผู้นำเสนอโครงการวิจัย \\
+  \textbf{อาจารย์ที่ปรึกษา}   & ผู้ช่วยศาสตราจารย์ ดร. หัชทัย ชาญเลขา \\
+  \textbf{วัตถุประสงค์เอกสาร} & บันทึกแนวคิด ทิศทางการวิจัย และความจำเป็นทางวิทยาศาสตร์ในการขยายขอบเขตระบบสืบค้น \\
+  \textbf{วันที่บันทึก}       & \today \\
+\end{tabular}
+
+\vspace{12pt}
+\noindent\rule{\textwidth}{0.4pt}
+
+%% ─── Summary Paragraph ─────────────────────────────────────────
+\section*{บทสรุปการวิเคราะห์เชิงยุทธศาสตร์}
+
+จากประเด็นคำถามเชิงโครงสร้างและการจัดทำคลังเอกสารวิชาการที่สามารถประมวลผลรูปภาพประเภทอื่น ๆ นอกเหนือจากชาร์ตหรือกราฟทั่วไป (เช่น ภาพถ่ายสัตว์ ป่าไม้ เซลล์ทดลอง) และมีความสามารถในการสืบค้นข้อมูลเชิงโต้ตอบผ่านภาพประกอบได้นั้น ทางคณะผู้วิจัยได้ทำการจำแนกเจตจำนงเชิงยุทธศาสตร์การวิจัยออกเป็น 4 มิติมูลฐาน ซึ่งจะส่งผลโดยตรงต่อการเขียนข้อเสนอโครงการวิจัย (Thesis Proposal) และการออกแบบสถาปัตยกรรมทางเทคนิค:
+
+\vspace{12pt}
+
+%% ─── Analysis Section 1 ───────────────────────────────────────
+\section*{1. การขยายขอบเขตงานวิจัยเพื่อแก้ปัญหาในโลกจริง (Research Scope Expansion)}
+
+\begin{itemize}
+  \item \textbf{บริบทเดิม:} ตามกรอบการวิจัยแบบดั้งเดิม (Baseline) และเปเปอร์กลุ่มแรกที่เตรียมไว้ (เช่น SciCap, DePlot, MatCha) จะจำกัดการทดลองอยู่บนรูปภาพประเภทแผนภูมิข้อมูลทางสถิติเชิงเดี่ยว (Single-panel Graph Plots/Charts) เท่านั้น
+  \item \textbf{ทิศทางใหม่เพื่อแก้ปัญหา:} ในการใช้งานจริง เอกสารวิชาการอุดมไปด้วยภาพถ่ายธรรมชาติและภาพถ่ายเชิงทดลองที่หลากหลาย (Natural/Generic Images) เช่น ภาพถ่ายสัตว์ (สุนัข, แมว) สภาพพื้นที่ (ป่าไม้) หรือสไลด์เนื้อเยื่อ ซึ่งโมเดลประเภทดึงความสัมพันธ์ตัวเลขของชาร์ต (เช่น DePlot) ไม่สามารถทำงานได้ การสร้างระบบที่ยืดหยุ่นพอจะเข้าใจภาพทั่วไปเหล่านี้จึงสร้างผลกระทบและคุณค่าเชิงวิชาการในโลกความเป็นจริงได้มากกว่า
+\end{itemize}
+
+\vspace{6pt}
+
+%% ─── Analysis Section 2 ───────────────────────────────────────
+\section*{2. การเปลี่ยนผ่านจาก Figure Captioning สู่ Multimodal RAG}
+
+\begin{itemize}
+  \item \textbf{บริบทเดิม:} วัตถุประสงค์ขั้นพื้นฐานเดิมมุ่งเป้าไปที่ "Figure Captioning" หรือการสร้างคำบรรยายใต้ภาพให้ใกล้เคียงกับรูปแบบการเขียนของมนุษย์ เพื่อวัดคะแนนทางภาษา (Language Metrics เช่น BLEU, ROUGE)
+  \item \textbf{ทิศทางใหม่เพื่อแก้ปัญหา:} ขยับเป้าหมาย (Milestone) สู่ระดับระบบงานประยุกต์ คือการพัฒนา **ระบบสืบค้นข้อมูลเชิงความหมายหลายโหมด (Multimodal Retrieval-Augmented Generation)** ซึ่งไม่เพียงแต่เขียนแคปชันภาพเพื่อส่งมอบงานวิจัย แต่เป็นการทำ Indexing รูปภาพเพื่อนำกลับมาสืบค้นและดึงข้อมูลมาตอบคิวรีของผู้ใช้ ส่งผลให้เกณฑ์การวัดผลขยายขอบเขตไปสู่ **ประสิทธิภาพในการสืบค้น (Retrieval/Search Performance เช่น MRR, Recall)**
+\end{itemize}
+
+\vspace{6pt}
+
+%% ─── Analysis Section 3 ───────────────────────────────────────
+\section*{3. การคัดกรองข้อมูลเพื่อประหยัดเวลาศึกษา (Focused Literature Selection)}
+
+\begin{itemize}
+  \item \textbf{บริบทเดิม:} คลังข้อมูลมีเปเปอร์เกี่ยวกับการวิเคราะห์รูปภาพและแผนภูมิวิชาการจำนวนมาก (ระบุไว้ในเล่มจัดลำดับการอ่าน) ซึ่งมีเนื้อหาและเป้าหมายย่อยที่กระจัดกระจายกันไป
+  \item \textbf{ทิศทางใหม่เพื่อแก้ปัญหา:} ผู้วิจัยมุ่งเป้าคัดแยกและสกัดกลุ่มเปเปอร์ที่เป็น "เสียงรบกวน (Noise)" ออกไป เช่น การข้ามเปเปอร์ในสายแปลงชาร์ตเป็นตาราง (Chart-to-Table) หรือการแปลงแผนภูมิเป็นสมการคณิตศาสตร์ที่มีความซับซ้อนสูง และหันมาให้ความสนใจอย่างลึกซึ้งต่อแนวคิดการยึดโยงภาพเข้ากับข้อความอ้างอิงในระดับทั้งเอกสาร (Document-level Multimodal Fusion) เพื่อนำสถาปัตยกรรมทางทฤษฎีมาวางโครงสร้างระบบทันที
+\end{itemize}
+
+\vspace{6pt}
+
+%% ─── Analysis Section 4 ───────────────────────────────────────
+\section*{4. การหาหลักฐานทางวิชาการมารองรับสถาปัตยกรรมระบบ (Methodology \& Thesis Justification)}
+
+\begin{itemize}
+  \item \textbf{แนวคิดการทำดัชนี (Indexing Concept):} การเก็บและดึงข้อมูลของรูปภาพธรรมชาติ (ภาพถ่ายสัตว์, ป่าไม้) ในฐานข้อมูลจะใช้แนวคิดของ **MIND-RAG (2025)** ที่ทำการวิเคราะห์ภาพร่วมกับย่อหน้าที่กล่าวอ้างถึงภาพ (Surrounding context) แล้วนำมาสรุปเป็นคุณลักษณะคำอธิบายเชิงข้อความความหนาแน่นสูง (Semantic Summary) เพื่อแปลงโจทย์ให้อยู่ในรูปเวกเตอร์ภาษาธรรมชาติที่ค้นหาได้ง่ายและแม่นยำ
+  \item \textbf{ประโยชน์ในการทำรูปเล่ม:} ข้อมูลวิจัยเหล่านี้จะทำหน้าที่เป็นแกนหลักในบทที่ 2 (วรรณกรรมวิจัยที่เกี่ยวข้อง) และบทที่ 3 (ระเบียบวิธีวิจัย) เพื่อใช้ชี้แจงกับคณะกรรมการประเมินวิทยานิพนธ์ว่า ระบบสืบค้นภาพถ่ายทั่วไปบนเอกสารวิชาการไม่ได้สร้างขึ้นมาจากสมมติฐานส่วนบุคคล แต่พัฒนาต่อยอดจากหลักฐานทางวิทยาศาสตร์และเปเปอร์ที่ได้รับการยอมรับในระดับสากล
+\end{itemize}
+
+\vspace{12pt}
+
+\begin{highlight}
+  \textbf{บันทึกทิศทางการดำเนินงานถัดไป (Next Steps):}
+  \begin{enumerate}[nosep, leftmargin=2em]
+    \item จัดเตรียมโมดูลสำหรับแบ่งแยกรูปภาพ (Layout Analysis) โดยคัดเลือกว่ารูปใดเป็น Graph/Plot และรูปใดเป็น Natural/Generic Image (หมา, แมว, ป่าไม้)
+    \item พัฒนาสคริปต์สกัดข้อความแวดล้อมรอบรูปภาพ (Mention Text/Captions)
+    \item นำข้อมูลข้อความแวดล้อมผสานเข้ากับตัวภาพเพื่อสร้างดัชนีข้อความอธิบายภาพผ่าน API ของ `latex-server` และ MLLM ต่อไป
+  \end{enumerate}
+\end{highlight}
+
+\vspace{16pt}
+\noindent\rule{\textwidth}{1pt}
+\noindent{\color{muted}\small บันทึกเชิงวิเคราะห์โดย Antigravity (Gemini 3.5 Flash) · \today}
+
+\end{document}
