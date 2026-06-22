@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Paper Browser PoC</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+  h1 { font-size: 1.4rem; }
+  #search { width: 100%; padding: 0.6rem; font-size: 1rem; box-sizing: border-box; }
+  .paper { border: 1px solid #8884; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+  .paper h2 { margin: 0 0 0.3rem; font-size: 1.1rem; }
+  .meta { color: #888; font-size: 0.85rem; margin-bottom: 0.5rem; }
+  .abstract { font-size: 0.92rem; }
+  .links a { margin-right: 0.8rem; font-size: 0.85rem; }
+  .empty { color: #888; font-style: italic; }
+  .count { color: #888; font-size: 0.85rem; margin: 0.5rem 0; }
+</style>
+</head>
+<body>
+  <h1>Paper Browser (PoC)</h1>
+  <input id="search" type="search" placeholder="Search title, author, abstract...">
+  <p class="count" id="count"></p>
+  <div id="results"></div>
+
+<script>
+const searchInput = document.getElementById("search");
+const resultsEl = document.getElementById("results");
+const countEl = document.getElementById("count");
+
+function render(papers) {
+  countEl.textContent = papers.length + " paper(s)";
+  if (papers.length === 0) {
+    resultsEl.innerHTML = '<p class="empty">No results.</p>';
+    return;
+  }
+  resultsEl.innerHTML = papers.map(p => `
+    <div class="paper">
+      <h2>${p.paper_number ?? ""}. ${escapeHtml(p.title || p.base_name)}</h2>
+      <div class="meta">${escapeHtml((p.authors || []).join(", "))} — ${escapeHtml(p.year || "")} ${p.venue ? "· " + escapeHtml(p.venue) : ""}</div>
+      <div class="abstract">${escapeHtml(p.abstract || "")}</div>
+      <div class="links">
+        ${p.files?.pdf ? `<a href="/papers-static/${p.base_name}.pdf" target="_blank">PDF</a>` : ""}
+        ${p.files?.source_html ? `<a href="/papers-static/${p.base_name}_source.html" target="_blank">Source</a>` : ""}
+        ${p.files?.translations_html ? `<a href="/papers-static/${p.base_name}_translations.html" target="_blank">EN|TH</a>` : ""}
+      </div>
+    </div>
+  `).join("");
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+async function loadAll() {
+  const res = await fetch("/api/papers");
+  render(await res.json());
+}
+
+let debounceTimer;
+searchInput.addEventListener("input", () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(async () => {
+    const q = searchInput.value.trim();
+    if (!q) { loadAll(); return; }
+    const res = await fetch("/api/search?q=" + encodeURIComponent(q));
+    render(await res.json());
+  }, 200);
+});
+
+loadAll();
+</script>
+</body>
+</html>
