@@ -18,6 +18,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": "2110.04406",
         "relevance": "Accessibility/human evaluation; defines what content an accessible description should contain — a content taxonomy for the description-generation stage.",
+        "process": "Collected natural language descriptions of charts from users, performed grounded-theory qualitative coding to categorize descriptions into 4 levels of semantic content, and conducted a utility ranking study with 30 blind and 90 sighted readers.",
         "size_content": "Corpus of natural-language description sentences (grounded-theory analysis); study with 30 blind + 90 sighted readers. Data at vis.csail.mit.edu/pubs/vis-text-model/",
         "what_it_does": "Introduces a four-level model of semantic content (L1 construction props; L2 statistics/relations; L3 perceptual/cognitive trends; L4 domain insights); finds blind and sighted readers rank content usefulness differently."
     },
@@ -30,6 +31,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": "2209.13718",
         "relevance": "Accessibility/human evaluation; provides real scientific-figure alt-text ground truth and a quality-analysis framework.",
+        "process": "Extracted figure alt-texts from 4,000+ ACM publications, filtered them specifically to plots and charts, and manually annotated them using Lundgard's 4-level framework to evaluate semantic coverage.",
         "size_content": "Alt-text dataset for graphs/charts from HCI venues; GitHub: github.com/allenai/hci-alt-texts",
         "what_it_does": "Extracts author-written alt text from HCI/accessibility papers, annotates each with Lundgard semantic levels; finds only 50% of sampled alt texts cover extrema/outliers and only 31% cover major trends/comparisons."
     },
@@ -42,6 +44,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": None,
         "relevance": "Document parsing + context grounding + description generation + accessibility; the strongest existing example of paper-context-grounded scientific alt text. Closest prior art to user's idea.",
+        "process": "Extracted captions, surrounding text, and plot metadata from scientific PDFs, generated draft alt-text via an LLM, and evaluated user experience in an interactive UI against an accessibility checklist.",
         "size_content": "System (no standalone benchmark dataset). Code: github.com/allenai/figura11y",
         "what_it_does": "Interactive human–AI system generating draft alt text + revision suggestions for scientific figures, grounded in extracted figure and paper metadata."
     },
@@ -54,6 +57,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": None,
         "relevance": "Accessibility/human evaluation; interaction model for delivering descriptions to BLV users (complements static long descriptions).",
+        "process": "Captured DOM chart components via JS, generated sonified audio representing data trends (mapping values to pitch), and implemented screen-reader voice commands for interactive drill-down.",
         "size_content": "Open-source library; no figure dataset.",
         "what_it_does": "Open-source JS plug-in giving screen-reader users holistic summaries, sonification, and voice-driven drill-down; evaluated with 21 screen-reader users."
     },
@@ -66,6 +70,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": None,
         "relevance": "Accessibility/human evaluation; design guidance for screen-reader navigation of described charts.",
+        "process": "Co-designed an interactive chart reader engine with 10 blind screen-reader users, structuring chart components into a navigable keyboard-accessible data grid.",
         "size_content": "System/engine.",
         "what_it_does": "Co-design (10 BLV screen-reader users) producing a web accessibility engine for interactive reading of charts and underlying data."
     },
@@ -78,6 +83,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": None,
         "relevance": "Description generation + accessibility/human evaluation; a scientific/medical-adjacent accessibility case.",
+        "process": "Parsed the declarative JSON specifications of genomics charts created with Gosling grammar, extracted coordinate-data mappings, and programmatically generated structured natural-language alt-text.",
         "size_content": "Open source (MIT): github.com/gosling-lang/altgosling",
         "what_it_does": "Logic/grammar-based automatic description generator for interactive genomics visualizations; co-designed with a blind screen-reader user; outperforms LLM/CNN baselines."
     },
@@ -90,6 +96,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": "2503.17517",
         "relevance": "Description generation + accessibility/human evaluation. Note: uses chart data, NOT full-paper context — illustrating the gap.",
+        "process": "Extracted intersection set details from chart data, generated textual summaries matching predefined structural templates, and conducted usability evaluations with 11 blind and low-vision screen-reader users.",
         "size_content": "Evaluation with 11 BLV users.",
         "what_it_does": "Auto-generates descriptions for UpSet set-visualization plots from a JSON/data description; evaluated with 11 BLV users (found informative)."
     },
@@ -102,6 +109,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": "2503.13369",
         "relevance": "Accessibility dataset + description generation.",
+        "process": "Collected long-form diagram descriptions, established a feedback loop where sighted users validated descriptions against BLV conceptual needs, and refined the dataset for alignment.",
         "size_content": "Diagram-description dataset with long-form descriptions.",
         "what_it_does": "Builds a diagram-description dataset with long-form descriptions, validated/aligned to BLV needs via sighted-user feedback."
     },
@@ -114,6 +122,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": None,
         "relevance": "Foundational work on what BLV users need from image descriptions.",
+        "process": "Conducted interviews and user studies with screen-reader users, proposing a multi-level layered description representation framework, and evaluating preferences on detail density.",
         "size_content": "User studies detailing BLV preferences.",
         "what_it_does": "Seminal accessibility work investigating rich representation models and multi-level details for screen reader interfaces."
     },
@@ -126,6 +135,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": None,
         "relevance": "Early standard for automated alt-text deployment in social feeds.",
+        "process": "Implemented a neural object recognition and captioning model (CNN-LSTM) on Facebook to automatically generate alt-text, and collected user feedback to study accessibility utility.",
         "size_content": "Description generation study on alt-text automation.",
         "what_it_does": "Evaluated the feasibility and user acceptance of early automatic alt-text tools on platforms like Facebook."
     },
@@ -138,6 +148,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area1",
         "arxiv_id": None,
         "relevance": "Early rule-based summary generation from structured chart data.",
+        "process": "Extracted key slope segments, peaks, and coordinate bounds from line graphs, and generated natural language summaries using custom rules and templates.",
         "size_content": "Evaluation of generated summaries with BLV participants.",
         "what_it_does": "Pioneered the extraction and summarization of line graph trends, focusing on accessibility contexts."
     },
@@ -152,6 +163,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2110.11624",
         "relevance": "Description generation; figure classification (pipeline used type classification + subfigure ID). First large-scale shared benchmark.",
+        "process": "Extracted figure-caption pairs from CS arXiv PDFs via PDFFigures 2.0, filtered to clean single-panel graph plots, and trained a CNN-LSTM network using Self-Critical Sequence Training (SCST) reinforcement learning.",
         "size_content": "From 295,028 CS arXiv papers, 2.17M figures; filtered to 133,543 single-panel graph plot figures. CC BY-NC-SA 4.0.",
         "what_it_does": "First large-scale real scientific figure-caption dataset from CS arXiv (2010–2020); baselines for graph-plot captioning."
     },
@@ -164,6 +176,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2306.03491",
         "relevance": "Context selection/retrieval + description generation — directly models the user's input signals.",
+        "process": "Scanned arXiv LaTeX sources to align figures with in-text paragraph mentions, extracted graph labels via OCR, and trained a multimodal model combining visual features and textual mention context.",
         "size_content": "SciCap + mention-paragraphs + OCR tokens. CC BY-NC-SA 4.0.",
         "what_it_does": "Extends SciCap with mention-paragraphs (paragraphs mentioning the figure) + OCR tokens; shows context significantly boosts caption metrics."
     },
@@ -176,18 +189,20 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2302.12324",
         "relevance": "Context selection — the conceptual root of the user's idea (76.68% overlap proves context value). Best Long Paper award.",
+        "process": "Extracted figure-mentioning paragraphs and OCR tokens, and trained a PEGASUS text-summarization model to generate figure captions purely by summarizing the surrounding document text (completely omitting image features).",
         "size_content": "SciCap + mention paragraphs + OCR. Overlap study.",
         "what_it_does": "Reframes figure captioning as summarizing figure-mentioning paragraphs; finds 76.68% of caption words occur in Paragraph+OCR; outperforms vision methods."
     },
     {
         "id": "figuring-out-figures-2024",
-        "title": "Figuring out Figures: Context-grounded scientific figure captioning",
+        "title": "Figuring out Figures: Using Textual References to Caption Scientific Figures",
         "authors": "Cao & Liu",
         "year": "2024",
         "venue": "Stanford CS224N / arXiv",
         "area": "area2",
         "arxiv_id": "2407.11008",
         "relevance": "Reference linking + context selection + description generation.",
+        "process": "Extracted title, abstract, and in-text references from scientific PDFs, encoded them using SciBERT, and fused these textual features with CLIP visual features using a cross-attention transformer layer.",
         "size_content": "MetaSciCap (SciCap + title/abstract/in-text refs).",
         "what_it_does": "CLIP+GPT-2 with cross-attention; introduces MetaSciCap augmenting SciCap with title/abstract/in-text references encoded via SciBERT; textual metadata gives the biggest gains."
     },
@@ -200,6 +215,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2506.06561",
         "relevance": "Context selection/retrieval at the document level; profiles = same-paper context.",
+        "process": "Constructed 'figure profiles' representing other figures from the same document (images, captions, mentions), and input these profiles to an MLLM as multi-modal context to generate document-coherent captions.",
         "size_content": "110,828 target figures (one per arXiv paper) + profile figures. CC BY-NC-SA 4.0.",
         "what_it_does": "Personalized figure captioning using multimodal 'figure profiles' — up to 3 other figures from the same paper (image+caption+mentioning paragraphs) as context."
     },
@@ -212,6 +228,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2203.06486",
         "relevance": "Chart-to-data + description generation; faithfulness motivation (highlights models' hallucinations).",
+        "process": "Collected Pew and Statista charts, extracted underlying structured data tables, and evaluated standard image-to-sequence (VLMs) and table-to-sequence models on chart summarization.",
         "size_content": "44,096 charts (34,811 Statista + 9,285 Pew) with tables + summaries.",
         "what_it_does": "Large-scale chart-summarization benchmark; baselines flag severe hallucination and factual-error problems in chart descriptions."
     },
@@ -224,18 +241,20 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2203.02628",
         "relevance": "Chart-to-data; chart QA (useful for verifying extracted data).",
+        "process": "Generated QA pairs over real-world and synthetic charts using both automated templates and human crowd-sourcing to test visual-logical and mathematical reasoning on plots.",
         "size_content": "21,945 charts; 9,608 human + 23,111 machine QA pairs.",
         "what_it_does": "Real-world chart QA with human + machine-generated questions requiring complex visual and logical reasoning."
     },
     {
         "id": "plotqa-2020",
-        "title": "PlotQA: Reasoning on Scientific Plots",
+        "title": "PlotQA: Reasoning over Scientific Plots",
         "authors": "Methani, Ganguly, Khapra & Kumar",
         "year": "2020",
         "venue": "WACV 2020",
         "area": "area2",
-        "arxiv_id": "1909.00996",
+        "arxiv_id": "1909.00997",
         "relevance": "Chart-to-data; chart QA.",
+        "process": "Generated a large synthetic dataset of plots, extracted numerical tables, created template-based QA pairs, and trained models to extract data values and perform out-of-vocabulary numerical reasoning.",
         "size_content": "~224,377 plots; ~28.9M QA pairs.",
         "what_it_does": "Large visual question answering dataset over scientific plots from real data, incorporating open-vocabulary aggregation questions."
     },
@@ -246,8 +265,9 @@ BIBLIOGRAPHY_DATA = [
         "year": "2018",
         "venue": "ICLR 2018 Workshop",
         "area": "area2",
-        "arxiv_id": "1710.08300",
+        "arxiv_id": "1710.07300",
         "relevance": "Figure classification / chart QA baseline (synthetic).",
+        "process": "Generated synthetic visual charts (bar, line, pie) along with raw data files, programmatically compiled binary question-answer pairs (e.g. Is red larger than blue?), and benchmarked standard visual reasoning models.",
         "size_content": "1M+ QA pairs over synthetic figures (5 types).",
         "what_it_does": "Synthetic visual-reasoning corpus of color-coded charts (no OCR) with template yes/no questions."
     },
@@ -260,6 +280,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "1801.08163",
         "relevance": "Chart-to-data / chart QA (synthetic, bar charts).",
+        "process": "Created a synthetic bar chart dataset with dynamic labels, generated QA pairs requiring OCR and coordinate tracking, and benchmarked models using an OCR-specific word mapping layer.",
         "size_content": "Synthetic bar charts with template QA.",
         "what_it_does": "Bar-chart understanding via question answering; introduces OCR-aware handling in visual QA."
     },
@@ -272,6 +293,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "1906.02850",
         "relevance": "Description generation (synthetic).",
+        "process": "Modelled coordinates and legend labels in synthetic figures as a graph of relations, and trained a sequence decoder using relation-aware visual attention maps.",
         "size_content": "Synthetic figure-caption pairs (5 chart types); vocab ~126.",
         "what_it_does": "Figure-captioning dataset derived from FigureQA; introduces Label-Maps and Relation-Maps attention models."
     },
@@ -284,6 +306,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2307.10867",
         "relevance": "Description generation + faithfulness/human-preference alignment.",
+        "process": "Collected pairwise human quality preferences for SciCap figure captions, trained a reward model based on preference alignment, and fine-tuned a captioning VLM using RLHF.",
         "size_content": "133,543 figure-caption pairs with feedback scores (from SciCap).",
         "what_it_does": "Figure-to-caption benchmark + RLHF framework aligning captions to human quality scores (helpfulness, takeaway, visual-descriptiveness, OCR)."
     },
@@ -296,6 +319,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2308.03349",
         "relevance": "Context selection/retrieval + chart QA — explicitly context-grounded.",
+        "process": "Extracted paper titles, abstracts, captions, and mention paragraphs, prompted GPT-4 to generate multi-turn QA dialogues on the figures, and fine-tuned DePlot/LLaVA models.",
         "size_content": "295K QA samples over graphs from ~290K papers (13x ChartQA).",
         "what_it_does": "Largest open multi-turn QA dataset on real scientific graphs; dialogues generated by prompting an LLM with title, abstract, caption, and mentioning paragraphs."
     },
@@ -308,6 +332,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2301.12293",
         "relevance": "Document parsing + figure classification + reference linking.",
+        "process": "Extracted figures from ACL anthology PDFs using PDFFigures 2.0, classified figure types via a ResNet image classifier, and parsed corresponding in-text citation coordinates.",
         "size_content": "112,052 figures from ~56K ACL papers; pilot labeled set of 1,671 figures.",
         "what_it_does": "Pipeline to extract+classify scientific figures; auto-annotated corpus with captions, inline references, and layout metadata."
     },
@@ -320,6 +345,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2212.10505",
         "relevance": "Chart-to-data extraction — a drop-in module for the user's data-extraction stage.",
+        "process": "Fine-tuned Pix2Struct to output markdown tables from plot images, then fed the parsed tables to a text-only LLM for few-shot QA reasoning.",
         "size_content": "Model + plot-to-table task (trained on ChartQA/PlotQA).",
         "what_it_does": "Plot-to-table translation module; output table feeds an LLM for one-shot reasoning; large gains on ChartQA."
     },
@@ -332,6 +358,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2210.03347",
         "relevance": "Document parsing + chart-to-data.",
+        "process": "Pretrained a visual transformer on web screenshot parses by making it predict masked HTML/CSS structure elements, resulting in a model highly sensitive to visual text layout.",
         "size_content": "Pretrained models.",
         "what_it_does": "OCR-free screenshot-parsing pretraining for visual-language/document understanding; backbone for DePlot/MatCha."
     },
@@ -344,6 +371,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area2",
         "arxiv_id": "2406.18521",
         "relevance": "Realistic evaluation stress-test for scientific charts. Crucial evaluation benchmark.",
+        "process": "Curated highly complex charts from real scientific publications, manually annotated QA pairs requiring deep domain analytical reasoning, and benchmarked state-of-the-art MLLMs.",
         "size_content": "2,323 natural, challenging, diverse charts from arXiv papers with >10K QA.",
         "what_it_does": "Evaluates MLLMs on analytical reasoning over real charts from scientific papers. Shows major performance drops on complex figures."
     },
@@ -358,6 +386,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area3",
         "arxiv_id": "2005.11401",
         "relevance": "Context selection/retrieval — the methodological foundation.",
+        "process": "Integrated a Dense Passage Retriever (DPR) to fetch relevant document snippets and conditioned a sequence-to-sequence generator (BART) on both the query and the retrieved context.",
         "size_content": "Seminal paper outlining RAG architecture.",
         "what_it_does": "Foundational RAG framework: retrieves external context to condition generation in LLMs."
     },
@@ -370,6 +399,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area3",
         "arxiv_id": "2305.14779",
         "relevance": "Context selection + accessibility (social media context).",
+        "process": "Extracted Twitter images, parsed the accompanying tweet text and replies as context, and fine-tuned a captioning model using context-grounded conditioning.",
         "size_content": "Trained on user-written alt text with surrounding context.",
         "what_it_does": "Uses surrounding tweet text as context to improve generated alt text for images."
     },
@@ -382,6 +412,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area3",
         "arxiv_id": "2406.02265",
         "relevance": "Context selection/retrieval — warns about the specific failure mode of retrieval-augmented captioners.",
+        "process": "Analyzed RAG captioners on noisy context retrieval, introducing contrastive gating and information filtering layers to prevent models from copying incorrect retrieved descriptions.",
         "size_content": "Evaluations on noisy retrieval contexts.",
         "what_it_does": "Shows retrieval-augmented captioners can be misled by irrelevant retrieved captions; proposes robustness methods."
     },
@@ -392,8 +423,9 @@ BIBLIOGRAPHY_DATA = [
         "year": "2023",
         "venue": "CVPR 2023",
         "area": "area3",
-        "arxiv_id": "2211.12196",
+        "arxiv_id": "2209.15323",
         "relevance": "Context selection/retrieval architecture.",
+        "process": "Extracted CLIP features from a query image, retrieved nearest-neighbor textual descriptions from a database, and fed them to a frozen GPT-2 via trained cross-attention layers.",
         "size_content": "Lightweight, parameter-efficient models adapting out-of-domain.",
         "what_it_does": "Retrieval-augmented captioning with retrieved captions + cross-attention; parameter-efficient and adapts well to new domains."
     },
@@ -406,6 +438,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area3",
         "arxiv_id": "2311.01477",
         "relevance": "Faithfulness evaluation.",
+        "process": "Decomposed generated captions into atomic facts, verified each fact against the image using a visual QA agent, and aggregated results into a fine-grained hallucination score.",
         "size_content": "Benchmark sets LLaVA-1k, MSCOCO-Cap.",
         "what_it_does": "Reference-free, fine-grained faithfulness metric: decomposes captions into atomic facts and verifies each against the image; correlates with human judgments."
     },
@@ -416,8 +449,9 @@ BIBLIOGRAPHY_DATA = [
         "year": "2018",
         "venue": "EMNLP 2018",
         "area": "area3",
-        "arxiv_id": "1809.01094",
+        "arxiv_id": "1809.02156",
         "relevance": "Faithfulness evaluation (foundational).",
+        "process": "Parsed nouns from generated captions, mapped them to standard MSCOCO object classes, and calculated the percentage of generated nouns not present in the ground truth image labels.",
         "size_content": "Sentence-level (CHAIRs) and instance-level (CHAIRi) metrics.",
         "what_it_does": "Standard object-hallucination metric for captioning based on matching MSCOCO object annotations."
     },
@@ -430,6 +464,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area3",
         "arxiv_id": "2404.13874",
         "relevance": "Faithfulness evaluation + the faithfulness/coverage trade-off central to accessible descriptions.",
+        "process": "Extracted triple-level visual facts (subject, relation, object) from image annotations, and used an LLM evaluator to score the coverage and accuracy of these facts in the generated caption.",
         "size_content": "Human-annotated multi-dimensional benchmark (objects/attributes/relations).",
         "what_it_does": "LLM-based two-stage metric generalizing CHAIR to balance faithfulness AND coverage in image descriptions."
     },
@@ -442,6 +477,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area3",
         "arxiv_id": "2510.03978",
         "relevance": "Context selection from full paper (medical figures) — close methodological match, though not BLV-evaluated.",
+        "process": "Formatted full scientific paper texts, in-text references, and target figure images into a single long-context prompt for an MLLM to generate detailed, contextualized figures.",
         "size_content": "Medical paper figure context dataset.",
         "what_it_does": "Contextualizes biomedical figure descriptions with full-text article context: caption + in-text mentions + abstract + acronyms."
     },
@@ -454,6 +490,7 @@ BIBLIOGRAPHY_DATA = [
         "area": "area3",
         "arxiv_id": "2405.19094",
         "relevance": "Faithfulness evaluation for charts.",
+        "process": "Parsed chart images into intermediate numerical tables, fed them to a summarization model, and applied a Critic module to verify the mathematical accuracy of the summaries.",
         "size_content": "Faithfulness-focused chart-summary evaluations.",
         "what_it_does": "Provides a pipeline emphasizing faithfulness and factuality in generated chart summaries."
     }
@@ -927,17 +964,17 @@ def generate_html(local_files):
     
     .card-grid {{
       display: grid;
-      grid-template-columns: 1.2fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 20px;
       margin-bottom: 16px;
       border-top: 1px solid var(--hairline);
       padding-top: 16px;
     }}
     
-    @media (max-width: 768px) {{
+    @media (max-width: 992px) {{
       .card-grid {{
         grid-template-columns: 1fr;
-        gap: 12px;
+        gap: 16px;
       }}
       .dashboard-grid {{
         grid-template-columns: repeat(2, 1fr);
@@ -957,8 +994,8 @@ def generate_html(local_files):
     }}
     
     .grid-col p {{
-      font-size: 13.5px;
-      line-height: 1.5;
+      font-size: 13px;
+      line-height: 1.55;
       color: var(--body);
     }}
 
@@ -969,12 +1006,15 @@ def generate_html(local_files):
       border-top: 1px dashed var(--hairline);
       padding-top: 14px;
       margin-top: 8px;
+      flex-wrap: wrap;
+      gap: 12px;
     }}
     
     .files-badge-list {{
       display: flex;
       gap: 6px;
       align-items: center;
+      flex-wrap: wrap;
     }}
     
     .file-badge {{
@@ -1025,6 +1065,182 @@ def generate_html(local_files):
       padding: 40px;
       color: var(--muted);
       font-style: italic;
+    }}
+
+    /* READ ALOUD BUTTON & FLOATING PLAYER */
+    .listen-btn {{
+      background: var(--surface-card);
+      border: 1px solid var(--hairline);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: var(--rounded-pill);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }}
+
+    .listen-btn:hover {{
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }}
+
+    .floating-player {{
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      right: 24px;
+      max-width: 680px;
+      margin: 0 auto;
+      background: var(--surface-dark-elevated);
+      border: 2px solid var(--primary);
+      border-radius: var(--rounded-lg);
+      padding: 16px 24px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      color: var(--on-dark);
+      animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }}
+
+    .player-row-top {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 8px;
+    }}
+
+    .player-title-info {{
+      flex: 1;
+      min-width: 0;
+    }}
+
+    .player-title-info h6 {{
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary);
+      margin-bottom: 2px;
+    }}
+
+    .player-title-info p {{
+      font-size: 13.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+    }}
+
+    .player-close {{
+      background: transparent;
+      border: none;
+      color: var(--on-dark-soft);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      transition: color 0.2s;
+    }}
+
+    .player-close:hover {{
+      color: #fff;
+    }}
+
+    .player-row-controls {{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }}
+
+    .player-buttons {{
+      display: flex;
+      gap: 8px;
+    }}
+
+    .player-btn {{
+      background: var(--primary);
+      color: var(--on-primary);
+      border: none;
+      padding: 6px 16px;
+      border-radius: var(--rounded-sm);
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }}
+
+    .player-btn:hover {{
+      opacity: 0.9;
+    }}
+
+    .player-btn.secondary {{
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--on-dark);
+    }}
+
+    .player-btn.secondary:hover {{
+      background: rgba(255, 255, 255, 0.05);
+    }}
+
+    .player-settings {{
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }}
+
+    .setting-group {{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }}
+
+    .setting-group label {{
+      font-size: 11px;
+      color: var(--on-dark-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }}
+
+    .setting-group select, .setting-group input {{
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: var(--rounded-sm);
+      font-size: 12px;
+      outline: none;
+    }}
+
+    .setting-group select {{
+      max-width: 160px;
+    }}
+
+    .setting-group input[type="range"] {{
+      width: 70px;
+      height: 4px;
+      accent-color: var(--primary);
+      cursor: pointer;
     }}
   </style>
 </head>
@@ -1118,6 +1334,34 @@ def generate_html(local_files):
       </div>
     </div>
 
+    <!-- FLOATING AUDIO PLAYER PANEL -->
+    <div class="floating-player" id="audio-player">
+      <div class="player-row-top">
+        <div class="player-title-info">
+          <h6>Currently Reading</h6>
+          <p id="player-title">Paper Title Goes Here</p>
+        </div>
+        <button class="player-close" onclick="stopSpeech()" title="Stop Voice Reader">✕</button>
+      </div>
+      <div class="player-row-controls">
+        <div class="player-buttons">
+          <button class="player-btn" id="player-pause-resume" onclick="togglePauseResume()">⏸ Pause</button>
+          <button class="player-btn secondary" onclick="stopSpeech()">⏹ Stop</button>
+        </div>
+        <div class="player-settings">
+          <div class="setting-group">
+            <label for="player-voice">Voice</label>
+            <select id="player-voice" onchange="updateVoice()"></select>
+          </div>
+          <div class="setting-group">
+            <label for="player-speed">Speed</label>
+            <input type="range" id="player-speed" min="0.5" max="2" step="0.1" value="1.0" onchange="updateSpeed()">
+            <span id="speed-label" style="font-size: 11px; width: 24px; text-align: right;">1.0x</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- MAIN BIBLIOGRAPHY LIST -->
     <main style="margin-bottom: 80px;">
       <!-- Key Findings Summary Alert -->
@@ -1127,7 +1371,7 @@ def generate_html(local_files):
         <ul style="margin-left: 20px; margin-top: 8px; font-size: 13.5px; line-height: 1.6;">
           <li><strong>Novelty:</strong> FigurA11y (IUI '24) is the only near prior art, but it serves as an author-assistance tool, not an automated user-facing RAG pipeline.</li>
           <li><strong>Data Signals:</strong> SciCap+ and LaMP-Cap package in-text mentions and profiles which prove that 76.68% of caption words occur in surrounding text + OCR.</li>
-          <li><strong>Quality Gap:</strong> Author-written alt text is highly scarce (<1% of PDFs) and inadequate (only 31% contain major trends, 50% cover outliers).</li>
+          <li><strong>Quality Gap:</strong> Author-written alt text is highly scarce (&lt;1% of PDFs) and inadequate (only 31% contain major trends, 50% cover outliers).</li>
         </ul>
       </div>
 
@@ -1207,9 +1451,10 @@ def generate_html(local_files):
           const matchVenue = p.venue.toLowerCase().includes(term);
           const matchRelevance = p.relevance.toLowerCase().includes(term);
           const matchAbstract = p.what_it_does.toLowerCase().includes(term);
+          const matchProcess = p.process.toLowerCase().includes(term);
           const matchContent = p.size_content.toLowerCase().includes(term);
           
-          return matchTitle || matchAuthors || matchVenue || matchRelevance || matchAbstract || matchContent;
+          return matchTitle || matchAuthors || matchVenue || matchRelevance || matchAbstract || matchProcess || matchContent;
         }}
         
         return true;
@@ -1225,6 +1470,7 @@ def generate_html(local_files):
       filtered.forEach(p => {{
         const card = document.createElement("div");
         card.className = "paper-card";
+        card.id = `card-${{p.id}}`;
         
         // Render local file badges
         let localBadgesHtml = "";
@@ -1276,7 +1522,11 @@ def generate_html(local_files):
               <p>${{p.what_it_does}}</p>
             </div>
             <div class="grid-col">
-              <h5>🔗 Relevance to Figure RAG Pipeline</h5>
+              <h5>⚙️ Methodology & Process</h5>
+              <p>${{p.process}}</p>
+            </div>
+            <div class="grid-col">
+              <h5>🔗 Relevance to Figure RAG</h5>
               <p>${{p.relevance}}</p>
             </div>
           </div>
@@ -1288,9 +1538,12 @@ def generate_html(local_files):
           
           <div class="card-footer">
             <div class="files-badge-list">
-              <span style="font-size: 11px; color: var(--muted); font-weight: 600; margin-right: 4px;">LOCAL COPIES:</span>
+              <span style="font-size: 11px; color: var(--muted); font-weight: 600; margin-right: 8px;">LOCAL COPIES:</span>
               ${{localBadgesHtml}}
             </div>
+            <button class="listen-btn" onclick="startSpeech('${{p.id}}')" id="btn-listen-${{p.id}}">
+              🔊 Read Aloud (ฟังบทสรุป)
+            </button>
           </div>
         `;
         
@@ -1313,6 +1566,149 @@ def generate_html(local_files):
       searchQuery = e.target.value.trim();
       renderList();
     }});
+
+    // ----------------------------------------------------
+    // WEB SPEECH AUDIO READER CODE
+    // ----------------------------------------------------
+    let synth = window.speechSynthesis;
+    let currentUtterance = null;
+    let currentlySpeakingId = null;
+    let isPaused = false;
+    let availableVoices = [];
+
+    const audioPlayer = document.getElementById("audio-player");
+    const playerTitle = document.getElementById("player-title");
+    const voiceSelect = document.getElementById("player-voice");
+    const speedSlider = document.getElementById("player-speed");
+    const speedLabel = document.getElementById("speed-label");
+    const pauseResumeBtn = document.getElementById("player-pause-resume");
+
+    function loadVoices() {{
+      if (!synth) return;
+      availableVoices = synth.getVoices();
+      
+      voiceSelect.innerHTML = "";
+      
+      // Filter to Thai and English voices
+      const filtered = availableVoices.filter(v => v.lang.startsWith("en") || v.lang.startsWith("th"));
+      
+      filtered.forEach(voice => {{
+        const opt = document.createElement("option");
+        opt.value = voice.name;
+        opt.textContent = `${{voice.name}} (${{voice.lang}})`;
+        
+        // Select an English voice by default
+        if (voice.lang.startsWith("en-US") && !voiceSelect.value) {{
+          opt.selected = true;
+        }}
+        voiceSelect.appendChild(opt);
+      }});
+    }}
+
+    if (synth) {{
+      if (synth.onvoiceschanged !== undefined) {{
+        synth.onvoiceschanged = loadVoices;
+      }}
+      window.addEventListener("DOMContentLoaded", loadVoices);
+    }}
+
+    window.startSpeech = function(paperId) {{
+      if (!synth) {{
+        alert("Web Speech API is not supported in this browser.");
+        return;
+      }}
+
+      stopSpeech();
+
+      const paper = PAPERS_DB.find(p => p.id === paperId);
+      if (!paper) return;
+
+      currentlySpeakingId = paperId;
+      isPaused = false;
+      
+      // Highlight card
+      const targetCard = document.getElementById(`card-${{paperId}}`);
+      if (targetCard) {{
+        targetCard.style.borderColor = "var(--primary)";
+        targetCard.style.boxShadow = "0 8px 30px rgba(204, 120, 92, 0.15)";
+        targetCard.scrollIntoView({{ behavior: "smooth", block: "center" }});
+      }}
+
+      playerTitle.textContent = paper.title;
+      audioPlayer.style.display = "flex";
+      pauseResumeBtn.textContent = "⏸ Pause";
+
+      // Build speech text
+      const speechText = `Paper title: ${{paper.title}}. Written by ${{paper.authors}}. Venue: ${{paper.venue}}. Summary and focus: ${{paper.what_it_does}} Core process and methodology: ${{paper.process}} Relevance to figure pipeline: ${{paper.relevance}}`;
+
+      currentUtterance = new SpeechSynthesisUtterance(speechText);
+      
+      // Apply Settings
+      updateVoice();
+      updateSpeed();
+
+      currentUtterance.onend = function() {{
+        stopSpeech();
+      }};
+
+      currentUtterance.onerror = function(e) {{
+        console.error("Speech Error:", e);
+        stopSpeech();
+      }};
+
+      synth.speak(currentUtterance);
+    }};
+
+    window.stopSpeech = function() {{
+      if (!synth) return;
+      synth.cancel();
+      
+      if (currentlySpeakingId) {{
+        const card = document.getElementById(`card-${{currentlySpeakingId}}`);
+        if (card) {{
+          card.style.borderColor = "var(--hairline)";
+          card.style.boxShadow = "none";
+        }}
+      }}
+      
+      audioPlayer.style.display = "none";
+      currentlySpeakingId = null;
+      currentUtterance = null;
+      isPaused = false;
+    }};
+
+    window.togglePauseResume = function() {{
+      if (!synth) return;
+      
+      if (isPaused) {{
+        synth.resume();
+        isPaused = false;
+        pauseResumeBtn.textContent = "⏸ Pause";
+      }} else {{
+        synth.pause();
+        isPaused = true;
+        pauseResumeBtn.textContent = "▶ Resume";
+      }}
+    }};
+
+    window.updateVoice = function() {{
+      if (!currentUtterance || !synth) return;
+      const selectedVoiceName = voiceSelect.value;
+      const voice = availableVoices.find(v => v.name === selectedVoiceName);
+      if (voice) {{
+        // We have to stop and restart to change the voice on some platforms,
+        // but updating the parameter can work or be loaded next time.
+        currentUtterance.voice = voice;
+      }}
+    }};
+
+    window.updateSpeed = function() {{
+      const val = speedSlider.value;
+      speedLabel.textContent = `${{val}}x`;
+      if (currentUtterance) {{
+        currentUtterance.rate = parseFloat(val);
+      }}
+    }};
 
     // Initialize list
     renderList();
