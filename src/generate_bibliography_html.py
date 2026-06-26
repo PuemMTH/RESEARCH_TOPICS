@@ -1697,6 +1697,7 @@ def generate_html(local_files):
     }});
 
     // ----------------------------------------------------
+    // ----------------------------------------------------
     // WEB SPEECH AUDIO READER CODE (BILINGUAL QUEUED TTS)
     // ----------------------------------------------------
     let synth = window.speechSynthesis;
@@ -1704,9 +1705,11 @@ def generate_html(local_files):
     let isPaused = false;
     let availableVoices = [];
     
-    // We maintain a queue of utterances
-    let utteranceQueue = [];
-    let currentQueueIndex = 0;
+    // Online TTS state for fallback
+    let onlineAudioQueue = [];
+    let onlineAudioIndex = 0;
+    let onlineAudio = null;
+    let playingOnline = false;
 
     const audioPlayer = document.getElementById("audio-player");
     const playerTitle = document.getElementById("player-title");
@@ -1714,6 +1717,67 @@ def generate_html(local_files):
     const speedSlider = document.getElementById("player-speed");
     const speedLabel = document.getElementById("speed-label");
     const pauseResumeBtn = document.getElementById("player-pause-resume");
+
+    function playNextOnlineChunk() {{
+      if (!playingOnline) return;
+      if (onlineAudioIndex >= onlineAudioQueue.length) {{
+        stopSpeech();
+        return;
+      }}
+      
+      const text = onlineAudioQueue[onlineAudioIndex];
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&tl=th&client=tw-ob&q=${{encodeURIComponent(text)}}`;
+      
+      if (!onlineAudio) {{
+        onlineAudio = document.createElement("audio");
+        onlineAudio.id = "tts-online-audio";
+        document.body.appendChild(onlineAudio);
+      }}
+      
+      onlineAudio.src = url;
+      onlineAudio.playbackRate = parseFloat(speedSlider.value);
+      onlineAudio.onended = function() {{
+        onlineAudioIndex++;
+        playNextOnlineChunk();
+      }};
+      onlineAudio.onerror = function(e) {{
+        console.error("Online TTS Chunk Error:", e);
+        stopSpeech();
+      }};
+      
+      onlineAudio.play().catch(err => {{
+        console.error("Playback error:", err);
+        stopSpeech();
+      }});
+      window.onlineAudioPlayer = onlineAudio;
+    }}
+
+    function speakThaiOnline(fullText) {{
+      playingOnline = true;
+      const chunks = [];
+      let currentChunk = "";
+      
+      // Split by common Thai punctuation, spaces, or clauses
+      const words = fullText.split(/([，。、\s()（）:：,])/);
+      
+      for (const w of words) {{
+        if ((currentChunk + w).length > 150) {{
+          if (currentChunk.trim()) {{
+            chunks.push(currentChunk.trim());
+          }}
+          currentChunk = w;
+        }} else {{
+          currentChunk += w;
+        }}
+      }}
+      if (currentChunk.trim()) {{
+        chunks.push(currentChunk.trim());
+      }}
+      
+      onlineAudioQueue = chunks;
+      onlineAudioIndex = 0;
+      playNextOnlineChunk();
+    }}
 
     function loadVoices() {{
       if (!synth) return;
@@ -1735,6 +1799,15 @@ def generate_html(local_files):
         }}
         voiceSelect.appendChild(opt);
       }});
+
+      // Add online fallback option if no local Thai voice is found
+      const hasThai = availableVoices.some(v => v.lang.startsWith("th"));
+      if (!hasThai) {{
+        const opt = document.createElement("option");
+        opt.value = "online-fallback-th";
+        opt.textContent = "🌐 Google Online TTS (ภาษาไทย - Fallback)";
+        voiceSelect.appendChild(opt);
+      }}
     }}
 
     if (synth) {{
@@ -1747,6 +1820,9 @@ def generate_html(local_files):
     // Helper to find a voice by language code
     function getVoiceByLang(langPrefix) {{
       const selectedVoiceName = voiceSelect.value;
+      if (selectedVoiceName === "online-fallback-th" && langPrefix === "th") {{
+        return null;
+      }}
       const userSelected = availableVoices.find(v => v.name === selectedVoiceName);
       
       // If user selected a voice matching the desired language, use it
@@ -1771,8 +1847,6 @@ def generate_html(local_files):
 
       currentlySpeakingId = paperId;
       isPaused = false;
-      utteranceQueue = [];
-      currentQueueIndex = 0;
       
       // Highlight card
       const targetCard = document.getElementById(`card-${{paperId}}`);
@@ -1802,16 +1876,27 @@ def generate_html(local_files):
         thaiText = `บทสรุปภาษาไทย: ${{paper.summary_th}}`;
       }}
       
-      const uttTH = thaiText ? new SpeechSynthesisUtterance(thaiText) : null;
-      if (uttTH) {{
-        uttTH.voice = getVoiceByLang("th");
-        uttTH.rate = parseFloat(speedSlider.value);
-      }}
+      const thaiVoice = getVoiceByLang("th");
 
       // Set up queue events
       uttEN.onend = function() {{
-        if (uttTH) {{
-          synth.speak(uttTH);
+        if (thaiText) {{
+          if (thaiVoice) {{
+            const uttTH = new SpeechSynthesisUtterance(thaiText);
+            uttTH.voice = thaiVoice;
+            uttTH.rate = parseFloat(speedSlider.value);
+            uttTH.onend = function() {{
+              stopSpeech();
+            }};
+            uttTH.onerror = function(e) {{
+              console.error("Thai Speech Error:", e);
+              stopSpeech();
+            }};
+            synth.speak(uttTH);
+          }} else {{
+            // Fall back to online TTS for Thai
+            speakThaiOnline(thaiText);
+          }}
         }} else {{
           stopSpeech();
         }}
@@ -1822,23 +1907,19 @@ def generate_html(local_files):
         stopSpeech();
       }};
 
-      if (uttTH) {{
-        uttTH.onend = function() {{
-          stopSpeech();
-        }};
-        uttTH.onerror = function(e) {{
-          console.error("Thai Speech Error:", e);
-          stopSpeech();
-        }};
-      }}
-
       // Start speaking English part (which will auto-chain to Thai)
       synth.speak(uttEN);
     }};
 
     window.stopSpeech = function() {{
-      if (!synth) return;
-      synth.cancel();
+      playingOnline = false;
+      if (window.onlineAudioPlayer) {{
+        window.onlineAudioPlayer.pause();
+        window.onlineAudioPlayer.src = "";
+      }}
+      if (synth) {{
+        synth.cancel();
+      }}
       
       if (currentlySpeakingId) {{
         const card = document.getElementById(`card-${{currentlySpeakingId}}`);
@@ -1854,21 +1935,26 @@ def generate_html(local_files):
     }};
 
     window.togglePauseResume = function() {{
-      if (!synth) return;
-      
       if (isPaused) {{
-        synth.resume();
+        if (playingOnline && window.onlineAudioPlayer) {{
+          window.onlineAudioPlayer.play();
+        }} else if (synth) {{
+          synth.resume();
+        }}
         isPaused = false;
         pauseResumeBtn.textContent = "⏸ Pause";
       }} else {{
-        synth.pause();
+        if (playingOnline && window.onlineAudioPlayer) {{
+          window.onlineAudioPlayer.pause();
+        }} else if (synth) {{
+          synth.pause();
+        }}
         isPaused = true;
         pauseResumeBtn.textContent = "▶ Resume";
       }}
     }};
 
     window.updateVoice = function() {{
-      // Voicing updates apply to new reads.
       if (currentlySpeakingId) {{
         const currentId = currentlySpeakingId;
         stopSpeech();
@@ -1880,9 +1966,13 @@ def generate_html(local_files):
       const val = speedSlider.value;
       speedLabel.textContent = `${{val}}x`;
       if (currentlySpeakingId) {{
-        const currentId = currentlySpeakingId;
-        stopSpeech();
-        startSpeech(currentId);
+        if (playingOnline && window.onlineAudioPlayer) {{
+          window.onlineAudioPlayer.playbackRate = parseFloat(val);
+        }} else {{
+          const currentId = currentlySpeakingId;
+          stopSpeech();
+          startSpeech(currentId);
+        }}
       }}
     }};
 
