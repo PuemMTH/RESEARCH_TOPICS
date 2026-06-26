@@ -1,0 +1,206 @@
+\begin{thebibliography}{41}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Alayrac et~al.(2022)Alayrac, Donahue, Luc, Miech, Barr, Hasson, Lenc, Mensch, Millican, Reynolds, Ring, Rutherford, Cabi, Han, Gong, Samangooei, Monteiro, Menick, Borgeaud, Brock, Nematzadeh, Sharifzadeh, Binkowski, Barreira, Vinyals, Zisserman, and Simonyan}]{Alayrac2022FlamingoAV}
+Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Mensch, Katie Millican, Malcolm Reynolds, Roman Ring, Eliza Rutherford, Serkan Cabi, Tengda Han, Zhitao Gong, Sina Samangooei, Marianne Monteiro, Jacob Menick, Sebastian Borgeaud, Andy Brock, Aida Nematzadeh, Sahand Sharifzadeh, Mikolaj Binkowski, Ricardo Barreira, Oriol Vinyals, Andrew Zisserman, and Karen Simonyan. 2022.
+\newblock \href {https://arxiv.org/abs/2204.14198} {Flamingo: a visual language model for few-shot learning}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Bai et~al.(2023)Bai, Bai, Yang, Wang, Tan, Wang, Lin, Zhou, and Zhou}]{Bai2023QwenVLAV}
+Jinze Bai, Shuai Bai, Shusheng Yang, Shijie Wang, Sinan Tan, Peng Wang, Junyang Lin, Chang Zhou, and Jingren Zhou. 2023.
+\newblock \href {https://arxiv.org/abs/2308.12966} {{Qwen-VL}: A versatile vision-language model for understanding, localization, text reading, and beyond}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Chen et~al.(2023)Chen, Zhu, Shen, Li, Liu, Zhang, Krishnamoorthi, Chandra, Xiong, and Elhoseiny}]{Chen2023MiniGPTv2LL}
+Jun Chen, Deyao Zhu, Xiaoqian Shen, Xiang Li, Zechun Liu, Pengchuan Zhang, Raghuraman Krishnamoorthi, Vikas Chandra, Yunyang Xiong, and Mohamed Elhoseiny. 2023.
+\newblock \href {https://arxiv.org/abs/2310.09478} {{MiniGPT}-v2: large language model as a unified interface for vision-language multi-task learning}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Chiang et~al.(2023)Chiang, Li, Lin, Sheng, Wu, Zhang, Zheng, Zhuang, Zhuang, Gonzalez, Stoica, and Xing.}]{Vicuna}
+Wei-Lin Chiang, Zhuohan Li, Zi~Lin, Ying Sheng, Zhanghao Wu, Hao Zhang, Lianmin Zheng, Siyuan Zhuang, Yonghao Zhuang, Joseph~E. Gonzalez, Ion Stoica, and Eric~P. Xing. 2023.
+\newblock \href {https://lmsys.org/blog/2023-03-30-vicuna/} {Vicuna: An opensource chatbot impressing gpt-4 with 90\% chatgpt quality.}
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Cui et~al.(2023)Cui, Zhou, Yang, Wu, Zhang, Zou, and Yao}]{cui2023holistic}
+Chenhang Cui, Yiyang Zhou, Xinyu Yang, Shirley Wu, Linjun Zhang, James Zou, and Huaxiu Yao. 2023.
+\newblock \href {https://arxiv.org/abs/2311.03287} {Holistic analysis of hallucination in gpt-4v(ision): Bias and interference challenges}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Dai et~al.(2023)Dai, Li, Li, Tiong, Zhao, Wang, Li, Fung, and Hoi}]{instructblip}
+Wenliang Dai, Junnan Li, Dongxu Li, Anthony Meng~Huat Tiong, Junqi Zhao, Weisheng Wang, Boyang Li, Pascale Fung, and Steven Hoi. 2023.
+\newblock \href {https://arxiv.org/abs/2305.06500} {Instruct{BLIP}: Towards general-purpose vision-language models with instruction tuning}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Dong et~al.(2024)Dong, Zhang, Zang, Cao, Wang, Ouyang, Wei, Zhang, Duan, Cao, Zhang, Li, Yan, Gao, Zhang, Li, Li, Chen, He, Zhang, Qiao, Lin, and Wang}]{dong2024internlmxcomposer2}
+Xiaoyi Dong, Pan Zhang, Yuhang Zang, Yuhang Cao, Bin Wang, Linke Ouyang, Xilin Wei, Songyang Zhang, Haodong Duan, Maosong Cao, Wenwei Zhang, Yining Li, Hang Yan, Yang Gao, Xinyue Zhang, Wei Li, Jingwen Li, Kai Chen, Conghui He, Xingcheng Zhang, Yu~Qiao, Dahua Lin, and Jiaqi Wang. 2024.
+\newblock \href {https://arxiv.org/abs/2401.16420} {{InternLM-XComposer2}: Mastering free-form text-image composition and comprehension in vision-language large model}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Guan et~al.(2023)Guan, Liu, Wu, Xian, Li, Liu, Wang, Chen, Huang, Yacoob, Manocha, and Zhou}]{guan2023hallusionbench}
+Tianrui Guan, Fuxiao Liu, Xiyang Wu, Ruiqi Xian, Zongxia Li, Xiaoyu Liu, Xijun Wang, Lichang Chen, Furong Huang, Yaser Yacoob, Dinesh Manocha, and Tianyi Zhou. 2023.
+\newblock \href {https://arxiv.org/abs/2310.14566} {Hallusion{B}ench: An advanced diagnostic suite for entangled language hallucination \& visual illusion in large vision-language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Gunjal et~al.(2023)Gunjal, Yin, and Bas}]{Gunjal2023DetectingAP}
+Anish Gunjal, Jihan Yin, and Erhan Bas. 2023.
+\newblock \href {https://arxiv.org/abs/2308.06394} {Detecting and preventing hallucinations in large vision language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Hu et~al.(2023)Hu, Xu, Li, Li, Chen, and Tu}]{hu2023bliva}
+Wenbo Hu, Yifan Xu, Yi~Li, Weiyue Li, Zeyuan Chen, and Zhuowen Tu. 2023.
+\newblock \href {https://arxiv.org/abs/2308.09936} {{BLIVA}: A simple multimodal llm for better handling of text-rich visual questions}.
+\newblock In \emph{Thirty-Eighth {AAAI} Conference on Artificial Intelligence, {AAAI} 2024}.
+
+\bibitem[{Huang et~al.(2024)Huang, Chan, Fung, Qiu, Zhou, Joty, Chang, and Ji}]{huang2024pixels}
+Kung-Hsiang Huang, Hou~Pong Chan, Yi~R Fung, Haoyi Qiu, Mingyang Zhou, Shafiq Joty, Shih-Fu Chang, and Heng Ji. 2024.
+\newblock \href {https://arxiv.org/abs/2403.12027} {From pixels to insights: A survey on automatic chart understanding in the era of large foundation models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Huang et~al.(2023{\natexlab{a}})Huang, Laban, Fabbri, Choubey, Joty, Xiong, and Wu}]{huang2023embrace}
+Kung-Hsiang Huang, Philippe Laban, Alexander~R Fabbri, Prafulla~Kumar Choubey, Shafiq Joty, Caiming Xiong, and Chien-Sheng Wu. 2023{\natexlab{a}}.
+\newblock \href {https://arxiv.org/abs/2309.09369} {Embrace divergence for richer insights: A multi-document summarization benchmark and a case study on summarizing diverse information from news articles}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Huang et~al.(2023{\natexlab{b}})Huang, Zhou, Chan, Fung, Wang, Zhang, Chang, and Ji}]{huang2023lvlms}
+Kung-Hsiang Huang, Mingyang Zhou, Hou~Pong Chan, Yi~R Fung, Zhenhailong Wang, Lingyu Zhang, Shih-Fu Chang, and Heng Ji. 2023{\natexlab{b}}.
+\newblock \href {https://arxiv.org/abs/2312.10160} {Do {LVLM}s understand charts? analyzing and correcting factual errors in chart captioning}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Hudson and Manning(2019)}]{Hudson2019GQAAN}
+Drew~A. Hudson and Christopher~D. Manning. 2019.
+\newblock \href {https://arxiv.org/abs/1902.09506} {{GQA}: a new dataset for compositional question answering over real-world images}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Jiang et~al.(2024)Jiang, Ye, Dong, Jia, Xu, Yan, Zhang, and Zhang}]{Jiang2024HalEvalAU}
+Chaoya Jiang, Wei Ye, Mengfan Dong, Hongrui Jia, Haiyang Xu, Mingshi Yan, Ji~Zhang, and Shikun Zhang. 2024.
+\newblock \href {https://arxiv.org/pdf/2402.15721} {{H}al-{E}val: A universal and fine-grained hallucination evaluation framework for large vision language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Jing et~al.(2023)Jing, Li, Chen, Jia, and Du}]{faithscore}
+Liqiang Jing, Ruosen Li, Yunmo Chen, Mengzhao Jia, and Xinya Du. 2023.
+\newblock \href {https://arxiv.org/abs/2311.01477} {{FAITHSCORE}: Evaluating hallucinations in large vision-language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Kaul et~al.(2024)Kaul, Li, Yang, Dukler, Swaminathan, Taylor, and Soatto}]{Kaul2024THRONEAO}
+Prannay Kaul, Zhizhong Li, Hao Yang, Yonatan Dukler, Ashwin Swaminathan, C.~J. Taylor, and Stefano Soatto. 2024.
+\newblock \href {https://arxiv.org/pdf/2405.05256} {{THRONE}: An object-based hallucination benchmark for the free-form generations of large vision-language models}.
+
+\bibitem[{Kim et~al.(2021)Kim, Son, and Kim}]{Kim2021ViLTVT}
+Wonjae Kim, Bokyung Son, and Ildoo Kim. 2021.
+\newblock \href {http://proceedings.mlr.press/v139/kim21k.html} {{ViLT}: Vision-and-language transformer without convolution or region supervision}.
+\newblock In \emph{Proc. of ICML}.
+
+\bibitem[{Li et~al.(2023{\natexlab{a}})Li, Li, Savarese, and Hoi}]{Li2023BLIP2BL}
+Junnan Li, Dongxu Li, Silvio Savarese, and Steven C.~H. Hoi. 2023{\natexlab{a}}.
+\newblock \href {https://arxiv.org/abs/2301.12597} {{BLIP-2}: Bootstrapping language-image pre-training with frozen image encoders and large language models}.
+\newblock In \emph{Proc. of ICML}.
+
+\bibitem[{Li et~al.(2023{\natexlab{b}})Li, Du, Zhou, Wang, Zhao, and Wen}]{li-etal-2023-evaluating}
+Yifan Li, Yifan Du, Kun Zhou, Jinpeng Wang, Xin Zhao, and Ji-Rong Wen. 2023{\natexlab{b}}.
+\newblock \href {https://aclanthology.org/2023.emnlp-main.20} {Evaluating object hallucination in large vision-language models}.
+\newblock In \emph{Proc. of EMNLP}.
+
+\bibitem[{Liu et~al.(2023{\natexlab{a}})Liu, Li, Li, and Lee}]{liu2023improvedllava}
+Haotian Liu, Chunyuan Li, Yuheng Li, and Yong~Jae Lee. 2023{\natexlab{a}}.
+\newblock \href {https://arxiv.org/abs/2310.03744} {Improved baselines with visual instruction tuning}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Liu et~al.(2023{\natexlab{b}})Liu, Li, Wu, and Lee}]{liu2023llava}
+Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong~Jae Lee. 2023{\natexlab{b}}.
+\newblock \href {https://proceedings.neurips.cc/paper_files/paper/2023/file/6dcf277ea32ce3288914faf369fe6de0-Paper-Conference.pdf} {Visual instruction tuning}.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~36, pages 34892--34916. Curran Associates, Inc.
+
+\bibitem[{Lovenia et~al.(2023)Lovenia, Dai, Cahyawijaya, Ji, and Fung}]{Lovenia2023NegativeOP}
+Holy Lovenia, Wenliang Dai, Samuel Cahyawijaya, Ziwei Ji, and Pascale Fung. 2023.
+\newblock \href {https://arxiv.org/abs/2310.05338} {Negative object presence evaluation (nope) to measure object hallucination in vision-language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{OpenAI(2023)}]{Achiam2023GPT4TR}
+OpenAI. 2023.
+\newblock \href {https://api.semanticscholar.org/CorpusID:257532815} {Gpt-4 technical report}.
+
+\bibitem[{Petryk et~al.(2024)Petryk, Chan, Kachinthaya, Zou, Canny, Gonzalez, and Darrell}]{Petryk2024ALOHaAN}
+Suzanne Petryk, David~M. Chan, Anish Kachinthaya, Haodi Zou, John~F. Canny, Joseph~E. Gonzalez, and Trevor Darrell. 2024.
+\newblock \href {https://arxiv.org/pdf/2404.02904v1} {{ALOH}a: A new measure for hallucination in captioning models}.
+
+\bibitem[{Qiu et~al.(2023)Qiu, Dou, Wang, Celikyilmaz, and Peng}]{qiu-etal-2023-gender}
+Haoyi Qiu, Zi-Yi Dou, Tianlu Wang, Asli Celikyilmaz, and Nanyun Peng. 2023.
+\newblock \href {https://aclanthology.org/2023.emnlp-main.520} {Gender biases in automatic evaluation metrics for image captioning}.
+\newblock In \emph{Proc. of EMNLP}.
+
+\bibitem[{Rohrbach et~al.(2018)Rohrbach, Hendricks, Burns, Darrell, and Saenko}]{rohrbach-etal-2018-object}
+Anna Rohrbach, Lisa~Anne Hendricks, Kaylee Burns, Trevor Darrell, and Kate Saenko. 2018.
+\newblock \href {https://aclanthology.org/D18-1437} {Object hallucination in image captioning}.
+\newblock In \emph{Proc. of EMNLP}.
+
+\bibitem[{Sun et~al.(2023)Sun, Cui, Zhang, Zhang, Yu, Luo, Wang, Rao, Liu, Huang, and Wang}]{sun2023generative}
+Quan Sun, Yufeng Cui, Xiaosong Zhang, Fan Zhang, Qiying Yu, Zhengxiong Luo, Yueze Wang, Yongming Rao, Jingjing Liu, Tiejun Huang, and Xinlong Wang. 2023.
+\newblock \href {https://arxiv.org/abs/2312.13286} {Generative multimodal models are in-context learners}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Touvron et~al.(2023{\natexlab{a}})Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozi{\`e}re, Goyal, Hambro, Azhar, Rodriguez, Joulin, Grave, and Lample}]{Touvron2023LLaMAOA}
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie-Anne Lachaux, Timoth{\'e}e Lacroix, Baptiste Rozi{\`e}re, Naman Goyal, Eric Hambro, Faisal Azhar, Aurelien Rodriguez, Armand Joulin, Edouard Grave, and Guillaume Lample. 2023{\natexlab{a}}.
+\newblock \href {https://arxiv.org/abs/2302.13971} {{LLaMA}: Open and efficient foundation language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Touvron et~al.(2023{\natexlab{b}})Touvron, Martin, Stone, Albert, Almahairi, Babaei, Bashlykov, Batra, Bhargava, Bhosale, Bikel, Blecher, Ferrer, Chen, Cucurull, Esiobu, Fernandes, Fu, Fu, Fuller, Gao, Goswami, Goyal, Hartshorn, Hosseini, Hou, Inan, Kardas, Kerkez, Khabsa, Kloumann, Korenev, Koura, Lachaux, Lavril, Lee, Liskovich, Lu, Mao, Martinet, Mihaylov, Mishra, Molybog, Nie, Poulton, Reizenstein, Rungta, Saladi, Schelten, Silva, Smith, Subramanian, Tan, Tang, Taylor, Williams, Kuan, Xu, Yan, Zarov, Zhang, Fan, Kambadur, Narang, Rodriguez, Stojnic, Edunov, and Scialom}]{Touvron2023Llama2O}
+Hugo Touvron, Louis Martin, Kevin~R. Stone, Peter Albert, Amjad Almahairi, Yasmine Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale, Daniel~M. Bikel, Lukas Blecher, Cristian~Cant{\'o}n Ferrer, Moya Chen, Guillem Cucurull, David Esiobu, Jude Fernandes, Jeremy Fu, Wenyin Fu, Brian Fuller, Cynthia Gao, Vedanuj Goswami, Naman Goyal, Anthony~S. Hartshorn, Saghar Hosseini, Rui Hou, Hakan Inan, Marcin Kardas, Viktor Kerkez, Madian Khabsa, Isabel~M. Kloumann, A.~V. Korenev, Punit~Singh Koura, Marie-Anne Lachaux, Thibaut Lavril, Jenya Lee, Diana Liskovich, Yinghai Lu, Yuning Mao, Xavier Martinet, Todor Mihaylov, Pushkar Mishra, Igor Molybog, Yixin Nie, Andrew Poulton, Jeremy Reizenstein, Rashi Rungta, Kalyan Saladi, Alan Schelten, Ruan Silva, Eric~Michael Smith, R.~Subramanian, Xia Tan, Binh Tang, Ross Taylor, Adina Williams, Jian~Xiang Kuan, Puxin Xu, Zhengxu Yan, Iliyan Zarov, Yuchen Zhang, Angela Fan, Melanie Kambadur, Sharan Narang, Aurelien Rodriguez, Robert Stojnic, Sergey Edunov, and
+  Thomas Scialom. 2023{\natexlab{b}}.
+\newblock \href {https://arxiv.org/abs/2307.09288} {Llama 2: Open foundation and fine-tuned chat models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Villa et~al.(2023)Villa, Alc'azar, Soto, and Ghanem}]{Villa2023BehindTM}
+Andr{\'e}s Villa, Juan Carlos~Le'on Alc'azar, Alvaro Soto, and Bernard Ghanem. 2023.
+\newblock \href {https://arxiv.org/abs/2312.02219} {Behind the magic, merlim: Multi-modal evaluation benchmark for large image-language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Wang et~al.(2023{\natexlab{a}})Wang, Zhou, Xu, Shi, Zhao, Xu, Ye, Yan, Zhang, Zhu, Sang, and Tang}]{Wang2023EvaluationAA}
+Junyan Wang, Yi~Zhou, Guohai Xu, Pengcheng Shi, Chenlin Zhao, Haiyang Xu, Qinghao Ye, Mingshi Yan, Ji~Zhang, Jihua Zhu, Jitao Sang, and Haoyu Tang. 2023{\natexlab{a}}.
+\newblock \href {https://arxiv.org/abs/2308.15126} {Evaluation and analysis of hallucination in large vision-language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Wang et~al.(2023{\natexlab{b}})Wang, Wang, Xu, Zhang, Gu, Jia, Yan, Zhang, and Sang}]{wang2023llm}
+Junyang Wang, Yuhang Wang, Guohai Xu, Jing Zhang, Yukai Gu, Haitao Jia, Ming Yan, Ji~Zhang, and Jitao Sang. 2023{\natexlab{b}}.
+\newblock \href {https://arxiv.org/abs/2311.07397} {An {LLM}-free multi-dimensional benchmark for {MLLM}s hallucination evaluation}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Wang et~al.(2024{\natexlab{a}})Wang, Lv, Yu, Hong, Qi, Wang, Ji, Yang, Zhao, Song, Xu, Xu, Li, Dong, Ding, and Tang}]{wang2024cogvlm}
+Weihan Wang, Qingsong Lv, Wenmeng Yu, Wenyi Hong, Ji~Qi, Yan Wang, Junhui Ji, Zhuoyi Yang, Lei Zhao, Xixuan Song, Jiazheng Xu, Bin Xu, Juanzi Li, Yuxiao Dong, Ming Ding, and Jie Tang. 2024{\natexlab{a}}.
+\newblock \href {https://arxiv.org/abs/2311.03079} {{CogVLM}: Visual expert for pretrained language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Wang et~al.(2024{\natexlab{b}})Wang, Bai, tse Huang, Wan, Yuan, Qiu, Peng, and Lyu}]{Wang2024NewJN}
+Wenxuan Wang, Haonan Bai, Jen tse Huang, Yuxuan Wan, Youliang Yuan, Haoyi Qiu, Nanyun Peng, and Michael~R. Lyu. 2024{\natexlab{b}}.
+\newblock \href {https://arxiv.org/pdf/2401.00763} {New job, new gender? measuring the social bias in image generation models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Ye et~al.(2023{\natexlab{a}})Ye, Xu, Xu, Ye, Yan, Zhou, Wang, Hu, Shi, Shi, Jiang, Li, Xu, Chen, Tian, Qi, Zhang, and Huang}]{ye2023mplugowl}
+Qinghao Ye, Haiyang Xu, Guohai Xu, Jiabo Ye, Ming Yan, Yiyang Zhou, Junyang Wang, Anwen Hu, Pengcheng Shi, Yaya Shi, Chaoya Jiang, Chenliang Li, Yuanhong Xu, Hehong Chen, Junfeng Tian, Qian Qi, Ji~Zhang, and Fei Huang. 2023{\natexlab{a}}.
+\newblock \href {https://arxiv.org/abs/2304.14178} {m{PLUG}-{O}wl: Modularization empowers large language models with multimodality}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Ye et~al.(2023{\natexlab{b}})Ye, Xu, Ye, Yan, Hu, Liu, Qian, Zhang, Huang, and Zhou}]{Ye2023mPLUGOwl2RM}
+Qinghao Ye, Haiyang Xu, Jiabo Ye, Mingshi Yan, Anwen Hu, Haowei Liu, Qi~Qian, Ji~Zhang, Fei Huang, and Jingren Zhou. 2023{\natexlab{b}}.
+\newblock \href {https://arxiv.org/abs/2311.04257} {{mPLUG-Owl2}: Revolutionizing multi-modal large language model with modality collaboration}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Zhai et~al.(2023)Zhai, Yang, Zhao, Xu, Shen, Zhao, Keutzer, Li, Yan, and Fan}]{Zhai2023HallESwitchRA}
+Bohan Zhai, Shijia Yang, Xiangchen Zhao, Chenfeng Xu, Sheng Shen, Dongdi Zhao, Kurt Keutzer, Manling Li, Tan Yan, and Xiangjun Fan. 2023.
+\newblock \href {https://arxiv.org/abs/2310.01779} {Hall{E}-{S}witch: Rethinking and controlling object existence hallucinations in large vision language models for detailed caption}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Zhang et~al.(2024)Zhang, Zhang, and Wan}]{Zhang2024QuantityMT}
+Huixuan Zhang, Junzhe Zhang, and Xiaojun Wan. 2024.
+\newblock \href {https://arxiv.org/pdf/2403.01373} {Quantity matters: Towards assessing and mitigating number hallucination in large vision-language models}.
+\newblock \emph{ArXiv preprint}.
+
+\bibitem[{Zhou et~al.(2023)Zhou, Cui, Yoon, Zhang, Deng, Finn, Bansal, and Yao}]{zhou2023analyzing}
+Yiyang Zhou, Chenhang Cui, Jaehong Yoon, Linjun Zhang, Zhun Deng, Chelsea Finn, Mohit Bansal, and Huaxiu Yao. 2023.
+\newblock \href {https://arxiv.org/pdf/2310.00754} {Analyzing and mitigating object hallucination in large vision-language models}.
+
+\bibitem[{Zhu et~al.(2023)Zhu, Chen, Shen, Li, and Elhoseiny}]{zhu2023minigpt}
+Deyao Zhu, Jun Chen, Xiaoqian Shen, Xiang Li, and Mohamed Elhoseiny. 2023.
+\newblock \href {https://arxiv.org/abs/2304.10592} {Mini{GPT}-4: Enhancing vision-language understanding with advanced large language models}.
+\newblock \emph{ArXiv preprint}.
+
+\end{thebibliography}

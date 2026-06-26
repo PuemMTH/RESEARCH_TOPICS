@@ -1,0 +1,12 @@
+\section{The \pipeline{}~\piemoji{}~ pipeline}
+\pipeline{} \piemoji, presented in in Figure~\ref{fig:ChaTS-Pi}, shorthand for \underline{Cha}rt-\underline{T}o-\underline{S}ummary \underline{Pi}peline , generates a set of candidate summaries in stage 1, then uses \metric{}'s per sentence scores to repair (stage 2) score the summaries (stage 3) and re-rank them (stage 4).
+This is done by removing sentences with low entailment scores and picking the candidate summary with the highest \emph{Summary-level faithfulness score}.%
+
+\paragraph{Summary-level faithfulness score $F(S)$} is a per summary score defined as the ratio of kept sentences:
+  \vspace{-3ex}
+\[
+F(S) = \frac{1}{|S|}\sum_{i=1}^{|S|} \mathbbm{1}_{[T, 1]}\left( f(s_i) \right) %
+\vspace{-1ex}
+\]
+ 
+where $\mathbbm{1}_{[T, 1]}(f(s_i))$ is the indicator function with $T$ as the threshold, which is equal to $1$ if $f(s_i) > T$ and 0 otherwise.

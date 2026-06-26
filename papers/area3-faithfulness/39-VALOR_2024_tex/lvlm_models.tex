@@ -1,0 +1,24 @@
+\begin{table*}[h]
+\small
+\centering
+\scalebox{1.0}{
+\begin{tabular}{lccc}
+\toprule
+ \textbf{Model} & \textbf{Visual Encoder} & \textbf{Alignment Network} & \textbf{Language Model} \\
+\midrule
+InstructBLIP & $\text{EVA CLIP ViT-G/14}_{\text{1.1B}}$ & Q-Former & $\text{Vicuna}_{\text{7B}}$ \\
+LLaVA-1.5 & $\text{CLIP ViT-L/14-336px}_{\text{0.4B}}$ & MLP & $\text{Vicuna-v1.5}_{\text{13B}}$ \\
+MiniGPT-v2 &  $\text{EVA CLIP ViT-G/14}_{\text{1.1B}}$ & Linear Projection & $\text{LLaMA-2}_{\text{7B}}$ \\
+mPLUG-Owl2 & $\text{CLIP ViT-L/14}_{\text{0.4B}}$ & Cross Attention & $\text{LLaMA-2}_{\text{7B}}$ \\
+BLIVA & $\text{EVA CLIP ViT-G/14}_{\text{1.1B}}$ & Q-Former \& Linear Projection & $\text{Vicuna}_{\text{7B}}$ \\
+CogVLM & $\text{EVA2-CLIP-E/14}_{\text{4.7B}}$  & MLP &  $\text{Vicuna-v1.5}_{\text{7B}}$ \\
+InternLM-Xcomposer2 & $\text{CLIP ViT-L/14-336px}_{\text{0.4B}}$ & Partial Low-Rank Adaptation  &$\text{InternLM2}_{\text{7B}}$  \\
+Qwen-VL & $\text{CLIP ViT-G/14}_{\text{1.9B}}$ & Cross Attention & $\text{QwenLM}_{\text{13B}}$ \\
+Emu2 & $\text{EVA2-CLIP-E-plus/14}_{\text{5.0B}}$ & Linear Projection &$\text{LLaMA}_{\text{33B}}$  \\
+GPT-4(V) & Unknown & Unknown & GPT-4 \\
+
+\bottomrule
+\end{tabular}
+}
+\caption{Architectures of mainstream LVLMs evaluated in our benchmark. InstructBLIP \cite{instructblip}, LLaVA-1.5 \cite{liu2023improvedllava}, MiniGPT-v2 \cite{Chen2023MiniGPTv2LL}, mPLUG-Owl2 \cite{Ye2023mPLUGOwl2RM}, BLIVA \cite{hu2023bliva}, CogVLM \cite{wang2024cogvlm}, InternLM-XComposer2 \cite{dong2024internlmxcomposer2}, Qwen-VL \cite{Bai2023QwenVLAV}, Emu2 \cite{sun2023generative} and GPT-4V \cite{Achiam2023GPT4TR}.} \label{tab:lvlm_models}
+\end{table*}

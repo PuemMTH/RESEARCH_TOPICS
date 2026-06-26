@@ -1,0 +1,100 @@
+{
+  "arxiv_id": "2203.06486",
+  "title": "Chart-to-Text: A Large-Scale Benchmark for Chart Summarization",
+  "authors": [
+    "Shankar Kantharaj♣,   Rixie Tiffany Ko Leong\\vardiamondsuit\\vardiamondsuit{}^{\\vardiamondsuit}11footnotemark:1,  Xiang Lin\\vardiamondsuit\\vardiamondsuit{}^{\\vardiamondsuit}11footnotemark:1,  Ahmed Masry♣11footnotemark:1Megh Thakkar\\vardiamondsuit\\vardiamondsuit{}^{\\vardiamondsuit}11footnotemark:1,  Enamul Hoque♣,  Shafiq Joty\\vardiamondsuit​♠\\vardiamondsuit♠{}^{\\vardiamondsuit\\spadesuit}♣York University, Canada,\\vardiamondsuit\\vardiamondsuit{}^{\\vardiamondsuit}Nanyang Technological University, Singapore♠Salesforce Research Asia, Singapore{shankark, masry20, enamulh}@yorku.ca{rleong007, linx0057, srjoty}@ntu.edu.sgmegh.1211@gmail.com"
+  ],
+  "abstract": "Charts are commonly used for exploring data and communicating insights. Generating natural language summaries from charts can be very helpful for people in inferring key insights that would otherwise require a lot of cognitive and perceptual efforts.\nWe present Chart-to-text, a large-scale benchmark with two datasets and a total of 44,096 charts covering a wide range of topics and chart types. We explain the dataset construction process and analyze the datasets. We also introduce a number of state-of-the-art neural models as baselines that utilize image captioning and data-to-text generation techniques to tackle two problem variations: one assumes the underlying data table of the chart is available while the other needs to extract data from chart images. Our analysis with automatic and human evaluation shows that while our best models usually generate fluent summaries and yield reasonable BLEU scores, they also suffer from hallucinations and factual errors as well as difficulties in correctly explaining complex patterns and trends in charts.",
+  "year": "2022",
+  "figure_count": 17,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:An example chart-summary pair from our Benchmark and the output from one of the best models (TAB-T5).",
+      "src": "/html/2203.06486/assets/imgs/sample%20charts/statista_368_edit_2.png"
+    },
+    {
+      "id": "S3.F2",
+      "caption": "Figure 2:Stages of the Pew dataset construction process.",
+      "src": "/html/2203.06486/assets/imgs/annotation_pew_new.png"
+    },
+    {
+      "id": "S4.F3",
+      "caption": "(a)Chart2text model",
+      "src": "/html/2203.06486/assets/x1.png"
+    },
+    {
+      "id": "S4.F3.sf1",
+      "caption": "(a)Chart2text model",
+      "src": "/html/2203.06486/assets/x1.png"
+    },
+    {
+      "id": "S4.F3.sf2",
+      "caption": "(b)Field-infusing model",
+      "src": "/html/2203.06486/assets/x2.png"
+    },
+    {
+      "id": "S4.F3.sf3",
+      "caption": "(c)BART/T5 fine-tuning",
+      "src": "/html/2203.06486/assets/x3.png"
+    },
+    {
+      "id": "S5.F4",
+      "caption": "Figure 4:Sample outputs from Statista (first column) and Pew datasets (last two columns).Redindicates hallucination errors andblueindicates tokens that are resulted in factual errors in the model output.",
+      "src": "/html/2203.06486/assets/imgs/sample%20charts/31_bigger_font_edit.png"
+    },
+    {
+      "id": "A1.F5",
+      "caption": "Figure 5:A screenshot of a webpage from Statista.",
+      "src": "/html/2203.06486/assets/imgs/statista_first_caption.png"
+    },
+    {
+      "id": "A1.F6",
+      "caption": "Figure 6:The user interface for labeling the x-axis labels in the Statista dataset.",
+      "src": "/html/2203.06486/assets/imgs/statista_annot_interface.png"
+    },
+    {
+      "id": "A1.F7",
+      "caption": "Figure 7:The computation of a paragraph’s relevance score to a chart, and the conditions for the heuristic in the Pew dataset.",
+      "src": ""
+    },
+    {
+      "id": "A1.F8",
+      "caption": "Figure 8:The user interface for the Mechanical Turk annotation task in the Pew dataset.",
+      "src": "/html/2203.06486/assets/imgs/pew_annot_interface.png"
+    },
+    {
+      "id": "A1.F9",
+      "caption": "(a)Statista",
+      "src": "/html/2203.06486/assets/imgs/statista_topics.png"
+    },
+    {
+      "id": "A1.F9.sf1",
+      "caption": "(a)Statista",
+      "src": "/html/2203.06486/assets/imgs/statista_topics.png"
+    },
+    {
+      "id": "A1.F9.sf2",
+      "caption": "(b)Pew",
+      "src": "/html/2203.06486/assets/imgs/pew_topics.png"
+    },
+    {
+      "id": "A1.F10",
+      "caption": "Figure 10:The user interface for human evaluation: it presents two summaries at a time and asks the participant to compare between them based on three measures.",
+      "src": "/html/2203.06486/assets/imgs/human_eval_interface.png"
+    },
+    {
+      "id": "A1.F11",
+      "caption": "Figure 11:Data Extraction example from Statista.",
+      "src": "/html/2203.06486/assets/imgs/statista_pipeline_3.png"
+    },
+    {
+      "id": "A1.F12",
+      "caption": "Figure 12:Examples of chart-summary pairs in our benchmark. The top two examples are from the Pew research dataset and the rest of the examples are from the Statista dataset.",
+      "src": "/html/2203.06486/assets/new_examples_imgs/350.png"
+    }
+  ],
+  "paper_number": 25,
+  "slug": "Chart",
+  "base_name": "25-Chart_2022"
+}

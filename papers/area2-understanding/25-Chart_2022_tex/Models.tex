@@ -1,0 +1,103 @@
+
+
+\paragraph{Problem Definition}
+
+We consider two variations of the chart-to-text problem. In the first variation,  we assume that the underlying data table of the chart is available, where the dataset can be represented as a set of 4-element tuples $\gD = \{\langle C, T, M, S\rangle_n\}_{n=1}^{|\gD|}$ with $C$, $T$, $M$ and $S$ representing the chart image, data table, metadata and textual summary, respectively. For each cell in the data table $T$, we have the following information: \Ni the string value, \Nii the row and column positions, and \Niii whether it is a header cell or not. The metadata $M = (C_{\text{title}}, C_{\text{type}}, C_{\text{labels}})$ consists of the title, type (\eg\ bar, line) and axis labels. 
+
+In the  second variation, we assume that the data table is not available which makes the problem more challenging as well as realistic because most charts online are in image format and do not have the underlying data tables. For a given input $X=\langle C,T,M \rangle$ or $\langle C,M \rangle$, our goal is to generate a textual description $\hat{S}$ which is a good summary of the chart according to a set of evaluation measures.  
+
+
+
+We consider three categories of models to tackle the task. The first category is image captioning models, where the task is formulated as generating a textual description for the given chart image. The second category is data-to-text models, which rely on the underlying data tables of the charts to produce the corresponding descriptions. Finally, we consider a combination of vision and text models, where the models first extract the 
+text 
+using the CRAFT OCR model \cite{craftdetection} and then train with a data-to-text setup. 
+We present three categories of models below (hyperparameter settings for all the models are provided
+in \Cref{app:baselines}).
+
+
+
+\subsection{Image Captioning Models} \label{subsec:imgage-cap}
+We develop over the Show, Attend, and Tell (SAT) model \cite{Xu2015show} to probe the effectiveness of this category of models for our task. Following \citet{Xu2015show}, we use the ResNet50 \cite{he2016deep} as the image encoder and a unidirectional LSTM \cite{10.1162/neco.1997.9.8.1735} as the decoder for text. 
+As the pretrained ResNet50 model is trained on object detection tasks on ImageNet \cite{5206848}, directly applying  it to chart images gave poor results in our experiments. Also, we do not have any object labels for the chart images to train the encoder. Hence, we employ the recently proposed self-supervised strategy called \emph{Barlow Twins} \cite{zbontar2021barlow} which tries to make the embedding vectors of distorted versions of an image sample to be similar, while minimizing the redundancy between the components of these vectors. It achieves state-of-the-art results for ImageNet classification with an accuracy gap of only 3.3\% from the supervised model. We pretrain a separate ResNet50 with Barlow Twins for each of our datasets and use it as an encoder in the 
+model. 
+
+
+
+
+\begin{figure*}[t!]
+\begin{subfigure}[b]{.33\textwidth}
+\centering
+    \includegraphics[width=1\textwidth,keepaspectratio]{imgs/models/charttotext_model.pdf}
+\caption{\small Chart2text model }
+\label{fig:chart2text}
+\end{subfigure}
+\begin{subfigure}[b]{.33\textwidth}
+\centering
+    \includegraphics[width=1\textwidth,keepaspectratio]{imgs/models/field_infusing_model.pdf}
+\caption{\small Field-infusing model}
+\label{fig:field-infuse}
+\end{subfigure}
+\begin{subfigure}[b]{.33\textwidth}
+\centering
+    \includegraphics[width=0.94\textwidth,keepaspectratio]{imgs/models/bart_t5.pdf}
+    
+\caption{\small BART/T5 fine-tuning}
+\label{fig:bartt5}
+\end{subfigure}
+\caption{Different chart2text model architectures. \Cref{fig:bartt5} shows fine-tuning stage of the training (not unsupervised pretraining)}
+\label{models}
+\end{figure*}
+
+
+
+
+\subsection{Data-to-text Models} \label{subsec:data2text}
+
+
+
+\vspace{0.5em}
+\textbf{$\bullet$ Chart2text}
+\cite{obeid} 
+is an adapted transformer model for chart-to-text based on the data-to-text model of  \citet{gong-etal-2019-enhanced}. It takes a sequence of data records as input with each record being a set of tuples (\eg\ column header, cell value, column index) and embeds them into feature vectors with positional encodings to distinguish orders (\Cref{fig:chart2text}). The model includes an auxiliary training objective (binary labels indicating the presence of the record in the output sequence) on the encoder to maximize the content selection score. It also implements a  templating strategy of target text with data variables (\eg\
+\emph{cells}, \emph{axis labels}) to alleviate hallucination problems. Since in Pew data tables are not available,
+we use OCR-generated texts as inputs  which are linearized and embedded into feature vectors. 
+The bounding box information of OCR-generated data of each chart is also embedded and concatenated to the table vectors to provide positional information to the model. 
+
+ 
+
+\vspace{0.5em}
+\noindent \textbf{$\bullet$ Field-Infusing Model}
+\cite{chen2020logical}
+is inspired by the concept-to-text work \cite{lebret-etal-2016-neural}. The values in a cell are first encoded with an LSTM, which is then concatenated with the embeddings of row index and column heading. These table representations ($h_1, h_2$ in \Cref{fig:field-infuse}) are then fed into a 3-layer Transformer encoder-decoder model to generate the target summaries. Additionally, for Pew, 
+we embed the bounding box information of the chart OCR-texts and concatenate it to the LSTM-based field representation as an auxiliary positional information to the model.
+
+
+
+
+
+
+\vspace{0.5em}
+\noindent  \textbf{$\bullet$ BART}
+\cite{lewis-etal-2020-bart} 
+adopts a seq2seq Transformer architecture with  denoising pretraining  objectives. It is particularly pretrained to be effective  for text generation tasks. 
+For our chart-to-text tasks, 
+we flatten the data table row by row and concatenate  the title with table content as the input to the encoder (\Cref{fig:bartt5}). {In the absence of data tables, we concatenate all the OCR-texts in a top to bottom order and fed it to the model as input.} 
+
+ 
+
+\vspace{0.5em}
+\noindent  \textbf{$\bullet$ T5}
+\cite{Raffel2020t5} is a unified seq2seq Transformer 
+model 
+that converts various NLP tasks into a text2text generation format. It is first pretrained with a `fill-in-the-blank' denoising objective, where 15\% of the input tokens are randomly dropped out. The spans of consecutive dropped-out tokens are replaced by a sentinel token. The decoder then has to predict all of the dropped-out token spans, delimited by the same sentinel tokens used in the input. This is different from the pretraining objective of BART where the decoder predicts the entire original sequence (not just the dropped spans). T5 is  fine-tuned with several supervised multi-task training objectives (\eg machine translation, text summarization). We format the input in the same way as for the BART models. Specifically, we add ``translate Chart to Text: " to the prefix of the input to mimic the pretraining process (see \Cref{fig:bartt5}). 
+
+
+ 
+
+{For OCR-based input, we experiment with two T5 model variants. In the first variant, we concatenate all the OCR-extracted sentences from the chart image in a top to bottom order and fed it to the model as input. In the second, we modify the input to accommodate the spatial information of the detected texts. Inspired by \citet{lxmert}, we feed the bounding box coordinates of each detected text token into a linear layer to produce  positional embeddings which are then added to their corresponding embeddings of the OCR tokens as input.} 
+
+
+
+
+ 
+   

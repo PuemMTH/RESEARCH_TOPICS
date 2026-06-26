@@ -1,0 +1,39 @@
+\section{Discussion}
+\label{subsec:discuss}
+\paragraph*{Majority tokens are reliable hints during training.}
+
+To better understand why the model relies on majority tokens during generation, we calculate the probability that majority tokens in the retrieved captions overlap with the ground truth captions ($T_{M}\in GT$), and with the predicted tokens ($T_{M}\in Pred$). Table~\ref{tab:mt-pct} shows that in 88\%--99\% of the training examples, the majority tokens in the retrieved captions are also present in the ground truth captions. This suggests that the model can develop a bias towards majority tokens due to the fact that they are so often present in the ground truth during training. This analysis also clarifies the decrease in the model's robustness as $k$ increases when randomly retrieving captions. This is because a higher $k$ only adds noise without providing useful majority tokens. The use of sampling during training exposes the model to more diverse context, which leads to a slightly increased level of selectivity.
+
+
+\begin{table}[ht]
+\centering
+    \resizebox{0.9\linewidth}{!}{
+     \begin{tabular}{lrrrr}
+      & k=2 & 3 & 4 \\
+        \toprule 
+        \rowcolor[gray]{0.95}
+        \rowcolor[gray]{0.95}
+        $T_{M}\in GT_{train}$  & 88.0 & 97.5 & 99.2 \\
+        \rowcolor[gray]{0.95}
+        $T_{M}\in GT_{val}$  & 74.7 & 86.5 & 91.0 \\
+        $T_{M}\in\text{Pred}$ & 82.8 & 93.4  & 96.7 \\
+        $T_{M}\in\text{Pred (sample-k)}$& 81.9  & 93.3 & 96.6 \\
+        \bottomrule
+        \end{tabular}
+        }
+    \caption{Percentage of samples in the COCO train and validation set where the majority token of the retrieved captions are present in the ground truth compared to the percentage of their presence in prediction. \label{tab:mt-pct}}
+\end{table}
+
+
+    \begin{figure}[!t]
+    \includegraphics[width=0.95\linewidth]{figs/dist-mt.pdf}
+    \caption{Distribution of number of majority tokens in the retrieved captions for the COCO, VizWis, and NoCaps evaluation datasets. For the COCO dataset, we also show the difference between retrieving the top-4 captions against four randomly selected captions.\label{fig:mt-dist}}
+    \end{figure}
+
+
+In Figure~\ref{fig:mt-dist}, we show the variation in the distribution of majority tokens across various evaluation datasets. When captions are randomly selected for the COCO evaluation data, there are fewer majority tokens in the retrieved captions. This presents a challenge for the model in making use of the retrieved captions, which accounts for the performance decrease shown in Figure~\ref{fig:ex}. For evaluation, with the same value of $k$, the fewer the number of majority tokens in the retrieved captions, the harder it is for the model to ``copy'' those tokens to the final output. In such scenarios, we obtain bigger improvements with the sample-$k$ training.
+
+
+
+
+

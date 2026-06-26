@@ -1,0 +1,232 @@
+ % use the "wcp" class option for workshop and conference
+ % proceedings
+ %\documentclass[gray]{jmlr} % test grayscale version
+ %\documentclass[tablecaption=bottom]{jmlr}% journal article
+ \documentclass[pmlr,twocolumn,10pt]{jmlr} % W&CP article
+
+% \usepackage{geometry}
+% \geometry{margins=0.1in,textwidth=7in}
+
+ % The following packages will be automatically loaded:
+ % amsmath, amssymb, natbib, graphicx, url, algorithm2e
+
+ %\usepackage{rotating}% for sideways figures and tables
+ %\usepackage{longtable}% for long tables
+
+ % The booktabs package is used by this sample document
+ % (it provides \toprule, \midrule and \bottomrule).
+ % Remove the next line if you don't require it.
+\usepackage{graphicx}
+\usepackage{booktabs}
+ % The siunitx package is used by this sample document
+ % to align numbers in a column by their decimal point.
+ % Remove the next line if you don't require it.
+\usepackage{siunitx}
+
+% Define \@titlefoot to avoid undefined control sequence error
+\makeatletter
+\newcommand*{\@titlefoot}{\scriptsize\copyright\space\@jmlryear}
+\makeatother
+
+% The lineno package is required for denoting line
+% numbers for paper review.
+\usepackage[switch]{lineno}
+
+\usepackage[table]{xcolor}
+\usepackage{multirow}
+
+ % The following command is just for this sample document:
+\newcommand{\cs}[1]{\texttt{\char`\\#1}}% remove this in your real article
+
+% The following is to recognise equal contribution for authorship
+% \newcommand{\equal}[1]{{\hypersetup{linkcolor=black}\thanks{#1}}}
+
+ % Define an unnumbered theorem just for this sample document for
+ % illustrative purposes:
+\theorembodyfont{\upshape}
+\theoremheaderfont{\scshape}
+\theorempostheader{:}
+\theoremsep{\newline}
+\newtheorem*{note}{Note}
+
+ % change the arguments, as appropriate, in the following:
+% \jmlrworkshop{Machine Learning for Health (ML4H) 2025} % W&CP title
+
+ % The optional argument of \title is used in the header
+\title[Leveraging Long Context in Biomedical Vision–Language Models]{No Tokens Wasted: Leveraging Long Context in Biomedical Vision–Language Models}
+
+ % Anything in the title that should appear in the main title but 
+ % not in the article's header or the volume's table of
+ % contents should be placed inside \titletag{}
+
+ %\title{Title of the Article\titletag{\thanks{Some footnote}}}
+
+
+ % Use \Name{Author Name} to specify the name.
+ % If the surname contains spaces, enclose the surname
+ % in braces, e.g. \Name{John {Smith Jones}} similarly
+ % if the name has a "von" part, e.g \Name{Jane {de Winter}}.
+ % If the first letter in the forenames is a diacritic
+ % enclose the diacritic in braces, e.g. \Name{{\'E}louise Smith}
+
+ % \thanks must come after \Name{...} not inside the argument for
+ % example \Name{John Smith}\nametag{\thanks{A note}} NOT \Name{John
+ % Smith\thanks{A note}}
+
+ % Anything in the name that should appear in the title but not in the 
+ % article's header or footer or in the volume's
+ % table of contents should be placed inside \nametag{}
+
+ % Two authors with the same address
+ % \author{%
+ %  \Name{Author Name1\nametag{\thanks{A note}}} \Email{abc@sample.com}\and
+ %  \Name{Author Name2} \Email{xyz@sample.com}\\
+ %  \addr Address
+ % }
+
+ % Three or more authors with the same address:
+ % \author{%
+ %  \Name{Author Name1} \Email{an1@sample.com}\\
+ %  \Name{Author Name2} \Email{an2@sample.com}\\
+ %  \Name{Author Name3} \Email{an3@sample.com}\\
+ %  \Name{Author Name4} \Email{an4@sample.com}\\
+ %  \Name{Author Name5} \Email{an5@sample.com}\\
+ %  \Name{Author Name6} \Email{an6@sample.com}\\
+ %  \Name{Author Name7} \Email{an7@sample.com}\\
+ %  \Name{Author Name8} \Email{an8@sample.com}\\
+ %  \Name{Author Name9} \Email{an9@sample.com}\\
+ %  \Name{Author Name10} \Email{an10@sample.com}\\
+ %  \Name{Author Name11} \Email{an11@sample.com}\\
+ %  \Name{Author Name12} \Email{an12@sample.com}\\
+ %  \Name{Author Name13} \Email{an13@sample.com}\\
+ %  \Name{Author Name14} \Email{an14@sample.com}\\
+ %  \addr Address
+ % }
+
+
+
+
+
+
+%  % Authors with different addresses and equal first authors:
+% \author{%
+% \Name{Min Woo Sun}\equal{These authors contributed equally} \Email{minwoos@stanford.edu}\\
+% \addr Stanford University, USA
+% \AND
+% % footnotemark[1] is to refer to the \equal footnote
+% \Name{Alejandro Lozano}\footnotemark[1] \Email{lozanoe@stanford.edu}\\
+% \addr Stanford University, USA
+% \AND
+% \Name{Javier Tejero} \Email{javierg@stanford.edu}\\
+% \addr NVIDIA, USA
+% \AND
+% \Name{Vishwesh Nath} \Email{vnath@nvidia.com}\\
+% \addr NVIDIA, USA
+% \AND
+% \Name{James Burgess} \Email{jmhb@stanford.edu}\\
+% \addr Stanford University, USA
+% \AND
+% \Name{Xiao Xiao Sun} \Email{xxsun@stanford.edu}\\
+% \addr Stanford University, USA
+% \AND
+% \Name{Yuhui Zhang} \Email{yuhuiz@stanford.edu}\\
+% \addr Stanford University, USA
+% \AND
+% \Name{Kun Yuan} \Email{ghi@sample.com}\\
+% \addr Stanford University, USA
+% \AND
+% \Name{Robert Tibshirani} \Email{tibs@stanford.edu}\\
+% \addr Stanford University, USA
+% \AND
+% \Name{Sean Huver} \Email{shuver@nvidia.com}\\
+% \addr NVIDIA, USA
+% \AND
+% \Name{Serena Yeung-Levy} \Email{syyeung@stanford.edu}\\
+% \addr Stanford University, USA
+% }
+
+\usepackage{hyperref}
+\newcommand{\equal}[1]{\thanks{#1}} 
+
+% Authors with different addresses and equal first authors:
+\author{%
+\Name{Min Woo Sun}$^{1*}$\Email{minwoos@stanford.edu}\\
+\Name{Alejandro Lozano}$^{1*}$ \Email{lozanoe@stanford.edu} \\ % \footnotemark[1] \Email{lozanoe@stanford.edu}\\
+\Name{Javier Gamazo Tejero}${^2}$ \Email{javierg@nvidia.com}\\
+\Name{Vishwesh Nath}${^2}$ \Email{vnath@nvidia.com}\\
+\Name{Xiao Xiao Sun}$^{1}$ \Email{xxsun@stanford.edu}\\
+\Name{James Burgess}$^{1}$ \Email{jmhb@stanford.edu}\\
+\Name{Yuhui Zhang}$^{1}$ \Email{yuhuiz@stanford.edu}\\
+\Name{Kun Yuan}$^{1}$ \Email{kun@unistra.fr}\\
+\Name{Robert Tibshirani}$^{1}$ \Email{tibs@stanford.edu}\\
+\Name{Sean Huver}${^2}$ \Email{shuver@nvidia.com}\\
+\Name{Serena Yeung-Levy}$^{1}$ \Email{syyeung@stanford.edu}\\
+\addr $^{*}$Equal contribution \\
+\addr $^{1}$Stanford University, USA \\
+\addr $^{2}$NVIDIA, USA
+}
+
+
+
+
+% \author{%
+% \Name{Author 1}$^{1}$\equal{These authors contributed equally} \Email{abc1@sample.com}\\
+% \Name{Author 2}$^{1}$\footnotemark[1] \Email{abc2@sample.com}\\
+% \Name{Author 3}${^2}$ \Email{abc3@sample.com}\\
+% \Name{Author 4}${^2}$ \Email{abc4@sample.com}\\
+% \Name{Author 5}$^{1}$ \Email{abc5@sample.com}\\
+% \Name{Author 6}$^{1}$ \Email{abc6@sample.com}\\
+% \Name{Author 7}$^{1}$ \Email{abc7@sample.com}\\
+% \Name{Author 8}$^{1}$ \Email{abc8@sample.com}\\
+% \Name{Author 9}$^{1}$ \Email{abc9@sample.com}\\
+% \Name{Author 10}${^2}$ \Email{abc10@sample.com}\\
+% \Name{Author 11}$^{1}$ \Email{abc11@sample.com}\\
+% \addr $^{1}$University X, Country 1\\
+% \addr $^{2}$University Y, Country 2
+% }
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% Remove the \linenumbers in the final version %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \linenumbers % Activate line numbering
+
+\makeatletter
+\providecommand{\@jmlrproceedings}{}
+\makeatother
+
+\begin{document}
+
+\maketitle
+
+
+
+\input{sections/0_abstract}
+\input{sections/1_data_code_irb}
+\input{sections/2_introduction}
+\input{sections/3_methods}
+\input{sections/4_experiments}
+\input{sections/5_results}
+\input{sections/6_conclusion}
+
+
+
+
+
+
+
+
+\acks{This research was supported by grants from NVIDIA and utilized NVIDIA A100 GPUs. We gratefully acknowledge additional support from the AIMI–AWS Cloud Credit Program, which provided AWS cloud computing.
+
+We further acknowledge support from the Stanford Data Science Scholars fellowship and ARPA-H to M.S., and the Arc Institute Graduate Fellowship to A.L. This work was also supported by NIH grant R01 GM134483 to R.T., the Hoffman-Yee Research Grant to S.Y.L., and NSF grant 19DMS1208164. S.Y.L. is a Chan Zuckerberg Biohub – San Francisco Investigator.}
+
+%\newpage
+
+\bibliography{jmlr-sample} 
+% \bibliography{references} 
+
+
+\input{sections/7_appendix}
+
+\end{document}

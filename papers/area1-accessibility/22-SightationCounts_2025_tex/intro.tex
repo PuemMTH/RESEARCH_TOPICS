@@ -1,0 +1,69 @@
+\section{Introduction}
+
+\begin{table*}[h]
+    \centering
+    \small
+    \definecolor{blue}{RGB}{16,85,154}
+    \definecolor{pink}{RGB}{219, 76, 119}
+    \newcommand{\checkblue}{\textcolor{blue}{\checkmark}}
+    \newcommand{\checkpink}{\textcolor{pink}{\texttimes}}
+    
+    \begin{tabularx}{\textwidth}{p{4.2cm} p{1.7cm} p{1.6cm} p{2.2cm} X}
+        \toprule
+        \makecell[c]{\textbf{Dataset}} & \textbf{\makecell[c]{Average \\Text \\Length}} & \textbf{\makecell[c]{Validated \\by\\ BLV?}} & \makecell[c]{\textbf{Applications}} & \textbf{\makecell[c]{Dimensions\\Assessed}}\\
+        \midrule
+        \makecell[l]{\textbf{\textsc{Sightation} (Ours)}\\
+            \hspace{0.6cm}\textsc{-Completions}\\
+            \hspace{0.6cm}\textsc{-Preference}\\
+            \hspace{0.6cm}\textsc{-Retrieval}\\
+            \hspace{0.6cm}\textsc{-VQA}\\
+            \hspace{0.6cm}\textsc{-Reasoning}
+        } & \makecell[r]{\textbf{188.3}\\(words)} & \makecell[c]{\textbf{\checkblue}} & \makecell[l]
+        {$\cdot$ \textbf{Completion} \\
+        $\cdot$ \textbf{Preference}\\
+        ~~~\textbf{alignment} \\
+        $\cdot$ \textbf{Retrieval}\\
+        $\cdot$ \textbf{Reward} \\
+        ~~~\textbf{modeling} \\
+        $\cdot$ \textbf{Question} \\
+        ~~~\textbf{answering}
+        } & \makecell[l]{$\cdot$ \textbf{Factuality} \\ $\cdot$ \textbf{Informativeness} \\ $\cdot$ \textbf{Succinctness} \\ $\cdot$ \textbf{Diversity} \\ $\cdot$ \textbf{Usefulness}, \\~~~in 4 finer aspects \\ $\cdot$ \textbf{Interpretiveness} \\ $\cdot$ \textbf{Preferred Description} \\ $\cdot$ \textbf{Best Sentence}} \\
+        \midrule
+        VisText \cite{tang2023vistext} & \makecell[r]{74.6} & \makecell[c]{\checkpink} & Completion & Accuracy, Descriptiveness \\
+        MathVista \cite{lu2023mathvista} & \makecell[r]{58.0} & \makecell[c]{\checkpink} & VQA, Reasoning & Correctness \\
+        ChartGemma \cite{masry2024chartgemma} & \makecell[r]{37.5} & \makecell[c]{\checkpink} & Completion & Informativeness, Factual Correctness, Structure \\
+        DiagramQG \cite{zhang2024diagramqg} & \makecell[r]{9.5} & \makecell[c]{\checkpink} & DQA & Diversity, Object Density \\
+        VizWiz-VQA \cite{gurari2018vizwiz} & \makecell[r]{8.6} &  \makecell[c]{\checkblue} & VQA & Diversity, Answerability \\
+        VizWiz-LF \cite{huh2024long} & \makecell[r]{73.2} & \makecell[c]{\checkblue} & VQA & Relevance, Helpfulness, Plausibility, Fluency, Correctness \\
+        \bottomrule
+    \end{tabularx}
+    \caption{The \textsc{Sightation} collection has been validated by teaching professionals who are visually impaired and are experienced instructors at schools for the blind. As the most text-dense diagram description dataset to date, it can be used to drive a variety of training objectives towards BLV accessibility needs. We discuss a few prime examples in Section~\ref{sec:perf}. This table includes only the few most closely related works; we deliver an extended comparison in Table~\ref{tab:dataset_comparison_extended}.}
+    \label{tab:dataset_comparison}
+\end{table*}
+
+
+Recent research has seen rapid development in vision-language models (VLM). Seeing the world and the data within has significantly advanced machine intelligence in a variety of tasks \cite{Liu_2024_CVPR, zhu2023minigpt, yang2024qwen2, qwen2025qwen25technicalreport, xu2024lvlm, li2024temporal}, reaching a fast-growing user pool with quicker and easier access.
+
+However, the same cannot be said of blind and low-vision (BLV) individuals. Widely adopted evaluation metrics have been shown to be biased against their preferences \citep{kapur-kreiss-2024-reference} and benchmark studies tend to pursue a larger audience first \citep{li2024seed, li2024vlrewardbench}. Publicly available reward models for generic VLMs are scarce \citep{zang2025internlm} --- let alone for the visually impaired. Vision-language dataset research appears divided between breadth \citep{tang2023vistext, lu2023mathvista}, specificity \citep{masry2024chartgemma, masry-etal-2024-chartinstruct}, and volume \citep{zhang20252, lee2022multimodal}.
+
+Perhaps the classroom setting best exemplifies the circumstances BLV individuals face: textual information is combined with images (such as diagrams, graphs, and figures) to help learners fully grasp complex information \citep{vekiri2002value, cheng2009towards, tippett2016recent, gates2018importance}. VLMs at the command of BLV users must therefore provide select, curated information rather than an indiscriminate narration of data.
+
+Instilling this behavior in VLMs, however, remains challenging primarily due to dataset concerns. The unavailability of large-scale BLV-aligned datasets has prompted previous studies to crowdsource a few expert sighted annotators to \textit{generate} descriptions. The limitation of this approach is twofold: \textit{\romannumeral 1)} it does not account for the preference misalignment between the BLV evaluator and the sighted generator \citep{9555469}; \textit{\romannumeral 2)} it is prone to modeling the generations after the annotator rather than the task, introducing annotator bias into the dataset \citep{geva2019we}.  While \citet{kreiss2022context} has illustrated the potential of sighted users as BLV preference estimators for a few specific qualities of generations, whether their findings will generalize to a dataset-scale volume of generations or with other aspects of perceived quality remains unknown. 
+
+We construct, what is to the best of our knowledge, the first dataset that addresses the union of aforementioned challenges. We prompt a VLM to generate a guide, which will be input to a second inference pass to latently supervise the second-pass behavior in favor of BLV users. Then, we further invoke the VLM to generate diagram descriptions, saving on crowdsourcing cost and reducing annotator fatigue. We distribute to sighted annotators a set of assessment tasks, substantially less demanding than a generation task, implying easier recruiting of a sufficiently large annotator population, potentially mitigating annotator bias. Finally, we design the assessment tasks such that they are finer-grained than any prior work we are aware of.
+
+The compilation we named \textsc{Sightation} is the first large-scale BLV-aligned dataset that is validated by BLV professionals and can be used to train on a broad range of objectives. A few statistics to highlight our dataset performance include: preference-tuning a 2B model on our dataset to achieve an average $1.67\sigma$ increase in the usefulness rated by the BLV group; instruction-tuning a 2B model on our dataset to outperform a 3B model fine-tuned on chart comprehension \citep{masry2024chartgemma} in 8 out of 11 automatic metrics; contrastive tuning a \textsc{BLIP-2}\citep{li2023blip} for retrieval purposes to outperform a COCO-tuned \textsc{BLIP-2} by 65\%p on Precision@1.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=1.0\linewidth]{figures/visual_abstract_bk.png}
+    \caption{The key benefit of utilizing sighted user feedback lies in their \textit{assessments}, which are based on solid visual grounding. The compiled assessments prove an effective training substance for steering VLMs towards more accessible descriptions. Dataset use and the subsequent validation are described in Sec.~\ref{sec:perf}. A complete list of use cases is provided in Appendix~\ref{app:rest}.}
+    \label{fig:main_visual}
+\end{figure*}
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/dimensions_assignment.png}
+    \caption{The qualities assessed by their respective groups.}
+    \label{fig:dimension_assignments}
+\end{figure}
+

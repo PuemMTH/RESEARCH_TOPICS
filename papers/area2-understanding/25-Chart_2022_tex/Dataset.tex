@@ -1,0 +1,184 @@
+
+\change{After searching through various sources including news sites, textbooks, and websites containing data facts}, we found two suitable sources with sufficiently large numbers \change{and varieties} of charts with textual descriptions as we describe below.
+
+
+
+\subsection{Data Collection}
+
+\paragraph{$\bullet$ Statista} Statista ({\href{https://www.statista.com}{statista.com}}) is an online platform that regularly publishes charts on a wide range of topics including economics, market and opinion research. 
+We crawled 34,810 publicly accessible webpages in December 2020, yielding a total of 34,811 charts. 
+For each chart, we took a screenshot of the chart image, downloaded the data table, the title, axis labels and the human-written 
+descriptions about the chart. We classified the charts into two groups based on the number of columns in their underlying data tables: Data tables of \emph{simple} charts  have only two columns, whereas \emph{complex} charts involve at least three columns (\eg\ stacked or group bar charts, line charts with multiple lines).
+
+
+
+\paragraph{$\bullet$ Pew} The Pew Research ({\href{https://www.pewresearch.org}{pewresearch.org}}) publishes data-driven articles about social issues, public opinion and demographic trends. The articles are often accompanied by multiple charts along with high-quality descriptions written by professional editors. We scraped 3,999 publicly accessible pages in January 2021, which gave a total of 9,285 charts. Unlike Statista, the Pew reports 
+do not provide the underlying data tables for most of the charts. Among 9,285 charts, only 143 have 
+underlying data tables. For each chart, we downloaded the chart image, the surrounding paragraphs and the alternative text associated with the image (using the \texttt{alt} attribute), if it was available. Like a title, the \texttt{alt} text often gives a very short chart description. Finally, we classified the charts into \emph{simple} and \emph{complex} manually since 
+underlying data tables were unavailable. 
+
+\subsection{Data Annotation} \label{subsec:data-annot}
+
+
+\change{Below we describe two main steps of the data annotation process for each chart:  \Ni identify the relevant summary, and \Nii extract data. Additional details of these steps are provided in \Cref{app:annotation-details}}.
+\paragraph{$\bullet$ Statista} We chose  the first part of the text 
+(from the chart icon to the next heading) as the chart summary. 
+This is based on the observation that the first part provides a succinct summary of the chart while the remaining parts often contain background information (\eg\ the history of a company).
+
+
+Extracting data from the Statista charts was relatively straightforward as the underlying data tables were available. However,
+most charts (32,660 out of 34,811) did not provide x-axis labels. To assign representative labels for them, we first used regular expressions on the cell values of such a column to see if it represents common entities (\eg \emph{year}, \emph{location}). Still, there were 7,170 missing labels remaining. We then applied the Wikidata knowledge base~\cite{Wikidata} to automatically derive an entity type label based on the data values plotted on x-axis. However, sometimes the resulting labels were too generic (\eg \emph{human}, \emph{business}). Hence, we manually annotated each label by either accepting the entity type label, if it
+represents the x-axis accurately, or entering a more specific name.
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.49\textwidth]{annotation_pew_new.png}
+    \caption{Stages of the Pew dataset construction process.}
+    \label{pew-annot-process}
+\end{figure}
+
+\paragraph{$\bullet$ Pew} The annotation 
+for Pew was more challenging as often a webpage  contains many charts and
+paragraphs do not explicitly refer to their relevant chart.
+\change{Also, most charts did not have underlying data tables.}
+To address these challenges, we construct the dataset in three stages
+(\Cref{pew-annot-process}). 
+
+
+\vspace{0.5em}
+\noindent \Ni \textit{Data extraction from chart images: } We first extracted the text from the charts using CRAFT \cite{craftrecognition,craftdetection},  a state-of-the-art OCR model. We then  extracted the bounding boxes of the detected texts to extract geometric features (\eg normalized width and height of the text) and used them to train a gradient boosting classifier that categorizes the recognized text into one of the  following categories: title, axis labels, legends, and data labels. Since the visual style and structure vary among chart types, we trained a separate classifier for each chart type. We manually labeled 319 examples (171 bar, 68 line, and 80 pie charts) and split them into train, validation, and test splits with 8:1:1 ratios, respectively.
+Our models achieved a precision of 95.0\%  overall and 97.6\% for title classification on our test set. We then used our models to predict the text roles for the remaining charts in the Pew dataset.
+
+
+We used the extracted title as the final chart title if there was no associated \texttt{alt} text with the chart image. If the \texttt{alt} text was available, we took the longer one by comparing it with the extracted title. 
+
+
+
+\vspace{0.5em}
+\noindent \Nii \textit{Identification of candidate paragraphs:} We observed that relevant paragraphs tend to appear in close proximity to a given chart and share some content with the chart (\eg axis labels, data values). We first used this proximity criteria to form a list of candidate paragraphs $\gL_c$. Specifically, for each chart, we selected the paragraph adjacent to the chart as well as the five paragraphs before and after it as candidates (maximum of 11 in total). 
+
+
+Next, we used a heuristic-based approach to automatically select a subset of relevant paragraphs $\gL_r \subset \gL_c$. 
+We
+estimated the relevance score of each paragraph in $\gL_c$ to its corresponding chart as $rel = content \times proximity$, where $content$ takes a weighted sum of the number of tokens matched between the paragraph and the OCR-extracted text (numerical tokens were given a higher weight than lexical tokens as they were better indicators of relevance), and $proximity$
+\change{is based on the distance between the chart and the paragraph.}
+If $rel$ exceeds a threshold and some minimum number of lexical and numerical tokens are matched between the paragraph and chart, we consider such a paragraph to be relevant to the chart.
+We set this threshold empirically and chose it to be aggressively high to prioritize precision over recall.
+We evaluated the efficacy of our approach against a randomly sampled set of 95 charts and 769 surrounding paragraphs and found a recall of 21.1\% and a precision of 100\%. Given the perfect precision score, we considered the paragraphs in $\gL_r$ to be relevant and to confirm the relevance of the remaining paragraphs, we performed a human study. 
+
+
+
+\vspace{0.5em}
+\noindent \Niii \textit{Selection of relevant paragraphs:} 
+We asked crowdworkers on Amazon Mechanical Turk to label how relevant each paragraph is to its chart. 
+A total of 5,478 charts and 13,237 paragraphs were annotated. Each chart received two annotations from two 
+workers. If both workers labeled a paragraph as either completely irrelevant or relevant (partially/completely), we used the label that they agreed upon as the final label.\footnote{The overall agreement for the crowd workers was 78.2\%.} For  the remaining 2,888 paragraphs where the workers disagreed, we resolved them through internal annotation.
+
+
+
+\subsection{Dataset Analysis}
+
+Our chart-to-text datasets contain a diverse range of chart types (\Cref{dataset-chart-types}). Bar charts make up the majority of the charts both in Statista (87.9\%) and Pew (67.9\%) for both simple as well as stacked and group bar charts. The next most common type is line charts
+\change{(10.2\% in Statista and 26.4\% in Pew).}
+
+\begin{table}[t]
+\centering
+\small 
+\resizebox{0.75\linewidth}{!}{
+\begin{tabular}{lcc|cc}
+& \multicolumn{2}{c}{\textbf{Statista}} & \multicolumn{2}{c}{\textbf{Pew}} \\
+\midrule
+Type & Simple & Complex & Simple & Complex \\
+\midrule
+Bar &       24,591 &    5,616 &     807 &       5,497 \\
+Line &      2,646 &     902 &       325 &       2,129 \\
+Area &      0 &         0 &         29 &        105 \\
+Scatter &   0 &         0 &         0 &         68 \\
+Pie &       409 &       0 &         325 &       0 \\
+Table &     223 &       424 &       0 &         0 \\
+\midrule
+Total &     27,869 &    6,942 &     1,486 &     7,799 \\
+\bottomrule
+\end{tabular}
+}
+
+\caption{Chart type distribution.}
+
+\label{dataset-chart-types}
+
+\end{table}
+
+
+
+\begin{table}[t]
+\centering
+\small 
+\resizebox{0.85\linewidth}{!}{
+\begin{tabular}{lcc|cc}
+%\toprule
+& \multicolumn{2}{c}{\textbf{Statista}} & \multicolumn{2}{c}{\textbf{Pew}} \\
+\midrule
+Statistic & Simple & Complex & Simple & Complex\\
+\midrule
+\#Vocab. &          39,191 &    18,621 &    9,905   & 18,067 \\
+Avg. Character &    295 &       334 &       571     & 635 \\
+Avg. Token &        54 &        61 &        110     & 124 \\
+Avg. Sentence &     2.56 &      2.62 &      3.84    & 4.27 \\
+\bottomrule
+\end{tabular}
+}
+
+\caption{Chart-to-text dataset statistics.
+}
+\label{dataset-statistics}
+\end{table}
+
+
+
+To analyze the topic distribution, we extracted the topic of each chart using its webpage's metadata
+(\eg breadcrumbs, meta-tags).
+Our datasets cover a broad range of topics including politics, society and health
+(see \Cref{topics} in \Cref{app:data-analysis}). The topics in Statista are more evenly distributed than the ones in Pew, which is dominated by \emph{U.S. Politics \& Policy} (45.4\%).
+
+
+
+
+
+\Cref{dataset-statistics} presents basic linguistic statistics about the datasets. The summaries in Pew are about twice as long as the those in Statista, in terms of average character, token and sentence count. Unsurprisingly, \emph{complex} charts generally have longer summaries than their \emph{simple} counterparts.
+
+
+\change{We further analyzed the semantic content of the summaries using 100 randomly sampled chart-summary pairs from each dataset.}
+\Cref{dataset-content} shows the distribution of sentences across the four  main types of semantic content.\footnote{Our categorization of content is inspired by a recent study \cite{accessibile-viz}.}
+We notice that \emph{statistical and comparative} information (\eg min, max, avg.)
+is the most common type of content in both datasets. Summaries in Pew tend to report more insights that require more \emph{perceptual and cognitive} efforts (\eg trends and causal relations) which are arguably more challenging to generate compared to simple statistics. Both datasets contain comparable proportions of sentences covering \emph{contextual and domain-specific} information. 
+Unlike Statista, Pew summaries rarely explain the chart types and encodings (\eg what do the \texttt{x-} and \texttt{y-} axes represent).
+
+
+
+
+\begin{table}[t]
+\centering
+\small 
+\resizebox{0.9\linewidth}{!}{
+\begin{tabular}{lcc}
+\textbf{Content Level} & \textbf{Statista} & \textbf{Pew}\\
+\midrule
+Visual encodings & 32.03\%          &    0.98\%\\
+Statistical and comparative &   \textbf{50.00\%} &    \textbf{54.63}\%\\
+Perceptual and cognitive &      8.98\%          &    30.49\%\\
+Contextual and domain-specific & 10.94\%          &    12.93\%\\
+\bottomrule
+\end{tabular}
+}
+
+\caption{
+    \small Distribution of different types of semantic content. 
+    }
+\label{dataset-content}
+
+\end{table}
+
+
+
+We randomly selected 70\%, 15\%, and 15\% of the datasets to create the corresponding train, test and validation splits, respectively.

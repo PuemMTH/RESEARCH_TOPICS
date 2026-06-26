@@ -1,0 +1,64 @@
+
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+    \centering \small
+    
+    \begin{tabular}{@{}lccc@{}}
+    \toprule
+    \multirow{2}{*}{\textbf{n = 90}} & \multirow{2}{*}{\makecell{\textbf{Avg.} \\ \textbf{Ranking}$\downarrow$}} & \multicolumn{2}{c}{\textbf{T-Test on Avg. Ranking}} \\ \cmidrule{3-4}
+     &  & \textbf{Peg}$_{P+O+B}$ & \textbf{Caption} \\ \midrule
+    \textbf{Peg}$_{P+O}$ & 2.152 & .016* & .015* \\
+    \textbf{Peg}$_{P+O+B}$ & 1.930 & - & .923 \\
+    \textbf{Caption} & \textbf{1.919} & - & - \\ \bottomrule
+    \end{tabular}
+    
+    \caption{Average ranking of the human evaluation. Pegasus$_{P+O+B}$ was rated significantly better than Pegasus$_{P+O}$ and was at the same level as the ground-truth caption.}
+    \vspace{-2mm}
+    \label{tab:human-eval}
+    \vspace{-4mm}
+\end{table}
+
+
+
+
+
+
+\begin{comment}
+\multirow{2}{*}{\textbf{Avg. Ranking} $\downarrow$} 
+
+	generation-long	generation	original	size
+all	        1.930	2.152	1.919	270 (90)
+helpful	    1.970	2.176	1.855	165 (55)
+unhelpful	1.867	2.114	2.019	105 (35)
+
+
+
+\begin{table}[t]
+    \centering
+    \small
+    \caption{Average ranking of human evaluation in different quality beams. Pegasus$_{P+O+B}$ was considered the most helpful when the original caption was bad.}
+    \vspace{-2mm}
+    \label{tab:human-eval}
+    % \addtolength{\tabcolsep}{-0.14cm}
+    \begin{tabular}{lrrr}
+    \toprule 
+    % \hline
+    $\downarrow$ & \textbf{Annotated} & \textbf{Helpful} & \textbf{Unhelpful} \\ 
+     \midrule
+    %  \hline
+    \textbf{\# Samples}              & 90 & 55 & 35 \\ 
+    \midrule
+    % \hline
+    \textbf{Pegasus}$_{P+O}$           & 2.152 & 2.176 & 2.114 \\
+    \textbf{Pegasus}$_{P+O+B}$         & 1.930 & 1.970 & \textbf{1.867} \\
+    \textbf{Caption}                 & \textbf{1.919} & \textbf{1.855} & 2.019 \\
+    % \hline 
+    \bottomrule
+    \end{tabular}
+    % \addtolength{\tabcolsep}{+0.14cm}
+    \vspace{-3mm}
+    
+\end{table}
+
+\end{comment}

@@ -1,0 +1,39 @@
+\begin{table*}[t]
+    \small
+    \centering
+    \renewcommand{\arraystretch}{1.1}
+    \setlength{\tabcolsep}{0.6pt}
+    \begin{tabular}{l c c c c c c c c c c c c}
+    \toprule    
+    \multirow{4}{*}{\textbf{Model}}&\multicolumn{2}{c}{\textbf{Object}}&\multicolumn{4}{c}{\textbf{Attribute}}&\multicolumn{4}{c}{\textbf{Relation}}&\multirow{4}{*}{\makecell{Average \\ Faithful. \\Score \\ (\%)}}&\multirow{4}{*}{\makecell{Average \\ Cover. \\Score \\ (\%)}}\\
+    \cmidrule(lr){2-3} 
+    \cmidrule(lr){4-7}
+    \cmidrule(lr){8-11}
+    & \multicolumn{2}{c}{\textit{Existence}} & \multicolumn{4}{c}{\textit{Color \& Counting}} & \multicolumn{2}{c}{\textit{Positional}} & \multicolumn{2}{c}{\textit{Comparative}} \\
+    \cmidrule(lr){4-7}
+
+& \multicolumn{2}{c}{} & \multicolumn{2}{c}{Object} & \multicolumn{2}{c}{People} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} \\
+    \cmidrule(lr){2-3} 
+    \cmidrule(lr){4-5}
+     \cmidrule(lr){6-7}
+     \cmidrule(lr){8-9}
+    \cmidrule(lr){10-11}
+&Faithful$_{\uparrow}$&Cover$_{\uparrow}$&Faithful$_{\uparrow}$&Cover$_{\uparrow}$&Faithful$_{\uparrow}$&Cover$_{\uparrow}$&Faithful$_{\uparrow}$&Cover$_{\uparrow}$&Faithful$_{\uparrow}$&Cover$_{\uparrow}$&\\
+    \midrule
+    InstructBLIP & 74.5 & 24.8 & 72.0 & 23.9 & 47.1 & 9.3 & 50.0 & 13.6 & 66.9 & 35.6 & 62.1 & 21.44 \\
+    LLaVA-1.5 & 72.1  & 24.7 & 74.6 & 37.8 & 43.3 & 12.1 & 64.8 & 14.9 & 51.9 & \hlc{lightblue}{40.1~} & 61.34 & 25.92 \\ 
+    MiniGPT-4 v2  & 65.0 & 25.4 & \hlc{lightyellow}{64.5~} & 17.9 & 38.9 & 11.6 & \hlc{lightyellow}{38.8~} & \hlc{lightblue}{33.1~} & 44.7 & \hlc{lightyellow}{11.2~} & \hlc{lightyellow}{50.38~} & 19.84 \\
+    mPLUG-Owl2 & 71.5 & 24.8 & \hlc{lightblue}{79.9~} & 32.7 & 39.7 & 16.2 & 45.2 & 10.8 & \hlc{lightyellow}{41.6~} & 30.6 & 55.58 & 23.02 \\
+    BLIVA & 77.7 & 21.9 & 73.3 & 24.3 & 37.6 & 11.6 & 39.5 & 9.7 & 68.0 & 29.9 & 59.22 & 19.48 \\
+    CogVLM  & 71.2 & 35.5 & 75.3 & 24.3  & 43.7 & 22.4 & 51.9 & 10.5 & 49.0 & 35.9 & 58.22 & 25.72 \\
+    InternLM-XComposer2 & 82.5 & 23.9  & 75.8 & 26.3 & 50.4 & 13.8 & 62.6 & 11.1 & 64.1 & 38.4 & 67.08 & 22.7 \\
+    Qwen-VL-Chat & 70.6 & 28.4 & 75.1 & \hlc{lightblue}{38.6~} & 38.8 & 16.0 & 56.9 & 8.5 & 51.9 & 24.3 & 58.66 & 23.16 \\ 
+    Emu2 & \hlc{lightblue}{94.2~} & \hlc{lightyellow}{14.1~} & 66.7 & \hlc{lightyellow}{10.4~} & \hlc{lightblue}{54.3~} & \hlc{lightyellow}{1.9~} & \hlc{lightblue}{72.2~} & \hlc{lightyellow}{1.8~} & \hlc{lightblue}{87.5~} & 12.3 & \hlc{lightblue}{74.98~} & \hlc{lightyellow}{8.1~} \\
+    GPT-4V & \hlc{lightyellow}{61.6} & \hlc{lightblue}{38.8~} & 78.5 & 36.3 & \hlc{lightyellow}{34.7~} & \hlc{lightblue}{23.8~} & 46.7 & 12.6 & ~~51.6$^*$ & ~~28.5$^*$ &54.62 & \hlc{lightblue}{28.0~} \\
+    \bottomrule
+    \end{tabular}
+    \vspace{-2mm}
+    \caption{The overall evaluation results of object existence, attribute, and relation hallucination in \data~ using GPT-4 as the LLM Agent within \eval~. The highest is highlighted in \hlc{lightblue}{blue}, while the worst performance is highlighted in \hlc{lightyellow}{yellow}. Faithfulness and coverage scores are in percentage (\%). For images that contain people, GPT-4V refrains from generating comments, and we marked this score with an asterisk ($*$).}
+    \vspace{-4mm}
+    \label{tab:evaluation_results}
+\end{table*}

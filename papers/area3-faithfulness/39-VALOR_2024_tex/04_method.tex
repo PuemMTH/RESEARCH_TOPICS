@@ -1,0 +1,42 @@
+\begin{figure*}[ht!]
+ \centering
+ \includegraphics[width=\textwidth]{figures/evaluation_overview.pdf}
+ \vspace{-7mm}
+ \caption{Overview of \eval~ evaluation framework: (1) Firstly, LVLMs generate captions from \data~ benchmark images. (2) Following this, LLMs are employed to \textit{extract} pivotal features that encapsulate from the generated descriptions. (3) Subsequently, these features are \textit{aligned} with a pre-defined list of ground-truth features using LLMs, facilitating the creation of two essential outputs: a dictionary of matched features and a more extensive dictionary encompassing broader conceptual matches. (4) Finally, we calculate two key metrics: \textit{faithfulness} and \textit{coverage}. These metrics measure the LVLMs' comprehension by evaluating how well the generated captions encapsulate the salient features of the images and the breadth of concepts they cover, respectively.}
+ \vspace{-2mm}
+ \label{fig:evaluation_overview}
+\end{figure*}
+
+\input{tables/main_exp}
+
+\section{\eval~} 
+\label{sec:evaluation_framework}
+
+We propose a framework \eval~ that generalizes CHAIR, a metric that is widely adopted in existing studies~\cite{Zhai2023HallESwitchRA, wang2023llm}, by introducing semantic matching and incorporating both the \textit{faithfulness} and \textit{coverage} aspects into the evaluation. As shown in Figure~\ref{fig:evaluation_overview}, our evaluation process has two steps: \textit{feature extraction} and \textit{matching} (\Cref{sec:features_extract_match}) and \textit{scoring} (\Cref{sec:evaluation_metrics}).
+
+\vspace{-2mm}
+\subsection{Feature Extraction and Matching}
+\label{sec:features_extract_match}
+
+We start the process by generating an initial response, denoted as $R$, using a specific LVLM with the input pair $(I, p_G)$, where $I$ denotes the image and $p_G$ represents the prompt designed for LVLMs generation from \data~. Then, we leverage an LLM to analyze $R$ and extract key features. This is achieved through a series of prompts $p_E$, outlined in \Cref{apx:features_extraction_prompts}, which are designed to \textit{extract} features from object existence, attributes, and relations, respectively, resulting in a comprehensive list of extracted features from $R$, denoted as $F_R=\{f_{R_1}, f_{R_2}, ..., f_{R_m}\}$. Next, we utilize an LLM to \textit{align} the extracted features list $F_R$ with a pre-annotated ground-truth features list $F_G=\{f_{G_1}, f_{G_2}, ..., f_{G_m}\}$ from \data~. This alignment is facilitated through a set of carefully crafted prompts $p_M$, outlined in \Cref{apx:features_matching_prompts}, tailored to each feature subset, aiming to identify correlations and correspondences. Unlike previous evaluation metrics that rely on a fixed feature list and direct mapping, our approach eschews pre-processing and instead utilizes LLMs' language comprehension capabilities to semantically match extracted features with their ground-truth counterparts. This process yields two key outputs: \textbf{matched features} dictionary ($D_{M}$) and \textbf{broader conceptual matches} dictionary ($D_{B}$).\looseness=-1
+
+$D_{M}$ contains features $f_{R_{i'_m}}$ from $f_R$ that semantically aligned with the features $f_{G_{i_m}}$ from $F_G$, ensuring \textit{precision}. For example, if we have the extracted ``(plaid, shirts)'' and the candidate ground-truth feature is ``(checkered, shirt),'' we can establish a match between these two because ``plaid'' and ``checkered'' are conceptually similar patterns often used interchangeably in the context of textiles. 
+
+$D_{B}$ includes features $f_{R_{j'_n}}$ from $f_R$ that have broader conceptual meanings than the features $f_{G_{j_n}}$ from $F_G$, adding \textit{conceptual depth} to the evaluation. For instance, if we have the extracted ``(red, clothes)'' from an image, and the ground-truth annotation is ``(red, dress),'' we can still consider these features to match. This is because ``clothes'' is a broader category that encompasses ``dress.'' Therefore, despite the slight difference in specificity, the extracted features can be aligned with the ground-truth annotations based on their semantic relationship, where ``dress'' is a sub-type of ``clothes.''
+
+\subsection{Evaluation Metrics}
+\label{sec:evaluation_metrics}
+
+We introduce two metrics to evaluate the hallucinations in two dimensions: \textit{faithfulness} and \textit{coverage} based on the original CHAIR metric. 
+
+\paragraph{Faithfulness.} In the context of image captioning, faithfulness measures how closely captions match an image's content, emphasizing \textit{accuracy} in depicting visual elements and their attributes and relations without introducing hallucinations. It is calculated by comparing generated features against actual image features, considering both \textit{direct} ($D_{M}$) and \textit{broader} conceptual similarities ($D_{B}$):
+\begin{equation}
+    \small
+    \text{Faithfulness}(R, F_G) = \frac{|D_{M} \cup set(D_{B})|}{|F_R|} \in [0,1].
+\end{equation}
+
+\paragraph{Coverage.} It measures the \textit{comprehensiveness} of the generated captions in capturing the key elements and attributes depicted in the image. It evaluates the proportion of ground-truth features that are successfully captured in the generated response, only through \textit{direct} matches ($D_{M}$):
+\begin{equation}
+    \small
+    \text{Coverage}(R, F_G) = \frac{|set(D_{M})|}{|F_G|} \in [0,1].
+\end{equation}

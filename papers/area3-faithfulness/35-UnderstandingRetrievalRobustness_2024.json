@@ -1,0 +1,105 @@
+{
+  "arxiv_id": "2406.02265",
+  "title": "Understanding Retrieval Robustness for Retrieval-Augmented Image Captioning",
+  "authors": [
+    "Wenyan Li1, Jiaang Li1, Rita Ramos2, Raphael Tang3, Desmond Elliott11Department of Computer Science, University of Copenhagen2INESC-ID, Instituto Superior Tecnico, University of Lisbon3Comcast Applied AI{weli, jili, de}@di.ku.dkritaparadaramos@tecnico.ulisboa.ptraphael_tang@comcast.com"
+  ],
+  "abstract": "Recent advances in retrieval-augmented models for image captioning highlight the benefit of retrieving related captions for efficient, lightweight models with strong domain-transfer capabilities. While these models demonstrate the success of retrieval augmentation, retrieval models are still far from perfect in practice: the retrieved information can sometimes mislead the model, resulting in incorrect generation and worse performance. In this paper, we analyze the robustness of a retrieval-augmented captioning model SmallCap . Our analysis shows that the model is sensitive to tokens that appear in the majority of the retrieved captions, and the input attribution shows that those tokens are likely copied into the generated output. Given these findings, we propose to train the model by sampling retrieved captions from more diverse sets. This decreases the chance that the model learns to copy majority tokens, and improves both in-domain and cross-domain performance.",
+  "year": "2024",
+  "figure_count": 18,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:Comparison of generated image captions that are predicted without retrieval, misled by retrieval, and predicted with a more retrieval-robust model. The retrieval-augmented model generates the token “elephant”, which appears in 3/4 of the retrieved captions.",
+      "src": "/html/2406.02265/assets/x1.png"
+    },
+    {
+      "id": "S3.F2",
+      "caption": "Figure 2:CIDEr evaluation ofSmallCapon the COCO validation set using the top-k𝑘k, low(er)-ranked, randomly retrieved captions, against a baseline without retrieval augmentation. Performance drops by up to 50% when using randomly retrieved captions compared to baseline, suggesting that the model is not robust.",
+      "src": "/html/2406.02265/assets/x2.png"
+    },
+    {
+      "id": "S4.F3",
+      "caption": "Figure 3:Input attribution for each generated token (y-axis). The brighter the color, the more greater the attribution from the input token. We observe high attribution scores to “umbrella”, “boy”, “cattle”, and “over”.",
+      "src": "/html/2406.02265/assets/x3.png"
+    },
+    {
+      "id": "S4.F4",
+      "caption": "Figure 4:Pairwise average attribution score between retrieved and generated tokens in the 2G1B setup. MT: majority tokens in the retrieved captions. OT: all other tokens. The larger pairwise attribution values shows that the majority tokens have a larger impact during generation than the other tokens in the retrieved captions.",
+      "src": "/html/2406.02265/assets/x4.png"
+    },
+    {
+      "id": "S4.F5",
+      "caption": "Figure 5:Statistics of all maximum attention scores’ distribution across different layers and heads from self and cross attention.X​A𝑋𝐴XAdenotes cross attention, whileS​A𝑆𝐴SAsignifies self-attention.i​m​g𝑖𝑚𝑔imgrepresents the distribution of maximum attention scores across image patches, whereast​e​x​t𝑡𝑒𝑥𝑡textpertains to the distribution of maximum attention scores across text tokens.",
+      "src": "/html/2406.02265/assets/x5.png"
+    },
+    {
+      "id": "S5.F6",
+      "caption": "Figure 6:Qualitative examples of generated captions whenrandomlyretrieving four captions for a given image using a model trained with either the Sample-k or the Top-k method.",
+      "src": "/html/2406.02265/assets/x6.png"
+    },
+    {
+      "id": "S6.F7",
+      "caption": "Figure 7:Distribution of number of majority tokens in the retrieved captions for the COCO, VizWis, and NoCaps evaluation datasets. For the COCO dataset, we also show the difference between retrieving the top-4 captions against four randomly selected captions.",
+      "src": "/html/2406.02265/assets/x7.png"
+    },
+    {
+      "id": "A2.F8",
+      "caption": "Figure 8:Attribution visualization with few more examples. Here the model prediction is misled by the majority tokens in the 2B1G setting.",
+      "src": "/html/2406.02265/assets/figs/irr2_mt_in_cap_2025.png"
+    },
+    {
+      "id": "A2.F9",
+      "caption": "(a)",
+      "src": "/html/2406.02265/assets/x8.png"
+    },
+    {
+      "id": "A2.F9.sf1",
+      "caption": "(a)",
+      "src": "/html/2406.02265/assets/x8.png"
+    },
+    {
+      "id": "A2.F9.sf2",
+      "caption": "(b)",
+      "src": "/html/2406.02265/assets/x9.png"
+    },
+    {
+      "id": "A2.F9.sf3",
+      "caption": "(c)",
+      "src": "/html/2406.02265/assets/x10.png"
+    },
+    {
+      "id": "A2.F10",
+      "caption": "(a)",
+      "src": "/html/2406.02265/assets/x11.png"
+    },
+    {
+      "id": "A2.F10.sf1",
+      "caption": "(a)",
+      "src": "/html/2406.02265/assets/x11.png"
+    },
+    {
+      "id": "A2.F10.sf2",
+      "caption": "(b)",
+      "src": "/html/2406.02265/assets/x12.png"
+    },
+    {
+      "id": "A2.F10.sf3",
+      "caption": "(c)",
+      "src": "/html/2406.02265/assets/x13.png"
+    },
+    {
+      "id": "A3.F11",
+      "caption": "Figure 11:Qualitative examples of generated captions on NoCapsout-domainsamples where the captions retrieved for the given image can be noisy and irrelevant. Here we retrieve four captions for each image.",
+      "src": "/html/2406.02265/assets/x14.png"
+    },
+    {
+      "id": "A3.F12",
+      "caption": "Figure 12:More qualitative examples of generated captions whenrandomlyretrieving four captions for a given image.",
+      "src": "/html/2406.02265/assets/x15.png"
+    }
+  ],
+  "paper_number": 35,
+  "slug": "UnderstandingRetrievalRobustness",
+  "base_name": "35-UnderstandingRetrievalRobustness_2024"
+}

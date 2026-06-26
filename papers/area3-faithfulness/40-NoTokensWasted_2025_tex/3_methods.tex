@@ -1,0 +1,96 @@
+\section{Methods}
+\label{sec:methods}
+
+\textbf{Datasets}: 
+We pretrain all models on the 6M biomedical image–caption subset of the BIOMEDICA-24M dataset \cite{lozano2025biomedica}. 
+In addition, we construct a derived dataset, \textbf{BIOMEDICA-LongCAP}, consisting of 1M image–caption pairs. 
+Each LongCAP caption is created by enriching the original figure caption with contextual information from the corresponding article (e.g., in-line mentions, abstract text, and acronym expansions).
+A VLM-based augmentation pipeline then refines these captions to retain only features that are visually supported by the image (see Appendix~\ref{apd:longcap} for details). 
+We use BIOMEDICA-6M for all baseline pretraining, and BIOMEDICA-LongCAP specifically for the BMC-LongCLIP+ variant. The average caption token length is 127 for BIOMEDICA-6M and 323 for BIOMEDICA-LongCAP.
+
+% We used the  6M biomedical  image–caption subset from the BIOMEDICA 24M \cite{lozano2025biomedica} dataset to pretrain all our models. Furthermore,  we built BIOMEDICA-LongCAP, a set of 1M image–caption pairs generated
+% via captions enrichment through  a LLM-based augmentation  pipeline. To this end, captions were expanded with contextual information grounded on corresponding source text such as in-line mentions and refined to retain  image-supported features (see Appendix section \ref{} for details).
+
+
+% \textbf{Modeling}: We introduce \textbf{BMC-LongCLIP}, a long-context biomedical vision–language model designed to align images with long captions. 
+% The model combines a ViT-L/14 CLIP vision encoder (304M) pretrained on DFN-2B \cite{DFN} with BioClinical ModernBERT (150M) \cite{bioclinicalmodernbert}, a long-context text encoder trained on 53.5B biomedical tokens with an 8,192-token window. 
+
+\textbf{Modeling}: We introduce \textbf{BMC-LongCLIP}, a long-context biomedical VLM designed to align images with extended text descriptions. The model pairs a ViT-L/14 CLIP vision encoder (304M) pretrained on DFN-2B \cite{DFN} with BioClinical ModernBERT (150M) \cite{bioclinicalmodernbert}, a long-context text encoder pretrained on 53.5B biomedical tokens with an 8,192-token context window.
+
+
+% To process the long captions in BIOMEDICA-LongCAP, we introduce BMC-LongCLIP, which pairs a ViT-L/14 CLIP vision encoder pretrained on DFN-2B \cite{DFN} with BioClinical ModernBERT \cite{bioclinicalmodernbert}, a text encoder trained on 53.5B biomedical tokens with an 8,192-token context window.
+
+
+\subsection{Benchmarks}
+We build and evaluate on two complementary benchmarks that stress different aspects of long-context retrieval.   
+% We created and collected the following benchmarks:
+
+\noindent \textbf{MIMIC-CXR radiology report (CXR)}
+We constructed a long-text benchmark from the MIMIC-CXR dataset \cite{mimic} by pairing chest X-ray images with their full radiology reports. We sampled 1,000 unique image–report pairs, where the reports provide free-text descriptions.
+
+
+\noindent \textbf{PubMed Long-Caption (PMC)}
+From 1,000 PMC-OA articles (restricted to recent 2025 publications), we construct long captions by concatenating inline references with figure captions, testing retrieval in scientific literature where extended technical context is essential.
+
+
+
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt} % restore some padding
+\renewcommand{\arraystretch}{0.85} % tighter rows
+\caption{Text$\rightarrow$Image (T2I) and Image$\rightarrow$Text (I2T) retrieval on long-text CXR and PMC benchmarks, reported as Recall@K (higher is better; \textbf{bold} = best, \underline{underline} = second-best). \textit{Panel A} shows the context-length ablation for BMC-LongCLIP; \textit{Panel B} benchmarks against prior models.}
+\label{tab:retrieval_all}
+\begin{tabular}{l l l l
+*{3}{S[table-format=2.1, table-number-alignment=center]}
+*{3}{S[table-format=2.1, table-number-alignment=center]}}
+\toprule
+\textbf{Benchmark} & \multicolumn{3}{c}{\textbf{Model}} &
+\multicolumn{3}{c}{\textbf{T2I}} & \multicolumn{3}{c}{\textbf{I2T}} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-10}
+ & \textbf{Name} & \textbf{Context} & \textbf{Batch}
+ & \textbf{R@1} & \textbf{R@5} & \textbf{R@10}
+ & \textbf{R@1} & \textbf{R@5} & \textbf{R@10} \\
+\midrule
+\multicolumn{10}{l}{\textit{Panel A: Context-length ablation}} \\
+ & BMC-LongCLIP  & 77 & 8K & 1.3 & 4.7 & 9.4  & 0.7 & 4.9 & 7.3 \\
+CXR & BMC-LongCLIP & 154 & 8K & \underline{1.7} & \textbf{5.9} & \textbf{10.7} & \textbf{1.4} & \textbf{5.5} & \underline{9.3} \\
+ & BMC-LongCLIP & 512 & 8K & \textbf{1.8} & \underline{5.6} & \underline{10.3} & \textbf{1.4} & \textbf{5.5} & \textbf{9.8} \\
+\cmidrule(lr){2-10}
+ & BMC-LongCLIP  & 77 & 8K & 37.2 & 59.8 & 66.4 & 42.5 & 63.8 & 70.8 \\
+PMC & BMC-LongCLIP & 154 & 8K & \underline{44.2} & \underline{64.9} & \underline{72.5} & \underline{48.8} & \underline{69.8} & \underline{76.8} \\
+ & BMC-LongCLIP & 512 & 8K & \textbf{68.9} & \textbf{84.3} & \textbf{89.3} & \textbf{71.2} & \textbf{85.9} & \textbf{89.9} \\
+\midrule
+\multicolumn{10}{l}{\textit{Panel B: Baseline comparison}} \\
+ & PMC-CLIP            & 77 & 128 & {0.0} & {0.5} & {0.7} & {0.2} & {1.0} & {1.6} \\
+ & BiomedCLIP          & 256 & 4K & 0.5 & 2.6 & 5.7  & 0.6 & 3.3 & 5.5 \\
+CXR & BMC-CLIP            & 77 & 8K & 0.1 & 1.1 & 2.9  & 0.3 & 1.9 & 3.4 \\
+ & BMC-LongCLIP    & 512 & 8K & 1.8 & 5.6 & 10.3  & 1.4 & 5.5 & 9.8 \\
+ & BMC-LongCLIP  & 512 & 16K & \textbf{2.1} & \textbf{9.5} & \underline{12.1} & \underline{2.5} & \underline{9.1} & \underline{14.2} \\
+ & BMC-LongCLIP+  & 512 & 16K & \underline{1.9} & \underline{7.1} & \textbf{12.2} & \textbf{3.0} & \textbf{9.5} & \textbf{14.5} \\
+\cmidrule(lr){2-10}
+ & PMC-CLIP            & 77 & 128 & 0.2 & 0.7 & 1.2 & 0.1 & 0.7 & 1.2 \\
+ & MedSigLIP           & 77 & N/A & 20.1 & 37.0 & 46.0 & 30.9 & 49.0 & 60.1 \\
+ & BiomedCLIP          & 256 & 4K & 68.8 & 86.2 & 91.1 & 73.3 & 89.3 & \underline{93.7} \\
+PMC & BMC-CLIP    & 77 & 8K & {49.0} & {67.6} & {74.0} & {40.8} & {60.4} & {68.4} \\
+ & BMC-LongCLIP    & 512 & 8K & 68.9 & 84.3 & 89.3  & 71.2 & 85.9 & 89.9 \\
+ & BMC-LongCLIP   & 512 & 16K & \underline{80.0} & \textbf{92.3} & \textbf{95.1} & \textbf{80.8} & \textbf{91.2} & 93.5 \\
+ & BMC-LongCLIP+  & 512 & 16K & \textbf{80.8} & \underline{91.2} & \underline{94.4} & \underline{79.7} & \underline{90.6} & \textbf{93.8} \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+
+
+
+
+
+\noindent \textbf{Zero-shot Classification.}  
+For zero-shot image classification, we evaluate on 39 benchmarks spanning biology, radiology, dermatology, and pathology, as collected and described in \cite{biomedica} (see Appendix section \ref{apd:zeroshot} for more details).
+
+
+\subsection{Baselines} 
+% small table: model name and context length ?
+To contextualize our results, we benchmark our models  against several  baselines, including: PMC-CLIP    \cite{eslami2023pubmedclip}, BiomedCLIP \cite{zhang2023biomedclip}, MedSigLIP \cite{sellergren2025medgemma}, and BMC-CLIP  \cite{lozano2025biomedica}, 
+

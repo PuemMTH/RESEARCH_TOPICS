@@ -1,0 +1,319 @@
+\section{Evaluating Vision-Language Model Hallucinations with  \ours}
+
+% \begin{table*}[]
+%     \centering
+%     \begin{tabular}{lcccc}
+%         \toprule
+%          \bf Model & \bf Conversation & \bf Detailed Description & \bf Complex Question & \bf Overall\\
+%         \midrule
+%          MiniGPT-4 & 0.7122& 0.7006 & 0.7019 & 0.7049\\
+%          LLaVA & 0.7403& 0.7164&0.7163 & 0.7243\\
+%         LLaVA-1.5& 0.7419& 0.7378&0.7358 & 0.7385\\
+
+%          InstructBLIP & 0.7650 & 0.7399 & 0.7439& 0.7496\\
+%          Multimodal-GPT& 0.6458&0.6314&0.6387&0.6386\\
+%          mPLUG-Owl & 0.7868& 0.7696& 0.7778& 0.7781\\ 
+%         \bottomrule
+%     \end{tabular}
+%     \caption{\ours\ evaluation results ($\uparrow$) of different LVLMs on the LLaVA-1k dataset.}
+%     \label{tab:llavadataset1k}
+% \end{table*}
+
+
+% \begin{table}[]
+%     \centering
+%     \begin{tabular}{lc}
+%         \toprule
+%         \bf Model & \bf Performance \\ 
+%         \midrule
+%         MiniGPT-4 & 0.6482 \\ 
+%         LLaVA& 0.6760\\ 
+%         LLaVA-1.5& 0.7689\\ 
+%         InstructBLIP & \textbf{0.8316}\\  
+%         Multimodal-GPT& 0.6710\\ 
+%         mPLUG-Owl& 0.7039 \\ 
+%         \bottomrule
+%     \end{tabular}
+%     \caption{\ours\ evaluation results of different LVLMs on the MSCOCO-Cap dataset.}
+%     \label{tab:coco1k}
+% \end{table}
+
+% \begin{table*}[]
+%     \centering
+%     \begin{tabular}{lcccc} \toprule
+% \bf         Model& \bf Conversation&\bf Detailed Description &\bf Complex Question &\bf Overall\\ \midrule
+%          MiniGPT-4 & 0.5248& 0.5042 & 0.5169 & 0.5153\\
+%          LLaVA & 0.4562 & 0.4205&0.4236& 0.4334\\
+%         LLaVA-1.5 & 0.4763 & 0.4708&0.4793& 0.4755\\
+%          InstructBLIP & 0.4952 & 0.4813 & 0.4762& 0.4842\\
+%          Multimodal-GPT& 0.4184&0.4034&0.4371&0.4197\\
+%          mPLUG-Owl & 0.5131& 0.5202& 0.5426& 0.5253\\ \bottomrule
+%     \end{tabular}
+%     \caption{Sentence-level evaluation results ($\uparrow$) of different LVLMs on the LLaVA-1k dataset.\xd{boldface highest}}
+%     \label{tab:sentence1}
+% \end{table*}
+
+% \begin{table}[]
+%     \centering
+%     \begin{tabular}{lc} \toprule
+%         \bf Model &\bf Performance \\ \midrule
+%         MiniGPT-4 & 0.4024 \\
+%         LLaVA& 0.3298\\
+%         LLaVA-1.5& 0.4034\\
+%         InstructBLIP & 0.4845.\\
+%         Multimodal-GPT& 0.5364\\
+%         mPLUG-Owl& 0.3716\\ \bottomrule
+%     \end{tabular}
+%     \caption{Sentence-level evaluation results of different LVLMs on the MSCOCO-Cap dataset}
+%     \label{tab:sentence2}
+% \end{table}
+
+
+
+% \begin{table}[]
+%     \centering
+%     \begin{tabular}{lc} \toprule
+%         \bf Model &\bf Performance \\ \midrule
+% MiniGPT-4 & 0.6017 \\
+%                 Multimodal-GPT& 0.6277\\
+%         mPLUG-Owl& 0.6447\\ 
+%                         LLaVA& 0.6681\\
+%                 InstructBLIP & 0.7970\\
+%         LLaVA-1.5&\bf 0.8258\\
+%         \bottomrule
+%     \end{tabular}
+%     \caption{Sentence-level evaluation results of different LVLMs on the MSCOCO-Cap dataset.}
+%     \label{tab:sentence2}
+% \end{table}
+
+\subsection{Models and Datasets}
+We selected six open-source LVLMs for evaluation.
+1) MiniGPT-4~\cite{minigpt4};
+2) LLaVA~\cite{llava}; 
+3) InstrucBLIP~\cite{InstructBLIP}; 
+4) Multimodal-GPT~\cite{MultiModal-GPT}; 
+5) mPLUG-Owl~\cite{mPLUG-Owl}; 
+6) LLaVA-1.5.
+% and 7) GPT-4V. 
+% In particular, these LVLMs are composed of three essential components: a visual encoding module, an alignment mechanism, and a large language model. Furthermore, all of these models have undergone fine-tuning using curated datasets of visual instruction data. For example, LLaVA leverages text-only GPT-4 to expand the existing COCO~\cite{mscoco} dataset to a multimodal instruction-following dataset. 
+% such as \xd{add ref}. 
+
+
+
+% It shows a robust positive correlation, emphasizing its superior alignment with human perceptions. 
+
+
+% \subsection{Datasets}
+To assess the performance of existing LVLMs, we conducted experiments using two datasets. Here is a description of each dataset:
+% \begin{itemize}
+%     \item MSCOCO-Cap: This dataset is designed for the image captioning task. We randomly selected 1,000 images from the MSCOCO~\cite{mscoco} validation set and devised the prompt as "Generate a concise caption for the given image".
+% \item LLaVA-1k: Similar to the LLaVA dataset, we extracted 1,000 images from the COCO validation set and generated three sample types (\ie detailed description, conversation, and complex question) for each image, following the data augmentation methodology outlined in~\cite{llava}.
+% \end{itemize}
+(1) MSCOCO-Cap: This dataset is designed for the image captioning task. We randomly select 1,000 images from the MSCOCO~\cite{mscoco} validation set and devised the prompt as ``Generate a concise caption for the given image''; 
+(2) LLaVA-1k: We extract 1,000 images from the MSCOCO validation set and generated three types of prompt-answer pairs (\ie detailed description, conversation, and complex question) for each image by ChatGPT, following the data generation method in~\cite{llava}.
+
+
+\begin{table*}[t]
+    \centering \small
+    \begin{tabular}{lccccc}
+        \toprule
+            \bf  &  \multicolumn{4}{c}{\bf LLaVA-1k} & \bf MSCOCO-Cap \\
+         \bf  & \bf Conversation & \bf Detailed Description & \bf Complex Question & \bf Overall & -\\
+        \midrule
+            Multimodal-GPT& 0.5321&0.5299&0.5385&0.5335 & 0.5440\\
+
+         MiniGPT-4 & 0.5679& 0.5768 & 0.5691 & 0.5713 & 0.6359\\
+        mPLUG-Owl  & 0.7246 & 0.7240 & 0.7015& 0.7167 & 0.8546\\
+         InstructBLIP & 0.8061& 0.8161& 0.8049& 0.8091 & {0.9392}\\ 
+
+
+                  LLaVA & 0.8302& 0.8386&0.8392 & 0.8360& 0.8729\\
+        LLaVA-1.5& \bf{ 0.8569}&\bf{ 0.8611}&\bf{ 0.8516} &  \bf{0.8566} & \bf 0.9425\\
+        % GPT-4V& 0.8468 &0.8299 & 0.8453  & 0.8407 &  0.8557 \\
+        
+        % GPT-4V& \bf 0.9008 &\bf0.8988 &\bf 0.8913 & \bf 0.8969 & 0.8557\\
+
+
+        \bottomrule
+    \end{tabular}
+    \caption{\ours\ evaluation results ($\uparrow$) of different LVLMs on the LLaVA-1k and MSCOCO-Cap datasets.}
+    \label{tab:llavadataset1k}
+\end{table*}
+
+\begin{table*}[t]
+    \centering \small
+    \begin{tabular}{lccccc} \toprule
+    \bf  &  \multicolumn{4}{c}{\bf LLaVA-1k}  & \bf MSCOCO-Cap\\
+\bf         & \bf Conversation&\bf Detailed Description &\bf Complex Question &\bf Overall & -\\ \midrule
+         Multimodal-GPT& 0.4615&0.4827&0.5131&0.4858 & 0.6277\\
+         MiniGPT-4 & 0.6441& 0.6489 & 0.6499 & 0.6476 &0.6017\\
+                           LLaVA & 0.7106 & 0.6979&0.7038& 0.7041 & 0.6681\\
+                           InstructBLIP & 0.7231 & 0.7327 & 0.7149& 0.7236 & {0.7970}\\
+                  mPLUG-Owl & 0.7369& 0.7163& 0.7344& 0.7292 & 0.6447\\ 
+        % GPT-4V& \underline{0.7666}& \underline{0.7668} &\underline{ 0.7553} & \underline{ 0.7629} & 0.6063 \\
+
+
+        LLaVA-1.5 &\bf 0.7722 &\bf 0.7717&\bf 0.7699&\bf 0.7713 &\bf 0.8258\\
+
+        \bottomrule
+    \end{tabular}
+    \caption{\ours\ (sentence-level) evaluation results ($\uparrow$) of different LVLMs.
+    % on the LLaVA-1k and MSCOCO-Cap datasets.
+    }
+    \label{tab:sentence1}
+\end{table*}
+
+
+% LLaVA-90~\cite{llava}: LLaVA-90 is a visual instruction dataset comprising three distinct sample types: detailed descriptions, conversations, and complex reasoning scenarios. For each of these sample types, this dataset included 30 samples.
+
+
+% \subsection{Settings}
+% We run all models on V100 GPU. For all the models, we load their pre-trained weights. For all hyperparamter setting, we 
+
+
+
+
+\subsection{Hallucination Evaluation}
+
+
+% Table~\cite{llavadataset} presents a comprehensive performance comparison of various models when benchmarked on the LLaVA-D dataset. From this detailed comparison, we can deduce several crucial observations: 
+% (1) m-PLUG-Owl distinctly outperforms its counterparts on the LLaVA-D dataset. This demonstrates its preeminent capability in achieving and maintaining faithfulness during generation processes. A significant contributor to the model's standout performance is its extensive utilization of visual instruction data. This implies that leveraging vast amounts of visual data might be key for future improvements in the field.
+% (2) A common challenge faced by all existing VMLs is the pervasive issue of hallucination. Such a challenge is indicative of the complexity and nuances of handling visual data. Even though m-PLUG-Owl leads in terms of performance metrics, there's a clear need for further refinement, as its results, though commendable, are not up to the desired mark.
+% (3) It is quite intriguing to note that LLaVA, despite its fine-tuning instruction bearing significant resemblance to the test set, lags behind in the faithfulness aspect. One plausible explanation for this anomaly is the inherent simplicity of its fine-tuning instruction dataset, which leans heavily on instruction data crafted based on the MSCOCO dataset. In addition, the reliability of answers originating from the instruction-tuning dataset for LLava raises concerns. This dataset, built upon elements like image captions, object detection, and tools such as GPT, lacks the precision and authenticity of manual labeling. This factor, combined with the earlier ones, could be at the heart of LLaVA's suboptimal effectiveness.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{sec/figures/length.pdf}
+    \caption{Answer lengths distributions of different models on two benchmark datasets.}
+    \label{fig:length}
+    \vspace{-4mm}
+\end{figure}
+
+% To illustrate the generality of our conclusions, we continue to perform experiments and evaluations on our expanded LLAVA-1k dataset. 
+% The result is shown in Table~\ref{}. 
+Table~\ref{tab:llavadataset1k} 
+% and Table~\ref{tab:coco1k} 
+presents a comprehensive performance comparison of various models in terms of \ours\ when benchmarked on the LLaVA-1k and MSCOCO-Cap datasets. We observe that: 
+(1) LLaVA-1.5 outperforms their counterparts in most situations. This demonstrates their preeminent capability in achieving and maintaining faithfulness during generation processes. 
+% A significant contributor to the model's standout performance is its extensive utilization of visual instruction data. This implies that leveraging vast amounts of academic-task-oriented VQA data with simple response formatting prompts 
+% might be key for future improvements in the field;
+(2) It's worth noting that different models have similar performance across tasks. For instance, MiniGPT achieved 0.5679,  0.5768, and 0.5691 \ours\ on the ``Conversation'', ``Detailed Description'', and ``Complex Question'' tasks, respectively. 
+% These values are relatively close. 
+% Similar trends can also be seen in other models; 
+(3) For most models, the performance on the MSCOCO-Cap dataset is better than their performance on the LLaVA-1K dataset. The potential reason may be that model answers to the MSCOCO-Cap questions are usually shorter than their answers to the LLaVA-1K questions (see Figure~\ref{fig:length}). 
+
+
+
+
+\subsection{Sentence-level Hallucination Evaluation}
+To further understand the faithfulness of LVLMs, we evaluate them with the \ours\ (sentence-level). Table~\ref{tab:sentence1} shows the sentence-level \ours\ evaluation across different LVLMs. 
+% Upon analyzing the performance of different LVLMs across multiple datasets, several insights emerge: 
+% (1) The LLaVA-1.5 model consistently ranks among the top-performing models in most question categories across LLaVA-1k and MSCOCO-Cap datasets. The result indicates the consistency of the proposed metric across datasets to a certain extent. 
+% (2) 
+Multimodal-GPT achieves poor performance in \ours\, it also performs less favorably in terms of sentence-level hallucination evaluation. In addition, LLaVA-1.5 performs well in terms of \ours\ and \ours\ (sentence-level). This indicates the consistency between \ours\ and sentence-level \ours.
+% This is understandable because hallucinations may be dispersed loosely and scattered throughout the sub-sentences.
+% (2) While mPLUG-Owl has achieved successful performance in \ours\, it performs less favorably in terms of sentence-level hallucination evaluation. This is understandable because hallucinations may be dispersed loosely and scattered throughout the sub-sentences.
+% By combining its answer length distribution in Section 5.5, we can infer the conclusion that it may be because the .
+% (3) The mPLUG-Owl model excels in handling Complex Questions, especially evident with its score of 0.5426 on the LLaVA-D dataset. 
+% (3) LLaVA-1.5 performs best on across different datasets in terms of both \ours and sentence-level \ours. 
+% (3) MiniGPT-4 and Multimodal-GPT appear to be strong contenders for many multimodal tasks. This is different compared with the results in Section 5.3. The potential reason may be that the hallucinations generated by MiniGPT-4 and Multimodal-GPT are very concentrated, and they tend to appear densely in one or a few sentences. 
+% (3) Similar to the results in Section 5.3, LLaVA-1.5 further advances the performance of LLaVA across various tasks.
+% (3) While mPLUG-Owl performs similarly with LLaVA-1.5 in \ours\, it performs less favorably than LLaVA-1.5 in terms of sentence-level hallucination evaluation. This is understandable because hallucinations may be dispersed loosely and scattered throughout the sub-sentences.
+
+
+
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{sec/figures/objets.pdf}
+    \caption{The relation between \ours\ and numbers of objects (\ie entities) in the answers (LLaVA-1k dataset). As the number of entities increases, model performance (\ie \ours) drops significantly. 
+}
+\vspace{-4mm}
+    \label{fig:objects}
+\end{figure}
+
+
+\subsection{Other Analysis}
+\paragraph{The Influence of Answer Length on Hallucinations.} 
+To further elucidate the impact of answer length on hallucinations, we analyze answer lengths across various LVLMs on different datasets. As illustrated in Figure~\ref{fig:length}, there's a significant variation in the distribution of answer lengths produced by different models. Multimodal GPT consistently generates the lengthiest responses, potentially compromising its performance across tasks. In contrast, mPLUG-Owl tends to produce shorter answers than its counterparts, hence it may generate fewer hallucinations. 
+% which could explain its good faithfulness across various tasks. 
+Meanwhile, the image captioning task showed better faithfulness in generated content than the other task for most LVLMs. This may be attributed to the fact that captioning sentences mainly are brief descriptions and shorter. 
+% having the shortest average answer length among all testing tasks,. This may be attributed to the fact that captioning sentences mainly are visual descriptions, placing a heightened emphasis on the model's accuracy and faithfulness.
+
+
+\begin{figure}[t]
+    \centering
+    \vspace{-4mm}
+\includegraphics[width=\linewidth]{sec/figures/types_new.pdf}
+    \caption{\ours\ on each type of atomic facts on the LLaVA-1k benchmark. The types are \textsc{Entity}, \textsc{Relation}, \textsc{Color}, \textsc{Count}, and \textsc{Others}.
+    % as defined in Section~\ref{sec:meta}. 
+    }
+    \label{fig:types}
+    \vspace{-4mm}
+
+\end{figure}
+
+
+% \subsection{Number of Objects on Hallucination}
+\paragraph{The Influence of Multiple Objects.}
+Figure~\ref{fig:objects} shows how the number of objects in the answer generated by different models affects the  \ours\. 
+The model's faithfulness varies with the number of objects. While all models start with relatively high scores when there are few objects in the answer, their performance generally drop as the number of objects increases. For example, Instruct-BLIP starts with a high \ours\ of 0.895 for 1 object and sustains a relatively low score of 0.662 for 10 objects.
+
+% Notably, the Instruct-BLIP model maintains the best balance, starting with a high of 0.798 for one object and sustaining a relatively high score of 0.573 for the tenth object. Close on its heels is LLaVA, with its performance ranging from 0.790 for two objects and dipping to 0.619 by the tenth object. On the other end of the spectrum, minigpt4 reaches its zenith early at 0.756 for two objects but then witnesses a sharper decline to 0.481 by the tenth object, suggesting challenges with maintaining faithfulness. Meanwhile, Multimodal-GPT and mPLUG-Owl show a more pronounced decline in their performance, with scores dropping to around 0.314 and 0.451 respectively by the tenth object. The data suggests that while certain models like InstructBLIP and LLaVA are more resistant to hallucination with an increasing number of objects, others like Multimodal-GPT and mPLUG-Owl might face more significant challenges.
+
+
+% \subsection{Analysis on Types of Hallucination}
+\paragraph{Analysis on Types of Hallucination}
+To deduce the model strengths and vulnerabilities of each in maintaining faithfulness, we compared the faithfulness performance of various models across different categories of hallucination.
+We mainly investigated the five distinct categories: \textsc{entity}, \textsc{count}, \textsc{color}, \textsc{relation}, and \textsc{other} attributes, motivated by the existing works. 
+% When comparing the faithfulness performance of various models across different categories of hallucination, we can deduce the respective strengths and potential vulnerabilities of each in maintaining faithfulness. 
+From Figure~\ref{fig:types}, we can observe that while LLaVA-1.5 consistently excels across most categories, other models also showcase strengths in specific domains. 
+% For instance, Multimodal-GPT performs worse in the faithfulness of most types but performs notably well in the faithfulness of count category.
+% The varied performance across categories underscores that some models may exhibit differential strengths.
+The bad performance of some types may provide insightful information for model improvement. 
+Importantly, achieving consistently high faithfulness across a diverse range of categories remains a formidable challenge for LVLMs. 
+% This demonstrates the importance of fine-grained hallucination evaluation.
+
+
+% \textcolor[rgb]{0,0,1}
+% {\paragraph{Cost}  ss}
+
+
+% \paragraph{Hallucination in Advanced GPT-4Vision}
+
+% Because of the limited access to the GPT-4Vision (GPT-4V) API, we cannot test it on all the examples. Instead, we selected several samples to test manually and conduct qualitative analysis. Because of the limited space, we present one testing sample in Figure~\ref{fig:gpt-4v-s1}. More testing samples on GPT-4Vision are shown in Section~\ref{exgpt4v} of the Appendix. According to this sample, we found that the GPT-4V also suffers from the hallucination problem, for example, it generated the wrong relation between objects: ``a person standing on an upside down skateboard''. -- instead, the person is standing on the ground.
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\linewidth]{sec/figures/figure7.pdf}
+%     \caption{Answer of the GPT-4Vision model on one test example. The \textcolor{blue}{blue contents} denote hallucinations.}
+%     \label{fig:gpt-4v-s1}
+%     \vspace{-2mm}
+% \end{figure}
+
+% For the "entity" category, mPLUG-Owl stands out with the highest faithfulness score of 0.944, closely followed by LLaVA and InstructBLIP at 0.920 and 0.914, respectively. MiniGPT-4 and Multimodal-GPT show relatively lower scores, at 0.862 and 0.838 respectively, though still within a competitive range. 
+% Moving to the "relation" category, the models generally exhibit a decline in faithfulness, with mPLUG-Owl again leading at 0.652. MiniGPT-4 and InstructBLIP follow suit with scores above 0.619, while LLaVA and Multimodal-GPT lag slightly behind at 0.579 and 0.557 respectively.
+% In the "color" domain, mPLUG-Owl once again dominates with a high score of 0.905, but this time, Multimodal-GPT makes a significant leap, securing the second position with 0.829. LLaVA and InstructBLIP also perform commendably, both exceeding scores of 0.820. 
+% The "count" category sees a more uniform performance across models. While mPLUG-Owl tops the chart with an impressive 0.986, LLaVA isn't far behind with 0.973. The remaining models, including MiniGPT-4, Multimodal-GPT, and InstructBLIP, all hover around the 0.9-0.94 range, indicating robust faithfulness in this category.
+% Finally, in the "others" category, InstructBLIP leads the pack with 0.671, closely trailed by mPLUG-Owl and LLaVA at 0.708 and 0.628 respectively. Both MiniGPT-4 and Multimodal-GPT round up the category with scores of 0.630 and 0.616.
+
+% In summary, while mPLUG-Owl consistently excels across most categories, other models also showcase strengths in specific domains. For instance, Multimodal-GPT performs notably well in the color and count categories. The varied performance across categories underscores that most models exhibit differential strengths and vulnerabilities depending on the category in question. Hence, achieving consistently high faithfulness across a diverse range of categories remains a formidable challenge for visual language models. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+% \subsection{Textual Objects Input on Hallucination}
+
+% There are objects with its bounding box [1] object1, bbx1, [2] ...
+

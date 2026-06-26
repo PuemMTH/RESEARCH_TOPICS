@@ -131,7 +131,7 @@ def main():
         print(f"Error: Dictionary path '{dict_path}' not found.")
         return
         
-    translation_files = glob.glob("papers/*_translations.html")
+    translation_files = glob.glob("papers/**/*_translations.html", recursive=True)
     if not translation_files:
         print("No translation HTML files found in papers/ directory.")
         return
@@ -142,7 +142,8 @@ def main():
     
     for file_path in sorted(translation_files):
         print(f"Indexing: {file_path}...")
-        paper_id = os.path.basename(file_path).replace("_translations.html", "")
+        rel_path = os.path.relpath(file_path, "papers")
+        paper_id = rel_path.replace("_translations.html", "").replace("\\", "/")
         
         with open(file_path, "r", encoding="utf-8") as f:
             content = f.read()

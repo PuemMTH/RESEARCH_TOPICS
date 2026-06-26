@@ -1,0 +1,203 @@
+\begin{thebibliography}{36}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Alayrac et~al.(2022)Alayrac, Donahue, Luc, Miech, Barr, Hasson, Lenc, Mensch, Millican, Reynolds, Ring, Rutherford, Cabi, Han, Gong, Samangooei, Monteiro, Menick, Borgeaud, Brock, Nematzadeh, Sharifzadeh, Binkowski, Barreira, Vinyals, Zisserman, and Simonyan]{flamingo}
+Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Mensch, Katie Millican, Malcolm Reynolds, Roman Ring, Eliza Rutherford, Serkan Cabi, Tengda Han, Zhitao Gong, Sina Samangooei, Marianne Monteiro, Jacob Menick, Sebastian Borgeaud, Andrew Brock, Aida Nematzadeh, Sahand Sharifzadeh, Mikolaj Binkowski, Ricardo Barreira, Oriol Vinyals, Andrew Zisserman, and Karen Simonyan.
+\newblock Flamingo: a visual language model for few-shot learning, 2022.
+
+\bibitem[Awadalla et~al.(2023)Awadalla, Gao, Gardner, Hessel, Hanafy, Zhu, Marathe, Bitton, Gadre, Jitsev, Kornblith, Koh, Ilharco, Wortsman, and Schmidt]{openflamingo}
+Anas Awadalla, Irena Gao, Joshua Gardner, Jack Hessel, Yusuf Hanafy, Wanrong Zhu, Kalyani Marathe, Yonatan Bitton, Samir Gadre, Jenia Jitsev, Simon Kornblith, Pang~Wei Koh, Gabriel Ilharco, Mitchell Wortsman, and Ludwig Schmidt.
+\newblock Openflamingo, March 2023.
+\newblock URL \url{https://doi.org/10.5281/zenodo.7733589}.
+
+\bibitem[Belle. et~al.(2022)Belle., Goh., Kumar., Pranjatno., Yip., Wickramaratne., and Obie.]{alttextify}
+Aspen Belle., Vanessa Goh., Akshay Kumar., Richard Pranjatno., Pui~Man Yip., Umayangani Wickramaratne., and Humphrey~O. Obie.
+\newblock Alt-texify: A pipeline to generate alt-text from svg visualizations.
+\newblock In \emph{Proceedings of the 17th International Conference on Evaluation of Novel Approaches to Software Engineering - ENASE,}, pp.\  275--281. INSTICC, SciTePress, 2022.
+\newblock ISBN 978-989-758-568-5.
+\newblock \doi{10.5220/0010994600003176}.
+
+\bibitem[Bernardi et~al.(2016)Bernardi, Cakici, Elliott, Erdem, Erdem, Ikizler-Cinbis, Keller, Muscat, and Plank]{bernardi2016automatic}
+Raffaella Bernardi, Ruket Cakici, Desmond Elliott, Aykut Erdem, Erkut Erdem, Nazli Ikizler-Cinbis, Frank Keller, Adrian Muscat, and Barbara Plank.
+\newblock Automatic description generation from images: A survey of models, datasets, and evaluation measures.
+\newblock \emph{Journal of Artificial Intelligence Research}, 55:\penalty0 409--442, 2016.
+
+\bibitem[Chiarella et~al.(2020)Chiarella, Yarbrough, and Jackson]{sciencetwitter}
+Domenico Chiarella, Justin Yarbrough, and Christopher A-L Jackson.
+\newblock Using alt text to make science twitter more accessible for people with visual impairments.
+\newblock \emph{Nature Communications}, 11, 2020.
+
+\bibitem[Chintalapati et~al.(2022)Chintalapati, Bragg, and Wang]{hci}
+Sanjana~Shivani Chintalapati, Jonathan Bragg, and Lucy~Lu Wang.
+\newblock A dataset of alt texts from hci publications: Analyses and uses towards producing more descriptive alt texts of data visualizations in scientific papers.
+\newblock \emph{Proceedings of the 24th International ACM SIGACCESS Conference on Computers and Accessibility}, 2022.
+
+\bibitem[Denkowski \& Lavie(2014)Denkowski and Lavie]{meteor}
+Michael Denkowski and Alon Lavie.
+\newblock Meteor universal: Language specific translation evaluation for any target language.
+\newblock In \emph{Proceedings of the ninth workshop on statistical machine translation}, pp.\  376--380, 2014.
+
+\bibitem[Eskander et~al.(2020)Eskander, Martigny, and Mishra]{NER2}
+Ramy Eskander, Peter Martigny, and Shubhanshu Mishra.
+\newblock Multilingual named entity recognition in tweets using wikidata.
+\newblock In \emph{The fourth annual WeCNLP (West Coast NLP) Summit (WeCNLP), virtual}. Zenodo, Oct 2020.
+\newblock \doi{10.5281/zenodo.7014432}.
+
+\bibitem[Fang et~al.(2015)Fang, Gupta, Iandola, Srivastava, Deng, Doll{\'a}r, Gao, He, Mitchell, Platt, et~al.]{fang2015captions}
+Hao Fang, Saurabh Gupta, Forrest Iandola, Rupesh~K Srivastava, Li~Deng, Piotr Doll{\'a}r, Jianfeng Gao, Xiaodong He, Margaret Mitchell, John~C Platt, et~al.
+\newblock From captions to visual concepts and back.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and pattern recognition}, pp.\  1473--1482, 2015.
+
+\bibitem[Gleason et~al.(2019)Gleason, Carrington, Cassidy, Morris, Kitani, and Bigham]{tryingtohideit}
+Cole Gleason, Patrick Carrington, Cameron Cassidy, Meredith~Ringel Morris, Kris~M. Kitani, and Jeffrey~P. Bigham.
+\newblock “it's almost like they're trying to hide it”: How user-provided image descriptions have failed to make twitter accessible.
+\newblock \emph{The World Wide Web Conference}, 2019.
+
+\bibitem[Gleason et~al.(2020)Gleason, Pavel, McCamey, Low, Carrington, Kitani, and Bigham]{a11y}
+Cole Gleason, Amy Pavel, Emma McCamey, Christina Low, Patrick Carrington, Kris~M. Kitani, and Jeffrey~P. Bigham.
+\newblock Twitter a11y: A browser extension to make twitter images accessible.
+\newblock \emph{Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems}, 2020.
+
+\bibitem[Hanley et~al.(2021)Hanley, Barocas, Levy, Azenkot, and Nissenbaum]{hanley2021}
+Margot Hanley, Solon Barocas, Karen Levy, Shiri Azenkot, and Helen Nissenbaum.
+\newblock Computer vision and conflicting values: Describing people with automated alt text.
+\newblock In \emph{Proceedings of the 2021 AAAI/ACM Conference on AI, Ethics, and Society}, AIES '21, pp.\  543–554, New York, NY, USA, 2021. Association for Computing Machinery.
+\newblock ISBN 9781450384735.
+\newblock \doi{10.1145/3461702.3462620}.
+\newblock URL \url{https://doi.org/10.1145/3461702.3462620}.
+
+\bibitem[Herold et~al.(2022)Herold, Waller, and Kushalnagar]{herold-etal-2022-applying}
+Brienna Herold, James Waller, and Raja Kushalnagar.
+\newblock Applying the stereotype content model to assess disability bias in popular pre-trained {NLP} models underlying {AI}-based assistive technologies.
+\newblock In \emph{Ninth Workshop on Speech and Language Processing for Assistive Technologies (SLPAT-2022)}, pp.\  58--65, Dublin, Ireland, May 2022. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2022.slpat-1.8}.
+\newblock URL \url{https://aclanthology.org/2022.slpat-1.8}.
+
+\bibitem[Kingma \& Ba(2015)Kingma and Ba]{adam}
+Diederik~P Kingma and Jimmy Ba.
+\newblock Adam: A method for stochastic optimization.
+\newblock \emph{ICLR}, 2015.
+
+\bibitem[Kreiss et~al.(2022{\natexlab{a}})Kreiss, Bennett, Hooshmand, Zelikman, Ringel~Morris, and Potts]{contextmatters}
+Elisa Kreiss, Cynthia Bennett, Shayan Hooshmand, Eric Zelikman, Meredith Ringel~Morris, and Christopher Potts.
+\newblock Context matters for image descriptions for accessibility: Challenges for referenceless evaluation metrics.
+\newblock In \emph{Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing}, pp.\  4685--4697, Abu Dhabi, United Arab Emirates, December 2022{\natexlab{a}}. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2022.emnlp-main.309}.
+\newblock URL \url{https://aclanthology.org/2022.emnlp-main.309}.
+
+\bibitem[Kreiss et~al.(2022{\natexlab{b}})Kreiss, Fang, Goodman, and Potts]{concadia}
+Elisa Kreiss, Fei Fang, Noah Goodman, and Christopher Potts.
+\newblock Concadia: Towards image-based text generation with a purpose.
+\newblock In \emph{Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing}, pp.\  4667--4684, Abu Dhabi, United Arab Emirates, December 2022{\natexlab{b}}. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2022.emnlp-main.308}.
+\newblock URL \url{https://aclanthology.org/2022.emnlp-main.308}.
+
+\bibitem[Li et~al.(2022)Li, Li, Xiong, and Hoi]{blip}
+Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi.
+\newblock Blip: Bootstrapping language-image pre-training for unified vision-language understanding and generation.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  12888--12900. PMLR, 2022.
+
+\bibitem[Li et~al.(2023)Li, Li, Savarese, and Hoi]{blip2}
+Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi.
+\newblock Blip-2: Bootstrapping language-image pre-training with frozen image encoders and large language models.
+\newblock \emph{arXiv preprint arXiv:2301.12597}, 2023.
+
+\bibitem[Li et~al.(2020)Li, Li, He, Zheng, Li, and Guan]{widget}
+Yang Li, Gang Li, Luheng He, Jingjie Zheng, Hong Li, and Zhiwei Guan.
+\newblock Widget captioning: Generating natural language description for mobile user interface elements.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pp.\  5495--5510, Online, November 2020. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/2020.emnlp-main.443}.
+\newblock URL \url{https://aclanthology.org/2020.emnlp-main.443}.
+
+\bibitem[Lin \& Och(2004)Lin and Och]{rouge}
+Chin-Yew Lin and Franz~Josef Och.
+\newblock Automatic evaluation of machine translation quality using longest common subsequence and skip-bigram statistics.
+\newblock In \emph{Proceedings of the 42nd Annual Meeting of the Association for Computational Linguistics (ACL-04)}, pp.\  605--612, 2004.
+
+\bibitem[Lin et~al.(2014)Lin, Maire, Belongie, Hays, Perona, Ramanan, Doll{\'a}r, and Zitnick]{coco}
+Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll{\'a}r, and C~Lawrence Zitnick.
+\newblock Microsoft coco: Common objects in context.
+\newblock In \emph{Computer Vision--ECCV 2014: 13th European Conference, Zurich, Switzerland, September 6-12, 2014, Proceedings, Part V 13}, pp.\  740--755. Springer, 2014.
+
+\bibitem[Meta(2021)]{meta_2021}
+Meta, Nov 2021.
+\newblock URL \url{https://tech.fb.com/artificial-intelligence/2021/01/how-facebook-is-using-ai-to-improve-photo-descriptions-for-people-who-are-blind-or-visually-impaired/}.
+
+\bibitem[Mishra et~al.(2020)Mishra, He, and Belli]{NER1}
+Shubhanshu Mishra, Sijun He, and Luca Belli.
+\newblock Assessing demographic bias in named entity recognition.
+\newblock In \emph{Proceedings of the AKBC Workshop on Bias in Automatic Knowledge Graph Construction, 2020}. arXiv, 2020.
+\newblock \doi{10.48550/ARXIV.2008.03415}.
+\newblock URL \url{https://arxiv.org/abs/2008.03415}.
+
+\bibitem[Mokady et~al.(2021)Mokady, Hertz, and Bermano]{clipcap}
+Ron Mokady, Amir Hertz, and Amit~H Bermano.
+\newblock Clipcap: Clip prefix for image captioning.
+\newblock \emph{arXiv preprint arXiv:2111.09734}, 2021.
+
+\bibitem[OpenAI(2023)]{gpt4}
+OpenAI.
+\newblock Gpt-4 technical report, 2023.
+
+\bibitem[Papineni et~al.(2002)Papineni, Roukos, Ward, and Zhu]{bleu}
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu.
+\newblock Bleu: a method for automatic evaluation of machine translation.
+\newblock In \emph{Proceedings of the 40th annual meeting of the Association for Computational Linguistics}, pp.\  311--318, 2002.
+
+\bibitem[Paszke et~al.(2019)Paszke, Gross, Massa, Lerer, Bradbury, Chanan, Killeen, Lin, Gimelshein, Antiga, et~al.]{pytorch}
+Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, et~al.
+\newblock Pytorch: An imperative style, high-performance deep learning library.
+\newblock \emph{Advances in neural information processing systems}, 32, 2019.
+
+\bibitem[Paulus et~al.(2017)Paulus, Xiong, and Socher]{trigram}
+Romain Paulus, Caiming Xiong, and Richard Socher.
+\newblock A deep reinforced model for abstractive summarization.
+\newblock \emph{arXiv preprint arXiv:1705.04304}, 2017.
+
+\bibitem[Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, Sutskever, et~al.]{gpt2}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et~al.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{OpenAI blog}, 1\penalty0 (8):\penalty0 9, 2019.
+
+\bibitem[Radford et~al.(2021)Radford, Kim, Hallacy, Ramesh, Goh, Agarwal, Sastry, Askell, Mishkin, Clark, et~al.]{clip}
+Alec Radford, Jong~Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et~al.
+\newblock Learning transferable visual models from natural language supervision.
+\newblock In \emph{International Conference on Machine Learning}, pp.\  8748--8763. PMLR, 2021.
+
+\bibitem[Sharma et~al.(2018)Sharma, Ding, Goodman, and Soricut]{conceptual}
+Piyush Sharma, Nan Ding, Sebastian Goodman, and Radu Soricut.
+\newblock Conceptual captions: A cleaned, hypernymed, image alt-text dataset for automatic image captioning.
+\newblock In \emph{Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pp.\  2556--2565, Melbourne, Australia, July 2018. Association for Computational Linguistics.
+\newblock \doi{10.18653/v1/P18-1238}.
+\newblock URL \url{https://aclanthology.org/P18-1238}.
+
+\bibitem[Snell et~al.(2017)Snell, Ridgeway, Liao, Roads, Mozer, and Zemel]{ssim}
+Jake Snell, Karl Ridgeway, Renjie Liao, Brett~D Roads, Michael~C Mozer, and Richard~S Zemel.
+\newblock Learning to generate images with perceptual similarity metrics.
+\newblock In \emph{2017 IEEE International Conference on Image Processing (ICIP)}, pp.\  4277--4281. IEEE, 2017.
+
+\bibitem[Vedantam et~al.(2015)Vedantam, Lawrence~Zitnick, and Parikh]{cider}
+Ramakrishna Vedantam, C~Lawrence~Zitnick, and Devi Parikh.
+\newblock Cider: Consensus-based image description evaluation.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and pattern recognition}, pp.\  4566--4575, 2015.
+
+\bibitem[Vinyals et~al.(2015)Vinyals, Toshev, Bengio, and Erhan]{vinyals2015show}
+Oriol Vinyals, Alexander Toshev, Samy Bengio, and Dumitru Erhan.
+\newblock Show and tell: A neural image caption generator.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and pattern recognition}, pp.\  3156--3164, 2015.
+
+\bibitem[Wu et~al.(2017)Wu, Wieland, Farivar, and Schiller]{AAT}
+Shaomei Wu, Jeffrey Wieland, Omid Farivar, and Julie Schiller.
+\newblock Automatic alt-text: Computer-generated image descriptions for blind users on a social network service.
+\newblock \emph{Proceedings of the 2017 ACM Conference on Computer Supported Cooperative Work and Social Computing}, 2017.
+
+\bibitem[Zhang et~al.(2022)Zhang, Roller, Goyal, Artetxe, Chen, Chen, Dewan, Diab, Li, Lin, et~al.]{opt}
+Susan Zhang, Stephen Roller, Naman Goyal, Mikel Artetxe, Moya Chen, Shuohui Chen, Christopher Dewan, Mona Diab, Xian Li, Xi~Victoria Lin, et~al.
+\newblock Opt: Open pre-trained transformer language models.
+\newblock \emph{arXiv preprint arXiv:2205.01068}, 2022.
+
+\end{thebibliography}

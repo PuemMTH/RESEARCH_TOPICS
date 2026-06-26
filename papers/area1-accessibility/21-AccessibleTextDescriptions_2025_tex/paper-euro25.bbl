@@ -1,0 +1,497 @@
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{\uppercase{WQW{\etalchar{*}}24}}
+
+\bibitem[AM23]{akbaba_two_2023}
+\textsc{Akbaba D., Meyer M.}:
+\newblock ``{{Two Heads}} are {{Better}} than {{One}}'': {{Pair-Interviews}}
+  for {{Visualization}}.
+\newblock In \emph{{{IEEE Visualization}} and {{Visual Analytics}} ({{VIS}})}
+  (Oct. 2023), IEEE, pp.~206--210.
+\newblock \href {https://doi.org/10.1109/VIS54172.2023.00050}
+  {\path{doi:10.1109/VIS54172.2023.00050}}.
+
+\bibitem[{Ame}24]{americanoptometricassociation_low_2024}
+\textsc{{American Optometric Association}}:
+\newblock Low {{Vision}} and {{Vision Rehabilitation}}, 2024.
+\newblock URL:
+  \url{https://www.aoa.org/healthy-eyes/caring-for-your-eyes/low-vision-and-vision-rehab?sso=y}.
+
+\bibitem[Aut]{centralintelligenceauthority_international}
+\textsc{Authority C.~I.}:
+\newblock International organization participation - {{The World Factbook}}.
+\newblock URL:
+  \url{https://www.cia.gov/the-world-factbook/field/international-organization-participation/}.
+
+\bibitem[BHMG17]{butler_understanding_2017}
+\textsc{Butler M., Holloway L., Marriott K., Goncu C.}:
+\newblock Understanding the graphical challenges faced by vision-impaired
+  students in {{Australian}} universities.
+\newblock \emph{Higher Education Research \& Development 36}, 1 (Jan. 2017),
+  59--72.
+\newblock \href {https://doi.org/10.1080/07294360.2016.1177001}
+  {\path{doi:10.1080/07294360.2016.1177001}}.
+
+\bibitem[BKL{\etalchar{*}}06]{bigham_webinsight_2006}
+\textsc{Bigham J.~P., Kaminsky R.~S., Ladner R.~E., Danielsson O.~M., Hempton
+  G.~L.}:
+\newblock {{WebInSight}}: Making web images accessible.
+\newblock In \emph{International {{ACM SIGACCESS}} Conference on {{Computers}}
+  and Accessibility} (Oct. 2006), ACM, pp.~181--188.
+\newblock \href {https://doi.org/10.1145/1168987.1169018}
+  {\path{doi:10.1145/1168987.1169018}}.
+
+\bibitem[BZ]{blanco_olli}
+\textsc{Blanco M., Zong J.}:
+\newblock Olli.
+\newblock URL: \url{mitvis.github.io/olli/}.
+
+\bibitem[CBW22]{chintalapati_dataset_2022}
+\textsc{Chintalapati S.~S., Bragg J., Wang L.~L.}:
+\newblock A {{Dataset}} of {{Alt Texts}} from {{HCI Publications}}:
+  {{Analyses}} and {{Uses Towards Producing More Descriptive Alt Texts}} of
+  {{Data Visualizations}} in {{Scientific Papers}}.
+\newblock In \emph{{{SIGACCESS Conference}} on {{Computers}} and
+  {{Accessibility}}} (Oct. 2022), ACM, pp.~1--12.
+\newblock \href {https://doi.org/10.1145/3517428.3544796}
+  {\path{doi:10.1145/3517428.3544796}}.
+
+\bibitem[CJP{\etalchar{*}}19]{choi_visualizing_2019}
+\textsc{Choi J., Jung S., Park D.~G., Choo J., Elmqvist N.}:
+\newblock Visualizing for the {{Non-Visual}}: {{Enabling}} the {{Visually
+  Impaired}} to {{Use Visualization}}.
+\newblock \emph{Computer Graphics Forum 38}, 3 (2019), 249--260.
+\newblock \href {https://doi.org/10.1111/cgf.13686}
+  {\path{doi:10.1111/cgf.13686}}.
+
+\bibitem[CLG17]{conway_upsetr_2017}
+\textsc{Conway J.~R., Lex A., Gehlenborg N.}:
+\newblock {{UpSetR}}: An {{R}} package for the visualization of intersecting
+  sets and their properties.
+\newblock \emph{Bioinformatics 33}, 18 (Sept. 2017), 2938--2940.
+\newblock \href {https://doi.org/10.1093/bioinformatics/btx364}
+  {\path{doi:10.1093/bioinformatics/btx364}}.
+
+\bibitem[CPR{\etalchar{*}}22]{chundury_understanding_2022}
+\textsc{Chundury P., Patnaik B., Reyazuddin Y., Tang C., Lazar J., Elmqvist
+  N.}:
+\newblock Towards {{Understanding Sensory Substitution}} for {{Accessible
+  Visualization}}: {{An Interview Study}}.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics 28}, 1
+  (Jan. 2022), 1084--1094.
+\newblock \href {https://doi.org/10.1109/TVCG.2021.3114829}
+  {\path{doi:10.1109/TVCG.2021.3114829}}.
+
+\bibitem[CS14]{corbin_basics_2014}
+\textsc{Corbin J., Strauss A.}:
+\newblock \emph{Basics of {{Qualitative Research}}: {{Techniques}} and
+  {{Procedures}} for {{Developing Grounded Theory}}}.
+\newblock SAGE Publications, Nov. 2014.
+
+\bibitem[DCBD24]{duarte_autovizua11y_2024}
+\textsc{Duarte D., Costa R., Bizarro P., Duarte C.}:
+\newblock {{AutoVizuA11y}}: {{A Tool}} to {{Automate Screen Reader
+  Accessibility}} in {{Charts}}.
+\newblock \emph{Computer Graphics Forum 43}, 3 (2024), e15099.
+\newblock \href {https://doi.org/10.1111/cgf.15099}
+  {\path{doi:10.1111/cgf.15099}}.
+
+\bibitem[DWS{\etalchar{*}}23]{ding_revisit_2023}
+\textsc{Ding Y., Wilburn J., Shrestha H., Ndlovu A., Gadhave K., Nobre C., Lex
+  A., Harrison L.}:
+\newblock {{reVISit}}: {{Supporting Scalable Evaluation}} of {{Interactive
+  Visualizations}}.
+\newblock In \emph{2023 {{IEEE Visualization}} and {{Visual Analytics}}
+  ({{VIS}})} (Oct. 2023), IEEE, pp.~31--35.
+\newblock \href {https://doi.org/10.1109/VIS54172.2023.00015}
+  {\path{doi:10.1109/VIS54172.2023.00015}}.
+
+\bibitem[EMW19]{engel_svgplott_2019}
+\textsc{Engel C., M{\"u}ller E.~F., Weber G.}:
+\newblock {{SVGPlott}}: An accessible tool to generate highly adaptable,
+  accessible audio-tactile charts for and from blind and visually impaired
+  people.
+\newblock In \emph{{{ACM International Conference}} on {{PErvasive Technologies
+  Related}} to {{Assistive Environments}}} (June 2019), pp.~186--195.
+\newblock \href {https://doi.org/10.1145/3316782.3316793}
+  {\path{doi:10.1145/3316782.3316793}}.
+
+\bibitem[ENM24]{elavsky_data_2024}
+\textsc{Elavsky F., Nadolskis L., Moritz D.}:
+\newblock Data {{Navigator}}: {{An Accessibility-Centered Data Navigation
+  Toolkit}}.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics 30}, 1
+  (Jan. 2024), 803--813.
+\newblock \href {https://doi.org/10.1109/TVCG.2023.3327393}
+  {\path{doi:10.1109/TVCG.2023.3327393}}.
+
+\bibitem[EW18]{engel_user_2018}
+\textsc{Engel C., Weber G.}:
+\newblock A {{User Study}} to {{Evaluate Tactile Charts}} with {{Blind}} and
+  {{Visually Impaired People}}.
+\newblock In \emph{Computers {{Helping People}} with {{Special Needs}}} (2018),
+  Lecture {{Notes}} in {{Computer Science}}, Springer, pp.~177--184.
+\newblock \href {https://doi.org/10.1007/978-3-319-94274-2_24}
+  {\path{doi:10.1007/978-3-319-94274-2_24}}.
+
+\bibitem[FMB{\etalchar{*}}22]{friedman_xylazine_2022}
+\textsc{Friedman J., Montero F., Bourgois P., Wahbi R., Dye D., {Goodman-Meza}
+  D., Shover C.}:
+\newblock Xylazine spreads across the {{US}}: {{A}} growing component of the
+  increasingly synthetic and polysubstance overdose crisis.
+\newblock \emph{Drug and Alcohol Dependence 233} (Apr. 2022), 109380.
+\newblock \href {https://doi.org/10.1016/j.drugalcdep.2022.109380}
+  {\path{doi:10.1016/j.drugalcdep.2022.109380}}.
+
+\bibitem[GPM{\etalchar{*}}20]{gleason_twitter_2020}
+\textsc{Gleason C., Pavel A., McCamey E., Low C., Carrington P., Kitani K.~M.,
+  Bigham J.~P.}:
+\newblock Twitter {{A11y}}: {{A Browser Extension}} to {{Make Twitter Images
+  Accessible}}.
+\newblock In \emph{{{CHI Conference}} on {{Human Factors}} in {{Computing
+  Systems}}} (Apr. 2020), ACM, pp.~1--12.
+\newblock \href {https://doi.org/10.1145/3313831.3376728}
+  {\path{doi:10.1145/3313831.3376728}}.
+
+\bibitem[HK16]{harper_movielens_2016}
+\textsc{Harper F.~M., Konstan J.~A.}:
+\newblock The {{MovieLens Datasets}}: {{History}} and {{Context}}.
+\newblock \emph{ACM Transactions on Interactive Intelligent Systems 5}, 4 (Jan.
+  2016), 1--19.
+\newblock \href {https://doi.org/10.1145/2827872} {\path{doi:10.1145/2827872}}.
+
+\bibitem[JMK{\etalchar{*}}22]{jung_communicating_2022}
+\textsc{Jung C., Mehta S., Kulkarni A., Zhao Y., Kim Y.-S.}:
+\newblock Communicating {{Visualizations}} without {{Visuals}}:
+  {{Investigation}} of {{Visualization Alternative Text}} for {{People}} with
+  {{Visual Impairments}}.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics 28}, 1
+  (Jan. 2022), 1095--1105.
+\newblock \href {https://doi.org/10.1109/TVCG.2021.3114846}
+  {\path{doi:10.1109/TVCG.2021.3114846}}.
+
+\bibitem[JPPH{\etalchar{*}}24]{jones_customization_2024}
+\textsc{Jones S., Pedraza~Pineros I., Hajas D., Zong J., Satyanarayan A.}:
+\newblock ``{{Customization}} is {{Key}}'': {{Reconfigurable Textual Tokens}}
+  for {{Accessible Data Visualizations}}.
+\newblock In \emph{Proceedings of the {{CHI Conference}} on {{Human Factors}}
+  in {{Computing Systems}}} (May 2024), ACM, pp.~1--14.
+\newblock \href {https://doi.org/10.1145/3613904.3641970}
+  {\path{doi:10.1145/3613904.3641970}}.
+
+\bibitem[Kan24]{kane_claude_2024}
+\textsc{Kane R.}:
+\newblock Claude vs. {{ChatGPT}}: {{What}}'s the difference? [2024], 2024.
+\newblock URL: \url{https://zapier.com/blog/claude-vs-chatgpt/}.
+
+\bibitem[Kin98]{king_template_1998}
+\textsc{King N.}:
+\newblock Template analysis.
+\newblock In \emph{Qualitative {{Methods}} and {{Analysis}} in {{Organizational
+  Research}}}. Sage Publications Ltd, 1998.
+\newblock URL: \url{https://psycnet.apa.org/record/1999-02931-006}.
+
+\bibitem[KJRK21]{kim_accessible_2021}
+\textsc{Kim N.~W., Joyner S.~C., Riegelhuth A., Kim Y.}:
+\newblock Accessible visualization: {{Design}} space, opportunities, and
+  challenges.
+\newblock \emph{Computer Graphics Forum 40}, 3 (2021), 173--188.
+\newblock \href {https://doi.org/10.1111/cgf.14298}
+  {\path{doi:10.1111/cgf.14298}}.
+
+\bibitem[KKH24]{kim_erie_2024}
+\textsc{Kim H., Kim Y.-S., Hullman J.}:
+\newblock Erie: {{A Declarative Grammar}} for {{Data Sonification}}.
+\newblock In \emph{{{CHI Conference}} on {{Human Factors}} in {{Computing
+  Systems}}} (May 2024), ACM, pp.~1--19.
+\newblock \href {https://doi.org/10.1145/3613904.3642442}
+  {\path{doi:10.1145/3613904.3642442}}.
+
+\bibitem[KKK23]{kim_explain_2023}
+\textsc{Kim G., Kim J., Kim Y.-S.}:
+\newblock ``{{Explain What}} a {{Treemap}} is'': {{Exploratory Investigation}}
+  of {{Strategies}} for {{Explaining Unfamiliar Chart}} to {{Blind}} and {{Low
+  Vision Users}}.
+\newblock In \emph{{{CHI Conference}} on {{Human Factors}} in {{Computing
+  Systems}}} (Apr. 2023), ACM, pp.~1--13.
+\newblock \href {https://doi.org/10.1145/3544548.3581139}
+  {\path{doi:10.1145/3544548.3581139}}.
+
+\bibitem[Lex24]{lex_implementations_2024}
+\textsc{Lex A.}:
+\newblock Implementations of {{UpSet}}, 2024.
+\newblock URL: \url{https://upset.app/implementations/}.
+
+\bibitem[LG]{lyi_altair-based}
+\textsc{L'Yi S., Gehlenborg N.}:
+\newblock Altair-{{Based UpSet Plots}} for {{COVID Symptoms}}.
+\newblock URL: \url{http://upset.plus/covid19symptoms/}.
+
+\bibitem[LGS{\etalchar{*}}14]{lex_upset_2014}
+\textsc{Lex A., Gehlenborg N., Strobelt H., Vuillemot R., Pfister H.}:
+\newblock {{UpSet}}: {{Visualization}} of {{Intersecting Sets}}.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics 20},
+  12 (2014), 1983--1992.
+\newblock \href {https://doi.org/10.1109/TVCG.2014.2346248}
+  {\path{doi:10.1109/TVCG.2014.2346248}}.
+
+\bibitem[LLS19]{lundgard_sociotechnical_2019}
+\textsc{Lundgard A., Lee C., Satyanarayan A.}:
+\newblock Sociotechnical considerations for accessible visualization design.
+\newblock In \emph{{{IEEE Visualization Conference}}} (2019), IEEE, pp.~16--20.
+\newblock \href {https://doi.org/10.1109/VISUAL.2019.8933762}
+  {\path{doi:10.1109/VISUAL.2019.8933762}}.
+
+\bibitem[LPS{\etalchar{*}}24]{li_altgeoviz_2024}
+\textsc{Li C., Pang R.~Y., Sharif A., {Chheda-Kothary} A., Heer J., Froehlich
+  J.~E.}:
+\newblock {{AltGeoViz}}: {{Facilitating Accessible Geovisualization}}, June
+  2024.
+\newblock URL: \url{http://arxiv.org/abs/2406.13853}, \href
+  {http://arxiv.org/abs/2406.13853} {\path{arXiv:2406.13853}}.
+
+\bibitem[LS22]{lundgard_accessible_2022}
+\textsc{Lundgard A., Satyanarayan A.}:
+\newblock Accessible {{Visualization}} via {{Natural Language Descriptions}}:
+  {{A Four-Level Model}} of {{Semantic Content}}.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics 28}, 1
+  (Jan. 2022), 1073--1083.
+\newblock \href {https://doi.org/10.1109/TVCG.2021.3114770}
+  {\path{doi:10.1109/TVCG.2021.3114770}}.
+
+\bibitem[LSLG24]{lyi_digital_2024}
+\textsc{L'Yi S., Smits T.~C., Lex A., Gehlenborg N.}:
+\newblock Digital {{Accessibility}} of {{Life Sciences Data Portals}} and
+  {{Journal Websites}}.
+\newblock \emph{OSF.io} (Feb. 2024).
+\newblock \href {https://doi.org/10.31219/osf.io/5v98j}
+  {\path{doi:10.31219/osf.io/5v98j}}.
+
+\bibitem[LSZ{\etalchar{*}}22]{lu_comparative_2022}
+\textsc{Lu J.~Y., Simon M., Zhao Y., Ablaeva J., Corson N., Choi Y., Yamada K.
+  Y.~H., Schork N.~J., Hood W.~R., Hill G.~E., Miller R.~A., Seluanov A.,
+  Gorbunova V.}:
+\newblock Comparative transcriptomics reveals circadian and pluripotency
+  networks as two pillars of longevity regulation.
+\newblock \emph{Cell Metabolism 34}, 6 (June 2022), 836--856.e5.
+\newblock \href {https://doi.org/10.1016/j.cmet.2022.04.011}
+  {\path{doi:10.1016/j.cmet.2022.04.011}}.
+
+\bibitem[Lui23]{luipi_opinion_2023}
+\textsc{Luipi G.}:
+\newblock Opinion {\textbar} {{My Life With Long Covid}} - {{The New York
+  Times}}, 2023.
+\newblock URL:
+  \url{https://www.nytimes.com/interactive/2023/12/14/opinion/my-life-with-long-covid.html}.
+
+\bibitem[MCLM21]{mack_designing_2021}
+\textsc{Mack K., Cutrell E., Lee B., Morris M.~R.}:
+\newblock Designing {{Tools}} for {{High-Quality Alt Text Authoring}}.
+\newblock In \emph{{{SIGACCESS Conference}} on {{Computers}} and
+  {{Accessibility}}} (Oct. 2021), ACM, pp.~1--14.
+\newblock \href {https://doi.org/10.1145/3441852.3471207}
+  {\path{doi:10.1145/3441852.3471207}}.
+
+\bibitem[MJBC18]{morris_rich_2018}
+\textsc{Morris M.~R., Johnson J., Bennett C.~L., Cutrell E.}:
+\newblock Rich {{Representations}} of {{Visual Content}} for {{Screen Reader
+  Users}}.
+\newblock In \emph{{{CHI Conference}} on {{Human Factors}} in {{Computing
+  Systems}}} (Apr. 2018), {{CHI}} '18, ACM, pp.~1--11.
+\newblock \href {https://doi.org/10.1145/3173574.3173633}
+  {\path{doi:10.1145/3173574.3173633}}.
+
+\bibitem[MSMC14]{moraes_evaluating_2014}
+\textsc{Moraes P., Sina G., McCoy K., Carberry S.}:
+\newblock Evaluating the accessibility of line graphs through textual summaries
+  for visually impaired users.
+\newblock In \emph{{{SIGACCESS}} Conference on {{Computers}} \& Accessibility}
+  (Oct. 2014), {{ASSETS}} '14, ACM, pp.~83--90.
+\newblock \href {https://doi.org/10.1145/2661334.2661368}
+  {\path{doi:10.1145/2661334.2661368}}.
+
+\bibitem[{Nat}23]{nationalsciencefoundation_diversity_2023}
+\textsc{{National Science Foundation}}:
+\newblock \emph{Diversity and {{STEM Women}}, {{Minorities}}, and {{Persons}}
+  with {{Disabilities}}}.
+\newblock Tech. Rep. NSF 23-315, National Science Foundation, 2023.
+
+\bibitem[NM13]{nazemi_method_2013}
+\textsc{Nazemi A., Murray I.}:
+\newblock A {{Method}} to {{Provide Accessibility}} for {{Visual Components}}
+  to {{Vision Impaired}}.
+\newblock \emph{International Journal of Human Computer Interaction 4}, 1
+  (2013), 54--69.
+\newblock URL: \url{https://espace.curtin.edu.au/handle/20.500.11937/39283}.
+
+\bibitem[Not19]{nothman_upsetplot_2019}
+\textsc{Nothman J.}:
+\newblock {{UpSetPlot}}, 2019.
+\newblock URL: \url{https://github.com/jnothman/UpSetPlot}.
+
+\bibitem[OH20]{obeid_chart-text_2020}
+\textsc{Obeid J., Hoque E.}:
+\newblock Chart-to-{{Text}}: {{Generating Natural Language Descriptions}} for
+  {{Charts}} by {{Adapting}} the {{Transformer Model}}.
+\newblock In \emph{International {{Conference}} on {{Natural Language
+  Generation}}} (Dublin, Ireland, Dec. 2020), ACL, pp.~138--147.
+\newblock \href {https://doi.org/10.18653/v1/2020.inlg-1.20}
+  {\path{doi:10.18653/v1/2020.inlg-1.20}}.
+
+\bibitem[PO12]{prasad_text_2012}
+\textsc{Prasad G. V.~S., Ojha A.}:
+\newblock Text, {{Table}} and {{Graph}} -- {{Which}} is {{Faster}} and {{More
+  Accurate}} to {{Understand}}?
+\newblock In \emph{2012 {{IEEE Fourth International Conference}} on
+  {{Technology}} for {{Education}}} (July 2012), pp.~126--131.
+\newblock \href {https://doi.org/10.1109/T4E.2012.18}
+  {\path{doi:10.1109/T4E.2012.18}}.
+
+\bibitem[QKD{\etalchar{*}}20]{qian_formative_2020}
+\textsc{Qian X., Koh E., Du F., Kim S., Chan J.}:
+\newblock A {{Formative Study}} on {{Designing Accurate}} and {{Natural Figure
+  Captioning Systems}}.
+\newblock In \emph{Extended {{Abstracts}} of the {{CHI Conference}} on {{Human
+  Factors}} in {{Computing Systems}}} (Apr. 2020), {{CHI EA}} '20, ACM,
+  pp.~1--8.
+\newblock \href {https://doi.org/10.1145/3334480.3382946}
+  {\path{doi:10.1145/3334480.3382946}}.
+
+\bibitem[QKD{\etalchar{*}}21]{qian_generating_2021}
+\textsc{Qian X., Koh E., Du F., Kim S., Chan J., Rossi R.~A., Malik S., Lee
+  T.~Y.}:
+\newblock Generating {{Accurate Caption Units}} for {{Figure Captioning}}.
+\newblock In \emph{Proceedings of the {{Web Conference}}} (June 2021), ACM,
+  pp.~2792--2804.
+\newblock \href {https://doi.org/10.1145/3442381.3449923}
+  {\path{doi:10.1145/3442381.3449923}}.
+
+\bibitem[SL21]{shahira_assisting_2021}
+\textsc{Shahira K.~C., Lijiya A.}:
+\newblock Towards {{Assisting}} the {{Visually Impaired}}: {{A Review}} on
+  {{Techniques}} for {{Decoding}} the {{Visual Data From Chart Images}}.
+\newblock \emph{IEEE Access 9} (2021), 52926--52943.
+\newblock \href {https://doi.org/10.1109/ACCESS.2021.3069205}
+  {\path{doi:10.1109/ACCESS.2021.3069205}}.
+
+\bibitem[SV10]{speckmann_necklace_2010}
+\textsc{Speckmann B., Verbeek K.}:
+\newblock Necklace {{Maps}}.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics 16}, 6
+  (nov.-dec. 2010), 881--889.
+\newblock \href {https://doi.org/10.1109/TVCG.2010.180}
+  {\path{doi:10.1109/TVCG.2010.180}}.
+
+\bibitem[TBS23]{tang_vistext_2023}
+\textsc{Tang B., Boggust A., Satyanarayan A.}:
+\newblock {{VisText}}: {{A Benchmark}} for {{Semantically Rich Chart
+  Captioning}}.
+\newblock In \emph{Annual {{Meeting}} of the {{Association}} for
+  {{Computational Linguistics}}} (2023), ACL, pp.~7268--7298.
+\newblock \href {https://doi.org/10.18653/v1/2023.acl-long.401}
+  {\path{doi:10.18653/v1/2023.acl-long.401}}.
+
+\bibitem[TMS{\etalchar{*}}23]{thompson_chart_2023}
+\textsc{Thompson J.~R., Martinez J.~J., Sarikaya A., Cutrell E., Lee B.}:
+\newblock Chart {{Reader}}: {{Accessible Visualization Experiences Designed}}
+  with {{Screen Reader Users}}.
+\newblock In \emph{{{CHI Conference}} on {{Human Factors}} in {{Computing
+  Systems}}} (Apr. 2023), {{CHI}} '23, ACM, pp.~1--18.
+\newblock \href {https://doi.org/10.1145/3544548.3581186}
+  {\path{doi:10.1145/3544548.3581186}}.
+
+\bibitem[WdH{\etalchar{*}}22]{williams_supporting_2022}
+\textsc{Williams C., {de Greef} L., Harris E., Findlater L., Pavel A., Bennett
+  C.}:
+\newblock Toward {{Supporting Quality Alt Text}} in {{Computing Publications}}.
+\newblock In \emph{International {{Web}} for {{All Conference}}} (Apr. 2022),
+  {{W4A}} '22, ACM, pp.~1--12.
+\newblock \href {https://doi.org/10.1145/3493612.3520449}
+  {\path{doi:10.1145/3493612.3520449}}.
+
+\bibitem[Wes]{west_upsetr}
+\textsc{West C.~E.}:
+\newblock {{UpSetR}}: {{Beyond}} the {{Venn}} diagram.
+\newblock URL:
+  \url{https://clarewest.github.io/blog/post/2020-03-26-upsetr-beyond-the-venn-diagram/}.
+
+\bibitem[WHT{\etalchar{*}}24]{wang_how_2024-2}
+\textsc{Wang H.~W., Hoffswell J., Thane S. M.~T., Bursztyn V.~S., Bearfield
+  C.~X.}:
+\newblock How {{Aligned}} are {{Human Chart Takeaways}} and {{LLM
+  Predictions}}? {{A Case Study}} on {{Bar Charts}} with {{Varying Layouts}}.
+\newblock \emph{IEEE Transactions on Visualization and Computer Graphics}
+  (2024), 1--11.
+\newblock \href {https://doi.org/10.1109/TVCG.2024.3456378}
+  {\path{doi:10.1109/TVCG.2024.3456378}}.
+
+\bibitem[WPA{\etalchar{*}}21]{wu_understanding_2021}
+\textsc{Wu K., Petersen E., Ahmad T., Burlinson D., Tanis S., Szafir D.~A.}:
+\newblock Understanding {{Data Accessibility}} for {{People}} with
+  {{Intellectual}} and {{Developmental Disabilities}}.
+\newblock In \emph{{{CHI Conference}} on {{Human Factors}} in {{Computing
+  Systems}}} (May 2021), ACM, pp.~1--16.
+\newblock \href {https://doi.org/10.1145/3411764.3445743}
+  {\path{doi:10.1145/3411764.3445743}}.
+
+\bibitem[WQW{\etalchar{*}}24]{wu_our_2024}
+\textsc{Wu K., Quadri G.~J., Wang A.~Z., {Osei-Tutu} D.~K., Petersen E.,
+  Koushik V., Szafir D.~A.}:
+\newblock Our {{Stories}}, {{Our Data}}: {{Co-designing Visualizations}} with
+  {{People}} with {{Intellectual}} and {{Developmental Disabilities}}.
+\newblock In \emph{Proceedings of the 26th {{International ACM SIGACCESS
+  Conference}} on {{Computers}} and {{Accessibility}}} (Oct. 2024), {{ASSETS}}
+  '24, ACM, pp.~1--17.
+\newblock \href {https://doi.org/10.1145/3663548.3675615}
+  {\path{doi:10.1145/3663548.3675615}}.
+
+\bibitem[WSK24]{wang_enabling_2024}
+\textsc{Wang Y., Srinivasan A., Kim Y.-S.}:
+\newblock Enabling {{Tabular Data Exploration}} for {{Blind}} and {{Low-Vision
+  Users}}.
+\newblock In \emph{Designing {{Interactive Systems Conference}}} (July 2024),
+  ACM, pp.~1218--1233.
+\newblock \href {https://doi.org/10.1145/3643834.3661609}
+  {\path{doi:10.1145/3643834.3661609}}.
+
+\bibitem[WW08]{wilkinson_scagnostics_2008}
+\textsc{Wilkinson L., Wills G.}:
+\newblock Scagnostics {{Distributions}}.
+\newblock \emph{Journal of Computational and Graphical Statistics 17}, 2 (June
+  2008), 473--491.
+\newblock \href {https://doi.org/10.1198/106186008X320465}
+  {\path{doi:10.1198/106186008X320465}}.
+
+\bibitem[WWFS17]{wu_automatic_2017}
+\textsc{Wu S., Wieland J., Farivar O., Schiller J.}:
+\newblock Automatic {{Alt-text}}: {{Computer-generated Image Descriptions}} for
+  {{Blind Users}} on a {{Social Network Service}}.
+\newblock In \emph{Conference on {{Computer Supported Cooperative Work}} and
+  {{Social Computing}}} (Feb. 2017), ACM, pp.~1180--1192.
+\newblock \href {https://doi.org/10.1145/2998181.2998364}
+  {\path{doi:10.1145/2998181.2998364}}.
+
+\bibitem[Yal19]{yalanska_ux_2019}
+\textsc{Yalanska M.}:
+\newblock {{UX Writing}}: {{Handy Tips}} on {{Text Improving User Experience}},
+  Mar. 2019.
+\newblock URL:
+  \url{https://blog.tubikstudio.com/user-experience-tips-ux-writing/}.
+
+\bibitem[ZLL{\etalchar{*}}22]{zong_rich_2022}
+\textsc{Zong J., Lee C., Lundgard A., Jang J., Hajas D., Satyanarayan A.}:
+\newblock Rich {{Screen Reader Experiences}} for {{Accessible Data
+  Visualization}}.
+\newblock \emph{Computer Graphics Forum 41}, 3 (2022), 15--27.
+\newblock \href {https://doi.org/10.1111/cgf.14519}
+  {\path{doi:10.1111/cgf.14519}}.
+
+\bibitem[ZPPC{\etalchar{*}}24]{zong_umwelt_2024}
+\textsc{Zong J., Pedraza~Pineros I., Chen M.~K., Hajas D., Satyanarayan A.}:
+\newblock Umwelt: {{Accessible Structured Editing}} of {{Multi-Modal Data
+  Representations}}.
+\newblock In \emph{{{CHI Conference}} on {{Human Factors}} in {{Computing
+  Systems}}} (May 2024), ACM, pp.~1--20.
+\newblock \href {https://doi.org/10.1145/3613904.3641996}
+  {\path{doi:10.1145/3613904.3641996}}.
+
+\end{thebibliography}

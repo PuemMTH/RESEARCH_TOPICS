@@ -1,0 +1,269 @@
+\usepackage{style/ACL2023}
+
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage[T1]{fontenc}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{microtype}
+
+\usepackage{inconsolata}
+
+
+
+\title{Faithful Chart Summarization with ChaTS-Pi}
+
+
+\author{
+Syrine Krichene,
+Francesco Piccinno,
+Fangyu Liu,
+Julian Martin Eisenschlos\\
+Google DeepMind, Z{\"u}rich \\
+\texttt{\{syrinekrichene,liufangyu,piccinno,eisenjulian\}@google.com}
+}
+
+\newcommand{\latexfile}[1]{\input{sections/#1}}
+\usepackage{amsthm}
+\usepackage{framed}
+\usepackage{mdwlist}
+\usepackage{colortbl}
+\usepackage{xcolor}
+\usepackage{nicefrac}
+\usepackage{booktabs}
+\usepackage{amsfonts}
+\usepackage[T1]{fontenc}
+\usepackage{bold-extra}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage[normalem]{ulem}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage{ifthen}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsfonts} 
+\usepackage{cleveref}
+\usepackage{bbm}
+\usepackage{listings}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem*{remark}{Remark}
+
+\usepackage{latexsym,comment}
+\usepackage{tikz}
+\usepackage{xspace}
+\usepackage{xr}
+\usetikzlibrary{shapes,arrows}
+
+\usepackage{enumitem}
+\setlist[itemize]{align=parleft,left=0pt..1em,itemsep=0pt}
+
+\newcommand{\breakalign}{\right. \nonumber \\ & \left. \hspace{2cm}}
+
+\newcommand{\feat}[1]{{\small \texttt{#1}}}
+\newcommand{\act}[1]{{\small \texttt{#1}}}
+\newcommand{\ngram}[0]{$n$-gram}
+\newcommand{\topic}[1]{\underline{#1}}
+\newcommand{\gem}[1]{\mbox{\textsc{gem}}}
+\newcommand{\abr}[1]{\textsc{#1}}
+\newcommand{\camelabr}[2]{{\small #1}{\textsc{#2}}}
+\newcommand{\abrcamel}[2]{{\textsc #1}{\small{#2}}}
+\newcommand{\grammar}[1]{{\color{red} #1}}
+\newcommand{\explain}[2]{\underbrace{#2}_{\mbox{\footnotesize{#1}}}}
+\newcommand{\dir}[1]{\mbox{Dir}(#1)}
+\newcommand{\bet}[1]{\mbox{Beta}(#1)}
+\newcommand{\py}[1]{\mbox{\textsc{py}}(#1)}
+\newcommand{\td}[2]{\mbox{\textsc{TreeDist}}_{#1} \left( #2 \right)}
+\newcommand{\yield}[1]{\mbox{\textsc{Yield}} \left( #1 \right)}
+\newcommand{\mult}[1]{\mbox{Mult}( #1)}
+\newcommand{\wn}{\textsc{WordNet}}
+\newcommand{\twentynews}{\textsc{20news}}
+\newcommand{\g}{\, | \,}
+\newcommand{\Gam}[1]{\Gamma \left( \textstyle #1 \right)}
+\newcommand{\LG}[1]{\log \Gamma \left( \textstyle #1 \right)}
+\newcommand{\Pois}[1]{\mbox{Poisson}(#1)}
+\newcommand{\pcfg}[3]{#1_{#2 \rightarrow #3}}
+\newcommand{\grule}[2]{#1 \rightarrow #2}
+\newcommand{\kl}[2]{D_{\mbox{\textsc{KL}}} \left( #1 \,||\, #2 \right)}
+
+\newcommand{\digambig}[1]{\Psi \left( #1 \right) }
+\newcommand{\digam}[1]{\Psi \left( \textstyle #1 \right) }
+\newcommand{\ddigam}[1]{\Psi' \left( \textstyle #1 \right) }
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\bmat}[1]{\text{\textbf{#1}}}
+\newcommand{\bvec}[1]{\boldsymbol{#1}}
+\newcommand{\noop}[1]{#1}
+
+\newcommand{\emaillink}[1]{ {\small \href{mailto://#1}{\texttt{#1}}}}
+\newcommand{\smallemaillink}[2]{ {\small \href{mailto://#2}{\texttt{#1}}}}
+
+\newcommand{\ch}[1]{\begin{CJK*}{UTF8}{gbsn}#1\end{CJK*}}
+
+\newcommand{\e}[2]{\mathbb{E}_{#1}\left[ #2 \right] }
+\newcommand{\h}[2]{\mathbb{H}_{#1}\left[ #2 \right] }
+\newcommand{\ind}[1]{\mathds{1}\left[ #1 \right] }
+\newcommand{\ex}[1]{\mbox{exp}\left\{ #1\right\} }
+\newcommand{\D}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\elbo}{\mathcal{L}}
+
+\newcommand{\hidetext}[1]{}
+\newcommand{\ignore}[1]{}
+
+\newcommand{\todo}[1]{\textcolor{red}{{\bf TODO: #1}}}
+
+\newif\ifcomment\commenttrue
+
+\newif\ifinfotabs\infotabsfalse
+
+\newif\ifsubscripterror\subscripterrortrue
+
+\ifcomment
+\newcommand{\pinaforecomment}[3]{\colorbox{#1}{\parbox{.8\linewidth}{#2: #3}}}
+\else
+\newcommand{\pinaforecomment}[3]{}
+\fi
+
+\ifinfotabs
+\newcommand{\infotabstext}[1]{#1}
+\else
+\newcommand{\infotabstext}[1]{}
+\fi
+
+\ifsubscripterror
+\newcommand{\err}[1]{\textsubscript{~$\pm$#1}}
+\else
+\newcommand{\err}[1]{ $\pm$ #1}
+\fi
+
+
+\newcommand{\juliancomment}[1]{\pinaforecomment{yellow}{Julian}{#1}}
+\newcommand{\thomascomment}[1]{\pinaforecomment{lightblue}{Thomas}{#1}}
+\newcommand{\flc}[1]{\textcolor{blue}{\textbf{[liufangyu: #1]}}}
+\newcommand{\tm}[1]{\thomascomment{#1}}
+\newcommand{\je}[1]{\juliancomment{#1}}
+\newcommand{\syrinecomment}[1]{\pinaforecomment{orange}{Syrine}{#1}}
+\newcommand{\yasemincomment}[1]{\pinaforecomment{cyan}{Yasemin}{#1}}
+\newcommand{\reviewercomment}[1]{\pinaforecomment{blue}{Reviewer}{#1}}
+
+\newcommand{\smalltt}[1]{ {\tt \small #1 }}
+\newcommand{\smallurl}[1]{ \begin{tiny}\url{#1}\end{tiny}}
+\newenvironment{compactenum}{ \begin{enumerate*} \small }{ \end{enumerate*} }
+
+\definecolor{lightblue}{HTML}{3cc7ea}
+\definecolor{CUgold}{HTML}{CFB87C}
+\definecolor{grey}{rgb}{0.95,0.95,0.95}
+\definecolor{ceil}{rgb}{0.57, 0.63, 0.81}
+\definecolor{UMDred}{HTML}{ed1c24}
+\definecolor{UMDyellow}{HTML}{ffc20e}
+\definecolor{darkgreen}{HTML}{008f00}
+
+
+\newcommand{\qb}[0]{Quizbowl}
+\newcommand{\qa}[0]{\abr{qa}}
+\newcommand{\triviaqa}{\camelabr{Trivia}{qa}}
+\newcommand{\qblink}{\abrcamel{qb}{Link}}
+\newcommand{\qanta}{\textsc{qanta}}
+\newcommand{\muse}{\textsc{muse}}
+\newcommand{\squad}{\textsc{sq}{\small u}\textsc{ad}}
+\newcommand{\elmo}{\textsc{elm}{\small o}}
+\newcommand{\sqa}{\textsc{SQA}\xspace}
+\newcommand{\tabfact}{\textsc{TabFact}\xspace}
+\newcommand{\boolq}{\textsc{BoolQ}\xspace}
+\newcommand{\infotabs}{\textsc{InfoTabs}\xspace}
+
+\newcommand{\editout}[1]{{\color{red} \sout{#1}}}
+\newcommand{\editin}[1]{{\color{darkgreen} \textbf{#1}}}
+
+\newcommand{\plus}[1]{{\color{darkgreen} \textbf{#1}}}
+\newcommand{\minus}[1]{{\color{red} \textbf{#1}}}
+
+\newcommand{\cls}{\texttt{[CLS]}}
+\newcommand{\sep}{\texttt{[SEP]}}
+\newcommand\ours{\textsc{OURS}\xspace}
+\newcommand\sql{\textsc{SQL}\xspace}
+\newcommand\sota{state-of-the-art\xspace}
+\newcommand{\tapas}{\textsc{TAPAS}\xspace}
+\newcommand{\wtq}{\textsc{WIKITQ}\xspace}
+\newcommand{\wikisql}{\textsc{WIKISQL}\xspace}
+\newcommand{\bert}{\textsc{BERT}\xspace}
+\newcommand{\roberta}{\textsc{RoBERTa}\xspace}
+\newcommand{\tablebert}{\textsc{Table-BERT}\xspace}
+\newcommand{\lfc}{\textsc{LogicalFactChecker}\xspace}
+\newcommand{\masklm}{\textsc{Mask-LM}\xspace}
+\newcommand{\figfile}[1]{figures/#1}
+\newcommand{\tabfile}[1]{\input{tables/#1}}
+\newcommand{\autofig}[1]{auto_fig/#1}
+\newcommand\la{$\langle$}  %
+\newcommand\ra{$\rangle$}
+\newcommand{\bftab}{\fontseries{b}\selectfont}
+\newcommand{\metric}{\textsc{ChaTS-Critic}\xspace}
+\newcommand{\pipeline}{\textsc{ChaTS-Pi}\xspace}
+\newcommand{\deplot}{\textsc{DePlot}\xspace}
+\newcommand{\palm}{\textsc{PaLM}\xspace}
+
+\usepackage{scalerel}  %
+\usepackage{svg}
+
+\newcommand{\desiredheight}{0.36cm}
+
+\def\criticemoji{\resizebox{!}{\desiredheight}{\includesvg{figures/detective.svg}}}
+\def\piemoji{\resizebox{!}{\desiredheight}{\includesvg{figures/shortcake.svg}}}
+
+\usepackage{amssymb}%
+\usepackage{pifont}%
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+
+
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}[thm]{Definition}
+
+\makeatletter
+\newcommand*{\addFileDependency}[1]{%
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\makeatother
+ 
+\newcommand*{\myexternaldocument}[1]{%
+    \externaldocument{#1}%
+    \addFileDependency{#1.tex}%
+    \addFileDependency{#1.aux}%
+}
+
+
+\lstset{literate=
+  {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+  {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+  {à}{{\`a}}1 {è}{{\`e}}1 {ì}{{\`i}}1 {ò}{{\`o}}1 {ù}{{\`u}}1
+  {À}{{\`A}}1 {È}{{\`E}}1 {Ì}{{\`I}}1 {Ò}{{\`O}}1 {Ù}{{\`U}}1
+  {ä}{{\"a}}1 {ë}{{\"e}}1 {ï}{{\"i}}1 {ö}{{\"o}}1 {ü}{{\"u}}1
+  {Ä}{{\"A}}1 {Ë}{{\"E}}1 {Ï}{{\"I}}1 {Ö}{{\"O}}1 {Ü}{{\"U}}1
+  {â}{{\^a}}1 {ê}{{\^e}}1 {î}{{\^i}}1 {ô}{{\^o}}1 {û}{{\^u}}1
+  {Â}{{\^A}}1 {Ê}{{\^E}}1 {Î}{{\^I}}1 {Ô}{{\^O}}1 {Û}{{\^U}}1
+  {ã}{{\~a}}1 {ẽ}{{\~e}}1 {ĩ}{{\~i}}1 {õ}{{\~o}}1 {ũ}{{\~u}}1
+  {Ã}{{\~A}}1 {Ẽ}{{\~E}}1 {Ĩ}{{\~I}}1 {Õ}{{\~O}}1 {Ũ}{{\~U}}1
+  {œ}{{\oe}}1 {Œ}{{\OE}}1 {æ}{{\ae}}1 {Æ}{{\AE}}1 {ß}{{\ss}}1
+  {ű}{{\H{u}}}1 {Ű}{{\H{U}}}1 {ő}{{\H{o}}}1 {Ő}{{\H{O}}}1
+  {ç}{{\c c}}1 {Ç}{{\c C}}1 {ø}{{\o}}1 {Ø}{{\O}}1 {å}{{\r a}}1 {Å}{{\r A}}1
+  {€}{{\euro}}1 {£}{{\pounds}}1 {«}{{\guillemotleft}}1
+  {»}{{\guillemotright}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1 
+}

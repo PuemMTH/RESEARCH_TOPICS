@@ -1,0 +1,23 @@
+\begin{abstract}
+
+Embedding vision–language models (VLMs) are typically pretrained with short text windows ($<$77 tokens), which forces the truncation of long-format captions. Yet, the distribution of biomedical captions from large-scale open source literature reveals that a huge portion of captions far exceed 77 tokens. To this end, we investigate the impact of pretraining on long-format biomedical captions by extending the context length of text encoders in VLMs. We find that longer context (thus, enabling additional supervision provided in long-format captions) correlates with better retrieval and classification performance. Given this finding, we introduce BIOMEDICA-LongCAP, a dataset of 1M image–caption pairs enriched with context-aware descriptions from full-text articles, providing longer and additional textual supervision. Using BIOMEDICA-LongCAP, we train BMC-LongCLIP, a long-context biomedical VLM with a text encoder supporting windows of up to 512 tokens. 
+Our model extends context capacity by 6.6×, reducing token waste from 55\% to just 2.2\%. On long-caption retrieval benchmarks, BMC-LongCLIP achieves up to +30\% absolute gains in Recall@1 and +2\% average improvements in classification, while also converging faster than short-context. Our results demonstrate that long-context modeling is a promising direction for advancing biomedical VLMs.
+
+% Our model increases context capacity by 6.6×, yielding a +4.8\% gain in zero-shot accuracy and up to +9.4\% Recall@1 on long-caption and image retrieval. 
+
+% Our model extends context capacity by 6.6×, reducing token waste from 55\% to just 2.2\%. On long-caption retrieval benchmarks, BMC-LongCLIP achieves up to 30 point absolute gains in Recall@1, while also delivering improvements in classification accuracy (+2 points on average). Our results demonstrate that long-context modeling is a promising direction for advancing biomedical VLMs.
+
+% Our model increases context capacity by 6.6×, yielding a +4.8\% gain in zero-shot accuracy and up to +9.4\% Recall@1 on long-caption and image retrieval. Our results demonstrate that long-context modeling is a promising direction for advancing biomedical VLMs.
+
+\end{abstract}
+\begin{keywords}
+Biomedical Vision-Language Models, Long-context Modeling, Contrastive Learning
+\end{keywords}
+
+
+
+% Extending context length accelerates convergence and yields large relative gains: on CXR retrieval, Recall@10 improves by over 2× compared to baselines; on PMC, BMC-LongCLIP achieves up to 90\% relative gains over MedSigLIP and slightly surpasses BiomedCLIP. For zero-shot classification across 6 biomedical domains, BMC-LongCLIP delivers a +20\% relative improvement over BiomedCLIP.
+
+% Extending context length accelerates convergence and yields large relative gains: on CXR retrieval, Recall@10 improves by over 2× compared to prior baselines; on PMC, BMC-LongCLIP achieves up to 90\% relative gains over MedSigLIP and slightly surpasses BiomedCLIP. 
+
+% For zero-shot classification across six biomedical domains, BMC-LongCLIP delivers a +20\% relative improvement over BiomedCLIP.

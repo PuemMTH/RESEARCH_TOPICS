@@ -1,0 +1,126 @@
+\section{Analysis}
+\paragraph{Ablation study (\pipeline{} 4 stages)} We report a performance study of the four stages of \pipeline, as depicted in \Cref{fig:ChaTS-Pi}, in \Cref{tab:results_stage_ablation}.
+Droppings sentences in Stage 2 increases F1 by $1.9$ points compared to Stage 1.
+Ranking with \metric{} without repair shows $8.3$ points compared to Stage 1 and $6.4$ to Stage 2.
+Dropping the sentences of the top ranked summary increase F1 by $1.3$ reaching $95.69\%$ compared to using the top ranked summary.
+
+\begin{table}[!ht]
+\centering
+\resizebox{0.85\linewidth}{!}{
+\begin{tabular}{llcc}
+    \toprule
+    \multicolumn{2}{l}{\textbf{Stage name}}   & \textbf{F1} & \textbf{AUC} \\
+    \midrule
+    S1 & Summary generation                   & $86.03$ & $ 50.0$ \\
+    S2 & Drop unentailed sentences            & $87.96$ & $ 70.54$ \\
+    S3 & Summary scoring                      & $94.41$ & $50.0 $ \\
+    S4 & \quad $\xhookrightarrow{}$ Filtering & $\textbf{95.69}$ & $\textbf{72.53}$ \\
+    \hline 
+\end{tabular}
+}
+\caption{Binary classification F1 and AUC of \pipeline{}'s different stages, on the PALM-2 annotation set. For an overview of the stages refer to \Cref{fig:ChaTS-Pi}.}
+\label{tab:results_stage_ablation} 
+\end{table}
+
+
+We ablated the impact of DePlot on \metric{}, using the original tables as a baseline. The findings are detailed in \Cref{tab:results_gold_table_vs_deplot}. Given that DePlot's extracted tables may include missing or inaccurate data, we anticipated a greater sentence drop in \metric{} with DePlot. Contrarily, the F1 remains consistent for the reference and even sees an increase in \pipeline{} sets. Upon examining specific instances, we discerned the primary reason as following: Some numbers in gold tables are ``overly precise'' (sometimes several digits after the decimal, making it hard for humans to distinguish). In contrast, DePlot always outputs a ``rounded''/lossy value, which is preferred by human raters over those using the ultra-precise numbers from the gold table.
+Despite these observations, the overall difference remains marginal (less than 1 percentage point). This suggests that DePlot's performance is commendably accurate, even when juxtaposed with gold tables.
+
+
+
+
+
+\begin{table}[!ht]
+\centering
+\resizebox{0.89\linewidth}{!}{
+\begin{tabular}{llllllcc}
+    \toprule
+    \textbf{Annotation set} & \textbf{Table} & \textbf{F1} & \textbf{AUC} \\
+    \midrule
+    \multirow{2}{*}{Reference}                                  & Gold     & $86.0$ & $\textbf{81.67}$ \\
+                                                                & DePlot   & $\textbf{86.01}$ & $ 81.56$ \\
+    \hline
+    \multirow{2}{*}{PALM-2}                                     & Gold     & $\textbf{88.19}$ & $\textbf{71.97}$ \\
+                                                                & DePlot   & $87.96 $ & $70.54$         \\
+    \hline
+    \multirow{2}{*}{\piemoji(PALM-2, \criticemoji(PALM-2))}         & Gold     & $91.52$ & $70.14$ \\
+                                                                & DePlot   & $\textbf{91.81}$ & $\textbf{70.6}$ \\
+    \hline
+    \multirow{2}{*}{\piemoji(PALM-2, \criticemoji(DePlot, PALM-2))} & Gold     & $95.19$ & $\textbf{78.23}$ \\
+                                                                & DePlot   & $\textbf{95.89}$ & $72.53$ \\
+    \bottomrule
+\end{tabular}
+}
+\caption{We compare performance of \metric{} when using a deplotter (DePlot) vs. using gold tables.}
+\label{tab:results_gold_table_vs_deplot}
+\end{table}
+
+
+\paragraph{Grammaticality} defined as the human ratings on grammatical errors (see \Cref{subsec:evaluation-setup}) on non dropped sentences and summaries is reported in \cref{tab:results_Human_annotation_importance_grammar}. When applying \metric, we see a constant sentence-level \emph{Grammaticality} for the \pipeline last stage --The quality is already at $98.6\%$, leaving little room for improvement-- and a consistent improvement over all other sets. 
+As for summary-level \emph{Grammaticality ($S$)}, the story is more nuanced.
+On the Reference set (i.e. $\sim~3$ sentences per summary),
+the impact on \emph{Grammaticality ($S$)} is less prominent.
+On the PALM-2 annotation set, which features longer and more complex highlights (i.e. $\sim~5$ sentences per summary), we can see a small drop of $-1.97\%$.
+\pipeline{} last stage remains constant, showing the importance of ranking.
+
+\paragraph{Relevance} defined as the percentage of relevant sentences among the selected ones is reported in Table~\ref{tab:results_Human_annotation_importance_grammar}. We see a performance drop on this metric, mainly due to the design of \metric. The relevant sentences usually feature a more complex structure. \metric{} tends to prioritize less complex sentences during the entailment verification stage, thus producing an overall drop in \emph{Relevance}. 
+One such example occurs when multiple statistics and computations are included in a single sentence: \emph{``The nonstore retailers increased by 22.8\% in April 2020 compared to April 2019, whereas store retailers jumped 12\% points in the same period.''}.
+This is the case for the Reference and the \pipeline ranking stage.
+
+\begin{table}[!ht]
+\centering
+\resizebox{1.\linewidth}{!}{
+\begin{tabular}{lccc}
+\toprule
+    \textbf{Annotation Set}         & \textbf{Gram.}  & \textbf{Gram. ($S$)}  & \textbf{Relevance}\\
+    \hline
+    Reference                       &   $84.0$          &    $82.76$                &  $\mathbf{43.33}$\\
+    Drop unentailed sentences       &   $\mathbf{88.29}$&    $\mathbf{83.93}$       &  $41.44$\\
+    \hline
+    PALM-2 Summary generation              &   $88.12$         &    $87.93$                &  $68.97$\\
+    Drop unentailed sentences       &   $90.0$          &    $85.96$                &  $\mathbf{69.09}$\\
+    Summary scoring                 &   $\mathbf{98.68}$&    $\mathbf{92.98}$       &  $58.94$\\
+    \quad $\xhookrightarrow{}$ Filtering& $98.61$       &    $\mathbf{92.98}$       &  $57.14$\\
+\bottomrule
+\end{tabular}
+}
+\caption{
+Human annotation rates for grammaticality and relevance computed on non dropped sentences.
+\emph{Grammaticality} (Gram.) is the \% of grammatically correct sentences; \emph{Grammaticality ($S$)} the \% of fully grammatically correct summaries; \emph{Relevance} the percentage of relevant sentences.
+We report the reference, and different \pipeline{} stages using PALM-2. \metric{} provides general improvements in sentence level grammaticality, whereas the performance on relevance and summary level grammaticality are mixed, due to \metric{} design.
+}
+\label{tab:results_Human_annotation_importance_grammar} 
+\vspace{-2ex}
+\end{table}
+
+\subsection{Multilingual generalization}
+
+To evaluate the feasibility of our approach on \emph{internationalization} (i18n) datasets, we investigated a controlled setting using the TATA dataset~\cite{gehrmann2022tata}, a multilingual table-to-text dataset. 
+We selected a localized image per language from the test set, including Portuguese, Arabic, French, Russian, and Swahili. 
+Regrettably, the test set did not include images in Hausa, Yoruba, or Igbo. \Cref{fig:i18n-examples,fig:i18n-examples-second} include the images alongside the generated summaries.
+
+Generally, the approach can provide an accurate summary if the deplotting component satisfies the following conditions: (a) no errors are introduced, or (b) a reasonable level of detail is provided. For Portuguese, the approach encounters failure case (b), as the deplotted table contains limited information (e.g., the subtext is not considered), resulting in a generic and factually deficient summary. Conversely, the error case (a) is observed for Arabic, where the information is extracted in an incorrect order, leading to factual inaccuracies.
+
+When the table extraction is executed without errors, the summary generated is also accurate and reliable.%
+However, it is acknowledged that there are specific instances where potential stylistic errors may manifest within the summary.
+Such errors may include the reiteration of phrasal structures at the initiation of sentences or the potentially inappropriate integration of code-mixed information fragments.
+
+\begin{figure}[!ht]
+    \centering
+    \begin{tabular}{>{\arraybackslash}p{0.45\textwidth}}
+        \midrule[1.2pt]
+        
+        \multicolumn{1}{c}{\includegraphics[width=0.8\linewidth]{figures/tata/image5.png}} \\
+        \footnotesize\textbf{\textsc{\xmark \quad Summary:}} This statistic shows the percentage of women by education level . The percentage of women with a secondary or higher education is 26\% . The percentage of women with no education is 13\% . The percentage of women with primary education is 17\% . \\
+        
+        \midrule[1.2pt]
+        \multicolumn{1}{c}{\includegraphics[width=0.8\linewidth]{figures/tata/image4.png}} \\
+        \footnotesize\textbf{\textsc{\cmark \quad Summary:}} The statistics show the access to water, sanitation and electricity in Mali, by place of residence. In Mali, the access to improved drinking water sources is higher in urban areas (95\%) than in rural areas (62\%). The access to improved sanitation facilities is also higher in urban areas (85\%) than in rural areas (47\%). The access to electricity is higher in urban areas (85\%) than in rural areas (38\%). Overall, the access to basic services is lower in rural areas than in urban areas in Mali. \\
+        
+        \midrule[1.2pt]
+    \end{tabular}
+    
+    \caption{Examples from TATA with \pipeline{} summaries using the demo and publicly accessible models.}
+    \label{fig:i18n-examples}
+    \vspace{-2ex}
+\end{figure}

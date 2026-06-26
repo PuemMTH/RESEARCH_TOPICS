@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<title>[2305.14779] Alt-Text with Context: Improving Accessibility for Images on Twitter</title><meta content="In this work we present an approach for generating alternative text (or alt-text) descriptions for images shared on social media, specifically Twitter.
+More than just a special case of image captioning, alt-text is bot&hellip;" property="og:description">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="summary" name="twitter:card">
+<meta content="Alt-Text with Context: Improving Accessibility for Images on Twitter" name="twitter:title">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" name="twitter:image:src">
+<meta content="ar5iv logo" name="twitter:image:alt">
+<meta content="Alt-Text with Context: Improving Accessibility for Images on Twitter" property="og:title">
+<meta content="ar5iv" property="og:site_name">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" property="og:image">
+<meta content="article" property="og:type">
+<meta content="https://ar5iv.labs.arxiv.org/html/2305.14779" property="og:url">
+<link href="https://ar5iv.labs.arxiv.org/html/2305.14779" rel="canonical" target="_blank">
+<!--Generated on Thu Feb 29 05:22:30 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<script>
+  function detectColorScheme(){
+    var theme="light";
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if(current_theme){
+      if(current_theme == "dark"){
+        theme = "dark";
+      } }
+    else if(!window.matchMedia) { return false; }
+    else if(window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      theme = "dark"; }
+    if (theme=="dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light"); } }
+
+  detectColorScheme();
+
+  function toggleColorScheme(){
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if (current_theme) {
+      if (current_theme == "light") {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+      else {
+        localStorage.setItem("ar5iv_theme", "light"); } }
+    else {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+    detectColorScheme(); }
+</script>
+<link href="/assets/ar5iv-fonts.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv-site.0.2.2.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">Alt-Text with Context:
+<br class="ltx_break">Improving Accessibility for Images on Twitter</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Nikita Srivatsan 
+<br class="ltx_break">Carnegie Mellon University
+<br class="ltx_break"><span class="ltx_text ltx_font_typewriter" id="id1.1.id1">nsrivats@cmu.edu</span>
+<br class="ltx_break">&Sof&iacute;a Samaniego 
+<br class="ltx_break"><span class="ltx_text ltx_font_typewriter" id="id2.2.id2">sofia.samaniego.f@gmail.com</span>
+<br class="ltx_break">&Omar Florez 
+<br class="ltx_break">LatinX in AI 
+<br class="ltx_break"><span class="ltx_text ltx_font_typewriter" id="id3.3.id3">omarflorez.research@gmail.com</span>
+<br class="ltx_break">&Taylor Berg-Kirkpatrick 
+<br class="ltx_break">University of California San Diego 
+<br class="ltx_break"><span class="ltx_text ltx_font_typewriter" id="id4.4.id4">tberg@ucsd.edu</span>
+</span></span>
+</div>
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+<p class="ltx_p" id="id5.id1">In this work we present an approach for generating alternative text (or alt-text) descriptions for images shared on social media, specifically Twitter.
+More than just a special case of image captioning, alt-text is both more literally descriptive and context-specific.
+Also critically, images posted to Twitter are often accompanied by user-written text that despite not necessarily describing the image may provide useful context that if properly leveraged can be informative.
+We address this task with a multimodal model that conditions on both textual information from the associated social media post as well as visual signal from the image, and demonstrate that the utility of these two information sources stacks.
+We put forward a new dataset of 371k images paired with alt-text and tweets scraped from Twitter and evaluate on it across a variety of automated metrics as well as human evaluation.
+We show that our approach of conditioning on both tweet text and visual information significantly outperforms prior work, by more than 2x on BLEU@4.</p>
+</div>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2>
+<div class="ltx_para ltx_noindent" id="S1.p1">
+<p class="ltx_p" id="S1.p1.1">An increasingly important aspect of the social media user experience centers around the sharing and discussion of visual content.
+However, for users who are blind or have low vision (BLV), this type of content is often inaccessible.
+One solution to this problem is alt-text, an HTML attribute associated with digital images, which is intended to provide a literal natural language description of an image&rsquo;s content, and can be rendered by a screen reader or braille display.
+Despite being infrequently included, it is incredibly important from an accessibility standpoint, as it allows users to perceive the content of the image and thus have a better online experience.
+Some social media websites, notably Twitter, have recently given users the option to write their own alt-text for images that they upload (an example is shown in Figure&nbsp;<a class="ltx_ref" href="#S1.F1" title="Figure 1 ‣ 1 Introduction ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">1</span></a>).
+This approach however offloads the responsibility of making the site accessible onto the users, who frequently either for convenience or lack of awareness simply do not choose to do so&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Gleason et&nbsp;al., <a class="ltx_ref" href="#bib.bib10" title>2019</a>)</cite>.
+We find that as many as <math alttext="98\%" class="ltx_Math" display="inline" id="S1.p1.1.m1.1"><semantics id="S1.p1.1.m1.1a"><mrow id="S1.p1.1.m1.1.1" xref="S1.p1.1.m1.1.1.cmml"><mn id="S1.p1.1.m1.1.1.2" xref="S1.p1.1.m1.1.1.2.cmml">98</mn><mo id="S1.p1.1.m1.1.1.1" xref="S1.p1.1.m1.1.1.1.cmml">%</mo></mrow><annotation-xml encoding="MathML-Content" id="S1.p1.1.m1.1b"><apply id="S1.p1.1.m1.1.1.cmml" xref="S1.p1.1.m1.1.1"><csymbol cd="latexml" id="S1.p1.1.m1.1.1.1.cmml" xref="S1.p1.1.m1.1.1.1">percent</csymbol><cn id="S1.p1.1.m1.1.1.2.cmml" type="integer" xref="S1.p1.1.m1.1.1.2">98</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S1.p1.1.m1.1c">98\%</annotation></semantics></math> of images uploaded to Twitter even after the widespread feature rollout do not have alt-text, to say nothing of the quality of those that do.
+When a screen reader encounters such an image, it will simply say &ldquo;Image&rdquo;, leaving the user with no meaningful information about what the image is actually of.
+Even when images on Twitter do have accompanying user-written alt-text, the quality is inconsistent as not all users are well informed regarding best practices.</p>
+</div>
+<figure class="ltx_figure" id="S1.F1">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_2">
+<div class="ltx_block ltx_figure_panel ltx_minipage ltx_align_center ltx_align_middle" id="S1.F1.1" style="width:198.7pt;">
+<img alt="Refer to caption" class="ltx_graphics ltx_img_square" height="363" id="S1.F1.1.g1" src="../../assets/papers/34-Alt_2023/x1.png" width="332">
+</div>
+</div>
+<div class="ltx_flex_cell ltx_flex_size_2">
+<div class="ltx_block ltx_figure_panel ltx_minipage ltx_align_center ltx_align_middle" id="S1.F1.2" style="width:194.8pt;">
+<img alt="Refer to caption" class="ltx_graphics ltx_img_landscape" height="247" id="S1.F1.2.g1" src="../../assets/papers/34-Alt_2023/x2.png" width="332">
+</div>
+</div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span><span class="ltx_text ltx_font_bold" id="S1.F1.5.1">Left:</span> An image that requires textual context to write accurate alt-text for. Without conditioning on the tweet text, the election flyers are indistinguishable from books to a traditional captioning system. <span class="ltx_text ltx_font_bold" id="S1.F1.6.2">Right:</span> Two similar images from our dataset and Conceptual Captions with their gold labels. The alt-text for the first image is literally descriptive while the second is more colloquial.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S1.p2">
+<p class="ltx_p" id="S1.p2.1">Note that while there is a long line of existing research on the broader task of captioning images more generally, alt-text generation for social media is a special case of this task, which in turn comes with its own challenges.
+Well written alt-text is generally more explicitly descriptive than a high level caption and may emphasize specific details in the image based on context&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Kreiss et&nbsp;al., <a class="ltx_ref" href="#bib.bib15" title>2022a</a>)</cite>.
+See Figure&nbsp;<a class="ltx_ref" href="#S1.F1" title="Figure 1 ‣ 1 Introduction ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">1</span></a> for an example.
+Furthermore, the distribution of image types on Twitter differs substantially from those found in traditional captioning datasets, and may contain digital artwork, promotional graphics, or screenshots containing text.
+An additional challenge is that Twitter users are not well trained in the practice of writing alt-text, and therefore native &ldquo;gold&rdquo; examples can vary substantially in their level of quality.
+To support continued research in this area, we collect and release a first-of-its-kind dataset of image and alt-text pairs scraped from Twitter.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p3">
+<p class="ltx_p" id="S1.p3.1">Our central motivating idea is that despite the challenges associated with this domain, social media images come with additional contextual information that if properly leveraged can significantly improve the quality of automatically generated alt-text.
+Images posted to social media often require some amount of background knowledge to adequately caption.
+For example the left image in Figure&nbsp;<a class="ltx_ref" href="#S1.F1" title="Figure 1 ‣ 1 Introduction ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">1</span></a> may easily be mistaken for a stack of books or magazines.
+However, we do in fact have a source of text that might provide context not present in the visual information contained in the image itself, namely the text associated with the actual post which more specifically identifies the pamphlets as election flyers.
+We therefore see an opportunity to augment existing captioning systems with textual conditioning in order to allow them to achieve better performance on this challenging task.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p4">
+<p class="ltx_p" id="S1.p4.1">One model that is easily modifiable to accept multimodal inputs is ClipCap&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Mokady et&nbsp;al., <a class="ltx_ref" href="#bib.bib24" title>2021</a>)</cite>.
+ClipCap operates using a prefix method, where an image encoder &mdash; in this case CLIP&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Radford et&nbsp;al., <a class="ltx_ref" href="#bib.bib30" title>2021</a>)</cite> &mdash; produces a vector embedding of the image which is then projected to a sequence of embeddings that occupy the same dimensionality as word embeddings.
+These (despite not actually being the embedding of any specific language sequence) can then be taken as inputs to a language model decoder &mdash; in this case GPT-2&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Radford et&nbsp;al., <a class="ltx_ref" href="#bib.bib29" title>2019</a>)</cite> &mdash; which then autoregressively completes the sequence to produce the caption.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p5">
+<p class="ltx_p" id="S1.p5.1">Our approach (shown in Figure&nbsp;<a class="ltx_ref" href="#S1.F2" title="Figure 2 ‣ 1 Introduction ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">2</span></a>) supplements the text-like image embedding sequence with an embedding of the tweet text, in the hopes that these two information sources will provide meaningfully non-overlapping signal to the decoder, in order to produce more accurate captions.
+This reduces the burden on the image encoder to be able to distinguish very similar object types, and allows the decoder access to details that may be very difficult to glean from the visual features.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p6">
+<p class="ltx_p" id="S1.p6.1">In summary our contributions are as follows: (1) We collect a novel benchmark dataset for the task of alt-text prediction on social media including both images and surrounding textual context (2) We introduce a novel alt-text generation method that allows for multimodal conditioning with a unimodal language model (3) We perform a quantitative analysis of this approach on our collected dataset, outperforming prior work on captioning (ClipCap,&nbsp;<cite class="ltx_cite ltx_citemacro_citet">Mokady et&nbsp;al. (<a class="ltx_ref" href="#bib.bib24" title>2021</a>)</cite>) and vision-and-language pretraining (BLIP-2,&nbsp;<cite class="ltx_cite ltx_citemacro_citet">Li et&nbsp;al. (<a class="ltx_ref" href="#bib.bib18" title>2023</a>)</cite>) by more than 2x on BLEU@4.
+We also conduct human evaluation which substantiates these findings.</p>
+</div>
+<figure class="ltx_figure" id="S1.F2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="113" id="S1.F2.g1" src="../../assets/papers/34-Alt_2023/x3.png" width="315">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 2: </span>Visualization of the alt-text model. An image is encoded via CLIP to an embedding capturing any visual information. This gets projected via a mapping network into word embedding space, where it is then concatenated with an embedded representation of the raw text from the corresponding tweet. This prefix is then passed to a finetuned GPT-2 which autoregressively generates the predicted alt-text caption.</figcaption>
+</figure>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2 </span>Related Work</h2>
+<div class="ltx_para ltx_noindent" id="S2.p1">
+<p class="ltx_p" id="S2.p1.1">Image captioning in a generic sense is a relatively well studied task.
+Since the introduction of the COCO benchmark&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Lin et&nbsp;al., <a class="ltx_ref" href="#bib.bib21" title>2014</a>)</cite> a variety of systems have been released, and state-of-the-art quantitative performance has risen across several metrics&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Vinyals et&nbsp;al., <a class="ltx_ref" href="#bib.bib34" title>2015</a>; Fang et&nbsp;al., <a class="ltx_ref" href="#bib.bib9" title>2015</a>; Bernardi et&nbsp;al., <a class="ltx_ref" href="#bib.bib4" title>2016</a>)</cite>.
+Alt-text generation is relatively understudied by comparison, and there are few established datasets for it.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p2">
+<p class="ltx_p" id="S2.p2.1"><cite class="ltx_cite ltx_citemacro_citet">Kreiss et&nbsp;al. (<a class="ltx_ref" href="#bib.bib16" title>2022b</a>)</cite> collected one such dataset of images with descriptive alt-text and contextual captions from Wikipedia.
+This corpus was smaller than the one we put forward here at 97k images, and also represents a fundamentally different domain as Wikipedia contains different image types than social media, more frequently has gold alt-text, and has much more carefully curated text captions.
+They do however demonstrate that conditioning on textual context can improve the quality of generated alt-text, suggesting the value of a similar approach for our setting.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p3">
+<p class="ltx_p" id="S2.p3.1">Examining alt-text in the context of social media posts has been studied as well, albeit to an even more limited extent.
+Twitter A11y&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Gleason et&nbsp;al., <a class="ltx_ref" href="#bib.bib11" title>2020</a>)</cite> is a browser extension based on a pipeline system that primarily works through scraping matching alt-text from alternate sources, only generating it abstractively through a separate caption generator if other methods fail.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p4">
+<p class="ltx_p" id="S2.p4.1">Facebook developed and published a system they refer to as Automatic Alt-Text (AAT)&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Wu et&nbsp;al., <a class="ltx_ref" href="#bib.bib35" title>2017</a>)</cite>.
+The approach described does not generate text abstractively, and instead essentially outputs a list of tags indicating various objects detected within the image.
+While this is arguably more informative than nothing, it&rsquo;s worth emphasizing that this format does not strictly speaking adhere to alt-text best practices.
+The system has since been refined to include additional details regarding position, count, and size&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Meta, <a class="ltx_ref" href="#bib.bib22" title>2021</a>)</cite>.
+Facebook&rsquo;s AAT has been critically examined, notably by <cite class="ltx_cite ltx_citemacro_citet">Hanley et&nbsp;al. (<a class="ltx_ref" href="#bib.bib12" title>2021</a>)</cite> who focused particularly on how it describes personal identity categories.
+They summarize a variety of limitations BLV users experience with it including a lack of detail, a reliance on tags as opposed to fluid natural language captions, and an inability to reason about the contextual salience of various parts of the image.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p5">
+<p class="ltx_p" id="S2.p5.1"><cite class="ltx_cite ltx_citemacro_citet">Chiarella et&nbsp;al. (<a class="ltx_ref" href="#bib.bib5" title>2020</a>)</cite> outlined steps to increase the accessibility of scientific images posted to Twitter.
+Alt-Textify&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Belle. et&nbsp;al., <a class="ltx_ref" href="#bib.bib3" title>2022</a>)</cite> proposed a method specifically designed for generating alt-text on SVG-based data visualizations and charts, and <cite class="ltx_cite ltx_citemacro_citet">Chintalapati et&nbsp;al. (<a class="ltx_ref" href="#bib.bib6" title>2022</a>)</cite> put forward a dataset and analysis of visualizations within HCI publications.
+<cite class="ltx_cite ltx_citemacro_citet">Li et&nbsp;al. (<a class="ltx_ref" href="#bib.bib19" title>2020</a>)</cite> introduced a method for generating alt-text specifically for mobile UI elements.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p6">
+<p class="ltx_p" id="S2.p6.1">One prominent recent example of a more general-purpose system for aligning text with images is CLIP&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Radford et&nbsp;al., <a class="ltx_ref" href="#bib.bib30" title>2021</a>)</cite>.
+While CLIP is not exactly a captioning system, it can be used to score text/image pairs as a way of reranking or selecting captions from a candidate list.
+Elements of CLIP&rsquo;s architecture have however found success within the pipelines of broader captioning models.
+One example is ClipCap&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Mokady et&nbsp;al., <a class="ltx_ref" href="#bib.bib24" title>2021</a>)</cite>, which uses a mapping network to project a CLIP image embedding into word embedding space and then feeds the result as a prefix to a language model which outputs the caption.
+We inherit this basic architectural framework, but extend it to multimodal prefixes which also contain textual context.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p7">
+<p class="ltx_p" id="S2.p7.1">While there are other existing datasets for image captioning, they do differ from the one put forward in this paper in a few key ways.
+One of the most similar examples is Conceptual Captions&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Sharma et&nbsp;al., <a class="ltx_ref" href="#bib.bib31" title>2018</a>)</cite>, a dataset of images with short and descriptive text captions.
+These captions are produced by processing the alt-text descriptions found within HTML to simplify and improve fluency.
+However, the distribution of images is fundamentally different from that found on social media, and the captions are not generally descriptive enough for accessibility purposes (as a result their captions average only 10 tokens, whereas ours average 40).
+An example showing this contrast is provided in Figure&nbsp;<a class="ltx_ref" href="#S1.F1" title="Figure 1 ‣ 1 Introduction ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">1</span></a>.
+Furthermore this dataset does not include surrounding textual context, which we demonstrate to be extremely informative for improved alt-text generation.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.p8">
+<p class="ltx_p" id="S2.p8.1">More recently the emerging subfield of large language models (LLMs) has expanded into exploring multimodal systems capable of conditioning on images interleaved with text.
+Systems including Flamingo&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Alayrac et&nbsp;al., <a class="ltx_ref" href="#bib.bib1" title>2022</a>)</cite> and GPT-4&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(OpenAI, <a class="ltx_ref" href="#bib.bib25" title>2023</a>)</cite> have gained popularity, although their closed nature makes them difficult to study.
+Further, there is strong reason to prefer federated systems that are small and controllable by end users rather than through paid opaque APIs that are subject to change without notice and make scientific reproducibility impossible.
+Open source alternatives such as OpenFlamingo&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Awadalla et&nbsp;al., <a class="ltx_ref" href="#bib.bib2" title>2023</a>)</cite> and BLIP&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Li et&nbsp;al., <a class="ltx_ref" href="#bib.bib17" title>2022</a>; <a class="ltx_ref" href="#bib.bib18" title>2023</a>)</cite> have also emerged.
+These models are capable of captioning images based on few if any in-context examples, despite not being specifically trained on this task.
+It should be emphasized that these models are however not only incomparable due to their massive and unequal training sets, but are arguably inefficiently overparameterized in their capacity to model a wide variety of tasks beyond captioning.
+The system we propose instead is trainable on reasonable compute hardware, does not require esoteric prompting strategies, and as we will demonstrate still outperforms BLIP-2 on alt-text generation.
+Certain large pretrained language models have also been shown to exhibit disability bias&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Herold et&nbsp;al., <a class="ltx_ref" href="#bib.bib13" title>2022</a>)</cite> which is undesirable in general and especially in this context.</p>
+</div>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3 </span>Model</h2>
+<div class="ltx_para ltx_noindent" id="S3.p1">
+<p class="ltx_p" id="S3.p1.7">At a high level, our model&rsquo;s primary innovation is being able to condition on not just visual information from the image, but also on textual content from the tweet itself.
+This is in contrast to prior work which captions images in isolation from the text alongside which they appear.
+We will now describe the multimodal conditioning setup more formally, and over the rest of this section describe our model&rsquo;s architecture for parameterizing the relevant distributions.
+Suppose that we are given a dataset <math alttext="X=\{x^{(1)},...,x^{(N)}\}" class="ltx_Math" display="inline" id="S3.p1.1.m1.5"><semantics id="S3.p1.1.m1.5a"><mrow id="S3.p1.1.m1.5.5" xref="S3.p1.1.m1.5.5.cmml"><mi id="S3.p1.1.m1.5.5.4" xref="S3.p1.1.m1.5.5.4.cmml">X</mi><mo id="S3.p1.1.m1.5.5.3" xref="S3.p1.1.m1.5.5.3.cmml">=</mo><mrow id="S3.p1.1.m1.5.5.2.2" xref="S3.p1.1.m1.5.5.2.3.cmml"><mo id="S3.p1.1.m1.5.5.2.2.3" stretchy="false" xref="S3.p1.1.m1.5.5.2.3.cmml">{</mo><msup id="S3.p1.1.m1.4.4.1.1.1" xref="S3.p1.1.m1.4.4.1.1.1.cmml"><mi id="S3.p1.1.m1.4.4.1.1.1.2" xref="S3.p1.1.m1.4.4.1.1.1.2.cmml">x</mi><mrow id="S3.p1.1.m1.1.1.1.3" xref="S3.p1.1.m1.4.4.1.1.1.cmml"><mo id="S3.p1.1.m1.1.1.1.3.1" stretchy="false" xref="S3.p1.1.m1.4.4.1.1.1.cmml">(</mo><mn id="S3.p1.1.m1.1.1.1.1" xref="S3.p1.1.m1.1.1.1.1.cmml">1</mn><mo id="S3.p1.1.m1.1.1.1.3.2" stretchy="false" xref="S3.p1.1.m1.4.4.1.1.1.cmml">)</mo></mrow></msup><mo id="S3.p1.1.m1.5.5.2.2.4" xref="S3.p1.1.m1.5.5.2.3.cmml">,</mo><mi id="S3.p1.1.m1.3.3" mathvariant="normal" xref="S3.p1.1.m1.3.3.cmml">&hellip;</mi><mo id="S3.p1.1.m1.5.5.2.2.5" xref="S3.p1.1.m1.5.5.2.3.cmml">,</mo><msup id="S3.p1.1.m1.5.5.2.2.2" xref="S3.p1.1.m1.5.5.2.2.2.cmml"><mi id="S3.p1.1.m1.5.5.2.2.2.2" xref="S3.p1.1.m1.5.5.2.2.2.2.cmml">x</mi><mrow id="S3.p1.1.m1.2.2.1.3" xref="S3.p1.1.m1.5.5.2.2.2.cmml"><mo id="S3.p1.1.m1.2.2.1.3.1" stretchy="false" xref="S3.p1.1.m1.5.5.2.2.2.cmml">(</mo><mi id="S3.p1.1.m1.2.2.1.1" xref="S3.p1.1.m1.2.2.1.1.cmml">N</mi><mo id="S3.p1.1.m1.2.2.1.3.2" stretchy="false" xref="S3.p1.1.m1.5.5.2.2.2.cmml">)</mo></mrow></msup><mo id="S3.p1.1.m1.5.5.2.2.6" stretchy="false" xref="S3.p1.1.m1.5.5.2.3.cmml">}</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S3.p1.1.m1.5b"><apply id="S3.p1.1.m1.5.5.cmml" xref="S3.p1.1.m1.5.5"><eq id="S3.p1.1.m1.5.5.3.cmml" xref="S3.p1.1.m1.5.5.3"></eq><ci id="S3.p1.1.m1.5.5.4.cmml" xref="S3.p1.1.m1.5.5.4">𝑋</ci><set id="S3.p1.1.m1.5.5.2.3.cmml" xref="S3.p1.1.m1.5.5.2.2"><apply id="S3.p1.1.m1.4.4.1.1.1.cmml" xref="S3.p1.1.m1.4.4.1.1.1"><csymbol cd="ambiguous" id="S3.p1.1.m1.4.4.1.1.1.1.cmml" xref="S3.p1.1.m1.4.4.1.1.1">superscript</csymbol><ci id="S3.p1.1.m1.4.4.1.1.1.2.cmml" xref="S3.p1.1.m1.4.4.1.1.1.2">𝑥</ci><cn id="S3.p1.1.m1.1.1.1.1.cmml" type="integer" xref="S3.p1.1.m1.1.1.1.1">1</cn></apply><ci id="S3.p1.1.m1.3.3.cmml" xref="S3.p1.1.m1.3.3">&hellip;</ci><apply id="S3.p1.1.m1.5.5.2.2.2.cmml" xref="S3.p1.1.m1.5.5.2.2.2"><csymbol cd="ambiguous" id="S3.p1.1.m1.5.5.2.2.2.1.cmml" xref="S3.p1.1.m1.5.5.2.2.2">superscript</csymbol><ci id="S3.p1.1.m1.5.5.2.2.2.2.cmml" xref="S3.p1.1.m1.5.5.2.2.2.2">𝑥</ci><ci id="S3.p1.1.m1.2.2.1.1.cmml" xref="S3.p1.1.m1.2.2.1.1">𝑁</ci></apply></set></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.p1.1.m1.5c">X=\{x^{(1)},...,x^{(N)}\}</annotation></semantics></math> of images and corresponding tweet text <math alttext="T=\{t^{(1)},...,t^{(N)}\}" class="ltx_Math" display="inline" id="S3.p1.2.m2.5"><semantics id="S3.p1.2.m2.5a"><mrow id="S3.p1.2.m2.5.5" xref="S3.p1.2.m2.5.5.cmml"><mi id="S3.p1.2.m2.5.5.4" xref="S3.p1.2.m2.5.5.4.cmml">T</mi><mo id="S3.p1.2.m2.5.5.3" xref="S3.p1.2.m2.5.5.3.cmml">=</mo><mrow id="S3.p1.2.m2.5.5.2.2" xref="S3.p1.2.m2.5.5.2.3.cmml"><mo id="S3.p1.2.m2.5.5.2.2.3" stretchy="false" xref="S3.p1.2.m2.5.5.2.3.cmml">{</mo><msup id="S3.p1.2.m2.4.4.1.1.1" xref="S3.p1.2.m2.4.4.1.1.1.cmml"><mi id="S3.p1.2.m2.4.4.1.1.1.2" xref="S3.p1.2.m2.4.4.1.1.1.2.cmml">t</mi><mrow id="S3.p1.2.m2.1.1.1.3" xref="S3.p1.2.m2.4.4.1.1.1.cmml"><mo id="S3.p1.2.m2.1.1.1.3.1" stretchy="false" xref="S3.p1.2.m2.4.4.1.1.1.cmml">(</mo><mn id="S3.p1.2.m2.1.1.1.1" xref="S3.p1.2.m2.1.1.1.1.cmml">1</mn><mo id="S3.p1.2.m2.1.1.1.3.2" stretchy="false" xref="S3.p1.2.m2.4.4.1.1.1.cmml">)</mo></mrow></msup><mo id="S3.p1.2.m2.5.5.2.2.4" xref="S3.p1.2.m2.5.5.2.3.cmml">,</mo><mi id="S3.p1.2.m2.3.3" mathvariant="normal" xref="S3.p1.2.m2.3.3.cmml">&hellip;</mi><mo id="S3.p1.2.m2.5.5.2.2.5" xref="S3.p1.2.m2.5.5.2.3.cmml">,</mo><msup id="S3.p1.2.m2.5.5.2.2.2" xref="S3.p1.2.m2.5.5.2.2.2.cmml"><mi id="S3.p1.2.m2.5.5.2.2.2.2" xref="S3.p1.2.m2.5.5.2.2.2.2.cmml">t</mi><mrow id="S3.p1.2.m2.2.2.1.3" xref="S3.p1.2.m2.5.5.2.2.2.cmml"><mo id="S3.p1.2.m2.2.2.1.3.1" stretchy="false" xref="S3.p1.2.m2.5.5.2.2.2.cmml">(</mo><mi id="S3.p1.2.m2.2.2.1.1" xref="S3.p1.2.m2.2.2.1.1.cmml">N</mi><mo id="S3.p1.2.m2.2.2.1.3.2" stretchy="false" xref="S3.p1.2.m2.5.5.2.2.2.cmml">)</mo></mrow></msup><mo id="S3.p1.2.m2.5.5.2.2.6" stretchy="false" xref="S3.p1.2.m2.5.5.2.3.cmml">}</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S3.p1.2.m2.5b"><apply id="S3.p1.2.m2.5.5.cmml" xref="S3.p1.2.m2.5.5"><eq id="S3.p1.2.m2.5.5.3.cmml" xref="S3.p1.2.m2.5.5.3"></eq><ci id="S3.p1.2.m2.5.5.4.cmml" xref="S3.p1.2.m2.5.5.4">𝑇</ci><set id="S3.p1.2.m2.5.5.2.3.cmml" xref="S3.p1.2.m2.5.5.2.2"><apply id="S3.p1.2.m2.4.4.1.1.1.cmml" xref="S3.p1.2.m2.4.4.1.1.1"><csymbol cd="ambiguous" id="S3.p1.2.m2.4.4.1.1.1.1.cmml" xref="S3.p1.2.m2.4.4.1.1.1">superscript</csymbol><ci id="S3.p1.2.m2.4.4.1.1.1.2.cmml" xref="S3.p1.2.m2.4.4.1.1.1.2">𝑡</ci><cn id="S3.p1.2.m2.1.1.1.1.cmml" type="integer" xref="S3.p1.2.m2.1.1.1.1">1</cn></apply><ci id="S3.p1.2.m2.3.3.cmml" xref="S3.p1.2.m2.3.3">&hellip;</ci><apply id="S3.p1.2.m2.5.5.2.2.2.cmml" xref="S3.p1.2.m2.5.5.2.2.2"><csymbol cd="ambiguous" id="S3.p1.2.m2.5.5.2.2.2.1.cmml" xref="S3.p1.2.m2.5.5.2.2.2">superscript</csymbol><ci id="S3.p1.2.m2.5.5.2.2.2.2.cmml" xref="S3.p1.2.m2.5.5.2.2.2.2">𝑡</ci><ci id="S3.p1.2.m2.2.2.1.1.cmml" xref="S3.p1.2.m2.2.2.1.1">𝑁</ci></apply></set></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.p1.2.m2.5c">T=\{t^{(1)},...,t^{(N)}\}</annotation></semantics></math><span class="ltx_note ltx_role_footnote" id="footnote1"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup><span class="ltx_tag ltx_tag_note">1</span>Note <math alttext="t^{(i)}=t^{(j)}" class="ltx_Math" display="inline" id="footnote1.m1.2"><semantics id="footnote1.m1.2b"><mrow id="footnote1.m1.2.3" xref="footnote1.m1.2.3.cmml"><msup id="footnote1.m1.2.3.2" xref="footnote1.m1.2.3.2.cmml"><mi id="footnote1.m1.2.3.2.2" xref="footnote1.m1.2.3.2.2.cmml">t</mi><mrow id="footnote1.m1.1.1.1.3" xref="footnote1.m1.2.3.2.cmml"><mo id="footnote1.m1.1.1.1.3.1" stretchy="false" xref="footnote1.m1.2.3.2.cmml">(</mo><mi id="footnote1.m1.1.1.1.1" xref="footnote1.m1.1.1.1.1.cmml">i</mi><mo id="footnote1.m1.1.1.1.3.2" stretchy="false" xref="footnote1.m1.2.3.2.cmml">)</mo></mrow></msup><mo id="footnote1.m1.2.3.1" xref="footnote1.m1.2.3.1.cmml">=</mo><msup id="footnote1.m1.2.3.3" xref="footnote1.m1.2.3.3.cmml"><mi id="footnote1.m1.2.3.3.2" xref="footnote1.m1.2.3.3.2.cmml">t</mi><mrow id="footnote1.m1.2.2.1.3" xref="footnote1.m1.2.3.3.cmml"><mo id="footnote1.m1.2.2.1.3.1" stretchy="false" xref="footnote1.m1.2.3.3.cmml">(</mo><mi id="footnote1.m1.2.2.1.1" xref="footnote1.m1.2.2.1.1.cmml">j</mi><mo id="footnote1.m1.2.2.1.3.2" stretchy="false" xref="footnote1.m1.2.3.3.cmml">)</mo></mrow></msup></mrow><annotation-xml encoding="MathML-Content" id="footnote1.m1.2c"><apply id="footnote1.m1.2.3.cmml" xref="footnote1.m1.2.3"><eq id="footnote1.m1.2.3.1.cmml" xref="footnote1.m1.2.3.1"></eq><apply id="footnote1.m1.2.3.2.cmml" xref="footnote1.m1.2.3.2"><csymbol cd="ambiguous" id="footnote1.m1.2.3.2.1.cmml" xref="footnote1.m1.2.3.2">superscript</csymbol><ci id="footnote1.m1.2.3.2.2.cmml" xref="footnote1.m1.2.3.2.2">𝑡</ci><ci id="footnote1.m1.1.1.1.1.cmml" xref="footnote1.m1.1.1.1.1">𝑖</ci></apply><apply id="footnote1.m1.2.3.3.cmml" xref="footnote1.m1.2.3.3"><csymbol cd="ambiguous" id="footnote1.m1.2.3.3.1.cmml" xref="footnote1.m1.2.3.3">superscript</csymbol><ci id="footnote1.m1.2.3.3.2.cmml" xref="footnote1.m1.2.3.3.2">𝑡</ci><ci id="footnote1.m1.2.2.1.1.cmml" xref="footnote1.m1.2.2.1.1">𝑗</ci></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="footnote1.m1.2d">t^{(i)}=t^{(j)}</annotation></semantics></math> if images <math alttext="i,j" class="ltx_Math" display="inline" id="footnote1.m2.2"><semantics id="footnote1.m2.2b"><mrow id="footnote1.m2.2.3.2" xref="footnote1.m2.2.3.1.cmml"><mi id="footnote1.m2.1.1" xref="footnote1.m2.1.1.cmml">i</mi><mo id="footnote1.m2.2.3.2.1" xref="footnote1.m2.2.3.1.cmml">,</mo><mi id="footnote1.m2.2.2" xref="footnote1.m2.2.2.cmml">j</mi></mrow><annotation-xml encoding="MathML-Content" id="footnote1.m2.2c"><list id="footnote1.m2.2.3.1.cmml" xref="footnote1.m2.2.3.2"><ci id="footnote1.m2.1.1.cmml" xref="footnote1.m2.1.1">𝑖</ci><ci id="footnote1.m2.2.2.cmml" xref="footnote1.m2.2.2">𝑗</ci></list></annotation-xml><annotation encoding="application/x-tex" id="footnote1.m2.2d">i,j</annotation></semantics></math> are from the same tweet.</span></span></span> as well as gold alt-text descriptions <math alttext="Y=\{y^{(1)},...,y^{(N)}\}" class="ltx_Math" display="inline" id="S3.p1.3.m3.5"><semantics id="S3.p1.3.m3.5a"><mrow id="S3.p1.3.m3.5.5" xref="S3.p1.3.m3.5.5.cmml"><mi id="S3.p1.3.m3.5.5.4" xref="S3.p1.3.m3.5.5.4.cmml">Y</mi><mo id="S3.p1.3.m3.5.5.3" xref="S3.p1.3.m3.5.5.3.cmml">=</mo><mrow id="S3.p1.3.m3.5.5.2.2" xref="S3.p1.3.m3.5.5.2.3.cmml"><mo id="S3.p1.3.m3.5.5.2.2.3" stretchy="false" xref="S3.p1.3.m3.5.5.2.3.cmml">{</mo><msup id="S3.p1.3.m3.4.4.1.1.1" xref="S3.p1.3.m3.4.4.1.1.1.cmml"><mi id="S3.p1.3.m3.4.4.1.1.1.2" xref="S3.p1.3.m3.4.4.1.1.1.2.cmml">y</mi><mrow id="S3.p1.3.m3.1.1.1.3" xref="S3.p1.3.m3.4.4.1.1.1.cmml"><mo id="S3.p1.3.m3.1.1.1.3.1" stretchy="false" xref="S3.p1.3.m3.4.4.1.1.1.cmml">(</mo><mn id="S3.p1.3.m3.1.1.1.1" xref="S3.p1.3.m3.1.1.1.1.cmml">1</mn><mo id="S3.p1.3.m3.1.1.1.3.2" stretchy="false" xref="S3.p1.3.m3.4.4.1.1.1.cmml">)</mo></mrow></msup><mo id="S3.p1.3.m3.5.5.2.2.4" xref="S3.p1.3.m3.5.5.2.3.cmml">,</mo><mi id="S3.p1.3.m3.3.3" mathvariant="normal" xref="S3.p1.3.m3.3.3.cmml">&hellip;</mi><mo id="S3.p1.3.m3.5.5.2.2.5" xref="S3.p1.3.m3.5.5.2.3.cmml">,</mo><msup id="S3.p1.3.m3.5.5.2.2.2" xref="S3.p1.3.m3.5.5.2.2.2.cmml"><mi id="S3.p1.3.m3.5.5.2.2.2.2" xref="S3.p1.3.m3.5.5.2.2.2.2.cmml">y</mi><mrow id="S3.p1.3.m3.2.2.1.3" xref="S3.p1.3.m3.5.5.2.2.2.cmml"><mo id="S3.p1.3.m3.2.2.1.3.1" stretchy="false" xref="S3.p1.3.m3.5.5.2.2.2.cmml">(</mo><mi id="S3.p1.3.m3.2.2.1.1" xref="S3.p1.3.m3.2.2.1.1.cmml">N</mi><mo id="S3.p1.3.m3.2.2.1.3.2" stretchy="false" xref="S3.p1.3.m3.5.5.2.2.2.cmml">)</mo></mrow></msup><mo id="S3.p1.3.m3.5.5.2.2.6" stretchy="false" xref="S3.p1.3.m3.5.5.2.3.cmml">}</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S3.p1.3.m3.5b"><apply id="S3.p1.3.m3.5.5.cmml" xref="S3.p1.3.m3.5.5"><eq id="S3.p1.3.m3.5.5.3.cmml" xref="S3.p1.3.m3.5.5.3"></eq><ci id="S3.p1.3.m3.5.5.4.cmml" xref="S3.p1.3.m3.5.5.4">𝑌</ci><set id="S3.p1.3.m3.5.5.2.3.cmml" xref="S3.p1.3.m3.5.5.2.2"><apply id="S3.p1.3.m3.4.4.1.1.1.cmml" xref="S3.p1.3.m3.4.4.1.1.1"><csymbol cd="ambiguous" id="S3.p1.3.m3.4.4.1.1.1.1.cmml" xref="S3.p1.3.m3.4.4.1.1.1">superscript</csymbol><ci id="S3.p1.3.m3.4.4.1.1.1.2.cmml" xref="S3.p1.3.m3.4.4.1.1.1.2">𝑦</ci><cn id="S3.p1.3.m3.1.1.1.1.cmml" type="integer" xref="S3.p1.3.m3.1.1.1.1">1</cn></apply><ci id="S3.p1.3.m3.3.3.cmml" xref="S3.p1.3.m3.3.3">&hellip;</ci><apply id="S3.p1.3.m3.5.5.2.2.2.cmml" xref="S3.p1.3.m3.5.5.2.2.2"><csymbol cd="ambiguous" id="S3.p1.3.m3.5.5.2.2.2.1.cmml" xref="S3.p1.3.m3.5.5.2.2.2">superscript</csymbol><ci id="S3.p1.3.m3.5.5.2.2.2.2.cmml" xref="S3.p1.3.m3.5.5.2.2.2.2">𝑦</ci><ci id="S3.p1.3.m3.2.2.1.1.cmml" xref="S3.p1.3.m3.2.2.1.1">𝑁</ci></apply></set></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.p1.3.m3.5c">Y=\{y^{(1)},...,y^{(N)}\}</annotation></semantics></math>.
+Our model defines a conditional distribution <math alttext="p(y|x,t;\theta)" class="ltx_Math" display="inline" id="S3.p1.4.m4.4"><semantics id="S3.p1.4.m4.4a"><mrow id="S3.p1.4.m4.4.4" xref="S3.p1.4.m4.4.4.cmml"><mi id="S3.p1.4.m4.4.4.3" xref="S3.p1.4.m4.4.4.3.cmml">p</mi><mo id="S3.p1.4.m4.4.4.2" lspace="0em" rspace="0em" xref="S3.p1.4.m4.4.4.2.cmml">&ZeroWidthSpace;</mo><mrow id="S3.p1.4.m4.4.4.1.1" xref="S3.p1.4.m4.4.4.1.1.1.cmml"><mo id="S3.p1.4.m4.4.4.1.1.2" stretchy="false" xref="S3.p1.4.m4.4.4.1.1.1.cmml">(</mo><mrow id="S3.p1.4.m4.4.4.1.1.1" xref="S3.p1.4.m4.4.4.1.1.1.cmml"><mi id="S3.p1.4.m4.4.4.1.1.1.2" xref="S3.p1.4.m4.4.4.1.1.1.2.cmml">y</mi><mo fence="false" id="S3.p1.4.m4.4.4.1.1.1.1" xref="S3.p1.4.m4.4.4.1.1.1.1.cmml">|</mo><mrow id="S3.p1.4.m4.4.4.1.1.1.3.2" xref="S3.p1.4.m4.4.4.1.1.1.3.1.cmml"><mi id="S3.p1.4.m4.1.1" xref="S3.p1.4.m4.1.1.cmml">x</mi><mo id="S3.p1.4.m4.4.4.1.1.1.3.2.1" xref="S3.p1.4.m4.4.4.1.1.1.3.1.cmml">,</mo><mi id="S3.p1.4.m4.2.2" xref="S3.p1.4.m4.2.2.cmml">t</mi><mo id="S3.p1.4.m4.4.4.1.1.1.3.2.2" xref="S3.p1.4.m4.4.4.1.1.1.3.1.cmml">;</mo><mi id="S3.p1.4.m4.3.3" xref="S3.p1.4.m4.3.3.cmml">&theta;</mi></mrow></mrow><mo id="S3.p1.4.m4.4.4.1.1.3" stretchy="false" xref="S3.p1.4.m4.4.4.1.1.1.cmml">)</mo></mrow></mrow><annotation-xml encoding="MathML-Content" id="S3.p1.4.m4.4b"><apply id="S3.p1.4.m4.4.4.cmml" xref="S3.p1.4.m4.4.4"><times id="S3.p1.4.m4.4.4.2.cmml" xref="S3.p1.4.m4.4.4.2"></times><ci id="S3.p1.4.m4.4.4.3.cmml" xref="S3.p1.4.m4.4.4.3">𝑝</ci><apply id="S3.p1.4.m4.4.4.1.1.1.cmml" xref="S3.p1.4.m4.4.4.1.1"><csymbol cd="latexml" id="S3.p1.4.m4.4.4.1.1.1.1.cmml" xref="S3.p1.4.m4.4.4.1.1.1.1">conditional</csymbol><ci id="S3.p1.4.m4.4.4.1.1.1.2.cmml" xref="S3.p1.4.m4.4.4.1.1.1.2">𝑦</ci><list id="S3.p1.4.m4.4.4.1.1.1.3.1.cmml" xref="S3.p1.4.m4.4.4.1.1.1.3.2"><ci id="S3.p1.4.m4.1.1.cmml" xref="S3.p1.4.m4.1.1">𝑥</ci><ci id="S3.p1.4.m4.2.2.cmml" xref="S3.p1.4.m4.2.2">𝑡</ci><ci id="S3.p1.4.m4.3.3.cmml" xref="S3.p1.4.m4.3.3">𝜃</ci></list></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.p1.4.m4.4c">p(y|x,t;\theta)</annotation></semantics></math> over the captions given the tweet and image.
+Having optimized this distribution with respect to <math alttext="\theta" class="ltx_Math" display="inline" id="S3.p1.5.m5.1"><semantics id="S3.p1.5.m5.1a"><mi id="S3.p1.5.m5.1.1" xref="S3.p1.5.m5.1.1.cmml">&theta;</mi><annotation-xml encoding="MathML-Content" id="S3.p1.5.m5.1b"><ci id="S3.p1.5.m5.1.1.cmml" xref="S3.p1.5.m5.1.1">𝜃</ci></annotation-xml><annotation encoding="application/x-tex" id="S3.p1.5.m5.1c">\theta</annotation></semantics></math> over our dataset at train time, at test time our task is to predict <math alttext="\hat{y}=\arg\max_{y}p(y|x,t)" class="ltx_Math" display="inline" id="S3.p1.6.m6.3"><semantics id="S3.p1.6.m6.3a"><mrow id="S3.p1.6.m6.3.3" xref="S3.p1.6.m6.3.3.cmml"><mover accent="true" id="S3.p1.6.m6.3.3.3" xref="S3.p1.6.m6.3.3.3.cmml"><mi id="S3.p1.6.m6.3.3.3.2" xref="S3.p1.6.m6.3.3.3.2.cmml">y</mi><mo id="S3.p1.6.m6.3.3.3.1" xref="S3.p1.6.m6.3.3.3.1.cmml">^</mo></mover><mo id="S3.p1.6.m6.3.3.2" xref="S3.p1.6.m6.3.3.2.cmml">=</mo><mrow id="S3.p1.6.m6.3.3.1" xref="S3.p1.6.m6.3.3.1.cmml"><mrow id="S3.p1.6.m6.3.3.1.3" xref="S3.p1.6.m6.3.3.1.3.cmml"><mi id="S3.p1.6.m6.3.3.1.3.1" xref="S3.p1.6.m6.3.3.1.3.1.cmml">arg</mi><mo id="S3.p1.6.m6.3.3.1.3a" lspace="0.167em" xref="S3.p1.6.m6.3.3.1.3.cmml">&af;</mo><mrow id="S3.p1.6.m6.3.3.1.3.2" xref="S3.p1.6.m6.3.3.1.3.2.cmml"><msub id="S3.p1.6.m6.3.3.1.3.2.1" xref="S3.p1.6.m6.3.3.1.3.2.1.cmml"><mi id="S3.p1.6.m6.3.3.1.3.2.1.2" xref="S3.p1.6.m6.3.3.1.3.2.1.2.cmml">max</mi><mi id="S3.p1.6.m6.3.3.1.3.2.1.3" xref="S3.p1.6.m6.3.3.1.3.2.1.3.cmml">y</mi></msub><mo id="S3.p1.6.m6.3.3.1.3.2a" lspace="0.167em" xref="S3.p1.6.m6.3.3.1.3.2.cmml">&af;</mo><mi id="S3.p1.6.m6.3.3.1.3.2.2" xref="S3.p1.6.m6.3.3.1.3.2.2.cmml">p</mi></mrow></mrow><mo id="S3.p1.6.m6.3.3.1.2" lspace="0em" rspace="0em" xref="S3.p1.6.m6.3.3.1.2.cmml">&ZeroWidthSpace;</mo><mrow id="S3.p1.6.m6.3.3.1.1.1" xref="S3.p1.6.m6.3.3.1.1.1.1.cmml"><mo id="S3.p1.6.m6.3.3.1.1.1.2" stretchy="false" xref="S3.p1.6.m6.3.3.1.1.1.1.cmml">(</mo><mrow id="S3.p1.6.m6.3.3.1.1.1.1" xref="S3.p1.6.m6.3.3.1.1.1.1.cmml"><mi id="S3.p1.6.m6.3.3.1.1.1.1.2" xref="S3.p1.6.m6.3.3.1.1.1.1.2.cmml">y</mi><mo fence="false" id="S3.p1.6.m6.3.3.1.1.1.1.1" xref="S3.p1.6.m6.3.3.1.1.1.1.1.cmml">|</mo><mrow id="S3.p1.6.m6.3.3.1.1.1.1.3.2" xref="S3.p1.6.m6.3.3.1.1.1.1.3.1.cmml"><mi id="S3.p1.6.m6.1.1" xref="S3.p1.6.m6.1.1.cmml">x</mi><mo id="S3.p1.6.m6.3.3.1.1.1.1.3.2.1" xref="S3.p1.6.m6.3.3.1.1.1.1.3.1.cmml">,</mo><mi id="S3.p1.6.m6.2.2" xref="S3.p1.6.m6.2.2.cmml">t</mi></mrow></mrow><mo id="S3.p1.6.m6.3.3.1.1.1.3" stretchy="false" xref="S3.p1.6.m6.3.3.1.1.1.1.cmml">)</mo></mrow></mrow></mrow><annotation-xml encoding="MathML-Content" id="S3.p1.6.m6.3b"><apply id="S3.p1.6.m6.3.3.cmml" xref="S3.p1.6.m6.3.3"><eq id="S3.p1.6.m6.3.3.2.cmml" xref="S3.p1.6.m6.3.3.2"></eq><apply id="S3.p1.6.m6.3.3.3.cmml" xref="S3.p1.6.m6.3.3.3"><ci id="S3.p1.6.m6.3.3.3.1.cmml" xref="S3.p1.6.m6.3.3.3.1">^</ci><ci id="S3.p1.6.m6.3.3.3.2.cmml" xref="S3.p1.6.m6.3.3.3.2">𝑦</ci></apply><apply id="S3.p1.6.m6.3.3.1.cmml" xref="S3.p1.6.m6.3.3.1"><times id="S3.p1.6.m6.3.3.1.2.cmml" xref="S3.p1.6.m6.3.3.1.2"></times><apply id="S3.p1.6.m6.3.3.1.3.cmml" xref="S3.p1.6.m6.3.3.1.3"><arg id="S3.p1.6.m6.3.3.1.3.1.cmml" xref="S3.p1.6.m6.3.3.1.3.1"></arg><apply id="S3.p1.6.m6.3.3.1.3.2.cmml" xref="S3.p1.6.m6.3.3.1.3.2"><apply id="S3.p1.6.m6.3.3.1.3.2.1.cmml" xref="S3.p1.6.m6.3.3.1.3.2.1"><csymbol cd="ambiguous" id="S3.p1.6.m6.3.3.1.3.2.1.1.cmml" xref="S3.p1.6.m6.3.3.1.3.2.1">subscript</csymbol><max id="S3.p1.6.m6.3.3.1.3.2.1.2.cmml" xref="S3.p1.6.m6.3.3.1.3.2.1.2"></max><ci id="S3.p1.6.m6.3.3.1.3.2.1.3.cmml" xref="S3.p1.6.m6.3.3.1.3.2.1.3">𝑦</ci></apply><ci id="S3.p1.6.m6.3.3.1.3.2.2.cmml" xref="S3.p1.6.m6.3.3.1.3.2.2">𝑝</ci></apply></apply><apply id="S3.p1.6.m6.3.3.1.1.1.1.cmml" xref="S3.p1.6.m6.3.3.1.1.1"><csymbol cd="latexml" id="S3.p1.6.m6.3.3.1.1.1.1.1.cmml" xref="S3.p1.6.m6.3.3.1.1.1.1.1">conditional</csymbol><ci id="S3.p1.6.m6.3.3.1.1.1.1.2.cmml" xref="S3.p1.6.m6.3.3.1.1.1.1.2">𝑦</ci><list id="S3.p1.6.m6.3.3.1.1.1.1.3.1.cmml" xref="S3.p1.6.m6.3.3.1.1.1.1.3.2"><ci id="S3.p1.6.m6.1.1.cmml" xref="S3.p1.6.m6.1.1">𝑥</ci><ci id="S3.p1.6.m6.2.2.cmml" xref="S3.p1.6.m6.2.2">𝑡</ci></list></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.p1.6.m6.3c">\hat{y}=\arg\max_{y}p(y|x,t)</annotation></semantics></math>.
+Note that prior work can be thought of as a special case where the tweet <math alttext="t" class="ltx_Math" display="inline" id="S3.p1.7.m7.1"><semantics id="S3.p1.7.m7.1a"><mi id="S3.p1.7.m7.1.1" xref="S3.p1.7.m7.1.1.cmml">t</mi><annotation-xml encoding="MathML-Content" id="S3.p1.7.m7.1b"><ci id="S3.p1.7.m7.1.1.cmml" xref="S3.p1.7.m7.1.1">𝑡</ci></annotation-xml><annotation encoding="application/x-tex" id="S3.p1.7.m7.1c">t</annotation></semantics></math> is not considered.</p>
+</div>
+<section class="ltx_subsection" id="S3.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.1 </span>Multimodal Conditioning</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p1">
+<p class="ltx_p" id="S3.SS1.p1.1">Our model&rsquo;s decoder must output text in order to generate the alt-text caption.
+A natural choice for this is an autoregressive transformer-based language model &ndash; we specifically opt for GPT-2&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Radford et&nbsp;al., <a class="ltx_ref" href="#bib.bib29" title>2019</a>)</cite>.
+Conveniently, such architectures&rsquo; masked self-attention mechanisms make them inherently well suited to conditioning on text.
+In order to generate alt-text conditioned on the tweet, we can simply feed the tweet to the language model as a prompt and train the model to autoregressively complete it with the corresponding alt-text.
+The more challenging step is allowing the language model to condition on visual information from the image as well.
+However, we would also like to avoid fundamentally modifying the decoder&rsquo;s architecture and still be able to leverage unimodal pretraining.
+In order to solve this, what we require is a way to project image features into text space (or more specifically word embedding space) so that we can directly incorporate them into the tweet prefix.
+Fortunately, this is something that prior work has addressed.
+ClipCap&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Mokady et&nbsp;al., <a class="ltx_ref" href="#bib.bib24" title>2021</a>)</cite> learns a mapping network on top of a pretrained CLIP image encoder that projects the visual vector encoding into a sequence of embeddings that while not directly corresponding to specific words, are still in word embedding space and therefore acceptable by a pretrained language model.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p2">
+<p class="ltx_p" id="S3.SS1.p2.1">It&rsquo;s worth emphasizing that the crux of this method relies on &ldquo;translating&rdquo; image features into a format which the language model can receive as input as if it were a text prefix.
+An observable artifact of this is that the mapping network often places its outputs near embeddings corresponding to words that are relevant to the contents of the image&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Mokady et&nbsp;al., <a class="ltx_ref" href="#bib.bib24" title>2021</a>)</cite>.
+The prefix can thus be &ldquo;de-embedded&rdquo; back into text as a rough means of inspecting what information about the image it encodes.
+Crucially, this also suggests that further context not present in the image itself could be provided to the decoder in the form of additional text added to the prefix.
+In this way, we can effectively create a prefix reflecting multimodal information that nonetheless exists in a unimodal space, and can be input to a pretrained unimodal language model.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p3">
+<p class="ltx_p" id="S3.SS1.p3.5">See Figure&nbsp;<a class="ltx_ref" href="#S1.F2" title="Figure 2 ‣ 1 Introduction ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">2</span></a> for an overview of our model&rsquo;s pipeline.
+Drawing inspiration from ClipCap&rsquo;s architecture (see <cite class="ltx_cite ltx_citemacro_citet">Mokady et&nbsp;al. (<a class="ltx_ref" href="#bib.bib24" title>2021</a>)</cite> for details), we pass an image <math alttext="x" class="ltx_Math" display="inline" id="S3.SS1.p3.1.m1.1"><semantics id="S3.SS1.p3.1.m1.1a"><mi id="S3.SS1.p3.1.m1.1.1" xref="S3.SS1.p3.1.m1.1.1.cmml">x</mi><annotation-xml encoding="MathML-Content" id="S3.SS1.p3.1.m1.1b"><ci id="S3.SS1.p3.1.m1.1.1.cmml" xref="S3.SS1.p3.1.m1.1.1">𝑥</ci></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p3.1.m1.1c">x</annotation></semantics></math> through a pretrained CLIP image encoder, and project the output to word embedding space using a mapping network.
+This is parameterized by a multi-layer perceptron that takes in a <math alttext="512" class="ltx_Math" display="inline" id="S3.SS1.p3.2.m2.1"><semantics id="S3.SS1.p3.2.m2.1a"><mn id="S3.SS1.p3.2.m2.1.1" xref="S3.SS1.p3.2.m2.1.1.cmml">512</mn><annotation-xml encoding="MathML-Content" id="S3.SS1.p3.2.m2.1b"><cn id="S3.SS1.p3.2.m2.1.1.cmml" type="integer" xref="S3.SS1.p3.2.m2.1.1">512</cn></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p3.2.m2.1c">512</annotation></semantics></math> dimensional vector CLIP embedding and outputs a <math alttext="k" class="ltx_Math" display="inline" id="S3.SS1.p3.3.m3.1"><semantics id="S3.SS1.p3.3.m3.1a"><mi id="S3.SS1.p3.3.m3.1.1" xref="S3.SS1.p3.3.m3.1.1.cmml">k</mi><annotation-xml encoding="MathML-Content" id="S3.SS1.p3.3.m3.1b"><ci id="S3.SS1.p3.3.m3.1.1.cmml" xref="S3.SS1.p3.3.m3.1.1">𝑘</ci></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p3.3.m3.1c">k</annotation></semantics></math> long sequence of <math alttext="768" class="ltx_Math" display="inline" id="S3.SS1.p3.4.m4.1"><semantics id="S3.SS1.p3.4.m4.1a"><mn id="S3.SS1.p3.4.m4.1.1" xref="S3.SS1.p3.4.m4.1.1.cmml">768</mn><annotation-xml encoding="MathML-Content" id="S3.SS1.p3.4.m4.1b"><cn id="S3.SS1.p3.4.m4.1.1.cmml" type="integer" xref="S3.SS1.p3.4.m4.1.1">768</cn></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p3.4.m4.1c">768</annotation></semantics></math> dimensional vectors (the same size GPT-2 expects for each token).
+These embeddings constitute a prefix <math alttext="p" class="ltx_Math" display="inline" id="S3.SS1.p3.5.m5.1"><semantics id="S3.SS1.p3.5.m5.1a"><mi id="S3.SS1.p3.5.m5.1.1" xref="S3.SS1.p3.5.m5.1.1.cmml">p</mi><annotation-xml encoding="MathML-Content" id="S3.SS1.p3.5.m5.1b"><ci id="S3.SS1.p3.5.m5.1.1.cmml" xref="S3.SS1.p3.5.m5.1.1">𝑝</ci></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p3.5.m5.1c">p</annotation></semantics></math> which is the correct shape to be passed to GPT-2.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p4">
+<p class="ltx_p" id="S3.SS1.p4.4">Having obtained <math alttext="p" class="ltx_Math" display="inline" id="S3.SS1.p4.1.m1.1"><semantics id="S3.SS1.p4.1.m1.1a"><mi id="S3.SS1.p4.1.m1.1.1" xref="S3.SS1.p4.1.m1.1.1.cmml">p</mi><annotation-xml encoding="MathML-Content" id="S3.SS1.p4.1.m1.1b"><ci id="S3.SS1.p4.1.m1.1.1.cmml" xref="S3.SS1.p4.1.m1.1.1">𝑝</ci></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p4.1.m1.1c">p</annotation></semantics></math>, a sequence of token embedding-esque vectors, the procedure for combining it with the tweet text to produce a prefix containing both visual and textual information is fairly straightforward.
+We simply concatenate that projection with the embedded tweet text <math alttext="t" class="ltx_Math" display="inline" id="S3.SS1.p4.2.m2.1"><semantics id="S3.SS1.p4.2.m2.1a"><mi id="S3.SS1.p4.2.m2.1.1" xref="S3.SS1.p4.2.m2.1.1.cmml">t</mi><annotation-xml encoding="MathML-Content" id="S3.SS1.p4.2.m2.1b"><ci id="S3.SS1.p4.2.m2.1.1.cmml" xref="S3.SS1.p4.2.m2.1.1">𝑡</ci></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p4.2.m2.1c">t</annotation></semantics></math> (note that they are both sequences in word embedding space) to obtain the complete prefix <math alttext="p\oplus t" class="ltx_Math" display="inline" id="S3.SS1.p4.3.m3.1"><semantics id="S3.SS1.p4.3.m3.1a"><mrow id="S3.SS1.p4.3.m3.1.1" xref="S3.SS1.p4.3.m3.1.1.cmml"><mi id="S3.SS1.p4.3.m3.1.1.2" xref="S3.SS1.p4.3.m3.1.1.2.cmml">p</mi><mo id="S3.SS1.p4.3.m3.1.1.1" xref="S3.SS1.p4.3.m3.1.1.1.cmml">&oplus;</mo><mi id="S3.SS1.p4.3.m3.1.1.3" xref="S3.SS1.p4.3.m3.1.1.3.cmml">t</mi></mrow><annotation-xml encoding="MathML-Content" id="S3.SS1.p4.3.m3.1b"><apply id="S3.SS1.p4.3.m3.1.1.cmml" xref="S3.SS1.p4.3.m3.1.1"><csymbol cd="latexml" id="S3.SS1.p4.3.m3.1.1.1.cmml" xref="S3.SS1.p4.3.m3.1.1.1">direct-sum</csymbol><ci id="S3.SS1.p4.3.m3.1.1.2.cmml" xref="S3.SS1.p4.3.m3.1.1.2">𝑝</ci><ci id="S3.SS1.p4.3.m3.1.1.3.cmml" xref="S3.SS1.p4.3.m3.1.1.3">𝑡</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p4.3.m3.1c">p\oplus t</annotation></semantics></math>.
+We can condition on this, treating it as something analogous to a multimodal prompt to our language model, which then autoregressively outputs the alt-text caption <math alttext="\hat{y}" class="ltx_Math" display="inline" id="S3.SS1.p4.4.m4.1"><semantics id="S3.SS1.p4.4.m4.1a"><mover accent="true" id="S3.SS1.p4.4.m4.1.1" xref="S3.SS1.p4.4.m4.1.1.cmml"><mi id="S3.SS1.p4.4.m4.1.1.2" xref="S3.SS1.p4.4.m4.1.1.2.cmml">y</mi><mo id="S3.SS1.p4.4.m4.1.1.1" xref="S3.SS1.p4.4.m4.1.1.1.cmml">^</mo></mover><annotation-xml encoding="MathML-Content" id="S3.SS1.p4.4.m4.1b"><apply id="S3.SS1.p4.4.m4.1.1.cmml" xref="S3.SS1.p4.4.m4.1.1"><ci id="S3.SS1.p4.4.m4.1.1.1.cmml" xref="S3.SS1.p4.4.m4.1.1.1">^</ci><ci id="S3.SS1.p4.4.m4.1.1.2.cmml" xref="S3.SS1.p4.4.m4.1.1.2">𝑦</ci></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p4.4.m4.1c">\hat{y}</annotation></semantics></math>.
+Our decoder can therefore condition both on the tweet text, which is the same modality as its output, and the image itself which is not.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.2 </span>Training</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS2.p1">
+<p class="ltx_p" id="S3.SS2.p1.1">Given the above likelihood, to train the model we simply teacher force and optimize the cross entropy loss between the predicted logits and the gold reference.
+We backpropagate into the weights of both the mapping network and GPT-2, but leave CLIP frozen both for speed and performance reasons, following&nbsp;<cite class="ltx_cite ltx_citemacro_citet">Mokady et&nbsp;al. (<a class="ltx_ref" href="#bib.bib24" title>2021</a>)</cite>.
+Further implementation details are provided in Appendix&nbsp;<a class="ltx_ref" href="#A4" title="Appendix D Implementation Details ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">D</span></a>.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.3 </span>Decoding</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p1">
+<p class="ltx_p" id="S3.SS3.p1.1">After training, there are still important choice points for how we generate captions at test time that can significantly impact performance, particularly the choice of decoding algorithm.
+While ClipCap originally used a greedy decoding strategy, we instead opt for beam search with a beam size of <math alttext="5" class="ltx_Math" display="inline" id="S3.SS3.p1.1.m1.1"><semantics id="S3.SS3.p1.1.m1.1a"><mn id="S3.SS3.p1.1.m1.1.1" xref="S3.SS3.p1.1.m1.1.1.cmml">5</mn><annotation-xml encoding="MathML-Content" id="S3.SS3.p1.1.m1.1b"><cn id="S3.SS3.p1.1.m1.1.1.cmml" type="integer" xref="S3.SS3.p1.1.m1.1.1">5</cn></annotation-xml><annotation encoding="application/x-tex" id="S3.SS3.p1.1.m1.1c">5</annotation></semantics></math> (we also tried nucleus sampling, but this did worse than either alternative).
+Furthermore, as with many language generation models we noticed that ours occasionally repeated words or short phrases towards the end of captions.
+To solve this we disallow the model from producing a trigram it has already generated within that same path on the beam, a strategy previously employed by&nbsp;<cite class="ltx_cite ltx_citemacro_citet">Paulus et&nbsp;al. (<a class="ltx_ref" href="#bib.bib28" title>2017</a>)</cite>.
+For fair comparison we use this same decoding method for ClipCap in our experiments.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS4">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.4 </span>Reranking</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS4.p1">
+<p class="ltx_p" id="S3.SS4.p1.2">We also experiment with reranking the candidates from beam search by their similarity to the tweet text, as the highest likelihood caption might not necessarily score best under our nondifferentiable evaluation metrics.
+While the tweet text is not itself a descriptive caption, it may reference specific things in the image that are especially relevant, and therefore high quality alt-text will likely have a significant degree of ngram overlap with it.
+While the model does get to condition on the tweet text through the prefix, we may wish to ensure that that information does ultimately appear in the final output.
+In order to steer our generations in this direction, we choose a new best caption among the top <math alttext="5" class="ltx_Math" display="inline" id="S3.SS4.p1.1.m1.1"><semantics id="S3.SS4.p1.1.m1.1a"><mn id="S3.SS4.p1.1.m1.1.1" xref="S3.SS4.p1.1.m1.1.1.cmml">5</mn><annotation-xml encoding="MathML-Content" id="S3.SS4.p1.1.m1.1b"><cn id="S3.SS4.p1.1.m1.1.1.cmml" type="integer" xref="S3.SS4.p1.1.m1.1.1">5</cn></annotation-xml><annotation encoding="application/x-tex" id="S3.SS4.p1.1.m1.1c">5</annotation></semantics></math> candidates returned by beam search based on their ROUGE-L similarity to the tweet text <math alttext="t" class="ltx_Math" display="inline" id="S3.SS4.p1.2.m2.1"><semantics id="S3.SS4.p1.2.m2.1a"><mi id="S3.SS4.p1.2.m2.1.1" xref="S3.SS4.p1.2.m2.1.1.cmml">t</mi><annotation-xml encoding="MathML-Content" id="S3.SS4.p1.2.m2.1b"><ci id="S3.SS4.p1.2.m2.1.1.cmml" xref="S3.SS4.p1.2.m2.1.1">𝑡</ci></annotation-xml><annotation encoding="application/x-tex" id="S3.SS4.p1.2.m2.1c">t</annotation></semantics></math>.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span>Dataset Collection</h2>
+<div class="ltx_para ltx_noindent" id="S4.p1">
+<p class="ltx_p" id="S4.p1.1">One contribution of this paper is the collection and release of a large-scale benchmark dataset for training and evaluating alt-text generation systems.
+We now describe how we collect a publicly available dataset of tweets containing images and corresponding user-written alt-text descriptions.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p2">
+<p class="ltx_p" id="S4.p2.1">These tweets were scraped via the public Twitter APIv2 from a 21 day period in the summer of 2022.
+We focused on English tweets containing still images with user-written alt-text.
+One important consideration was the removal of duplicates.
+We noticed that many accounts &mdash; especially bots and promotional accounts &mdash; would post the same image multiple times, and others (e.g. those tracking extreme weather events or stock prices) often post extremely similar images with only a few words differing between their corresponding alt-text captions.
+We addressed this by deduplicating based on textual and visual matches.
+For more details on filtering see Appendix&nbsp;<a class="ltx_ref" href="#A3" title="Appendix C Dataset Collection ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">C</span></a>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p3">
+<p class="ltx_p" id="S4.p3.1">We also took steps to reduce the incidence of names in our data.
+While many users caption images using the real names of the people in them, predicting a person&rsquo;s name from an image would implicitly require learning to perform facial recognition, something well beyond the scope of this work.
+Furthermore, from a user privacy standpoint, we would not want our model to be able to output the names of real people, regardless of whether they actually appear in that image.
+We used the existing NER system of&nbsp;<cite class="ltx_cite ltx_citemacro_citet">Mishra et&nbsp;al. (<a class="ltx_ref" href="#bib.bib23" title>2020</a>); Eskander et&nbsp;al. (<a class="ltx_ref" href="#bib.bib8" title>2020</a>)</cite> to identify named entities in our alt-text, and replaced all instances of the <span class="ltx_text ltx_font_typewriter" id="S4.p3.1.1">Person</span> type with the string &ldquo;person&rdquo;.
+While this substitutes no additional visual description of the person, and can lead to grammatically cumbersome transformations, we leave further improvements to future work.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p4">
+<p class="ltx_p" id="S4.p4.1">This yielded a dataset of 371,270 images.
+We split into train (330,449), val (20,561), and test (20,260) sets based on tweet ID (i.e. images from the same tweet are assigned to the same split) to prevent leakage of tweet text.
+The corresponding alt-text captions were on average 144 characters long, which translates to 40 tokens.
+The tweet text was similarly 152 characters long on average, or 46 tokens.
+We also hard crop both the alt-text and tweet text at 150 tokens max length.
+While the raw data cannot be distributed directly in order to protect users&rsquo; right to be forgotten, we release the dehydrated tweet IDs and media URLs&nbsp;<span class="ltx_note ltx_role_footnote" id="footnote2"><sup class="ltx_note_mark">2</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">2</sup><span class="ltx_tag ltx_tag_note">2</span><span class="ltx_text ltx_font_typewriter" id="footnote2.1">https://github.com/NikitaSrivatsan/AltText</span></span></span></span>.</p>
+</div>
+</section>
+<section class="ltx_section" id="S5">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5 </span>Experiments</h2>
+<div class="ltx_para ltx_noindent" id="S5.p1">
+<p class="ltx_p" id="S5.p1.1">Having described our method, and our dataset collection procedure, we now conduct experiments to assess how well existing models perform on this new task, and by how much our multimodal system improves over those approaches.
+This section gives an overview of our experimental setup.</p>
+</div>
+<section class="ltx_subsection" id="S5.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.1 </span>Baselines</h3>
+<div class="ltx_para ltx_noindent" id="S5.SS1.p1">
+<p class="ltx_p" id="S5.SS1.p1.1">We examine a few key baselines and ablations in our experiments in addition to our full model.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.SS1.p2">
+<p class="ltx_p" id="S5.SS1.p2.1">The first of these is a <span class="ltx_text ltx_font_bold" id="S5.SS1.p2.1.1">Nearest Neighbor</span> system, which returns the verbatim alt-text caption associated with the most visually similar image from the training set.
+We determine visual similarity based on the dot product of the pretrained CLIP features of the images (the same visual encoding used by our full models).
+The second baseline always returns the corresponding tweet text as the predicted alt-text, which we refer to as <span class="ltx_text ltx_font_bold" id="S5.SS1.p2.1.2">Copy Tweet Text</span>.
+This allows us to investigate to what extent the tweet text is already a reasonable alt-text caption without transformation.
+Following our motivation for conditioning on the tweet text, we would expect that this system would occasionally return something informative albeit likely not well formed and certainly redundant from the perspective of a BLV user.
+This can also be thought of as a simpler variant of our text only system, described below.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.SS1.p3">
+<p class="ltx_p" id="S5.SS1.p3.1">Our first neural baseline is <span class="ltx_text ltx_font_bold" id="S5.SS1.p3.1.1">ClipCap</span>, described previously, using its publicly available implementation.
+ClipCap is already pretrained on a large captioning dataset, so we evaluate it both out of the box, and finetuned on our own data.
+For fair comparison, we also use the same updated decoding strategy for our ClipCap experiments.
+We also compare to pretrained <span class="ltx_text ltx_font_bold" id="S5.SS1.p3.1.2">BLIP-2</span>&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Li et&nbsp;al., <a class="ltx_ref" href="#bib.bib18" title>2023</a>)</cite> using their OPT&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Zhang et&nbsp;al., <a class="ltx_ref" href="#bib.bib36" title>2022</a>)</cite> 2.7B checkpoint.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.SS1.p4">
+<p class="ltx_p" id="S5.SS1.p4.2">Viewing ClipCap as a variant of our model that only includes image features in the prefix begs the question of whether we could similarly include the tweet text, but not the projected image prefix.
+We therefore also consider a baseline that includes the tweet text <math alttext="t" class="ltx_Math" display="inline" id="S5.SS1.p4.1.m1.1"><semantics id="S5.SS1.p4.1.m1.1a"><mi id="S5.SS1.p4.1.m1.1.1" xref="S5.SS1.p4.1.m1.1.1.cmml">t</mi><annotation-xml encoding="MathML-Content" id="S5.SS1.p4.1.m1.1b"><ci id="S5.SS1.p4.1.m1.1.1.cmml" xref="S5.SS1.p4.1.m1.1.1">𝑡</ci></annotation-xml><annotation encoding="application/x-tex" id="S5.SS1.p4.1.m1.1c">t</annotation></semantics></math> in the prefix, but not the projected image prefix <math alttext="p" class="ltx_Math" display="inline" id="S5.SS1.p4.2.m2.1"><semantics id="S5.SS1.p4.2.m2.1a"><mi id="S5.SS1.p4.2.m2.1.1" xref="S5.SS1.p4.2.m2.1.1.cmml">p</mi><annotation-xml encoding="MathML-Content" id="S5.SS1.p4.2.m2.1b"><ci id="S5.SS1.p4.2.m2.1.1.cmml" xref="S5.SS1.p4.2.m2.1.1">𝑝</ci></annotation-xml><annotation encoding="application/x-tex" id="S5.SS1.p4.2.m2.1c">p</annotation></semantics></math> (referred to as <span class="ltx_text ltx_font_bold" id="S5.SS1.p4.2.1">Ours (Text Only)</span>).
+This is effectively a translation model between the tweet text and alt-text; it can transform the style and filter out irrelevant details, but cannot inject new information, and thus serves as an indicator of the performance achievable based only on surrounding context without observing the image itself.
+We also consider an ablation of our system that substitutes the retrieved nearest neighbor for a randomly chosen tweet, which we call <span class="ltx_text ltx_font_bold" id="S5.SS1.p4.2.2">Ours (Rand Text)</span>.
+This lets us measure how robust our system is to errors in the retrieval process and how well it can generalize to cases where a similar neighbor does not exist in train.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S5.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.2 </span>Metrics</h3>
+<div class="ltx_para ltx_noindent" id="S5.SS2.p1">
+<p class="ltx_p" id="S5.SS2.p1.1">Most image captioning work has evaluated using quantitative metrics that roughly measure the string similarity between a model&rsquo;s generated caption and a reference gold caption.
+Since we have user-written alt-text for each image in our dataset, we simply treat these as our gold references to compare to.
+Specifically, we measure performance on BLEU@4&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Papineni et&nbsp;al., <a class="ltx_ref" href="#bib.bib26" title>2002</a>)</cite>, METEOR&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Denkowski & Lavie, <a class="ltx_ref" href="#bib.bib7" title>2014</a>)</cite>, ROUGE-L&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Lin & Och, <a class="ltx_ref" href="#bib.bib20" title>2004</a>)</cite>, and CIDEr&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Vedantam et&nbsp;al., <a class="ltx_ref" href="#bib.bib33" title>2015</a>)</cite>.
+It&rsquo;s worth noting however that because the &ldquo;gold&rdquo; alt-text captions on Twitter are written by untrained users, they can be noisy, inconsistent in form and specificity, and occasionally do not even describe the image contents&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Gleason et&nbsp;al., <a class="ltx_ref" href="#bib.bib10" title>2019</a>)</cite>.
+As a result, the absolute scores may seem relatively low compared to numbers typically reported on other datasets, although based on qualitative inspection and human assessments they do nonetheless meaningfully correlate with output quality.</p>
+</div>
+<figure class="ltx_table" id="S5.T1">
+<div class="ltx_inline-block ltx_align_center ltx_transformed_outer" id="S5.T1.1" style="width:346.9pt;height:269.6pt;vertical-align:-0.8pt;"><span class="ltx_transformed_inner" style="transform:translate(-35.6pt,27.6pt) scale(0.829758836917368,0.829758836917368) ;">
+<table class="ltx_tabular ltx_align_middle" id="S5.T1.1.1">
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S5.T1.1.1.1.1">
+<td class="ltx_td ltx_align_right ltx_border_tt" id="S5.T1.1.1.1.1.1"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.1.1.1.1">Model</span></td>
+<td class="ltx_td ltx_align_right ltx_border_tt" id="S5.T1.1.1.1.1.2"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.1.1.2.1">Decoding</span></td>
+<td class="ltx_td ltx_align_center ltx_border_tt" id="S5.T1.1.1.1.1.3"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.1.1.3.1">BLEU@4</span></td>
+<td class="ltx_td ltx_align_center ltx_border_tt" id="S5.T1.1.1.1.1.4"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.1.1.4.1">METEOR</span></td>
+<td class="ltx_td ltx_align_center ltx_border_tt" id="S5.T1.1.1.1.1.5"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.1.1.5.1">ROUGE-L</span></td>
+<td class="ltx_td ltx_align_center ltx_border_tt" id="S5.T1.1.1.1.1.6"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.1.1.6.1">CIDEr</span></td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.2.2">
+<td class="ltx_td ltx_align_left ltx_border_t" id="S5.T1.1.1.2.2.1"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.2.2.1.1">Naive Baselines</span></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.2.2.2"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.2.2.3"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.2.2.4"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.2.2.5"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.2.2.6"></td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.3.3">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.3.3.1">Nearest Neighbor</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.3.3.2">-</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.3.3.3">0.563</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.3.3.4">1.827</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.3.3.5">5.074</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.3.3.6">1.671</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.4.4">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.4.4.1">Copy Tweet Text</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.4.4.2">-</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.4.4.3">0.230</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.4.4.4">2.066</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.4.4.5">4.801</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.4.4.6">0.453</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.5.5">
+<td class="ltx_td ltx_align_left ltx_border_t" id="S5.T1.1.1.5.5.1"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.5.5.1.1">Neural Baselines</span></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.5.5.2"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.5.5.3"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.5.5.4"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.5.5.5"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.5.5.6"></td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.6.6">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.6.6.1">BLIP-2 (Frozen)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.6.6.2">BS</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.6.6.3">0.111</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.6.6.4">1.449</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.6.6.5">6.744</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.6.6.6">1.381</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.7.7">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.7.7.1">ClipCap (Frozen)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.7.7.2">BS (NR)</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.7.7.3">0.372</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.7.7.4">1.400</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.7.7.5">6.690</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.7.7.6">0.830</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.8.8">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.8.8.1">ClipCap (Finetuned)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.8.8.2">BS (NR)</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.8.8.3">0.681</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.8.8.4">2.685</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.8.8.5">8.620</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.8.8.6">1.557</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.9.9">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.9.9.1">ClipCap (From Scratch)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.9.9.2">BS (NR)</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.9.9.3">0.696</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.9.9.4">2.643</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.9.9.5">8.483</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.9.9.6">1.588</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.10.10">
+<td class="ltx_td ltx_align_left ltx_border_t" id="S5.T1.1.1.10.10.1"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.10.10.1.1">Tweet Text Conditioning</span></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.10.10.2"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.10.10.3"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.10.10.4"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.10.10.5"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.10.10.6"></td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.11.11">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.11.11.1">Ours (Rand Text)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.11.11.2">BS (NR)</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.11.11.3">0.546</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.11.11.4">2.547</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.11.11.5">7.906</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.11.11.6">1.171</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.12.12">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.12.12.1">Ours (Text Only)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.12.12.2">BS (NR)</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.12.12.3">0.693</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.12.12.4">2.459</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.12.12.5">7.498</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.12.12.6">1.738</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.13.13">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.13.13.1">Ours (Text + Image)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.13.13.2">BS (NR)</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.13.13.3"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.13.13.3.1">1.826</span></td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.13.13.4"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.13.13.4.1">3.067</span></td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.13.13.5"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.13.13.5.1">8.652</span></td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.13.13.6"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.13.13.6.1">7.661</span></td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.14.14">
+<td class="ltx_td ltx_align_left ltx_border_t" id="S5.T1.1.1.14.14.1"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.14.14.1.1">Decoding Ablation</span></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.14.14.2"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.14.14.3"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.14.14.4"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.14.14.5"></td>
+<td class="ltx_td ltx_border_t" id="S5.T1.1.1.14.14.6"></td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.15.15">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.15.15.1">Ours (Text + Image)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.15.15.2">Greedy</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.15.15.3">0.587</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.15.15.4">2.247</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.15.15.5">7.166</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.15.15.6">1.450</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.16.16">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.16.16.1">Ours (Text + Image)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.16.16.2">Greedy (NR)</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.16.16.3">0.469</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.16.16.4">2.168</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.16.16.5">7.774</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.16.16.6">1.520</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.17.17">
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.17.17.1">Ours (Text + Image)</td>
+<td class="ltx_td ltx_align_right" id="S5.T1.1.1.17.17.2">BS</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.17.17.3">0.400</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.17.17.4">2.311</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.17.17.5">6.275</td>
+<td class="ltx_td ltx_align_center" id="S5.T1.1.1.17.17.6">1.159</td>
+</tr>
+<tr class="ltx_tr" id="S5.T1.1.1.18.18">
+<td class="ltx_td ltx_align_right ltx_border_bb" id="S5.T1.1.1.18.18.1">Ours (Text + Image)</td>
+<td class="ltx_td ltx_align_right ltx_border_bb" id="S5.T1.1.1.18.18.2">BS (NR) + RR</td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S5.T1.1.1.18.18.3"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.18.18.3.1">1.897</span></td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S5.T1.1.1.18.18.4"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.18.18.4.1">3.257</span></td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S5.T1.1.1.18.18.5"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.18.18.5.1">8.818</span></td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S5.T1.1.1.18.18.6"><span class="ltx_text ltx_font_bold" id="S5.T1.1.1.18.18.6.1">6.791</span></td>
+</tr>
+</tbody>
+</table>
+</span></div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 1: </span>Quantitative test results across various metrics (all numbers x100). Our method and ClipCap are decoded using beam search with no repeats. <span class="ltx_text ltx_font_bold" id="S5.T1.5.1">BS</span> indicates Beam Search, <span class="ltx_text ltx_font_bold" id="S5.T1.6.2">NR</span> indicates no repeats, and <span class="ltx_text ltx_font_bold" id="S5.T1.7.3">RR</span> indicates ROUGE-L reranking.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S5.SS2.p2">
+<p class="ltx_p" id="S5.SS2.p2.1">Due to this variability, as well as the broader problems with contextless evaluation for this task&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Kreiss et&nbsp;al., <a class="ltx_ref" href="#bib.bib15" title>2022a</a>)</cite>, we also conduct human evaluation using Amazon Mechanical Turk.
+For this experiment, we subsampled 954 examples from our test set (originally 1000 but some tweets had been deleted over time), and asked a group of sighted human annotators to compare the outputs of our multimodal system with two variants of ClipCap for those images (all systems using beam search with no repeats).
+For more details see Appendix&nbsp;<a class="ltx_ref" href="#A5" title="Appendix E Human Evaluation Setup ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">E</span></a>.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S6">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6 </span>Results</h2>
+<div class="ltx_para ltx_noindent" id="S6.p1">
+<p class="ltx_p" id="S6.p1.1">We now present results on our dataset, both using automatic metrics comparing model output to user-written reference alt-text, and using human evaluation.
+We also perform qualitative evaluation to analyze our output more subjectively.</p>
+</div>
+<section class="ltx_subsection" id="S6.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">6.1 </span>Automatic Metrics</h3>
+<div class="ltx_para ltx_noindent" id="S6.SS1.p1">
+<p class="ltx_p" id="S6.SS1.p1.1">In Table&nbsp;<a class="ltx_ref" href="#S5.T1" title="Table 1 ‣ 5.2 Metrics ‣ 5 Experiments ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">1</span></a> we show reconstruction performance on our test set across a variety of metrics.
+Copying tweet text achieves the lowest performance on all metrics except for METEOR, which is perhaps expected given that tweets are generally not descriptions of the images they accompany.
+While users will occasionally recycle their tweets into the alt-text field, such examples are filtered out by our preprocessing.
+Nearest neighbor achieves slightly better performance.
+This makes sense as there are certain styles of image, for instance selfies, that may appear frequently and have relatively similar captions, although this approach likely makes frequent mistakes when it comes to finer details.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S6.SS1.p2">
+<p class="ltx_p" id="S6.SS1.p2.1">Of the neural methods, we see that frozen ClipCap scores lowest, almost certainly due to domain mismatch in both the distribution of images and text.
+Finetuning on our dataset does lead to some improvement, bringing ClipCap ahead of the naive baselines on most metrics.
+Perhaps supporting the hypothesis that our Twitter dataset is fundamentally mismatched from Conceptual Captions, we find that a ClipCap trained from scratch on our dataset performs about on par with the finetuned one depending on the metric.
+We see similar performance to frozen ClipCap from BLIP-2, which despite its extensive pretraining on data not available to other systems, fails to produce alt-text with sufficient detail and accuracy for this dataset.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S6.SS1.p3">
+<p class="ltx_p" id="S6.SS1.p3.1">However we see by far the strongest results from our approach which combines the mapped image prefix with the text of the tweet as input to a decoder, achieving more than 2x on BLEU and 4x on CIDEr.
+This is also ahead of the ablation which disregards the image entirely and only uses the tweet text in the prefix, demonstrating that these two sources of information <span class="ltx_text ltx_font_italic" id="S6.SS1.p3.1.1">stack</span> with one another.
+The competitive performance of the text-only baseline demonstrates the strong amount of necessary context present in the original post, while the fact that it outperforms merely copying the tweet text emphasizes that alt-text is nonetheless functionally different in many cases from just another caption.
+Randomizing the retrieved tweet does hurt our model&rsquo;s performance as well.
+We find qualitatively that under this setup our model is sometimes still able to produce a reasonable caption presumably based solely on the signal from the image features, although it will occasionally insert spurious details from the random tweet, so it&rsquo;s not completely robust to irrelevant input tweet captions.
+</p>
+</div>
+<figure class="ltx_table" id="S6.T2">
+<div class="ltx_flex_figure ltx_flex_table">
+<div class="ltx_flex_cell ltx_flex_size_1">
+<div class="ltx_inline-block ltx_figure_panel ltx_minipage ltx_align_center ltx_align_middle ltx_transformed_outer" id="S6.T2.1" style="width:203.8pt;height:131.7pt;vertical-align:-0.0pt;"><span class="ltx_transformed_inner" style="transform:translate(98.3pt,-29.8pt) scale(1.82876036844563,1.82876036844563) ;">
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="S6.T2.1.1">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="S6.T2.1.1.1.1">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_th_row ltx_border_tt" id="S6.T2.1.1.1.1.1"><span class="ltx_text ltx_font_bold" id="S6.T2.1.1.1.1.1.1">Model</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt" id="S6.T2.1.1.1.1.2"><span class="ltx_text ltx_font_bold" id="S6.T2.1.1.1.1.2.1">Fluency</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt" id="S6.T2.1.1.1.1.3"><span class="ltx_text ltx_font_bold" id="S6.T2.1.1.1.1.3.1">Descriptiveness</span></th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S6.T2.1.1.2.1">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_t" id="S6.T2.1.1.2.1.1">ClipCap (Frozen)</th>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S6.T2.1.1.2.1.2">29.8</td>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S6.T2.1.1.2.1.3">26.2</td>
+</tr>
+<tr class="ltx_tr" id="S6.T2.1.1.3.2">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row" id="S6.T2.1.1.3.2.1">Ours (Text + Image)</th>
+<td class="ltx_td ltx_align_center" id="S6.T2.1.1.3.2.2"><span class="ltx_text ltx_font_bold" id="S6.T2.1.1.3.2.2.1">61.4</span></td>
+<td class="ltx_td ltx_align_center" id="S6.T2.1.1.3.2.3"><span class="ltx_text ltx_font_bold" id="S6.T2.1.1.3.2.3.1">66.9</span></td>
+</tr>
+<tr class="ltx_tr" id="S6.T2.1.1.4.3">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_bb" id="S6.T2.1.1.4.3.1">Equal Quality</th>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S6.T2.1.1.4.3.2">8.8</td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S6.T2.1.1.4.3.3">6.9</td>
+</tr>
+</tbody>
+</table>
+</span></div>
+</div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1">
+<div class="ltx_inline-block ltx_figure_panel ltx_minipage ltx_align_center ltx_align_middle ltx_transformed_outer" id="S6.T2.2" style="width:221.1pt;height:124.9pt;vertical-align:-0.0pt;"><span class="ltx_transformed_inner" style="transform:translate(91.8pt,-26.4pt) scale(1.73447743973031,1.73447743973031) ;">
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="S6.T2.2.1">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="S6.T2.2.1.1.1">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_column ltx_th_row ltx_border_tt" id="S6.T2.2.1.1.1.1"><span class="ltx_text ltx_font_bold" id="S6.T2.2.1.1.1.1.1">Model</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt" id="S6.T2.2.1.1.1.2"><span class="ltx_text ltx_font_bold" id="S6.T2.2.1.1.1.2.1">Fluency</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt" id="S6.T2.2.1.1.1.3"><span class="ltx_text ltx_font_bold" id="S6.T2.2.1.1.1.3.1">Descriptiveness</span></th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S6.T2.2.1.2.1">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_t" id="S6.T2.2.1.2.1.1">ClipCap (From Scratch)</th>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S6.T2.2.1.2.1.2">34.2</td>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S6.T2.2.1.2.1.3">37.7</td>
+</tr>
+<tr class="ltx_tr" id="S6.T2.2.1.3.2">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row" id="S6.T2.2.1.3.2.1">Ours (Text + Image)</th>
+<td class="ltx_td ltx_align_center" id="S6.T2.2.1.3.2.2"><span class="ltx_text ltx_font_bold" id="S6.T2.2.1.3.2.2.1">37.4</span></td>
+<td class="ltx_td ltx_align_center" id="S6.T2.2.1.3.2.3"><span class="ltx_text ltx_font_bold" id="S6.T2.2.1.3.2.3.1">44.4</span></td>
+</tr>
+<tr class="ltx_tr" id="S6.T2.2.1.4.3">
+<th class="ltx_td ltx_align_right ltx_th ltx_th_row ltx_border_bb" id="S6.T2.2.1.4.3.1">Equal Quality</th>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S6.T2.2.1.4.3.2">28.5</td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S6.T2.2.1.4.3.3">17.9</td>
+</tr>
+</tbody>
+</table>
+</span></div>
+</div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 2: </span><span class="ltx_text ltx_font_bold" id="S6.T2.5.1">Left:</span> Results from human evaluation, showing annotator preference for our model vs. frozen ClipCap in terms of fluency and descriptiveness. <span class="ltx_text ltx_font_bold" id="S6.T2.6.2">Right:</span> Results from human evaluation, showing annotator preference for our model vs. finetuned ClipCap in terms of fluency and descriptiveness.</figcaption>
+</figure>
+</section>
+<section class="ltx_subsection" id="S6.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">6.2 </span>Decoding Ablation</h3>
+<div class="ltx_para ltx_noindent" id="S6.SS2.p1">
+<p class="ltx_p" id="S6.SS2.p1.1">Table&nbsp;<a class="ltx_ref" href="#S5.T1" title="Table 1 ‣ 5.2 Metrics ‣ 5 Experiments ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">1</span></a> also shows an ablation of various decoding strategies for our multimodal model.
+Greedy decoding does poorly, and trigram blocking helps on some metrics but hurts on others.
+Beam search does not do better than greedy if allowed to repeat trigrams, but the specific combination of beam search without repeats does extremely well.
+Reranking the top 5 candidates from beam search with ROUGE-L similarity to the tweet text offers minor improvements on most metrics, but hurts performance on CIDEr.
+We also observe similar relative performance of these decoding methods for ClipCap.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S6.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">6.3 </span>Human Evaluation</h3>
+<div class="ltx_para ltx_noindent" id="S6.SS3.p1">
+<p class="ltx_p" id="S6.SS3.p1.1">Note that while the automatic metrics are informative, the absolute scores are below what these same systems achieve on datasets such as Conceptual Captions&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Sharma et&nbsp;al., <a class="ltx_ref" href="#bib.bib31" title>2018</a>)</cite>.
+We suspect this is largely due to the noisiness of gold references.
+It&rsquo;s worth emphasizing that Twitter users are not explicitly trained in how to write alt-text, and as a result the level of quality is extremely variable&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Gleason et&nbsp;al., <a class="ltx_ref" href="#bib.bib10" title>2019</a>)</cite>.
+Furthermore, some users write alt-text that functions more as a &ldquo;second caption&rdquo; than as a literal description of the image&rsquo;s contents.
+This means that for an observably large proportion of our data (although the exact amount is difficult to quantify), the gold reference is either undesirable to match or idiosyncratic enough that measuring a candidate caption&rsquo;s similarity to it is not truly reflective of how well that caption describes the image.
+Going through the results manually, we often find instances where the model&rsquo;s output is actually more appropriate as alt-text than what the user wrote, or where they are both functional but phrased differently enough that there is little string overlap, leading to low scores that do not necessarily reflect output quality.
+We thus conclude that these automated metrics, while informative, are not sufficient for assessing model performance.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S6.SS3.p2">
+<p class="ltx_p" id="S6.SS3.p2.1">We therefore also perform two rounds of human evaluation as described above, with results shown in Table&nbsp;<a class="ltx_ref" href="#S6.T2" title="Table 2 ‣ 6.1 Automatic Metrics ‣ 6 Results ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">2</span></a>.
+On the left we observe that in roughly two thirds of images the human annotators judged our model&rsquo;s output to be both more fluent and descriptive than that of the frozen ClipCap baseline, and annotators generally agreed on rankings.
+To the right we see similar rankings albeit with a tighter margin when we compare our system against the ClipCap trained from scratch on our data.
+This matches the findings of our automated metrics, and supports our hypothesis that conditioning on context from the tweet yields higher quality descriptions.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S6.SS4">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">6.4 </span>Qualitative Inspection</h3>
+<figure class="ltx_figure" id="S6.F3"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="170" id="S6.F3.g1" src="../../assets/papers/34-Alt_2023/x4.png" width="332">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 3: </span>Selected tweets with the gold user-written alt-text alongside our prediction and ClipCap&rsquo;s. We see that by conditioning on the tweet text, our model is generally able to focus on relevant details in the images, reference specific named places, and provide more accurate text transcription despite not being trained on OCR.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S6.SS4.p1">
+<p class="ltx_p" id="S6.SS4.p1.1">In order to analyze what specific types of differences lead to these improvements and also what kinds of errors the model still makes, we now describe some observations from qualitative inspection.
+Figure&nbsp;<a class="ltx_ref" href="#S6.F3" title="Figure 3 ‣ 6.4 Qualitative Inspection ‣ 6 Results ‣ Alt-Text with Context: Improving Accessibility for Images on Twitter"><span class="ltx_text ltx_ref_tag">3</span></a> shows some example tweets from our dataset, accompanied by the actual user-written alt-text as well as our model and a frozen pretrained ClipCap&rsquo;s predictions.
+We generally see that our system is able to focus on contextually relevant details, such as the donuts in the bakery.
+It&rsquo;s also able to leverage text in the tweet to more accurately transcribe digital text in graphics.
+However it does at times still struggle with counting, and sometimes omits thorough visual details.
+ClipCap provides reasonable albeit simplistic captions for more natural images, but struggles with images that fall farther outside the Conceptual Captions distribution.
+It is also unable to incorporate information from the tweet itself, or use that to influence which parts of the image to focus on.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S7">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">7 </span>Conclusion</h2>
+<div class="ltx_para ltx_noindent" id="S7.p1">
+<p class="ltx_p" id="S7.p1.1">In this work we presented an approach for alt-text generation that conditions both on an image embedding as well as the raw text of the corresponding social media post, and collected a new dataset for this task from Twitter.
+Despite limitations discussed in the Appendix below, we believe this work is an important step forward and has potential for various downstream applications.
+While the most obvious use case is to simply use the model to produce alt-text for images that do not have any, we could also see this approach being used in concert with human annotators, perhaps providing a starting point for captions.
+Additionally, since our model&rsquo;s decoder can form a conditional likelihood on the caption, we could use that score to flag poorly written alt-text and notify users to reread the guidelines and rephrase their description.
+In summary, we believe this is an important task and hope that our work encourages future research that makes use of the surrounding social media context in which these images appear.</p>
+</div>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+<ul class="ltx_biblist">
+<li class="ltx_bibitem" id="bib.bib1">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Alayrac et&nbsp;al. (2022)</span>
+<span class="ltx_bibblock">
+Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Mensch, Katie Millican, Malcolm Reynolds, Roman Ring, Eliza Rutherford, Serkan Cabi, Tengda Han, Zhitao Gong, Sina Samangooei, Marianne Monteiro, Jacob Menick, Sebastian Borgeaud, Andrew Brock, Aida Nematzadeh, Sahand Sharifzadeh, Mikolaj Binkowski, Ricardo Barreira, Oriol Vinyals, Andrew Zisserman, and Karen Simonyan.
+
+</span>
+<span class="ltx_bibblock">Flamingo: a visual language model for few-shot learning, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib2">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Awadalla et&nbsp;al. (2023)</span>
+<span class="ltx_bibblock">
+Anas Awadalla, Irena Gao, Joshua Gardner, Jack Hessel, Yusuf Hanafy, Wanrong Zhu, Kalyani Marathe, Yonatan Bitton, Samir Gadre, Jenia Jitsev, Simon Kornblith, Pang&nbsp;Wei Koh, Gabriel Ilharco, Mitchell Wortsman, and Ludwig Schmidt.
+
+</span>
+<span class="ltx_bibblock">Openflamingo, March 2023.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://doi.org/10.5281/zenodo.7733589" target="_blank" title>https://doi.org/10.5281/zenodo.7733589</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib3">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Belle. et&nbsp;al. (2022)</span>
+<span class="ltx_bibblock">
+Aspen Belle., Vanessa Goh., Akshay Kumar., Richard Pranjatno., Pui&nbsp;Man Yip., Umayangani Wickramaratne., and Humphrey&nbsp;O. Obie.
+
+</span>
+<span class="ltx_bibblock">Alt-texify: A pipeline to generate alt-text from svg visualizations.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib3.1.1">Proceedings of the 17th International Conference on Evaluation of Novel Approaches to Software Engineering - ENASE,</em>, pp.&nbsp; 275&ndash;281. INSTICC, SciTePress, 2022.
+
+</span>
+<span class="ltx_bibblock">ISBN 978-989-758-568-5.
+
+</span>
+<span class="ltx_bibblock">doi: <span class="ltx_ref ltx_nolink ltx_Url ltx_ref_self">10.5220/0010994600003176</span>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib4">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Bernardi et&nbsp;al. (2016)</span>
+<span class="ltx_bibblock">
+Raffaella Bernardi, Ruket Cakici, Desmond Elliott, Aykut Erdem, Erkut Erdem, Nazli Ikizler-Cinbis, Frank Keller, Adrian Muscat, and Barbara Plank.
+
+</span>
+<span class="ltx_bibblock">Automatic description generation from images: A survey of models, datasets, and evaluation measures.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib4.1.1">Journal of Artificial Intelligence Research</em>, 55:409&ndash;442, 2016.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib5">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chiarella et&nbsp;al. (2020)</span>
+<span class="ltx_bibblock">
+Domenico Chiarella, Justin Yarbrough, and Christopher A-L Jackson.
+
+</span>
+<span class="ltx_bibblock">Using alt text to make science twitter more accessible for people with visual impairments.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib5.1.1">Nature Communications</em>, 11, 2020.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib6">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chintalapati et&nbsp;al. (2022)</span>
+<span class="ltx_bibblock">
+Sanjana&nbsp;Shivani Chintalapati, Jonathan Bragg, and Lucy&nbsp;Lu Wang.
+
+</span>
+<span class="ltx_bibblock">A dataset of alt texts from hci publications: Analyses and uses towards producing more descriptive alt texts of data visualizations in scientific papers.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib6.1.1">Proceedings of the 24th International ACM SIGACCESS Conference on Computers and Accessibility</em>, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib7">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Denkowski & Lavie (2014)</span>
+<span class="ltx_bibblock">
+Michael Denkowski and Alon Lavie.
+
+</span>
+<span class="ltx_bibblock">Meteor universal: Language specific translation evaluation for any target language.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib7.1.1">Proceedings of the ninth workshop on statistical machine translation</em>, pp.&nbsp; 376&ndash;380, 2014.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib8">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Eskander et&nbsp;al. (2020)</span>
+<span class="ltx_bibblock">
+Ramy Eskander, Peter Martigny, and Shubhanshu Mishra.
+
+</span>
+<span class="ltx_bibblock">Multilingual named entity recognition in tweets using wikidata.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib8.1.1">The fourth annual WeCNLP (West Coast NLP) Summit (WeCNLP), virtual</em>. Zenodo, Oct 2020.
+
+</span>
+<span class="ltx_bibblock">doi: <span class="ltx_ref ltx_nolink ltx_Url ltx_ref_self">10.5281/zenodo.7014432</span>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib9">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Fang et&nbsp;al. (2015)</span>
+<span class="ltx_bibblock">
+Hao Fang, Saurabh Gupta, Forrest Iandola, Rupesh&nbsp;K Srivastava, Li&nbsp;Deng, Piotr Doll&aacute;r, Jianfeng Gao, Xiaodong He, Margaret Mitchell, John&nbsp;C Platt, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">From captions to visual concepts and back.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib9.1.1">Proceedings of the IEEE conference on computer vision and pattern recognition</em>, pp.&nbsp; 1473&ndash;1482, 2015.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib10">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Gleason et&nbsp;al. (2019)</span>
+<span class="ltx_bibblock">
+Cole Gleason, Patrick Carrington, Cameron Cassidy, Meredith&nbsp;Ringel Morris, Kris&nbsp;M. Kitani, and Jeffrey&nbsp;P. Bigham.
+
+</span>
+<span class="ltx_bibblock">&ldquo;it&rsquo;s almost like they&rsquo;re trying to hide it&rdquo;: How user-provided image descriptions have failed to make twitter accessible.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib10.1.1">The World Wide Web Conference</em>, 2019.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib11">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Gleason et&nbsp;al. (2020)</span>
+<span class="ltx_bibblock">
+Cole Gleason, Amy Pavel, Emma McCamey, Christina Low, Patrick Carrington, Kris&nbsp;M. Kitani, and Jeffrey&nbsp;P. Bigham.
+
+</span>
+<span class="ltx_bibblock">Twitter a11y: A browser extension to make twitter images accessible.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib11.1.1">Proceedings of the 2020 CHI Conference on Human Factors in Computing Systems</em>, 2020.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib12">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Hanley et&nbsp;al. (2021)</span>
+<span class="ltx_bibblock">
+Margot Hanley, Solon Barocas, Karen Levy, Shiri Azenkot, and Helen Nissenbaum.
+
+</span>
+<span class="ltx_bibblock">Computer vision and conflicting values: Describing people with automated alt text.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib12.1.1">Proceedings of the 2021 AAAI/ACM Conference on AI, Ethics, and Society</em>, AIES &rsquo;21, pp.&nbsp; 543&ndash;554, New York, NY, USA, 2021. Association for Computing Machinery.
+
+</span>
+<span class="ltx_bibblock">ISBN 9781450384735.
+
+</span>
+<span class="ltx_bibblock">doi: <span class="ltx_ref ltx_nolink ltx_Url ltx_ref_self">10.1145/3461702.3462620</span>.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://doi.org/10.1145/3461702.3462620" target="_blank" title>https://doi.org/10.1145/3461702.3462620</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib13">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Herold et&nbsp;al. (2022)</span>
+<span class="ltx_bibblock">
+Brienna Herold, James Waller, and Raja Kushalnagar.
+
+</span>
+<span class="ltx_bibblock">Applying the stereotype content model to assess disability bias in popular pre-trained NLP models underlying AI-based assistive technologies.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib13.1.1">Ninth Workshop on Speech and Language Processing for Assistive Technologies (SLPAT-2022)</em>, pp.&nbsp; 58&ndash;65, Dublin, Ireland, May 2022. Association for Computational Linguistics.
+
+</span>
+<span class="ltx_bibblock">doi: <span class="ltx_ref ltx_nolink ltx_Url ltx_ref_self">10.18653/v1/2022.slpat-1.8</span>.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://aclanthology.org/2022.slpat-1.8" target="_blank" title>https://aclanthology.org/2022.slpat-1.8</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib14">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kingma & Ba (2015)</span>
+<span class="ltx_bibblock">
+Diederik&nbsp;P Kingma and Jimmy Ba.
+
+</span>
+<span class="ltx_bibblock">Adam: A method for stochastic optimization.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib14.1.1">ICLR</em>, 2015.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib15">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kreiss et&nbsp;al. (2022a)</span>
+<span class="ltx_bibblock">
+Elisa Kreiss, Cynthia Bennett, Shayan Hooshmand, Eric Zelikman, Meredith Ringel&nbsp;Morris, and Christopher Potts.
+
+</span>
+<span class="ltx_bibblock">Context matters for image descriptions for accessibility: Challenges for referenceless evaluation metrics.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib15.1.1">Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing</em>, pp.&nbsp; 4685&ndash;4697, Abu Dhabi, United Arab Emirates, December 2022a. Association for Computational Linguistics.
+
+</span>
+<span class="ltx_bibblock">doi: <span class="ltx_ref ltx_nolink ltx_Url ltx_ref_self">10.18653/v1/2022.emnlp-main.309</span>.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://aclanthology.org/2022.emnlp-main.309" target="_blank" title>https://aclanthology.org/2022.emnlp-main.309</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib16">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kreiss et&nbsp;al. (2022b)</span>
+<span class="ltx_bibblock">
+Elisa Kreiss, Fei Fang, Noah Goodman, and Christopher Potts.
+
+</span>
+<span class="ltx_bibblock">Concadia: Towards image-based text generation with a purpose.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib16.1.1">Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing</em>, pp.&nbsp; 4667&ndash;4684, Abu Dhabi, United Arab Emirates, December 2022b. Association for Computational Linguistics.
+
+</span>
+<span class="ltx_bibblock">doi: <span class="ltx_ref ltx_nolink ltx_Url ltx_ref_self">10.18653/v1/2022.emnlp-main.308</span>.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://aclanthology.org/2022.emnlp-main.308" target="_blank" title>https://aclanthology.org/2022.emnlp-main.308</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib17">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Li et&nbsp;al. (2022)</span>
+<span class="ltx_bibblock">
+Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi.
+
+</span>
+<span class="ltx_bibblock">Blip: Bootstrapping language-image pre-training for unified vision-language understanding and generation.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib17.1.1">International Conference on Machine Learning</em>, pp.&nbsp; 12888&ndash;12900. PMLR, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib18">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Li et&nbsp;al. (2023)</span>
+<span class="ltx_bibblock">
+Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi.
+
+</span>
+<span class="ltx_bibblock">Blip-2: Bootstrapping language-image pre-training with frozen image encoders and large language models.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib18.1.1">arXiv preprint arXiv:2301.12597</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib19">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Li et&nbsp;al. (2020)</span>
+<span class="ltx_bibblock">
+Yang Li, Gang Li, Luheng He, Jingjie Zheng, Hong Li, and Zhiwei Guan.
+
+</span>
+<span class="ltx_bibblock">Widget captioning: Generating natural language description for mobile user interface elements.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib19.1.1">Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)</em>, pp.&nbsp; 5495&ndash;5510, Online, November 2020. Association for Computational Linguistics.
+
+</span>
+<span class="ltx_bibblock">doi: <span class="ltx_ref ltx_nolink ltx_Url ltx_ref_self">10.18653/v1/2020.emnlp-main.443</span>.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://aclanthology.org/2020.emnlp-main.443" target="_blank" title>https://aclanthology.org/2020.emnlp-main.443</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib20">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lin & Och (2004)</span>
+<span class="ltx_bibblock">
+Chin-Yew Lin and Franz&nbsp;Josef Och.
+
+</span>
+<span class="ltx_bibblock">Automatic evaluation of machine translation quality using longest common subsequence and skip-bigram statistics.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib20.1.1">Proceedings of the 42nd Annual Meeting of the Association for Computational Linguistics (ACL-04)</em>, pp.&nbsp; 605&ndash;612, 2004.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib21">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lin et&nbsp;al. (2014)</span>
+<span class="ltx_bibblock">
+Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll&aacute;r, and C&nbsp;Lawrence Zitnick.
+
+</span>
+<span class="ltx_bibblock">Microsoft coco: Common objects in context.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib21.1.1">Computer Vision&ndash;ECCV 2014: 13th European Conference, Zurich, Switzerland, September 6-12, 2014, Proceedings, Part V 13</em>, pp.&nbsp; 740&ndash;755. Springer, 2014.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib22">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Meta (2021)</span>
+<span class="ltx_bibblock">
+Meta, Nov 2021.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://tech.fb.com/artificial-intelligence/2021/01/how-facebook-is-using-ai-to-improve-photo-descriptions-for-people-who-are-blind-or-visually-impaired/" target="_blank" title>https://tech.fb.com/artificial-intelligence/2021/01/how-facebook-is-using-ai-to-improve-photo-descriptions-for-people-who-are-blind-or-visually-impaired/</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib23">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Mishra et&nbsp;al. (2020)</span>
+<span class="ltx_bibblock">
+Shubhanshu Mishra, Sijun He, and Luca Belli.
+
+</span>
+<span class="ltx_bibblock">Assessing demographic bias in named entity recognition.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib23.1.1">Proceedings of the AKBC Workshop on Bias in Automatic Knowledge Graph Construction, 2020</em>. arXiv, 2020.
+
+</span>
+<span class="ltx_bibblock">doi: <span class="ltx_ref ltx_nolink ltx_Url ltx_ref_self">10.48550/ARXIV.2008.03415</span>.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2008.03415" target="_blank" title>https://arxiv.org/abs/2008.03415</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib24">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Mokady et&nbsp;al. (2021)</span>
+<span class="ltx_bibblock">
+Ron Mokady, Amir Hertz, and Amit&nbsp;H Bermano.
+
+</span>
+<span class="ltx_bibblock">Clipcap: Clip prefix for image captioning.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib24.1.1">arXiv preprint arXiv:2111.09734</em>, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib25">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">OpenAI (2023)</span>
+<span class="ltx_bibblock">
+OpenAI.
+
+</span>
+<span class="ltx_bibblock">Gpt-4 technical report, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib26">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Papineni et&nbsp;al. (2002)</span>
+<span class="ltx_bibblock">
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu.
+
+</span>
+<span class="ltx_bibblock">Bleu: a method for automatic evaluation of machine translation.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib26.1.1">Proceedings of the 40th annual meeting of the Association for Computational Linguistics</em>, pp.&nbsp; 311&ndash;318, 2002.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib27">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Paszke et&nbsp;al. (2019)</span>
+<span class="ltx_bibblock">
+Adam Paszke, Sam Gross, Francisco Massa, Adam Lerer, James Bradbury, Gregory Chanan, Trevor Killeen, Zeming Lin, Natalia Gimelshein, Luca Antiga, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Pytorch: An imperative style, high-performance deep learning library.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib27.1.1">Advances in neural information processing systems</em>, 32, 2019.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib28">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Paulus et&nbsp;al. (2017)</span>
+<span class="ltx_bibblock">
+Romain Paulus, Caiming Xiong, and Richard Socher.
+
+</span>
+<span class="ltx_bibblock">A deep reinforced model for abstractive summarization.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib28.1.1">arXiv preprint arXiv:1705.04304</em>, 2017.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib29">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Radford et&nbsp;al. (2019)</span>
+<span class="ltx_bibblock">
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya Sutskever, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Language models are unsupervised multitask learners.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib29.1.1">OpenAI blog</em>, 1(8):9, 2019.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib30">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Radford et&nbsp;al. (2021)</span>
+<span class="ltx_bibblock">
+Alec Radford, Jong&nbsp;Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Learning transferable visual models from natural language supervision.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib30.1.1">International Conference on Machine Learning</em>, pp.&nbsp; 8748&ndash;8763. PMLR, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib31">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Sharma et&nbsp;al. (2018)</span>
+<span class="ltx_bibblock">
+Piyush Sharma, Nan Ding, Sebastian Goodman, and Radu Soricut.
+
+</span>
+<span class="ltx_bibblock">Conceptual captions: A cleaned, hypernymed, image alt-text dataset for automatic image captioning.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib31.1.1">Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)</em>, pp.&nbsp; 2556&ndash;2565, Melbourne, Australia, July 2018. Association for Computational Linguistics.
+
+</span>
+<span class="ltx_bibblock">doi: <span class="ltx_ref ltx_nolink ltx_Url ltx_ref_self">10.18653/v1/P18-1238</span>.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://aclanthology.org/P18-1238" target="_blank" title>https://aclanthology.org/P18-1238</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib32">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Snell et&nbsp;al. (2017)</span>
+<span class="ltx_bibblock">
+Jake Snell, Karl Ridgeway, Renjie Liao, Brett&nbsp;D Roads, Michael&nbsp;C Mozer, and Richard&nbsp;S Zemel.
+
+</span>
+<span class="ltx_bibblock">Learning to generate images with perceptual similarity metrics.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib32.1.1">2017 IEEE International Conference on Image Processing (ICIP)</em>, pp.&nbsp; 4277&ndash;4281. IEEE, 2017.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib33">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Vedantam et&nbsp;al. (2015)</span>
+<span class="ltx_bibblock">
+Ramakrishna Vedantam, C&nbsp;Lawrence&nbsp;Zitnick, and Devi Parikh.
+
+</span>
+<span class="ltx_bibblock">Cider: Consensus-based image description evaluation.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib33.1.1">Proceedings of the IEEE conference on computer vision and pattern recognition</em>, pp.&nbsp; 4566&ndash;4575, 2015.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib34">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Vinyals et&nbsp;al. (2015)</span>
+<span class="ltx_bibblock">
+Oriol Vinyals, Alexander Toshev, Samy Bengio, and Dumitru Erhan.
+
+</span>
+<span class="ltx_bibblock">Show and tell: A neural image caption generator.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib34.1.1">Proceedings of the IEEE conference on computer vision and pattern recognition</em>, pp.&nbsp; 3156&ndash;3164, 2015.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib35">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Wu et&nbsp;al. (2017)</span>
+<span class="ltx_bibblock">
+Shaomei Wu, Jeffrey Wieland, Omid Farivar, and Julie Schiller.
+
+</span>
+<span class="ltx_bibblock">Automatic alt-text: Computer-generated image descriptions for blind users on a social network service.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib35.1.1">Proceedings of the 2017 ACM Conference on Computer Supported Cooperative Work and Social Computing</em>, 2017.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib36">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Zhang et&nbsp;al. (2022)</span>
+<span class="ltx_bibblock">
+Susan Zhang, Stephen Roller, Naman Goyal, Mikel Artetxe, Moya Chen, Shuohui Chen, Christopher Dewan, Mona Diab, Xian Li, Xi&nbsp;Victoria Lin, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Opt: Open pre-trained transformer language models.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib36.1.1">arXiv preprint arXiv:2205.01068</em>, 2022.
+
+</span>
+</li>
+</ul>
+</section>
+<div class="ltx_pagination ltx_role_newpage"></div>
+<section class="ltx_appendix" id="A1">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix A </span>Limitations</h2>
+<div class="ltx_para ltx_noindent" id="A1.p1">
+<p class="ltx_p" id="A1.p1.1">This work still has several limitations which are important to acknowledge.
+The dataset we collected and trained our model on is variable in quality as the gold references are user-written, and this necessarily introduces a gap between the training objective and actual alt-text best practices.
+It could also be improved with more sophisticated identification and removal of bots, and using entity linking instead of just named entity recognition to provide more finegrained descriptions of people in lieu of their names.
+The model itself, while it frequently produces reasonable captions, still at times makes mistakes regarding specific details, is imprecise at transcribing text found in images as it does not contain an OCR system, and occasionally outputs the tweet text verbatim which despite at times serving as a reasonably descriptive caption is nonetheless redundant.
+Since our system conditions on an accompanying social media post, it is not easily adaptable to settings where images appear without any textual context, or where the specific section of text meant to correspond to the image is ambiguous such as in a long form web post or news article.
+We also rely on having a pretrained image encoder which means that the visual features extracted cannot be informed by the context, they instead must feed into the language model as independent information signals.
+Finally, it&rsquo;s worth emphasizing that our human evaluation is performed using sighted reviewers, and we therefore cannot make any claims about the downstream efficacy of our method without a larger scale study using BLV users which was unfortunately beyond the scope of this work.</p>
+</div>
+</section>
+<section class="ltx_appendix" id="A2">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix B </span>Ethics Statement</h2>
+<div class="ltx_para ltx_noindent" id="A2.p1">
+<p class="ltx_p" id="A2.p1.1">Given the above discussed limitations we find it critical to emphasize that simply applying this method as-is to producing alt-text captions in an actual social media production setting would be premature and likely harm the user experience for BLV users.
+Accessibility technology must demonstrably be of more utility than other alternatives in order to justifiably be adopted, and while we hope that our work is a step in that direction, we have not yet conclusively determined that that bar has been passed.
+The research we perform here has the potential to be co-opted by social media platforms as a cheaper alternative to hiring manual alt-text writers, or having users write their own alt-text as is Twitter&rsquo;s current approach, which would arguably worsen the online experience for BLV users whose accessibility needs are already to a large extent unmet in this regard.
+Furthermore as with any open-ended text generation system trained on social media, our model does have the capacity to produce toxic language, regurgitate sensitive user information, and produce insensitive and harmful captions for personal photos.</p>
+</div>
+</section>
+<section class="ltx_appendix" id="A3">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix C </span>Dataset Collection</h2>
+<section class="ltx_subsection" id="A3.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">C.1 </span>Filtering</h3>
+<div class="ltx_para ltx_noindent" id="A3.SS1.p1">
+<p class="ltx_p" id="A3.SS1.p1.1">Reply tweets were included, but retweets were not.
+We filtered based on tweets containing still images, as alt-text for GIFs tends to be of very low quality and requires different modeling approaches.
+We also restricted our search to only include tweets which Twitter&rsquo;s language identification model categorized as English, thereby also ensuring that they all contained at least some amount of tweet text.
+Additional preprocessing included stripping all leading phrases such as &ldquo;Image of&rdquo; or &ldquo;Photo of&rdquo; (as these are generally considered redundant for alt-text purposes), removing any examples with alt-text that were identical to the text of the tweet itself or simply contained placeholder text such as &ldquo;Image&rdquo;, and removing any examples with alt-text containing URLs, user handles, and hashtags.
+We also only included alt-text that was at least four space-separated tokens long, as text shorter than this is rarely sufficiently descriptive.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="A3.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">C.2 </span>Deduplication</h3>
+<div class="ltx_para ltx_noindent" id="A3.SS2.p1">
+<p class="ltx_p" id="A3.SS2.p1.2">We only retained the oldest of any images that contained identical alt-text.
+This largely eliminated any exact duplicates posted multiple times by spammy users.
+Next we identified clusters of visual matches based on their downscaled pixel overlap.
+To do this, we resized images and center cropped to a max size of <math alttext="32\times 32" class="ltx_Math" display="inline" id="A3.SS2.p1.1.m1.1"><semantics id="A3.SS2.p1.1.m1.1a"><mrow id="A3.SS2.p1.1.m1.1.1" xref="A3.SS2.p1.1.m1.1.1.cmml"><mn id="A3.SS2.p1.1.m1.1.1.2" xref="A3.SS2.p1.1.m1.1.1.2.cmml">32</mn><mo id="A3.SS2.p1.1.m1.1.1.1" lspace="0.222em" rspace="0.222em" xref="A3.SS2.p1.1.m1.1.1.1.cmml">&times;</mo><mn id="A3.SS2.p1.1.m1.1.1.3" xref="A3.SS2.p1.1.m1.1.1.3.cmml">32</mn></mrow><annotation-xml encoding="MathML-Content" id="A3.SS2.p1.1.m1.1b"><apply id="A3.SS2.p1.1.m1.1.1.cmml" xref="A3.SS2.p1.1.m1.1.1"><times id="A3.SS2.p1.1.m1.1.1.1.cmml" xref="A3.SS2.p1.1.m1.1.1.1"></times><cn id="A3.SS2.p1.1.m1.1.1.2.cmml" type="integer" xref="A3.SS2.p1.1.m1.1.1.2">32</cn><cn id="A3.SS2.p1.1.m1.1.1.3.cmml" type="integer" xref="A3.SS2.p1.1.m1.1.1.3">32</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="A3.SS2.p1.1.m1.1c">32\times 32</annotation></semantics></math> pixels, computed all pairwise pixel diffs within our data, and agglomeratively grouped them into clusters using a <math alttext="&lt;100" class="ltx_Math" display="inline" id="A3.SS2.p1.2.m2.1"><semantics id="A3.SS2.p1.2.m2.1a"><mrow id="A3.SS2.p1.2.m2.1.1" xref="A3.SS2.p1.2.m2.1.1.cmml"><mi id="A3.SS2.p1.2.m2.1.1.2" xref="A3.SS2.p1.2.m2.1.1.2.cmml"></mi><mo id="A3.SS2.p1.2.m2.1.1.1" xref="A3.SS2.p1.2.m2.1.1.1.cmml">&lt;</mo><mn id="A3.SS2.p1.2.m2.1.1.3" xref="A3.SS2.p1.2.m2.1.1.3.cmml">100</mn></mrow><annotation-xml encoding="MathML-Content" id="A3.SS2.p1.2.m2.1b"><apply id="A3.SS2.p1.2.m2.1.1.cmml" xref="A3.SS2.p1.2.m2.1.1"><lt id="A3.SS2.p1.2.m2.1.1.1.cmml" xref="A3.SS2.p1.2.m2.1.1.1"></lt><csymbol cd="latexml" id="A3.SS2.p1.2.m2.1.1.2.cmml" xref="A3.SS2.p1.2.m2.1.1.2">absent</csymbol><cn id="A3.SS2.p1.2.m2.1.1.3.cmml" type="integer" xref="A3.SS2.p1.2.m2.1.1.3">100</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="A3.SS2.p1.2.m2.1c">&lt;100</annotation></semantics></math> differing pixels threshold to the nearest match as a cutoff for cluster membership.
+Within each cluster, we only retained the oldest tweet.
+It&rsquo;s also worth mentioning that while we did consider further deduplication based on SSIM&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Snell et&nbsp;al., <a class="ltx_ref" href="#bib.bib32" title>2017</a>)</cite> similarity and ngram similarity of the alt-text itself, these approaches proved computationally infeasible.</p>
+</div>
+</section>
+</section>
+<section class="ltx_appendix" id="A4">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix D </span>Implementation Details</h2>
+<div class="ltx_para ltx_noindent" id="A4.p1">
+<p class="ltx_p" id="A4.p1.2">We train our models with a batch size of 100 and an initial learning rate of <math alttext="1e-4" class="ltx_Math" display="inline" id="A4.p1.1.m1.1"><semantics id="A4.p1.1.m1.1a"><mrow id="A4.p1.1.m1.1.1" xref="A4.p1.1.m1.1.1.cmml"><mrow id="A4.p1.1.m1.1.1.2" xref="A4.p1.1.m1.1.1.2.cmml"><mn id="A4.p1.1.m1.1.1.2.2" xref="A4.p1.1.m1.1.1.2.2.cmml">1</mn><mo id="A4.p1.1.m1.1.1.2.1" lspace="0em" rspace="0em" xref="A4.p1.1.m1.1.1.2.1.cmml">&ZeroWidthSpace;</mo><mi id="A4.p1.1.m1.1.1.2.3" xref="A4.p1.1.m1.1.1.2.3.cmml">e</mi></mrow><mo id="A4.p1.1.m1.1.1.1" xref="A4.p1.1.m1.1.1.1.cmml">&minus;</mo><mn id="A4.p1.1.m1.1.1.3" xref="A4.p1.1.m1.1.1.3.cmml">4</mn></mrow><annotation-xml encoding="MathML-Content" id="A4.p1.1.m1.1b"><apply id="A4.p1.1.m1.1.1.cmml" xref="A4.p1.1.m1.1.1"><minus id="A4.p1.1.m1.1.1.1.cmml" xref="A4.p1.1.m1.1.1.1"></minus><apply id="A4.p1.1.m1.1.1.2.cmml" xref="A4.p1.1.m1.1.1.2"><times id="A4.p1.1.m1.1.1.2.1.cmml" xref="A4.p1.1.m1.1.1.2.1"></times><cn id="A4.p1.1.m1.1.1.2.2.cmml" type="integer" xref="A4.p1.1.m1.1.1.2.2">1</cn><ci id="A4.p1.1.m1.1.1.2.3.cmml" xref="A4.p1.1.m1.1.1.2.3">𝑒</ci></apply><cn id="A4.p1.1.m1.1.1.3.cmml" type="integer" xref="A4.p1.1.m1.1.1.3">4</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="A4.p1.1.m1.1c">1e-4</annotation></semantics></math> using the Adam optimization algorithm&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Kingma & Ba, <a class="ltx_ref" href="#bib.bib14" title>2015</a>)</cite>.
+Our prefixes are of size <math alttext="k=10" class="ltx_Math" display="inline" id="A4.p1.2.m2.1"><semantics id="A4.p1.2.m2.1a"><mrow id="A4.p1.2.m2.1.1" xref="A4.p1.2.m2.1.1.cmml"><mi id="A4.p1.2.m2.1.1.2" xref="A4.p1.2.m2.1.1.2.cmml">k</mi><mo id="A4.p1.2.m2.1.1.1" xref="A4.p1.2.m2.1.1.1.cmml">=</mo><mn id="A4.p1.2.m2.1.1.3" xref="A4.p1.2.m2.1.1.3.cmml">10</mn></mrow><annotation-xml encoding="MathML-Content" id="A4.p1.2.m2.1b"><apply id="A4.p1.2.m2.1.1.cmml" xref="A4.p1.2.m2.1.1"><eq id="A4.p1.2.m2.1.1.1.cmml" xref="A4.p1.2.m2.1.1.1"></eq><ci id="A4.p1.2.m2.1.1.2.cmml" xref="A4.p1.2.m2.1.1.2">𝑘</ci><cn id="A4.p1.2.m2.1.1.3.cmml" type="integer" xref="A4.p1.2.m2.1.1.3">10</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="A4.p1.2.m2.1c">k=10</annotation></semantics></math>.
+This allows training to fit on a single A6000 GPU.
+Our implementation is written in PyTorch&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Paszke et&nbsp;al., <a class="ltx_ref" href="#bib.bib27" title>2019</a>)</cite> and inherits some code from the ClipCap&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Mokady et&nbsp;al., <a class="ltx_ref" href="#bib.bib24" title>2021</a>)</cite> repository.
+Experiments train in roughly 6-18 hours depending on the model, the hyperparameter settings, and when early stopping happens (we perform early stopping based on model likelihood on the held-out validation set).</p>
+</div>
+</section>
+<section class="ltx_appendix" id="A5">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix E </span>Human Evaluation Setup</h2>
+<div class="ltx_para ltx_noindent" id="A5.p1">
+<p class="ltx_p" id="A5.p1.1">For each example, turkers were shown the image, the original tweet the image was from (including its text and any other images it contained), and the two candidate alt-text captions.
+They were never shown the original user-written alt-text.
+After providing them with a detailed explanation of alt-text and the list of desirable criteria according to Twitter&rsquo;s accessibility guide, we asked two questions: first which candidate alt-text was more fluent, and second which had a better literal description of the image.
+The models were also anonymized and their order was shuffled.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="A5.p2">
+<p class="ltx_p" id="A5.p2.1">In order to ensure high quality labels, we performed a qualification round on our reviewers.
+Considering only turkers who had completed over <math alttext="10,000" class="ltx_Math" display="inline" id="A5.p2.1.m1.2"><semantics id="A5.p2.1.m1.2a"><mrow id="A5.p2.1.m1.2.3.2" xref="A5.p2.1.m1.2.3.1.cmml"><mn id="A5.p2.1.m1.1.1" xref="A5.p2.1.m1.1.1.cmml">10</mn><mo id="A5.p2.1.m1.2.3.2.1" xref="A5.p2.1.m1.2.3.1.cmml">,</mo><mn id="A5.p2.1.m1.2.2" xref="A5.p2.1.m1.2.2.cmml">000</mn></mrow><annotation-xml encoding="MathML-Content" id="A5.p2.1.m1.2b"><list id="A5.p2.1.m1.2.3.1.cmml" xref="A5.p2.1.m1.2.3.2"><cn id="A5.p2.1.m1.1.1.cmml" type="integer" xref="A5.p2.1.m1.1.1">10</cn><cn id="A5.p2.1.m1.2.2.cmml" type="integer" xref="A5.p2.1.m1.2.2">000</cn></list></annotation-xml><annotation encoding="application/x-tex" id="A5.p2.1.m1.2c">10,000</annotation></semantics></math> HITs, we showed them three example images where the two candidate alt-text captions were the gold user-written reference and a manually written, intentionally clearly lower quality caption.
+Only reviewers who successfully picked the real user-written caption for both fluency and descriptiveness for all three examples were allowed to participate in the final larger scale comparisons between our model and frozen ClipCap, and our model and ClipCap from scratch.</p>
+</div>
+</section>
+</article>
+</div>
+<div class="ar5iv-footer"><a class="ar5iv-nav-button ar5iv-nav-button-prev" href="/html/2305.14778">◄</a>
+<a class="ar5iv-home-button" href="/"><img alt="ar5iv homepage" height="40" src="/assets/ar5iv.png"></a>
+<a class="ar5iv-text-button" href="/feeling_lucky">Feeling<br>lucky?</a>
+<a aria-hidden="true" href="/land_of_honey_and_milk" rel="nofollow" tabindex="-1"></a>
+<a class="ar5iv-text-button ar5iv-severity-warning" href="/log/2305.14779">Conversion<br>report</a>
+<a class="ar5iv-text-button" href="https://github.com/dginev/ar5iv/issues/new?template=improve-article--arxiv-id-.md&title=Improve+article+2305.14779" target="_blank">Report<br>an issue</a>
+<a class="ar5iv-text-button arxiv-ui-theme" href="https://arxiv.org/abs/2305.14779">View&nbsp;original<br>on&nbsp;arXiv</a><a class="ar5iv-nav-button ar5iv-nav-button-next" href="/html/2305.14781">►</a>
+</div><footer class="ltx_page_footer">
+<a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle ar5iv color scheme"><span class="color-scheme-icon"></span></a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/license" target="_blank">Copyright</a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/policies/privacy_policy" target="_blank">Privacy Policy</a>
+<div class="ltx_page_logo">Generated  on Thu Feb 29 05:22:30 2024 by <a class="ltx_LaTeXML_logo" href="http://dlmf.nist.gov/LaTeXML/" target="_blank"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img alt="Mascot Sammy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg=="></a>
+</div></footer>
+</div>
+<script>
+      var canMathML = typeof(MathMLElement) == "function";
+      if (!canMathML) {
+        var body = document.querySelector("body");
+        body.firstElementChild.setAttribute('style', 'opacity: 0;');
+        var loading = document.createElement("div");
+        loading.setAttribute("id", "mathjax-loading-spinner");
+        var message = document.createElement("div");
+        message.setAttribute("id", "mathjax-loading-message");
+        message.innerText = "Typesetting Equations...";
+        body.prepend(loading);
+        body.prepend(message);
+
+        var el = document.createElement("script");
+        el.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+        document.querySelector("head").appendChild(el);
+
+        window.MathJax = {
+          startup: {
+            pageReady: () => {
+              return MathJax.startup.defaultPageReady().then(() => {
+                body.removeChild(loading);
+                body.removeChild(message);
+                body.firstElementChild.removeAttribute('style');
+              }); } } };
+      }
+    </script>
+<script>
+    // Auxiliary function, building the preview feature when
+    // an inline citation is clicked
+    function clicked_cite(e) {
+      e.preventDefault();
+      let cite = this.closest('.ltx_cite');
+      let next = cite.nextSibling;
+      if (next && next.nodeType == Node.ELEMENT_NODE && next.getAttribute('class') == "ar5iv-bibitem-preview") {
+        next.remove();
+        return; }
+      // Before adding a preview modal,
+      // cleanup older previews, in case they're still open
+      document.querySelectorAll('span.ar5iv-bibitem-preview').forEach(function(node) {
+        node.remove();
+      })
+
+      // Create the preview
+      preview = document.createElement('span');
+      preview.setAttribute('class','ar5iv-bibitem-preview');
+      let target = document.getElementById(this.getAttribute('href').slice(1));
+      target.childNodes.forEach(function (child) {
+        preview.append(child.cloneNode(true));
+      });
+      let close_x = document.createElement('button');
+      close_x.setAttribute("aria-label","Close modal for bibliography item preview");
+      close_x.textContent = "×";
+      close_x.setAttribute('class', 'ar5iv-button-close-preview');
+      close_x.setAttribute('onclick','this.parentNode.remove()');
+      preview.append(close_x);
+      preview.querySelectorAll('.ltx_tag_bibitem').forEach(function(node) {
+        node.remove();
+      });
+      cite.parentNode.insertBefore(preview, cite.nextSibling);
+      return;
+    }
+    // Global Document initialization:
+    // - assign the preview feature to all inline citation links
+    document.querySelectorAll(".ltx_cite .ltx_ref").forEach(function (link) {
+      link.addEventListener("click", clicked_cite);
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+% \kenneth{TODO TY: If possible, replace the footnotes with citations. Footnotes eat space.}
+
+A total of 14 methods were included for comparison: 
+six reuse baselines with six input variations
+% (Mention, Paragraph, Window[0, 1], Window[0, 2], Window[1, 1], and Window[2, 2]); 
+(M, P, W[0, 1], W[0, 2], W[1, 1], and W[2, 2]);
+five text summarization models with five inputs
+% (Mention, Mention+OCR, Paragraph, Paragraph+OCR, and OCR); 
+(M, M+O, P, P+O, and O);
+one text summarization model using P+O with controlled data quality; 
+and two vision-to-language models (BEiT+GPT-2 and TrOCR). 
+Note that we use subscripts of M, P, W, O, B to denote the input features: 
+Mention, Paragraph, Window, OCR, and Better data quality, respectively.
+% For example, Reuse$_{W[0, 1]}$ refers to the Reuse baseline outputting Window[0, 1] and Pegasus$_{P+O+B}$ refers to the text summarization model using better quality of Paragraph+OCR as the input.
+% \kenneth{We could probably remove FOR EXAMPLE to save space.}
+The model training details and decoding configuration are provided in \Cref{sec:appendix-model-training-details}.
+% Next, we describe the model training details for both the text summarization models and the vision-to-language models.
+% Reuse$_{M}$, Reuse$_{P}$, Reuse$_{W[0, 1]}$
+% Pegasus$_{M}$, Pegasus$_{M+O}$, Pegasus$_{M+O+B}$
+
+% \paragraph{Model Training Detail.}\label{sec:appendix-model-training}
+% \cy{Need update}
+
+% \kenneth{TODO CY: Move the following details to Appendix.}
+
+%We then applied both automatic evaluation and human evaluation to compare model performance.
+
+

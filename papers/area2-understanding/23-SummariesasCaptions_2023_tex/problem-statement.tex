@@ -1,0 +1,92 @@
+%\sukim{looks like it could be moved to the next section since it's a bit short as a section and still about our task.}
+
+%\kenneth{Define the task and term here.}
+A document $D$ contains $n$ figures, $F_1$ to $F_n$, where $F_i$ has a caption $C_i$ that was written by the document author.
+In document $D$, $j$ sentences, $M_{i,1}$ to $M_{i,j}$, explicitly mention $F_i$ (\eg, ``As shown in $F_i$...'').
+%The objective of this work is to automatically generate a high-quality caption $C_i'$ for figure $F_i$ based solely on all its mentions ($M_{i,1}$ to $M_{i,j}$.)
+The objective of this work is to automatically generate a high-quality caption, $C_i'$, for figure $F_i$ using only its mentions ($M_{i,1}$ to $M_{i,j}$) and the surrounding text of the mentions in document $D$.
+%We hypothesize that a high-quality caption for $F_i$, $C_i'$, can be automatically generated 
+%\kenneth{Have a clear problem statement -- what do you expect or hope to find?}
+%Automatic generation of high-quality captions for figures in a document $D$ with $n$ figures, $F_1$ to $F_n$, based solely on their mentions, $M_{i,1}$ to $M_{i,j}$, in the text of document $D$.
+%The quality of the generated captions, $C_i'$, will be evaluated through two approaches: similarity to the original captions, $C_i$, and perception of target readers of document $D$.
+
+%\paragraph{Terminology.}
+%In the remaining of the paper, we used the following terminology:
+%In the rest of the paper, 
+%The following terms will be used to communicate based on the formulation above.
+In the rest of the paper, we use these terms:
+
+
+
+
+
+\input{tables/analysis-alignment}
+
+
+
+
+
+
+
+\begin{comment}
+
+In this paper, ``\textbf{Mention}'' refers to the sentence in an article that explicitly refers to the target figure, and 
+``\textbf{Paragraph}'' refers to all the text under the same \texttt{<p>} tag (paragraph tag) as the Mention in the PDF parsing result.
+As sentences near a Mention might be more relevant, we also extracted $n$ preceding sentences and $m$ following sentences to form \textbf{Windows~[n, m]}.
+For example, ``Windows [1, 2]'' refers to a text snippet of five sentences, \ie, one preceding sentence, one Mention sentence, and two following sentences.
+
+% \vspace{-1pc}
+
+\end{comment}
+
+
+\begin{itemize} [leftmargin=*,itemsep=0mm]
+
+    \item 
+    %A ``\textbf{Mention}'' refers to a sentence in a document that explicitly mentions the target figure, such as ``As shown in Figure 6 ...'' Since there might be multiple Mentions throughout the paper, without further specification, we referred to the first Mention.
+    A \textbf{``Mention''} refers to a sentence in a document that explicitly mentions the target figure, \eg, ``As shown in Figure 6...''
+    If there are multiple Mentions, the first Mention is referred to. %without further specification.
+
+
+
+
+    
+%\vspace{-.5pc}
+
+    \item 
+    
+    %A ``\textbf{Paragraph}'' refers to all the text under the same \texttt{<p>} tag as the Mention in the PDF-parsing result.
+    %A \textbf{``Paragraph''} refers to all the text under the same <p> tag as the Mention in the result of PDF parsing.
+    A \textbf{``Paragraph''} refers to a section of text containing a Mention. In this work, the boundaries of a Paragraph are determined by the \texttt{<p>} tag produced by PDF parsing.
+
+
+
+
+
+
+
+
+
+    
+%\vspace{-1pc}
+
+    \item 
+    %As sentences near a Mention may also be relevant, we extracted $n$ preceding sentences and $m$ following sentences to form \textbf{Window[n, m]}. For example, ``Window[1, 2]'' refers to a text snippet of four sentences, \ie, one preceding sentence, one Mention sentence, and two following sentences.
+    Sentences near a Mention may contain relevant information, so we extracted $n$ preceding sentences and $m$ following sentences to form the \textbf{``Window[n,~m]''} text snippet.
+    For instance, ``Window[1,~2]'' refers to a snippet of four sentences, including one preceding sentence, the Mention sentence, and two following sentences. %\sukim{You define \textbf{``Window[n,~m]''} here, but it's not mentioned in the section 4 but appears in the experiment, which could make readers confusing. Since this is just another type of input, we could move it to the experiment or merge with \textbf{Paragraph} here.}
+
+    %\cy{Should we also say something about OCR since it is used in the motivating analysis?}
+
+
+
+    \item 
+    An \textbf{``OCR''} refers to the textual information (\eg, legends, labels, etc.) extracted from the image, by optical character recognition (OCR) software.
+
+
+\end{itemize}
+
+
+
+
+
+

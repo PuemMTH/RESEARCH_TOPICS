@@ -1,0 +1,240 @@
+{
+  "arxiv_id": "1801.08163",
+  "title": "DVQA: Understanding Data Visualizations via Question Answering",
+  "authors": [
+    "Kushal Kafle1,Brian Price2Scott Cohen2Christopher Kanan11Rochester Institute of Technology2Adobe Research1{kk6055, kanan}@rit.edu2{bprice, scohen}@adobe.com"
+  ],
+  "abstract": "Bar charts are an effective way to convey numeric information, but today’s algorithms cannot parse them. Existing methods fail when faced with even minor variations in appearance. Here, we present DVQA, a dataset that tests many aspects of bar chart understanding in a question answering framework. Unlike visual question answering (VQA), DVQA requires processing words and answers that are unique to a particular bar chart. State-of-the-art VQA algorithms perform poorly on DVQA, and we propose two strong baselines that perform considerably better. Our work will enable algorithms to automatically extract numeric and semantic information from vast quantities of bar charts found in scientific publications, Internet articles, business reports, and many other areas.",
+  "year": "2018",
+  "figure_count": 45,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:DVQA involves answering questions about diagrams. We present a dataset for DVQA with bar charts that exhibit enormous variety in appearance and style. We show that VQA systems cannot answer many DVQA questions and we describe more effective algorithms.",
+      "src": "/html/1801.08163/assets/images/overview.png"
+    },
+    {
+      "id": "S2.F2",
+      "caption": "Figure 2:Natural images vs. bar charts.Left: Small changes in an image typically have little impact on a question in VQA.Right:Bar charts convey information using a sparse, but precise, set of visual elements. Even small changes can completely alter the information in the chart.",
+      "src": "/html/1801.08163/assets/images/natural.png"
+    },
+    {
+      "id": "S2.F2.1",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images/natural.png"
+    },
+    {
+      "id": "S2.F2.2",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images/bar_train_00000180.png"
+    },
+    {
+      "id": "S3.F3",
+      "caption": "Figure 3:Example bar chart images from DVQA. DVQA contains significant variation in appearance and style.",
+      "src": "/html/1801.08163/assets/images/bar_train_00000059.png"
+    },
+    {
+      "id": "S3.F3.1",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images/bar_train_00000059.png"
+    },
+    {
+      "id": "S3.F3.2",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images/bar_train_00000064.png"
+    },
+    {
+      "id": "S3.F3.3",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images/bar_train_00000068.png"
+    },
+    {
+      "id": "S3.F3.4",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images/bar_train_00000697.png"
+    },
+    {
+      "id": "S3.F3.5",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images/bar_train_00000315.png"
+    },
+    {
+      "id": "S4.F4",
+      "caption": "Figure 4:Overview of our Multi-Output Model (MOM) for DVQA. MOM uses two sub-networks: 1) classification sub-network that is responsible forgeneric answers, and 2) OCR sub-network that is responsible forchart-specific answers.",
+      "src": "/html/1801.08163/assets/x1.png"
+    },
+    {
+      "id": "S5.F5",
+      "caption": "(a)Q: How many objects are preferred by less than 7 people in at least one category?SAN: two✓MOM: two✓SANDY: two✓Q: What category does the medium purple color represent?SAN: closet✗MOM: lisit✗SANDY: list✓",
+      "src": "/html/1801.08163/assets/images/bar_val_easy_00044218.png"
+    },
+    {
+      "id": "S5.F5.sf1",
+      "caption": "(a)Q: How many objects are preferred by less than 7 people in at least one category?SAN: two✓MOM: two✓SANDY: two✓Q: What category does the medium purple color represent?SAN: closet✗MOM: lisit✗SANDY: list✓",
+      "src": "/html/1801.08163/assets/images/bar_val_easy_00044218.png"
+    },
+    {
+      "id": "S5.F5.sf2",
+      "caption": "(b)Q: Which item sold the most number of units summed across all the stores?SAN: closet✗MOM: branch✓SANDY: branch✓Q: How many units of the item branch were sold in the store sister?SAN: 9✓MOM: 9✓SANDY: 9✓",
+      "src": "/html/1801.08163/assets/images/bar_val_easy_00044294.png"
+    },
+    {
+      "id": "S5.F5.sf3",
+      "caption": "(c)Q: Are the values in the chart presented in a percentage scale?SAN: no✓MOM: no✓SANDY: no✓Q: How many units of items lead and pure were sold?SAN: 8✗MOM: 8✗SANDY: 7✓",
+      "src": "/html/1801.08163/assets/images/bar_val_easy_00044295.png"
+    },
+    {
+      "id": "A1.F6",
+      "caption": "(a)What is the value oflabel1inlegend2?",
+      "src": "/html/1801.08163/assets/images-supp/img7.png"
+    },
+    {
+      "id": "A1.F6.sf1",
+      "caption": "(a)What is the value oflabel1inlegend2?",
+      "src": "/html/1801.08163/assets/images-supp/img7.png"
+    },
+    {
+      "id": "A1.F6.sf2",
+      "caption": "(b)What is the accuracy of the algorithmalgorithm1in the datasetdataset2?",
+      "src": "/html/1801.08163/assets/images-supp/img6.png"
+    },
+    {
+      "id": "A1.F6.sf3",
+      "caption": "(c)How many units of the itemitem1was sold in the storestore2?",
+      "src": "/html/1801.08163/assets/images-supp/img8.png"
+    },
+    {
+      "id": "A1.F6.sf4",
+      "caption": "(d)What percentage of people prefer the objectobject1in the categorycategory2?",
+      "src": "/html/1801.08163/assets/images-supp/img9.png"
+    },
+    {
+      "id": "A1.F7",
+      "caption": "Figure 7:Examples of discarded visualizations due to the bar-chart being smaller than 50% of the total image area.",
+      "src": "/html/1801.08163/assets/images-supp/bar_train_00000072.png"
+    },
+    {
+      "id": "A1.F7.1",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images-supp/bar_train_00000072.png"
+    },
+    {
+      "id": "A1.F7.2",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images-supp/bar_train_00000357.png"
+    },
+    {
+      "id": "A2.F8",
+      "caption": "Figure 8:Some examples showing correctly predicted bounding boxes predicted by our MOM model. Magenta shows the ground truth and green shows the predicted bounding box.",
+      "src": "/html/1801.08163/assets/images-supp/47.png"
+    },
+    {
+      "id": "A2.F8.1",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images-supp/47.png"
+    },
+    {
+      "id": "A2.F8.2",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images-supp/83.png"
+    },
+    {
+      "id": "A2.F8.3",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images-supp/427.png"
+    },
+    {
+      "id": "A2.F9",
+      "caption": "Figure 9:Some examples showing incorrectly predicted bounding boxes predicted by our MOM model. Often the prediction is off by only a few pixels, but the since the OCR requires total coverage, it results in an erroneous prediction. Magenta shows the ground truth and green shows the predicted bounding box.",
+      "src": "/html/1801.08163/assets/images-supp/337.png"
+    },
+    {
+      "id": "A2.F9.1",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images-supp/337.png"
+    },
+    {
+      "id": "A2.F9.2",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images-supp/478.png"
+    },
+    {
+      "id": "A2.F9.3",
+      "caption": "",
+      "src": "/html/1801.08163/assets/images-supp/438.png"
+    },
+    {
+      "id": "A3.F10",
+      "caption": "(a)Q: What is the label of the second bar from the left in each group?SAN: closet✗MOM: guest✓SANDY: guest✓Q: Is each bar a single solid color without patterns?SAN: yes✓MOM: yes✓SANDY: yes✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044205.png"
+    },
+    {
+      "id": "A3.F10.sf1",
+      "caption": "(a)Q: What is the label of the second bar from the left in each group?SAN: closet✗MOM: guest✓SANDY: guest✓Q: Is each bar a single solid color without patterns?SAN: yes✓MOM: yes✓SANDY: yes✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044205.png"
+    },
+    {
+      "id": "A3.F10.sf2",
+      "caption": "(b)Q: How many items sold less than 6 units in at least one store?SAN: four✓MOM: four✓SANDY: four✓Q: Does the chart contain stacked bars?SAN: yes✓MOM: yes✓SANDY: yes✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044232.png"
+    },
+    {
+      "id": "A3.F10.sf3",
+      "caption": "(c)Q: What is the highest accuracy reported in the whole chart?SAN: 7✓MOM: 7✓SANDY: 7✓Q: Is the accuracy of the algorithm leg in the dataset suite smaller than the accuracy of the algorithm chest in the dataset sample?SAN: no✗MOM: no✗SANDY: yes✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044236.png"
+    },
+    {
+      "id": "A3.F10.sf4",
+      "caption": "(d)Q: Which bar has the largest value?SAN: closet✗MOM: aspect✓SANDY: aspect✓Q: What is the value of the largest bar?SAN:109superscript10910^{9}✓MOM:109superscript10910^{9}✓SANDY:109superscript10910^{9}✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044618.png"
+    },
+    {
+      "id": "A3.F10.sf5",
+      "caption": "(e)Q: How many algorithms have accuracy lower than 3 in at least one dataset?SAN: zero✓MOM: zero✓SANDY: zero✓Q: Which algorithm has highest accuracy for any dataset?SAN: closet✗MOM: girl✓SANDY: girl✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044581.png"
+    },
+    {
+      "id": "A3.F10.sf6",
+      "caption": "(f)Q: Which object is preferred by the most number of people summed across all the categories?SAN: closet✗MOM: site✓SANDY: site✓Q: Are the bars horizontal?SAN: yes✓MOM: yes✓SANDY: yes✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044487.png"
+    },
+    {
+      "id": "A3.F11",
+      "caption": "(a)Q: What is the label of the third bar from the bottom?SAN: closet✗MOM: whidkw✗SANDY: widow✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044201.png"
+    },
+    {
+      "id": "A3.F11.sf1",
+      "caption": "(a)Q: What is the label of the third bar from the bottom?SAN: closet✗MOM: whidkw✗SANDY: widow✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044201.png"
+    },
+    {
+      "id": "A3.F11.sf2",
+      "caption": "(b)Q: Which algorithm has the largest accuracy summed across all the datasets?SAN: closet✗MOM: lack✗SANDY: vector✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044203.png"
+    },
+    {
+      "id": "A3.F11.sf3",
+      "caption": "(c)Q: Is the value of output smaller than demand?SAN: no✗MOM: no✗SANDY: yes✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044204.png"
+    },
+    {
+      "id": "A3.F11.sf4",
+      "caption": "(d)Q: Which algorithm has the smallest accuracy summed across all the datasets?SAN: closet✗MOM: fil✗SANDY: editor✗Q: What is the highest accuracy reported in the whole chart?SAN: 60✗MOM: 60✗SANDY: 60✗",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044211.png"
+    },
+    {
+      "id": "A3.F11.sf5",
+      "caption": "(e)Q: How many total people preferred the object terror across all the categories?SAN: 10✗MOM: 10✗SANDY: 10✗Q: How many people prefer the object terror in the category roll?SAN: 1✗MOM: 1✗SANDY: 9✓",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044216.png"
+    },
+    {
+      "id": "A3.F11.sf6",
+      "caption": "(f)Q: What is the highest accuracy reported in the whole chart?SAN: 90✓MOM: 90✓SANDY: 80✗Q: Which algorithm has the smallest accuracy summed across all the datasets?SAN: closet✗MOM: record✓SANDY: park✗",
+      "src": "/html/1801.08163/assets/images-supp/bar_val_easy_00044619.png"
+    }
+  ],
+  "paper_number": 28,
+  "slug": "DVQA",
+  "base_name": "28-DVQA_2018"
+}

@@ -1,0 +1,280 @@
+\pdfoutput=1
+
+\documentclass[11pt]{article}
+
+\usepackage[]{acl}
+
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{multirow}
+\usepackage[export]{adjustbox}
+\usepackage{booktabs}
+\usepackage{nicematrix}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage[outline]{contour}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{subcaption}
+\usepackage{comment}
+\usepackage{amsmath}
+
+\usepackage{latexsym}
+\usepackage{amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{bbm}
+\usepackage{amssymb}
+
+\newcommand{\ku}{$^1$}
+\newcommand{\is}{$^2$}
+\newcommand{\com}{$^3$}
+
+\newcommand{\wlcomment}[1]{      \colorbox{green}{   \parbox{.8\linewidth}{ Wenyan: #1}  }}
+
+
+\newcommand{\latexfile}[1]{\input{./#1}}
+\newcommand{\negcolor}[1]{\cellcolor[HTML]{fff0f1}{#1}}
+\newcommand{\lightposcolor}[1]{\cellcolor[HTML]{ffdcde}{#1}}
+\newcommand{\poscolor}[1]{\cellcolor[HTML]{DFE9B9}{#1}}
+\DeclareMathOperator{\Proportion}{Proportion}
+
+
+\title{Understanding Retrieval Robustness for \\Retrieval-Augmented Image Captioning}
+
+\author{Wenyan Li\ku, Jiaang Li\ku, Rita Ramos\is, Raphael Tang\com, Desmond Elliott\ku \\
+{\ku}Department of Computer Science, University of Copenhagen \\
+{\is}INESC-ID, Instituto Superior Tecnico, University of Lisbon {\com}Comcast Applied AI\\
+\texttt{\{weli, jili, de\}@di.ku.dk} \\
+  \texttt{ritaparadaramos@tecnico.ulisboa.pt} \\
+  \texttt{raphael\_tang@comcast.com}}
+
+
+
+\begin{document}
+\maketitle
+
+\latexfile{00-abstract}
+\latexfile{01-intro}
+\latexfile{02-related}
+\latexfile{03-robust-eval}
+\latexfile{04-mechanism}
+\latexfile{05-ret-robust}
+\latexfile{06-discussion}
+\latexfile{07-conclusion}
+
+
+\bibliography{anthology,custom}
+\bibliographystyle{acl_natbib}
+
+\appendix
+\newpage
+
+
+\section{Majority Tokens\label{appendix:maj_tokens}}
+
+
+\subsection{Stop words list}
+
+In this section, we present the stop words that were filtered from the COCO dataset in the experiments described in Section \ref{subsec:mv_exp}:\\ 
+
+[``out'', ``some'', ``of'', ``is'', ``while'', ``are'', ``with'', ``down'', ``has'', ``over'', ``the'', ``next'', ``up'', ``near'', ``several'', ``other'', ``at'', ``top'', ``from'', ``in'', ``on'', ``a'', ``there'', ``an'', ``to'', ``and'', ``her'', ``front'', ``by'', ``for'', ``his'', ``it'']
+
+\section{More Visualization}
+
+
+
+\begin{figure*}[t]
+    \centering
+    {\includegraphics[width=1\linewidth]{figs/irr2_mt_in_cap_2025.png}}\\
+    {\includegraphics[width=1\linewidth]{figs/irr2_mt_in_cap_3915.png}}\\
+    {\includegraphics[width=1\linewidth]{figs/irr2_mt_in_cap_500.png}}
+    \caption{Attribution visualization with few more examples. Here the model prediction is misled by the majority tokens in the 2B1G setting.}
+    \label{fig:opt-attribution-vis-more}
+\end{figure*}
+
+
+\subsection{Input Attribution with Integrated Gradients\label{appendix:attribution_vis}}
+ In Figure~\ref{fig:opt-attribution-vis-more}, we show more attribution visualization for the experiment setup 2B1G in Section~\ref{sec:mv} where high attribution scores are observed in the majority tokens and mislead the model to generate incorrect captions.
+
+
+
+
+
+
+
+
+\subsection{Attention\label{appendix:attention_vis}}
+In Figure~\ref{fig:gpt2-self-cross-attentions} and Figure~\ref{fig:opt-self-cross-attentions_all}, we depict the distributions of both self-attention and cross-attention scores across various heads and layers for \textsc{SmallCap} with GPT-2 and OPT decoder variants.
+\begin{figure}[ht]
+    \centering
+    \subfloat[\label{subfig:gpt2-self-attention}Self attention distribution.]{\includegraphics[width=1\linewidth]{figs/gpt2_self_v1.pdf}}\\
+    \subfloat[\label{subfig:gpt2-cross-attention-text}Cross attention distribution. Distribution of max attention scores of the interaction between various part of text prompt and image patches.]{\includegraphics[width=1\linewidth]{figs/gpt2_cross_text_v1.pdf}}\\
+    \subfloat[\label{subfig:gpt2-cross-attention-cls}Cross attention distribution. Distribution of max attention scores of the interaction between two type of image patches (cls, others) and all text tokens. ]{\includegraphics[width=1\linewidth]{figs/gpt2_cross_cls.pdf}}
+    \caption{Statistics of max attention scores in self and cross attentions from different different layers and heads with \textsc{SmallCap} (GPT2 variant). Compute the proportion of each attention scores from self and cross attention belongs to which parts.}
+    \label{fig:gpt2-self-cross-attentions}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \subfloat[\label{subfig:opt-self-attention}Self attention distribution.]{\includegraphics[width=1\linewidth]{figs/opt_self_all_v1.pdf}}\\
+    \subfloat[\label{subfig:opt-cross-attention-text}Cross attention distribution. Distribution of max attention scores of the interaction between various part of text prompt and image patches.]{\includegraphics[width=1\linewidth]{figs/opt_cross_text_tokens_all_v1.pdf}}\\
+    \subfloat[\label{subfig:opt-cross-attention-cls}Cross attention distribution. Distribution of max attention scores of the interaction between two type of image patches (cls, others) and all text tokens. ]{\includegraphics[width=1\linewidth]{figs/opt_cross_cls_all.pdf}}
+    \caption{Statistics of max attention scores in self and cross attentions from different different layers and heads with \textsc{SmallCap} (OPT-125M variant). Compute the proportion of each attention scores from self and cross attention belongs to which parts.}
+    \label{fig:opt-self-cross-attentions_all}
+\end{figure}
+
+\section{Qualitative examples}
+\label{appendix:qua}
+We show more qualitative examples in Figure~\ref{fig:qua-nocaps} and Figure~\ref{fig:pred}.
+\begin{figure*}[ht]
+    \centering
+        \includegraphics[width=0.96\linewidth, height=2.8in]{figs/qua_nocaps.pdf}
+        \caption{Qualitative examples of generated captions on NoCaps \textbf{out-domain} samples where the captions retrieved for the given image can be noisy and irrelevant. Here we retrieve four captions for each image. \label{fig:qua-nocaps}}
+\end{figure*} 
+
+
+\begin{figure*}[ht]
+    \centering
+        \includegraphics[width=0.96\linewidth, height=2.8in]{figs/qua7.pdf}
+        \includegraphics[width=0.96\linewidth, height=2.8in]{figs/robcap-fig12.pdf}
+        \caption{More qualitative examples of generated captions when \textbf{randomly} retrieving four captions for a given image. \label{fig:pred}}
+\end{figure*} 
+
+\section{More results\label{appendix:more_results}}
+
+\paragraph*{Order robustness evaluation}
+
+In Table~\ref{tab:order-coco-ref} and Table~\ref{tab:order-nocaps-ref}, we provide both CIDEr and BLEU4 scores for order robustness evaluation (Section~\ref{sec:robust-eval}).
+\begin{table}[t]
+    \resizebox{\linewidth}{!}{
+     \begin{tabular}{llrr}
+        \toprule
+        \multicolumn{2}{c}{Retrieval Order} & \multicolumn{2}{c}{SmallCap LM}\\
+        Training & Evaluation & \multicolumn{1}{c}{GPT-2} & \multicolumn{1}{c}{OPT} \\
+        \midrule 
+        \multirow{3}{*}{default}
+        & default & 116.4/36.1 &  120.3/37.1 \\
+        & permute &  116.2/36.0 & 120.1/37.0 \\
+        & reverse & 115.8/36.0	& 119.7/36.8 \\
+        \midrule
+        permute & permute &  \textbf{117.2/36.4} & \textbf{120.4/37.2} \\
+        reverse & reverse & 116.4/36.1 & \textbf{120.7}/37.0	\\ 
+        \bottomrule
+        \end{tabular}
+        }
+    \caption{Results of manipulating the order of the top-k retrieved captions by either randomly permuting or reversing the list. We report CIDEr/BLEU4 scores on the COCO validation set using either a GPT-2 or OPT backbone in the SmallCap model. \label{tab:order-coco-ref}}
+
+\end{table}
+
+
+\begin{table}[t]
+    \resizebox{\linewidth}{!}{
+     \begin{tabular}{llrrr}
+        \toprule   
+        Model & Retrieval Order & In & Near & Out \\
+        \midrule
+         \multirow{2}{*}{GPT2} & default & 80.1/37.9 &79.4/35.9 &69.6/25.3 \\
+         & permute &  \textbf{81.5/38.8} & 79.7/36.6 & \textbf{69.8/26.2} \\
+         & reverse & 80.4/38.4	& \textbf{80.1/36.3}	& 68.4/25.1\\
+         \midrule
+        \multirow{2}{*}{OPT} & default & 91.0/27.1 & 84.4/23.8 &	76.3/15.0 \\
+         & permute &  \textbf{94.2/28.6} & 84.0/25.0 & \textbf{79.4/15.8} \\
+         & reverse & 92.5/28.4 & \textbf{85.6/25.3}	& 75.9/14.2\\ 
+        \bottomrule
+        \end{tabular}
+        }
+    \caption{Complete results with both CIDEr/BLEU4 on the NoCaps dataset when evaluated with different order of the top-four retrieved captions. The order applies to both train and evaluation stage.\label{tab:order-nocaps-ref}}
+    \vspace{-12pt}
+\end{table}
+
+\paragraph*{Number of retrieved captions for sample-$k$ training}
+We experiment with different size of the retrieval candidate list from which we randomly select captions for sample-$k$ training (Table~\ref{tab:largek}).
+
+\begin{table}[ht]
+\centering
+    \resizebox{\linewidth}{!}{
+     \begin{tabular}{llccccccc}
+        \toprule   
+          & & & \multicolumn{3}{c}{COCO} & 
+          \\ \cmidrule(rl){4-6} 
+        Size & $k$ & VizWiz & top-$k$ & last-$k$ & random\\
+        \midrule
+         7 & 4  
+        & \text{36.0}
+         & \text{119.2} & \text{117.1}	&\text{71.0}	
+         \\
+          10 & 4  
+        & \text{36.0}
+         & \textbf{119.3} & \textbf{118.3}	&\text{67.6}	
+         \\
+         50 & 4  
+        & \text{33.9}
+         & \text{118.1} & \text{117.7}	&\textbf{81.2}	
+         \\
+        \arrayrulecolor{black}\bottomrule 
+        \end{tabular}
+        }
+    \caption{CIDEr score when sampling from different size of retrieval candidates. We see more improvements on random $k$ evaluation while almost keeping the same level of in-domain performance. With more noise involved during training, we would expect a longer training time would yield more robust performance.\label{tab:largek}}
+\end{table}
+
+\paragraph*{Percentage of tokens that are likely to be copied}
+In Table~\ref{tab:mt-token-pct} we show the percentage of tokens that are likely to be copied from retrieved captions averaging through all samples in the validation set. Majority tokens takes more than half of the copied tokens.
+
+\begin{table}[ht]
+    \resizebox{\linewidth}{!}{
+     \begin{tabular}{lrrrr} 
+         & k=1 & 2 & 3 & 4 \\
+        \toprule 
+        \rowcolor[gray]{0.95}
+        $T_{R}\in\text{Pred}$ & 49.1 & 63.3 & 69.8 & 75.7 \\
+        $T_{R}\in\text{Pred (sample-k)}$  & 46.0 & 61.5 & 69.5 & 74.0 \\
+        \rowcolor[gray]{0.95}
+        $T_{M}\in\text{Pred}$  & - & 33.1 & 45.7 & 54.5 \\
+        $T_{M}\in\text{Pred (sample-k)}$  & - & 32.5 & 45.3 & 53.3 \\
+        \bottomrule
+        \end{tabular}
+        }
+    \caption{Percentage of tokens in the predicted caption that are likely copied from majority tokens in retrieved captions in the COCO validation set. $T_{R}$ represent tokens in retrieved captions. $T_{M}$ represent the majority tokens in retrieved captions. \label{tab:mt-token-pct}}
+\end{table}
+
+
+\paragraph*{Comparison with other methods}
+Inspired by~\citet{ret-robust23}, we have considered intentionally including less relevant captions by including one irrelevant caption, one low-ranked caption, and top-2 relevant captions instead of using top-4 retrieved captions. However, in our preliminary experiments, this strategy does not perform as well as the sampling approach, likely due to the high noise level it introduced.
+\begin{table}[h]
+    \centering
+    \resizebox{\linewidth}{!}{
+    \begin{tabular}{lcccccc}
+        \toprule
+        & \multicolumn{3}{c}{COCO Evaluation} & \multicolumn{3}{c}{NoCaps Evaluation} \\
+        \cmidrule(lr){2-4} \cmidrule(lr){5-7}
+        Method & top-k & last-k & random & In & Near & Out \\
+        \midrule
+        top-4    & 120.1 & 117.1 & 70.1 & 87.4 & 79.6 & 68.3 \\
+        sample-4  & 119.2 & 118.6 & 73.1 & 89.7 & 80.9 & 71.1 \\
+        mixed-4   & 119.2 & 118.1 & 66.7 & 59.9 & 57.9 & 39.4 \\
+        \bottomrule
+    \end{tabular}}
+    \caption{CIDEr on COCO and NoCaps.\label{tab:other}}
+\end{table}
+
+        
+         
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}

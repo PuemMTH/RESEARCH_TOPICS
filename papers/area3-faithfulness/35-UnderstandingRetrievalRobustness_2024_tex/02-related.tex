@@ -1,0 +1,33 @@
+\section{Related Work}
+\label{sec:related}
+
+\paragraph*{Robustness of retrieval-augmented models.}
+Retrieval-augmented generation (RAG) involves enhancing the generation process by incorporating retrieved information from an external datastore as additional context to the input \cite{rag}. RAG models have shown to improve performance across a variety of NLP tasks \cite{mialon2023augmented}. 
+However, RAG models can overly rely on retrieved information, resulting in inaccurate generation when the retrieved context is flawed \cite{yan2024corrective,ret-robust23}.
+
+Recent efforts aim to enhance RAG model robustness against misguided or hallucinated generations. One approach involves filtering retrieved content \citep{wang2023learning, ret-robust23, racm3, yan2024corrective, asai2023self} by applying or training an additional evaluator. Another direction focuses on improving robustness during the training of the generation model itself. Specifically, for retrieval-augmented question answering with large language models, \citet{ret-robust23} propose continued training with a synthetic dataset that contains both relevant and irrelevant context, while \citet{cuconasu2024noise} suggests incorporating irrelevant documents. In retrieval-augmented translation, robustness is improved through shuffling retrieved translations \citep{hoang2022improving}, ensemble model decoding \citep{hao-etal-2023-rethinking}, and controlled interactions between source and retrieved translations \citep{hoang-etal-2023-improving}.
+
+
+
+
+
+
+\paragraph{Retrieval-augmented image captioning.}
+\label{para:raic}
+Image captioning is the task that describes the visual contents of an image in natural language \cite{xu2015show, osman2023survey}. Recent studies have integrated RAG into this field. \citet{rag-transformer} and \citet{zhou-long-2023-style} experimented with retrieving similar or style-aware images before generating captions. \citet{li2023evcap} introduced a lightweight image captioning model that utilizes retrieved concepts. More related to our work, \citet{ramos-etal-2023-retrieval} developed end-to-end encoder-decoder models that attend to both the image and retrieved caption embeddings. 
+
+In particular, the \textsc{SmallCap} model \citep{ramos2023smallcap}, presenting retrieval augmentation in image captioning could reduce trainable parameters and adapt to out-of-domain settings. The model utilizes frozen unimodal models, incorporating a pre-trained encoder and decoder connected by trainable cross-attention layer.
+
+However, it still remains unclear how retrieved captions influence the generation of captions in retrieval-augmented image captioning, especially concerning visual inputs. Additionally, the evaluation and enhancement of the robustness of these models are still under-explored. 
+
+
+
+
+
+
+
+
+
+
+
+

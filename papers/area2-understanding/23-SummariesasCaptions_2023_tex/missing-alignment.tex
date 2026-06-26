@@ -1,0 +1,72 @@
+
+
+\begin{table}[t]
+    \centering
+    \small
+    
+    \begin{tabular}{@{}lccc@{}}
+        \toprule
+        \textbf{Information} & \textbf{Image-Text} & \textbf{Visual-Desc} & \textbf{Takeaway}  \\ \midrule
+        \textbf{\#Tokens} & 0.181 & 0.428 & 0.357 \\
+        \textbf{Percentage} & 0.099 & 0.279 & 0.210 \\ \bottomrule
+    \end{tabular}
+
+    \caption{Correlations between the amount of missing information from Paragraph and the quality aspects. The missing information is related to visual descriptions and takeaway messages.}
+     \vspace{-2mm}    
+    \label{tab:missing-alignment}
+    
+\end{table}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{comment}
+    % Transposed Version
+    \begin{tabular}{lrr}
+    \toprule
+                                & \multicolumn{2}{c}{\textbf{Missing Information}} \\ \cmidrule{2-3}
+                                &  \textbf{\# Tokens} & \textbf{Percentage} \\ \midrule
+        % \textbf{Helpfulness}            & 0.296 & 0.214 \\
+        \textbf{Image-Text}             & 0.181 & 0.099 \\
+        \textbf{Visual-Description}     & 0.428 & 0.279 \\
+        \textbf{Takeaway}               & 0.357 & 0.210 \\ \bottomrule
+    \end{tabular}
+
+
+# This one is Paragraph+OCR
+\begin{table}[t]
+    \centering
+    \small
+    \caption{Correlations between the amount of missing information and the quality aspects. The missing information is related to visual descriptions and takeaway messages.}
+     \vspace{-2mm}    
+    \label{tab:missing-alignment}
+    \begin{tabular}{lrr}
+    \toprule
+                                & \multicolumn{2}{c}{\textbf{Missing Information}} \\ \cmidrule{2-3}
+                                &  \textbf{\# Tokens} & \textbf{Percentage} \\ \midrule
+        % \textbf{Helpfulness}            & 0.295 & 0.186 \\
+        \textbf{Image-Text}             & 0.175 & 0.054 \\
+        \textbf{Visual-Description}     & 0.422 & 0.252 \\
+        \textbf{Takeaway}               & 0.356 & 0.199 \\ \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\begin{table}[t]
+    \centering
+    \small
+    \addtolength{\tabcolsep}{-0.15cm}
+    \begin{tabular}{lrrrr}
+    \toprule
+    & \textbf{Helpfulness} & \textbf{Image-Text} & \textbf{Visual-Desc} & \textbf{Takeaway} \\ \midrule
+    \textbf{\# Missing Tokens}   & 0.295 & 0.175 & 0.422 & 0.356 \\
+    \textbf{Missing Percentage} & 0.186 & 0.054 & 0.252 & 0.199 \\
+    \bottomrule
+    \end{tabular}
+    \addtolength{\tabcolsep}{+0.15cm}
+    \caption{Correlation between missing alignment and quality aspects.}
+    \label{tab:missing-alignment}
+\end{table}
+
+\end{comment}

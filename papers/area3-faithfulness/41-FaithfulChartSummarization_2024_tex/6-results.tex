@@ -1,0 +1,197 @@
+\section{Results}
+\subsection{Meta evaluation of \metric}
+\label{subsec:evaluation-setup}
+
+\metric{} is evaluated by assessing its correlation with human ratings and the overall quality of the generated summaries.
+We randomly sampled $60$ different charts from Chart-To-Text (Statista) test set and surveyed the \emph{Entailment}, \emph{Relevance}, and \emph{Grammaticality} (see \Cref{app:annotation-framework}) on the sentence and summary level when appropriate, making a multidimensional quality metric~\cite{huang-etal-2020-achieved}.
+The provenance of the summaries is hidden to prevent biasing the raters. The raters are $10$ volunteering researchers from our institution (not including the authors).
+We refined the guidelines with a small sample of examples and raters before formally starting the survey. The Cohen’s Kappa in this sample between pairs of raters is 0.61, which suggests substantial agreement \citep{landis1977measurement}. In the formal survey, the raters annotated the full set, one rater per example. 
+As shown in \Cref{fig_app:annotation-example} in \Cref{app:annotation-framework}, we display the chart alongside the title, then for each sentence we ask the rater if is (1) \emph{entailed}, (2) \emph{relevant}, and (3) \emph{grammatically correct}.
+The full annotation guidelines are reported in \Cref{app:annotation_guidelines}. We collect annotations for four data collections presented in \cref{tab:results_Human_annotation_size}. 
+\begin{table}[ht]
+\centering
+\vspace{-0.5ex}
+\resizebox{0.96\linewidth}{!}{
+\begin{tabular}{lcc}
+    \toprule
+    \textbf{Human annotation set (60 charts)} & \textbf{Avg \# sentences} & \textbf{Avg \# not entailed} \\
+    \midrule
+    Reference                                       & $2.5$ & $1.0$ \\
+    PALM-2                                          & $4.3$ & $1.1$ \\
+    \piemoji(PALM-2, \criticemoji(PALM-2))          & $5.4$ & $1.0$ \\
+    \piemoji(PALM-2, \criticemoji(DePlot, PALM-2))  & $5.0$ & $0.5$ \\
+    \bottomrule
+\end{tabular}
+}
+\caption{Human annotation data collections sizes. \piemoji: \pipeline generates a set of 10 candidates using PALM-2, and \criticemoji: \metric considers either the original tables or the generated ones using DePLot.}
+\label{tab:results_Human_annotation_size} 
+\end{table}
+In the two collections using \pipeline, the predictions are generated without dropping the unsupported sentences, to allow a thorough analysis of \metric quality.
+
+\paragraph{Entailment performance.}
+We compare \metric{} against a no-op baseline $f(x) = 1$, where no sentences are filtered, as binary classifiers acting on each sentence.
+As such, we report Accuracy, F1 and AUC in \Cref{tab:results_Human_annotation}.
+AUC measures the ability of a binary classifier to distinguish between the classes $\{0,1\}$. When no sentences are dropped, no classifier is used, the AUC is equal to $50\%$. 
+In this use case we can focus on F1 results to evaluate the quality of the input sentences. 
+Precision and recall are reported to showcase the trade-off of \metric{} at a threshold of 0.75. 
+We show that \metric{} significantly improves upon all the metrics reaching better Precision-Recall trade-off.
+
+The reference summaries in SciCap are extracted automatically, implying that extra information might be present that cannot directly be deduced from the provided chart and metadata alone. As expected, the F1 score is low when considering all sentences entailed (i.e. baseline $f(x) = 1$). Our proposed metric improves F1 by $11$ points and increases AUC by $31.5$ points. For the three other datasets, the summaries' quality is already better than the reference. Thus, the gain is less significant: by $1$ to $2$ points for F1 and $20$ to $22$ for AUC.
+
+We report the Pearson coefficient and the p-value in \Cref{tab:results_Human_annotation}. For all the sets, the p-value is significantly small, indicating a high probability of observing a correlation to human ratings. The Pearson coefficient indicates that \metric has a human rating correlation from moderate ($>30$) to strong ($>50$). %
+
+
+
+\begin{table*}
+\centering
+\vspace{-1ex}
+\resizebox{.98\linewidth}{!}{
+\begin{tabular}{lllllllll}
+\toprule
+    \textbf{Annotation set} & \textbf{Sentence Selection}& \textbf{Acc.}& \textbf{Balanced Acc.} & \textbf{Recall} & \textbf{Precision} & \textbf{F1}    &\textbf{AUC}     & \textbf{Pearson (p-value)}\\
+    \hline %
+    \multirow{3}{*}{Reference}          & $f(x) = 1$              &  $60.0$ & $50.0$          & $100.0$          & $60.0$           & $75.0$          & $ 50.0$         &   $ -- ( --)$          \\
+                                        & \criticemoji                 &  $82.0$ & $79.45$           & $92.22$          &$80.58$           & $\textbf{86.01}$& $\textbf{81.56}$&   $62.2( 1.9e-17)$   \\
+    \hline
+    \multirow{3}{*}{PALM-2}             & $f(x) = 1$              &  $75.48$ & $50.0$          & $100.0$          & $75.48$          & $86.03$         & $ 50.0$         &   $ --(  --)$          \\
+                                        & \criticemoji                 &  $81.23$ & $71.24$          & $90.86$          &$85.24$           & $\textbf{87.96}$& $\textbf{70.54}$&   $45.15( 1.6e-14) $  \\
+    \hline
+    \multirow{3}{*}{\piemoji(PALM-2, \criticemoji(PALM-2))}& $f(x) = 1$&  $83.33$ & $50.0$        & $100.0$           & $83.33$          & $90.91$         & $ 50.0$         &   $ --(  --)$          \\
+                                        & \criticemoji                 &  $84.49$ & $68.93$        & $93.9$            & $87.83$          & $\textbf{91.81}$& $\textbf{70.6}$&   $43.6(1.7e-15) $ \\
+    \hline
+    \multirow{3}{*}{\piemoji(PALM-2, \criticemoji(DePlot, PALM-2))}& $f(x) = 1$ &$89.4$ & $50.0$  & $100.0$          &$89.4$             & $94.41$         & $ 50.0 $        &   $ -- ( --)$          \\
+                                        & \criticemoji                  &$92.38$ & $66.76$           & $99.26$          &$92.73$           & $\textbf{95.89}$& $\textbf{72.53}$&   $51.01(2.1e -21) $ \\
+    \hline 
+\end{tabular}
+}
+\caption{Evaluating \metric{} (\criticemoji) with a $0.75$ threshold against human labels on Chart-To-Text, we contrast with a no-op baseline ($f(x) = 1$) and report sentence binary classifier metrics.
+For \pipeline (\piemoji), we generate $10$ candidates at temperature $T=0.7$, and \metric (\criticemoji) is computed with $T=0.3$ over 8 samples.}
+\label{tab:results_Human_annotation} 
+\end{table*}
+
+\paragraph{Impact of critic model size.}%
+We compare  in \Cref{tab:chats-critic-size} different LLMs to implement the entailment component of \metric{}.
+We evaluate the performance of the models using the SciCap reference human annotation set and DePlot as a de-rendering model. We additionally study the entailment quality factoring out the de-rendering step by providing the original gold tables in SciCap and TabFact datasets.
+
+As shown in the table, model size is a critical factor to improve \metric{} overall quality. In SciCap using DePlot respectively gold tables, we  see a $10.6$ respectively $12.6$ points increase on accuracy by using the small model compared to selecting all sentences (f(x)=1) and $11.3$ respectively $8.6$ increase when switching from small to large models. We observe the same behavior in TabFact with $4.2$ increase from small to large.
+
+\begin{table}
+\centering
+\resizebox{1.\linewidth}{!}{
+\begin{tabular}{llccc}
+\toprule
+    \textbf{Dataset}
+    & \textbf{Sentence Selection metric}    & \textbf{Accuracy} & \textbf{F1}      &\textbf{AUC}      \\
+    \hline
+    \multirow{5}{*}{\rotatebox[origin=c]{90}{\parbox{2.3cm}{Statista \\ Reference}}}& $f(x) = 1$       &  $60.0$                   & $75.0$            & $ 50.0$           \\
+                                        & \criticemoji(DePlot, PALM-2(S))       &     $70.67$               & $76.6$           &       $71.72$             \\
+                                        & \criticemoji(DePlot, PALM-2(L))       &  $\textbf{82.0}$          & $\textbf{86.01}$  & $\textbf{81.56}$  \\
+    \cline{2-5}
+                                        & \criticemoji(PALM-2(S))               &  $72.67$                   & $77.09$           & $72.08$           \\ 
+                                        & \criticemoji(PALM-2(L))               &  $\textbf{81.33}$          & $\textbf{86.0}$  & $\textbf{81.67}$  \\
+    \hline 
+  \multirow{3}{*}{\rotatebox[origin=c]{90}{TabFact}}           & $f(x) = 1$                            &  $50.32$           & $66.95$          & $ 50.0$           \\
+                                        & \criticemoji(PALM-2(S))                &  $81.37$           & $79.45$          & $81.93$          \\
+                                        & \criticemoji(PALM-2(L))               &  $\textbf{87.19}$  & $\textbf{87.23}$ & $\textbf{87.19}$  \\
+                                        & \citet{eisenschlos-etal-2020-understanding} & $81.0$ & - & - \\
+                                        & \citet{liu2022tapex} & $84.2$ & - & - \\
+    \hline 
+\end{tabular}
+}
+\caption{Comparing different critic models for \metric accuracy. For the L model, we use a threshold of 0.75 for SciCap and 0.5 for TabFact. For the S model, we use a threshold of 0.5 for both sets.
+We also include two state-of-the-art finetuned models on the TabFact training set for reference.
+We experimented with applying these trained models to Statista as well but the accuracy was very low due to poor generalization.}
+\label{tab:chats-critic-size} 
+\end{table}
+
+\subsection{Metrics correlation to human ratings}
+We investigate the correlation of the reference-based metrics to human ratings and compare it to \metric{}. 
+Since these metrics are applied on the summary level, we extract the human entailment rating per summary: if any sentence is not entailed, the entire summary is refuted. 
+PARENT~\citep{dhingra-etal-2019-handling} uses also the table information on top of the summary.
+To thoroughly assess \metric{}, we report the correlation on summary level.
+
+Additionally, we study the p-value and Pearson coefficient in \Cref{tab:results_Human_annotation_summaries}. To observe a possible correlation, reference-based metrics require optimizing for the entailment threshold (reported in the \Cref{app:results_Human_annotation_summaries_thresholds}).
+Even accounting for that aspect, %
+most of the reference-based metrics fail at providing a p-value that is statistically significant to identify a correlation (less than $0.05$). The majority of the metrics have a Pearson coefficient lower than $0.30$, indicating a small correlation. However, these metrics are less reliable than \metric, as these values are obtained by optimizing the threshold and the curve is not smooth; a deviation of $0.1$ in the threshold reduces the Pearson coefficient dramatically and increases the p-value. The results reported in the table, further confirm that our metric is more reliable and has a higher correlation with respect to the reference-based metrics. 
+We additionally report the precision and recall curves for all metrics in \Cref{app:precision_and_recall_metrics}.
+
+
+
+
+
+
+
+
+\subsection{Evaluation of the \pipeline{} pipeline}
+In the second experimental setup, we compare in \Cref{tab:nlg-llm_results} different models to solve the chart-to-summary task on three data collections. 
+We show that adding \pipeline{} improves any of the presented generative models on \metric{}. Additionally, it increases BLEURT-20 by around 1 point for all the data collections.
+The best generative model is PALM-2. \pipeline(PALM-2) consistently reaches between $93\%$ and $96\%$ of \metric{}.
+For more details, models and metrics results see \Cref{app:all-nlg-llm_results}.
+
+
+\begin{table*}
+\centering
+\resizebox{0.96
+\linewidth}{!}{
+\begin{tabular}{lc|ccc}
+    \toprule
+    \textbf{Data collection}                & \textbf{$\metric_{summary}$}& \textbf{BLEURT-20} & \textbf{BLEU}      & \textbf{PARENT} \\ %
+    \midrule
+    Reference                                       &  $ 62.4 (1.6e-07)$        & $ 17.03 (2.0 e-1)$  & $nan$              & $24.2(6.7e-02)$\\ %
+    PALM-2                                         &  $ 40.56 (1.5e-03)$       & $ 22.42 (9.0 e-02)$ & $ 14.92 (2.6e-01)$ & $ -29.57 (2.4e-02) $\\%& $ 26.3 (4.6e-02)$ & $-21.05 (1.1e-01)$ & $ 17.03 (2.0e-01)$ & $ 45.15( 1.6e-14)$    
+    \piemoji(PALM-2, \criticemoji(PALM-2))          &  $ 50.27 (5.7e-05)$       & $ 25.59 (5.2e-02) $ & $ 34.16 (8.6e-03)$ & $ 28.33 (3.1e-02) $ \\%& $ 45.54 (3e-03)$  & $ 36.71 (4.5e-03)$ & $ 31.74 (1.5e-02)$  & $ 43.6 (1.7e-15)$     
+    \piemoji(PALM-2, \criticemoji(DePlot, PALM-2))    &  $ 51.97 (6.9e-04)$       & $ 45.68 (3.4e-03) $ & $26.92 (9.7e-01)$  & $23.62 (1.4e-01)$\\%& $ 37.8 (1.7e-02)$ & $ 32.73 (4.1e-02)$ & $ 32.88 (4.0e-02)$  & $ 51.01 (2.1e-21) $   
+    \bottomrule
+\end{tabular}
+}
+\caption{Comparing models on \metric performance (i.e. \criticemoji{} column), instantiated with PALM-2 and DePlot for chart de-rendering.
+\pipeline (i.e. rows with \piemoji{}) uses \metric configured in the same way. We report SciCap (First sentence) split for brevity.
+Full results and additional evaluations are in \Cref{tab_app:all-nlg-llm_results}.} %
+\label{tab:results_Human_annotation_summaries} 
+\end{table*}
+
+\begin{table}
+\vspace{-1ex}
+\centering
+\resizebox{1.0\linewidth}{!}{
+\begin{tabular}{clccc}%
+   \toprule
+   \textbf{Dataset}                        &  \textbf{Model}          & \textbf{\criticemoji} & \textbf{BLEURT} & \textbf{BLEU}\\
+   \midrule
+                                           & \citet{chen2023pali} PaLI-17B (res. 588) &$0.49$     &$0.49$   &$40.95$    \\ 
+    Statista                               & DePlot+FLAN-T5           & $ 0.66$         &  $0.55$           &$42.5$ \\
+                                           & PALM-2                   & $ 0.89$         &  $0.44 $          &$ 14.8$ \\
+                                           & \piemoji~(DePlot+FLAN-T5)& $0.76 $         &  $\mathbf{0.57}$  &$\mathbf{43.1}$\\
+                                           & \piemoji~(PALM-2)        & $\mathbf{0.96}$ &  $ 0.45$           &$13.34 $\\
+    \hline
+                                           & \citet{liu-etal-2023-matcha} MATCHA &--     &--                  &$12.2$    \\ 
+                                           & \citet{chen2023pali} PaLI-17B (res. 588) &$0.35$     &$0.49$   &$13.93$    \\ 
+    Pew                                    & DePlot+FLAN-T5           & $0.33$          &  $\mathbf{0.5}$     &$\mathbf{15.33}$  \\
+                                           & PALM-2                   & $0.87$          &  $0.47$           &$8.83$ \\
+                                           & \piemoji~(DePlot+FLAN-T5)& $0.41$          &$\mathbf{0.5}$              &$15.09$\\
+                                           & \piemoji~(PALM-2)        & $\mathbf{0.95}$ &$0.48$            &$9.18$ \\
+    \midrule
+                                           &\citet{horawalavithana2023scitune} M4C-Captioner           &--& -- &$6.4$ \\
+                                           & \citet{chen2023pali} PaLI-17B (res. 588) &$0.41$& $0.3$          &$11.05$    \\ 
+    SciCap                                 & DePlot+FLAN-T5           & $0.34$          &  $0.29$           &$15.12$  \\
+    {\small(First sentence)}                                    %
+                                           & PALM-2                   &  $0.84$         &  $0.3$            &$0.94$ \\
+                                           & \piemoji~(DePlot+FLAN-T5)& $0.48$          &  $0.3$            &$\mathbf{15.53}$ \\
+                                           & \piemoji~(PALM-2)        & $\mathbf{0.93}$ &  $\mathbf{0.31}$   &$0.76$\\
+    \bottomrule
+\end{tabular}
+}
+\caption{Comparing models on \metric performance (i.e. \criticemoji{} column), instantiated with PALM-2 and DePlot for chart de-rendering.
+\pipeline (i.e. rows with \piemoji{}) uses \metric configured in the same way. We report SciCap (First sentence) split for brevity.
+Full results and additional evaluations are in \Cref{tab_app:all-nlg-llm_results}.} %
+\label{tab:nlg-llm_results} 
+\end{table}
+
+
+
+
+
+
+
+
+

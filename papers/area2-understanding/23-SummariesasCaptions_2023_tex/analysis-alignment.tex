@@ -1,0 +1,79 @@
+
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+\begin{table*}[t]
+    \centering \small
+    \addtolength{\tabcolsep}{-1.1mm}
+    %\vspace{-2mm}
+    \begin{tabular}{@{}l@{\kern5pt}l@{\kern3pt}ccccccccccccccc@{}}
+    \toprule
+    \multicolumn{2}{@{}l}{\multirow{2}{*}{\textbf{Source}}} & \multicolumn{2}{c}{\textbf{Random}} & \multicolumn{2}{c}{\textbf{Mention}} & \multicolumn{2}{c}{\textbf{Paragraph}} & \textbf{OCR} & \multicolumn{2}{c}{\textbf{Window{[}0, 1{]}}} & \multicolumn{2}{c}{\textbf{Window{[}1, 0{]}}} & \multicolumn{2}{c}{\textbf{Window{[}1, 1{]}}} & \multicolumn{2}{c}{\textbf{Window{[}2, 2{]}}} \\ \cmidrule{3-17}
+    \multicolumn{2}{c}{} & \textbf{S} & \textbf{P} & \textbf{-} & \textbf{+OCR} & \textbf{-} & \textbf{+OCR} & \textbf{-} & \textbf{-} & \textbf{+OCR} & \textbf{-} & \textbf{+OCR} & \textbf{-} & \textbf{+OCR} & \textbf{-} & \textbf{+OCR} \\ \midrule
+    
+    \multicolumn{2}{@{}l}{\textbf{Caption}} & 35.23 & 44.43 & 53.43 & 60.16 & 75.19 & \textbf{76.68} & 34.75 & 60.85 & 65.43 & 59.09 & 64.19 & 65.20 & 68.73 & 69.09 & 71.77 \\
+    \multicolumn{2}{@{}l}{\textbf{Source}} & 32.52 & 19.52 & \textbf{39.51} & 18.78 & 12.53 & 9.39 & 20.79 & 30.49 & 17.19 & 32.40 & 17.33 & 25.10 & 15.55 & 19.84 & 13.45 \\ 
+    \bottomrule
+    \end{tabular}
+    \addtolength{\tabcolsep}{+1.1mm}
+    \caption{Macro coverage rates (percentage) between captions and relevant texts (S: Sentence and P: Paragraph). 
+    Caption coverage gives the percentage of words in the caption that can be found in the source texts and vice versa (punctuation and stop words are excluded.)
+    % S and P stand for Sentence, and Paragraph, respectively.
+    The results show that 76.68\% of the words in captions could be found in Paragraph+OCR,
+    % and 75.19\% could be found in Paragraph,
+    motivating us to generate captions by text summarization.
+    % (We calculated the percentage excluding punctuation and stop words.)
+    }
+    \label{tab:alignment-result}
+    \vspace{-2mm}
+\end{table*}
+
+\begin{comment}
+
+\begin{table}[t]
+    \small
+    \centering
+    
+    \caption{Macro coverage rates (percentage) between captions and models. Caption coverage gives the percentage of words in the caption that can be found in the source texts and vice versa. The results show that 76.68\% of the words in captions could be found in Paragraph+OCR.}
+     \vspace{-2mm}    
+    \label{tab:alignment-result}
+    
+    \begin{tabular}{lrr}
+    \toprule 
+    % \hline
+    \multicolumn{1}{c}{\multirow{2}{*}{\textbf{Source Text}}} & \multicolumn{2}{c}{\textbf{Coverage}} \\ 
+    \cmidrule{2-3}
+     & \multicolumn{1}{c}{\textbf{Caption}} & \multicolumn{1}{c}{\textbf{Source Text}} \\ 
+     \midrule
+    %  \hline
+    \textbf{Mention}                & 53.43  & \textbf{39.51}  \\
+    \textbf{Mention+OCR}            & 60.16  & 18.78  \\
+    \textbf{Paragraph}              & 75.19  & 12.53  \\
+    \textbf{Paragraph+OCR}          & \textbf{76.68}  & 9.39   \\
+    \textbf{OCR}                    & 34.75  & 20.79  \\ 
+    % \hline
+    \midrule
+    \textbf{Random Sentence}         & 35.23  & 32.52  \\
+    \textbf{Random Paragraph}       & 44.43  & 19.52  \\ 
+    % \hline
+    \midrule
+    \textbf{Window [0, 1]}           & 60.85  & 30.49  \\
+    \textbf{Window [0, 1]+OCR}       & 65.43  & 17.19  \\
+    \textbf{Window [1, 0]}           & 59.09  & 32.40  \\
+    \textbf{Window [1, 0]+OCR}       & 64.19  & 17.33  \\
+    \textbf{Window [1, 1]}           & 65.20  & 25.10  \\
+    \textbf{Window [1, 1]+OCR}       & 68.73  & 15.55  \\
+    % \textbf{Window[0, 2]}             & 63.93  & 25.83  \\
+    % \textbf{Window[0, 2]+OCR}         & 67.81  & 15.70  \\
+    % \textbf{Window[2, 0]}             & 61.47  & 28.98  \\
+    % \textbf{Window[2, 0]+OCR}         & 66.04  & 16.15  \\
+    \textbf{Window [2, 2]}           & 69.09  & 19.84  \\
+    \textbf{Window [2, 2]+OCR}       & 71.77  & 13.45  \\
+    % \hline 
+    \bottomrule
+    \end{tabular}
+    %\vspace{-1mm}
+\end{table}
+
+\end{comment}

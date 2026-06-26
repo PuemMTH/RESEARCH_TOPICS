@@ -1,0 +1,573 @@
+% \clearpage
+% \setcounter{page}{1}
+% \maketitlesupplementary
+
+
+% \section{Rationale}
+% \label{sec:rationale}
+% % 
+% Having the supplementary compiled together with the main paper means that:
+% % 
+% \begin{itemize}
+% \item The supplementary can back-reference sections of the main paper, for example, we can refer to \cref{sec:intro};
+% \item The main paper can forward reference sub-sections within the supplementary explicitly (e.g. referring to a particular experiment); 
+% \item When submitted to arXiv, the supplementary will already included at the end of the paper.
+% \end{itemize}
+% % 
+% To split the supplementary pages from the main paper, you can use \href{https://support.apple.com/en-ca/guide/preview/prvw11793/mac#:~:text=Delete%20a%20page%20from%20a,or%20choose%20Edit%20%3E%20Delete).}{Preview (on macOS)}, \href{https://www.adobe.com/acrobat/how-to/delete-pages-from-pdf.html#:~:text=Choose%20%E2%80%9CTools%E2%80%9D%20%3E%20%E2%80%9COrganize,or%20pages%20from%20the%20file.}{Adobe Acrobat} (on all OSs), as well as \href{https://superuser.com/questions/517986/is-it-possible-to-delete-some-pages-of-a-pdf-document}{command line tools}.
+
+
+
+
+\clearpage
+\appendix
+
+
+
+% We fix the generation temperature for all VLMs to get a stable result. 
+
+\section{Likert Scale Guideline} \label{appenlikert}
+For human evaluation, we utilize the Likert Scale to get the final faithfulness score for each testing sample.  
+Specifically, suppose the generated answer consists of $n$ atomic facts, out of which $x$ atomic facts are determined as hallucinations. Both $n$ and $x$ are labeled by the annotators. The benchmark scoring guideline is outlined as follows:
+\begin{itemize}
+    \item Score 1: All atomic facts are hallucinations, symbolized as $x == n$;
+    \item Score 2:  More than half of the atomic facts are hallucinations, represented as $x>n/2$;
+    \item Score 3: Half or fewer atomic facts are hallucinations, represented as $n/3<=x<n/2$;
+    \item Score 4: Less than one-third of the atomic facts are hallucinations, which translates to $x<n/3$;
+    \item Score 5: All atomic facts accurately represent the visual content, meaning $x=0$.
+\end{itemize}
+
+
+
+
+
+% \begin{table*}[]
+%     \centering
+%     \begin{tabular}{lcccc} \toprule
+% \bf         Model& \bf Conversation&\bf Detailed Description &\bf Complex Question &\bf Overall\\ \midrule
+%          LLaVA & 0.8409 & 0.7841&0.6873& 0.7708\\
+%          InstructBLIP & 0.8738 & 0.7250 & 0.7422 & 0.7804\\
+         
+%          \bottomrule
+%     \end{tabular}
+%     \caption{Human evaluation results of different LVLMs on the LLaVA- dataset.}
+%     \label{tab:human_eval}
+% \end{table*}
+
+% \section{Details about VLMS}
+
+
+
+\section{Details about VEMs}
+\label{devem}
+We select OFA-EM, OFA\footnote{https://github.com/OFA-Sys/OFA.}~\cite{ofa}, mPLUG\footnote{https://github.com/X-PLUG/mPLUG.}~\cite{mplug}, BLIP-2-flant5xl, BLIP-2-flant5xxl\footnote{https://github.com/salesforce/LAVIS/tree/main/projects/blip2.}~\cite{blip2}, LLaVA~\cite{llava}, and LLaVA-1.5\footnote{https://github.com/haotian-liu/LLaVA.}~\cite{llava15} as VEM and evaluate them based on our annotated dataset.. OFA-EM is an open-source model which was finetuned on the SNLE-VE dataset~\cite{DBLP:journals/corr/abs-1901-06706}. Hence, this model can tackle visual entailment tasks directly. For the OFA-EM model, the ``neutral’’ is categorized as hallucination because the OFA can't decide whether the verified content appears in the input image. 
+For the other models, they are also open-source and finetuned on the visual question answering dataset. To enable them to tackle the visual entailment task, we get an input a prompt ``Statement: \{\textit{atomic facts}\} Is this statement right according to the image? Please output yes or no.'', into models.
+% Besides LLaVA-1.5, we also utilize OFA (independent with all of LVLMs) to implement the verifier for evaluation. In this setting, LLaVA-1.5 also shows the best performance which is consistent with our previous results and demonstrates the robustness of our proposed metric.
+% ``''
+
+\section{Testing Examples of GPT-4Vision} 
+\label{exgpt4v}
+
+\paragraph{Hallucination in Advanced GPT-4Vision}
+
+% Because of the limited access to the GPT-4Vision (GPT-4V) API, we cannot test it on all the examples. Instead, we selected several samples to test manually and conduct qualitative analysis. Because of the limited space, we present one testing sample in Figure~\ref{fig:gpt-4v-s1}. More testing samples on GPT-4Vision are shown in Section~\ref{exgpt4v} of the Appendix. According to this sample, we found that the GPT-4V also suffers from the hallucination problem, for example, it generated the wrong relation between objects: ``a person standing on an upside down skateboard''. -- instead, the person is standing on the ground.
+
+
+
+Here we test the GPT-4Vision model on four examples. Based on the results, we can come to the conclusion that the GPT-4Vision answers still contain various hallucinations despite it may have very large parameters and have been trained with a large corpus, as shown in Figure~\ref{fig:samples-gpt-4}.
+
+
+\section{More benchmarks}
+We further compute our metric on one dataset: LRV-Instruction~\cite{DBLP:journals/corr/abs-2306-14565}. The results are shown as follows, which are consistent with the experimental results on datasets LLaVA-1k and MSCOCO-Cap:  
+InstructBLIP 0.6626, 
+MultimodalGPT 0.4903, 
+mPLUG-Owl 0.6433, 
+MiniGPT-4 0.4638, 
+LLaVA 0.7017, 
+LLaVA-1.5 0.7855. 
+
+
+\section{Examples of Evaluation}
+\label{exanno}
+Here we show three examples of how \ours\ is computed and the existing best reference-free CLIP-Score value in Figure~\ref{fig:samples1}, Figure~\ref{fig:samples2}, and Figure~\ref{fig:samples3}. 
+% Here we show three  examples of how \ours\ is computed in Figure~\ref{fig:samples1}, Figure~\ref{fig:samples2}, and Figure~\ref{fig:samples3}. 
+Additionally, we present an example (see Figure~\ref{fig:sampleserror}) where the proposed metric score diverges from human judgment, illustrating a discrepancy attributed to an error generated by the recognizer system.
+% \section{Human Evaluation Results}
+
+
+\section{More Details about Human Evaluation}
+\label{sec:human_eval}
+
+We employ 3 workers for annotation and each person annotated 180 testing samples, via Amazon Mechanical Turk\footnote{\url{https://requester.mturk.com/}.}. Every worker is a native English speaker. 
+They are paid 15-20 USD per hour. 
+Every worker went through a qualification test of 2 hours and was tested to be highly qualified. We designed one HIT to consist of one question-answer pair.
+The average time to complete one HIT (including all steps of the annotation process) is 212.8 seconds. 
+% \xd{The full instructions and the annotation interface are provided in Figure x and Figure x, respectively.}
+% \xd{After the annotation, we calculate the inter-annotator agreement rate by the Fleiss’ kappa, Section 4.5 discusses in more detail.?}
+After the annotation process, we calculate the inter-annotator agreement rate by the Fleiss’ $\kappa$. Firstly, we computed the Fleiss’ $\kappa$ values across all annotators for the sub-sentence identification task, arriving at a value of 75.97\%. This signifies a robust consensus among the annotators~\cite{moore2006statistics}. Additionally, for the definitive faithfulness score (1-5 Likert Scale), we computed the values involving all annotators and achieved a result of 60.0\%. This concordance among the evaluation participants suggests the human evaluation results are reliable.
+% Section 4.5 shows the results. 
+% More details about the annotation process are provided in Section~\ref{sec:human_eval} of the Appendix.
+
+
+
+We show our human evaluation results and automatic evaluation results in Table~\ref{tab:human_eval}. From this Table, we find that models that perform better in the manual evaluations also have better performance in the automated evaluations. This indicates the high correlation between objective and subjective evaluation.
+
+
+
+\begin{table}[]
+    \centering
+    \begin{tabular}{lcc} \toprule
+\bf         Model& \bf  Human & \bf Automatic \\ \midrule
+         LLaVA & 0.7708&0.6997\\
+         InstructBLIP &  0.7804&0.7165\\
+         
+         \bottomrule
+    \end{tabular}
+    \caption{Human evaluation results and automatic evaluation results of different LVLMs on the LLaVA dataset.}
+    \label{tab:human_eval}
+\end{table}
+
+\begin{table}[t]
+    \centering \small
+     \resizebox{\columnwidth}{!}{
+    \begin{tabular}{lccc}
+    \toprule
+    \bf Metric & \bf Pearson's $r$ \% &\bf Spearman's $\rho$ \% &\bf Kendall's $\tau$ \% \\ \midrule
+        BLEU-1 & -15.1& -10.3 & -7.5 \\
+        BLEU-2 &  -12.7& -9.0 & -6.6 \\ 
+        BLEU-3 &-7.2 & -10.6 & -7.6 \\ 
+        BLEU-4 & -1.9& -8.2 & -5.8 \\ 
+        ROUGE-1 & -6.6&-3.0 &  -2.7\\ 
+        ROUGE-2 & -5.7&-4.4 &  -3.4\\ 
+        ROUGE-L & -8.7&-6.2 &  -4.7\\ 
+        METEOR & -12.2&-8.5 & -6.3\\ 
+        CHAIR & 16.8&19.2 & 14.8\\ 
+        
+        CLIP-Score &19.8 & 16.6  & 11.7 \\  
+        
+        SPICE& 20.2 &21.3 &25.4\\
+% GPT-4-based &-3.1&-9.5&-10.1 \\
+% GPT-4V-based & 24.5 & 24.1  & 26.3 \\ 
+\midrule
+        Ours & 48.17&  38.44& 47.61\\
+    \bottomrule
+    \end{tabular}
+    }
+    \caption{Correlation between each evaluation metric and human judgment on LVLM hallucinations, measured by Pearson's $r$, Spearman’s $\rho$, and Kendall’s $\tau$.
+    }
+    \label{tab:allcorrelation}
+\end{table}
+
+
+To facilitate the annotator's working process, we designed a user interface, as shown in Figure~\ref{fig:UI}. Annotators have the option to start by reading the instructions located at the top of the interface, and they can access more detailed instructions through a link (refer to Figure~\ref{fig:instruction}). Following this, annotators can proceed to review the task description. In the third section, annotators can utilize buttons for sub-sentence identification and atomic fact verification. Simultaneously, they are able to add, modify, or delete atomic facts to enhance the quality of the atomic information. For example, the annotator should remove the duplicated atomic and add entity category fact ``There are suitcases.'' in Figure~\ref{fig:example4facts}.  
+% \xd{provide an example when atomic facts need to be deleted or modified.}
+
+Besides, we show a comprehensive correlation comparison in Table~\ref{tab:allcorrelation}. 
+Traditional metrics that require references (\ie BLEU, ROUGE, and METEOR), have a poor correlation with human evaluation. For the open-ended question, it is hard to get a ground truth answer. For the reference answer, we use the answers provided by the LLaVA paper. This leads to a poor correlation between these metrics and human evaluation. 
+% 
+
+Surprisingly, CLIP-Score shows a similar correlation with CHAIR which is specifically devised for object hallucination evaluation. This demonstrates the robustness and generalization of CLIP-Score.
+The original CHAIR show reflects the severity of the hallucinations. The larger the value of CHAIR, the more serious the hallucination problem of the model.
+The original CHAIR exhibits a pronounced negative correlation with human evaluation. Hence, we use the negative of CHAIR to compute the correlation. 
+% \xd{I don't understand this sentence, what is 1-CHAIR}. 
+
+Compared with \ours, CHAIR achieves a sub-optimal degree of correlation.  
+A potential reason for CHAIR's deviation from human evaluation could be rooted in its inherent design, which narrows its focus predominantly to a limited range of objects. This constrained evaluation scope may not adeptly deal with fine-grained and open-domain hallucinations, thus diminishing its validity and resonance with more comprehensive human evaluations. To justify our viewpoint, we compute the average number of objects with CHAIR for each answer and the result is 2.4, which is far less than the average number of atomic facts (\ie 11.3) found in our human evaluation.  
+Amid the varied metrics landscape, our metric \ours\ achieved best correlation with human correlation.
+% It shows a robust positive correlation, emphasizing its superior alignment with human perceptions. 
+
+
+ {We further conduct an ablation study to investigate the overall effect of different VE models and the error introduced by the ChatGPT on \ours. }
+Table~\ref{tab:ablation1} reports the correlation between \ours\ calculated by different VE models answers and human answers. We observed that the higher VE model performance is directly related to the human correlation. Table~\ref{tab:ablation2} reports the correlation between \ours\ and different VE models calculated with the annotated atomic facts. Similarly, the higher VE model performance is directly related to the human correlation. 
+
+\section{Error in Atomic Fact Decomposing}
+\label{app:decompose}
+{To further learn the degree of hallucination in decomposing phrases, we further sample 100 instances from the human evaluation samples and then use ChatGPT to generate atomic facts. Finally, we found the hallucination ratio (hallucinated atomic facts in proportion to all atomic facts) is just 2\%. This verifies the effectiveness of our method.}
+
+
+\section{Experimental Detail}
+We run all VLMs on an NVIDIA A100 GPU. 
+% For llava, .
+{The recognizer accuracy on descriptive
+sub-sentence identification task is defined as $a=N_s/N$ where $N$
+ is the total number of sentences in the evaluated dataset and $N_s$
+ is the number of sentences that are classified correctly.}
+
+
+\begin{table}[]
+    \centering \small
+     \resizebox{\columnwidth}{!}{
+    \begin{tabular}{lccc}
+    \toprule
+    \bf Metric & \bf Pearson's $r$ \% &\bf Spearman's $\rho$ \% &\bf Kendall's $\tau$ \% \\ \midrule
+        OFA\_EM & 31.85&  21.27& 29.03\\
+        % Ours\_OFA & &  & \\
+        % Ours\_mPLUG & &  & \\
+        % Ours\_BLIP-2-flant5xl &  48.06& 35.44  & 46.90 \\
+        BLIP-2-flant5xxl & 41.80& 28.52  & 36.81 \\
+        % Ours\_LLaVA & &  & \\
+        LLaVA-1.5 & 48.17&  38.44& 47.61\\
+    \bottomrule
+    \end{tabular}
+    }
+    \caption{Correlation between our ablation methods and human judgment on LVLM hallucinations, measured by Pearson's $r$, Spearman’s $\rho$, and Kendall’s $\tau$.
+    }
+    \label{tab:ablation1}
+\end{table}
+
+
+\begin{table}[]
+    \centering \small
+     \resizebox{\columnwidth}{!}{
+    \begin{tabular}{lccc}
+    \toprule
+    \bf Metric & \bf Pearson's $r$ \% &\bf Spearman's $\rho$ \% &\bf Kendall's $\tau$ \% \\ \midrule
+        OFA\_EM & 32.34&  22.28& 30.12\\
+        % Ours\_OFA & &  & \\
+        % Ours\_mPLUG & &  & \\
+        % Ours\_BLIP-2-flant5xl &  48.06& 35.44  & 46.90 \\
+        BLIP-2-flant5xxl & 45.84& 31.62  & 40.09 \\
+        % Ours\_LLaVA & &  & \\
+        LLaVA-1.5 & 58.46&  42.67& 56.23\\
+    \bottomrule
+    \end{tabular}
+    }
+    \caption{Correlation between vem models with the annotated atomic facts and human judgment on LVLM hallucinations, measured by Pearson's $r$, Spearman’s $\rho$, and Kendall’s $\tau$.
+    }
+    \label{tab:ablation2}
+\end{table}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.95\linewidth]{sec/figures/figure12.pdf}
+    \caption{Illustration of answers generated from GPT-4Vision. Similar to existing open-source VLMs, GPT-4Vision is still prone to the hallucination problem in the generated answer. The \textcolor{blue}{blue contents} denote hallucinations.}
+    \label{fig:samples-gpt-4}
+\end{figure*}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{sec/figures/figure9_1.pdf}
+    \caption{Illustration of how \ours\ is computed for a testing sample.  The underlined contents denote recognized descriptive content.}
+    \label{fig:samples1}
+\end{figure}
+
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{sec/figures/figure10_1.pdf}
+    \caption{Illustration of how \ours\ is computed for a testing sample. The underlined contents denote recognized descriptive content.}
+    \label{fig:samples2}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.85\linewidth]{sec/figures/figure11_1.pdf}
+    \caption{Illustration of how \ours\ is computed for a testing sample. The contents highlighted by the underline denote recognized descriptive content.}
+    \label{fig:samples3}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{sec/figures/error_case.pdf}
+    \caption{Illustration of the case that the proposed metric score disagrees with human judgement}
+    \label{fig:sampleserror}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{sec/figures/sample4facts.pdf}
+    \caption{Illustration of atomic facts generated by ChatGPT. The \textcolor{red}{red contents} denote the duplicated atomic fact.} 
+    \label{fig:example4facts}
+\end{figure}
+
+
+\section{Proportions of the descriptive sub-sentences and analytical sub-sentences }
+
+To prove the necessity of the sentence identification step, we calculate the proportion of descriptive and analytical sub-sentences in answers to different classes of input questions (Figure~\ref{fig:proportion}). We can observe that the distribution of sub-sentences is significantly different in different category questions. For example, detailed description questions only have a small portion of analytical sub-sentences, while complex questions have the opposite. In addition, analytical sub-sentences account for nearly half of the distribution of clauses in the overall annotated dataset, illustrating the importance of identifying analytical sub-sentences and excluding them from the fact checking step.
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth] {sec/figures/portation.pdf}
+    \caption{Illustration of the proportions of the descriptive sub-sentences and analytical sub-sentences in the answers. ``Detailed'' and ``Complex'' denote the ``detailed description'' and ``complex question'' categories, respectively. The results are obtained from the 180 annotated samples.}
+    \label{fig:proportion}
+    \vspace{-2mm}
+
+\end{figure}
+
+
+\section{Cost and Time Analysis}
+\label{app:cost}
+{Gathering accurate hallucination evaluation manually for each response is both costly and time-consuming, making it unrealistic.   Therefore, although our reference-free metric typically takes more time than traditional metrics such as BLEU and ROUGE, it is much more important for evaluating model output. 
+% For example, the reference-free metric FActScore requires retrieval from the external knowledge base and generates facts, and natural language inference, where multiple steps are implemented by API-based LLMs, which consume more time than ours. 
+There is a trade-off between evaluation results and speed. Although some metrics (such as BLEU) can achieve higher speed, our metric can achieve a superior correlation with human evaluation. Compared with human evaluation, our method can speed up the evaluation process. In addition, we can verify multiple facts in parallel to speed up the time. The average consuming time for a long response is 4s, which is much less than the manual time of 212 seconds, reducing about 1.2 USD cost.}
+
+
+% \begin{figure}
+% 	\centering
+% 	\begin{minipage}[t]{\linewidth}
+% 		\centering
+% 		\includegraphics[width=\linewidth]{sec/figures/sample1.png}
+% 		\caption{sa}
+% 		\label{fig:ver_2figs_2cap_1}
+% 	\end{minipage}
+	
+% 	\begin{minipage}[t]{\linewidth}
+% 		\centering
+% 		\includegraphics[width=\linewidth]{sec/figures/sample2.png}
+% 		\caption{sa}
+% 		\label{fig:ver_2figs_2cap_2}
+% 	\end{minipage}
+
+%  	\begin{minipage}[t]{\linewidth}
+% 		\centering
+% 		\includegraphics[width=\linewidth]{sec/figures/sample3.png}
+% 		\caption{sa}
+% 		\label{fig:ver_2figs_2cap_3}
+% 	\end{minipage}
+ 
+% \end{figure}
+
+
+
+
+% \section{Analysis on Types of Hallucination}
+
+% When comparing the performance metrics of various models across different categories, we can deduce the respective strengths and potential vulnerabilities of each in maintaining faithfulness, as shown in Figure~\ref{fig:types1}. 
+% For the "entity" category, mPLUG-Owl stands out with the highest faithfulness score of 0.944, closely followed by LLaVA and InstructBLIP at 0.920 and 0.914, respectively. MiniGPT-4 and Multimodal-GPT show relatively lower scores, at 0.862 and 0.838 respectively, though still within a competitive range. 
+% Moving to the "relation" category, the models generally exhibit a decline in faithfulness, with mPLUG-Owl again leading at 0.652. MiniGPT-4 and InstructBLIP follow suit with scores above 0.619, while LLaVA and Multimodal-GPT lag slightly behind at 0.579 and 0.557 respectively.
+% In the "color" domain, mPLUG-Owl once again dominates with a high score of 0.905, but this time, Multimodal-GPT makes a significant leap, securing the second position with 0.829. LLaVA and InstructBLIP also perform commendably, both exceeding scores of 0.820. 
+% The "count" category sees a more uniform performance across models. While mPLUG-Owl tops the chart with an impressive 0.986, LLaVA isn't far behind with 0.973. The remaining models, including MiniGPT-4, Multimodal-GPT, and InstructBLIP, all hover around the 0.9-0.94 range, indicating robust faithfulness in this category.
+% Finally, in the "others" category, InstructBLIP leads the pack with 0.671, closely trailed by mPLUG-Owl and LLaVA at 0.708 and 0.628 respectively. Both MiniGPT-4 and Multimodal-GPT round up the category with scores of 0.630 and 0.616.
+
+% In summary, while mPLUG-Owl consistently excels across most categories, other models also showcase strengths in specific domains. For instance, Multimodal-GPT performs notably well in the color and count categories. The varied performance across categories underscores that most models exhibit differential strengths and vulnerabilities depending on the category in question. Hence, achieving consistently high faithfulness across a diverse range of categories remains a formidable challenge for visual language models. 
+
+
+
+
+
+
+
+% \begin{figure*}
+%     \centering
+% \includegraphics[width=\linewidth]{figures/types.png}
+%     \caption{\ours on each type of atomic facts in the LLaVA-1k benchmark. The types are "Entity", "Relation", "Color", "Count", and "Others".}
+%     \label{fig:types1}
+% \end{figure*}
+
+
+
+
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\linewidth]{sec/figures/UI.pdf}
+    \caption{System software User Interface (UI) for annotators. Annotators can read the instructions at the top of the interface and get detailed instructions (see Figure~\ref{fig:instruction}) via a link. Then the annotator can read the task description. In the third part, the annotator can click buttons for sub-sentence identification and atomic fact verification. Meanwhile, they can add, edit, and remove atomic facts to get high-quality atomic information. 
+    % \xd{replace with a more clear screenshot}
+    }
+    \label{fig:UI}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.9\textwidth]{sec/figures/instruction.png}
+    \caption{Instructions for data annotation. The instruction includes some definitions (e.g. atomic facts and descriptive sub-sentence) to help annotators understand this task. Meanwhile, it also details the annotation procedures.}
+    \label{fig:instruction}
+\end{figure*}
+
+\section{Samples of Description/Analytics Sub-sentence}
+We provide three examples of "description"/"analytics" sub-sentence, where [A] denotes the analytical sub-sentence label and [D] denotes the descriptive sub-sentence label.
+(1) The skateboard is positioned on a ramp, [D] with the skateboarder standing on it. [D] (2) The image features a white bird, [D] which is likely a swan. [A]
+(3) The image features a young boy standing on a skateboard, [D] which is placed on a wooden ramp. [D] The boy is wearing a green shirt and brown shorts, [D] and he is positioned on the ramp, ready to ride down. [D] The wooden ramp is placed on a sidewalk, [D] which is a common location for skateboarding. [A] The presence of the ramp and the sidewalk suggests that the boy is likely practicing or enjoying skateboarding in a public space. [A] The overall composition of the image highlights the boy's focus and determination as he prepares to ride down the ramp, [A] showcasing the excitement and thrill of skateboarding. [A]
+
+
+\section{Prompts}
+\label{prompts}
+We detailed the prompts of sub-sentence identification and atomic fact generation in Figure~\ref{fig:prompt_des} and Figure~\ref{fig:prompt_decom}, respectively.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.8\textwidth]{sec/figures/prompt_descriptive.png}
+    \caption{A prompt given to ChatGPT to identify descriptive sub-sentence from answers of VLMs.}
+    \label{fig:prompt_des}
+\end{figure*}
+
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.9\textwidth]{sec/figures/prompt_decompose.png}
+    \caption{A prompt given to ChatGPT to generate atomic facts of VLMs answers.}
+    \label{fig:prompt_decom}
+\end{figure*}
+
+
+
+\section{Results on Closed-source Model}
+{To comprehensively evaluate the existing LVLMs, we further evaluate the closed-source model GPT-4V and Gemini~\cite{DBLP:gemini} with several open-source models. The results are shown in Table \ref{tab:gemini}. The results show the closed-source models surpass the existing open-source model. 
+}
+
+\begin{table}[]
+    \centering \small
+     \resizebox{\columnwidth}{!}{
+    \begin{tabular}{lccc}
+    \toprule
+\textbf{Model} & \textbf{LLaVA-1k} & \textbf{Model} & \textbf{LLaVA-1k} \\
+        \hline
+        Multimodal-GPT & 0.5335 & LLaVA & 0.8360 \\
+        MiniGPT-4 & 0.5713 & LLaVA-1.5 & 0.8566 \\
+        mPLUG-Owl & 0.7167 & GPT-4V & 0.8788 \\
+        InstructBLIP & 0.8091 & Gemini & 0.8865 \\
+        \hline
+    \end{tabular}
+    }
+    \caption{Model performance on LLaVA-1k benchmark.    }
+\label{tab:gemini}
+\end{table}
+
+% \begin{table}[h!]
+%     \centering
+%     \begin{tabular}{|l|c|}
+%         \hline
+%         \textbf{Model} & \textbf{Performance} \\
+%         \hline
+%         Multimodal-GPT & 0.5335 \\
+%         MiniGPT-4 & 0.5713 \\
+%         mPLUG-Owl & 0.7167 \\
+%         InstructBLIP & 0.8091 \\
+%         LLaVA & 0.8360 \\
+%         LLaVA-1.5 & 0.8566 \\
+%         GPT-4V & 0.8788 \\
+%         Gemini & 0.8865 \\
+%         \hline
+%     \end{tabular}
+%     \caption{Model performance on LLaVA-1k benchmark}
+%     \label{tab:gemini}
+%     \label{tab:model_performance}
+% \end{table}
+
+% \section{Response to Reviewer 1ZcE}
+
+% Thank you for your helpful comments! We address your concerns below:
+
+% \noindent \textbf{More benchmarks.} 
+% Thanks for your advice. Some of the datasets (HallusionBench and MathVista) were contemporaneous after the submission. The existing faithfulness evaluation work only used one dataset to show the validity of their metric~\cite{factscore}. Despite of this, we further compute our metric on one of your provided datasets: LRV-Instruction. The results are shown as follows, which are consistent with the experimental results on datasets LLaVA-1k and MSCOCO-Cap:  
+% InstructBLIP 0.6626, 
+% MultimodalGPT 0.4903, 
+% mPLUG-Owl 0.6433, 
+% MiniGPT-4 0.4638, 
+% LLaVA 0.7017, 
+% LLaVA-1.5 0.7855. 
+
+
+% \noindent \textbf{Visual entailment model.} 
+% I am sorry to cause a misunderstanding. We selected LLaVA-1.5 for visual entailment tasks due to its superior performance in our studies (see Table 2 in our paper). While GPT-4V might have been a better choice, its API was unavailable during our research. Nevertheless, we tested GPT-4V for fact verification later, achieving 82\% accuracy, comparable to existing LVLMs like BLIP-2-flant5xxl. 
+% We have explored the performance of different models for visual entailment tasks (as shown in Table 2 in our paper) and found that LLaVA-1.5 achieves the best performance. So we choose it to implement the verifier in our framework. We agree with you that GPT-4V may achieve better performance on this task. However, the API of GPT-4V was not available when we conducted this research. Despite this, we further utilize GPT-4V for fact verification and the experimental result is  82\% accuracy, which is similar to some existing LVLMs. For example, the performance of BLIP-2-flant5xxl is 82\%.
+
+% I am sorry to cause a misunderstanding. We have explored the performance of different models for visual entailment tasks (as shown in Table 2 in our paper) and found that LLaVA-1.5 achieves the best performance. So we choose it to implement the verifier in our framework. 
+% We agree with you that GPT-4V may achieve better performance on this task. However, the API of GPT-4V was not available when we conducted this research. 
+% Furthermore, the response speed is low caused of the image transmission and the cost is high, if we use GPT-4V. 
+% Despite this, we further utilize GPT-4V for fact verification and the experimental result is  82\% accuracy, which is similar to some existing LVLMs. For example, the performance of BLIP-2-flant5xxl is 82%.
+
+
+
+% \section{Response to Reviewer atiH}
+
+% We thank you very much for the constructive comments. Please see our detailed response below.
+% \textbf{Concept of hallucination.} 
+%  In NLP, hallucination refers to content that is either nonsensical or unfaithful to the source~\cite{hallusurvey}. In vision-language contexts, it's defined as models generating content that contains nonexistent or inaccurate objects from the input image~\cite{hallusurvey,pope}.
+% Following the existing work~\cite{hallusurvey},  within the context of NLP, the hallucination is that the generated content is nonsensical or unfaithful to the provided source content. In the context of vision-language, (object) hallucination is defined as models generating content that contains nonexistent or inaccurate objects from the input image~\cite{hallusurvey,pope}. 
+
+% \noindent\textbf{Variability of fact generation.}  
+% Atomic facts include three types: entity existence, attributes, and relations. An entity fact indicates an object's existence. Attribute facts relate to characteristics like color and shape. Relation facts describe inter-entity relationships, e.g., spatial. In Figure 1's "the man is standing on the front of a car," it's an indivisible entity-relation-entity triple, with "standing on the front of" as the relation. This ensures our metric's consistency. 
+% I am sorry to cause a misunderstanding. In our definition, atomic facts contain three types of information: the existence of the entity, the attribute, and the relation. Entity fact denotes the existence of the object. Attribute fact is the attribute of the entity, such as color and shape. Relation fact is the relationship between entities, such as spatial relationships.  For the example in Figure 1,  “the man is standing on the front of a car” can not be further decomposed because it is an entity-relation-entity triple, and  “standing on the front of” is a relation in the example. Therefore, our metric doesn’t raise questions about the consistency of the scoring system.
+
+% \noindent\textbf{Efficiency estimate.} 
+% Gathering ground-truth responses for each query is both costly and time-consuming, making it unrealistic to tailor individual answers for every user's question. Therefore, although reference-free metric typically takes more time, it is much more important for evaluating model output. For example, the reference-free metric FActScore~\cite{factscore} requires retrieval from the external knowledge base and generates facts, and natural language inference, where multiple steps are implemented by API-based LLMs, which consume more time than ours. There is a trade-off between evaluation results and speed. Although other metrics (such as BLEU) can achieve higher speed, our metric can achieve a superior correlation with human evaluation. Compared with human evaluation, our method can speed up the evaluation process. In addition, we can verify multiple facts in parallel to speed up the time. The average consuming time for a long response is 4s, which is much less than the manual time of 212 seconds.
+% Efficiency is key in evaluation. Collecting ground-truth responses for each query is impractical due to high costs and time constraints. Thus, reference-free metrics are vital, though they may be slower. For instance, FActScore~\cite{factscore} involves external retrieval and API-based LLM processing, slower than our method. While faster metrics exist (e.g., BLEU), our metric aligns better with human judgment. It accelerates evaluation compared to manual methods, and parallel fact verification further speeds it up. On average, our approach takes 4 seconds for a long response, faster than the manual 212 seconds.
+
+% \noindent\textbf{Bias to the short response.} Following FActScore~\cite{factscore}, our metric focuses on precision (the percentage of atomic facts supported by the input image). As you mentioned, our metric may exhibit a bias toward shorter responses. However, our method still achieves a high correlation with human judgment and shows its advance in evaluating long-form question answering. Besides, our metric is fine-grained and explainable compared to the other existing metrics.
+
+
+% \noindent\textbf{Minor Weakness.} 
+% Our attempt to combine steps 1 and 2 in a single prompt led to poorer performance, as the lengthy, multi-demonstration prompt was challenging for the LLM to process. Combining two complex tasks proved too difficult for the LLM. We intend to publicly release our human evaluation results and all our codes for transparency.
+% We have tried a combined prompt to achieve step 1 and step 2. The performance is worse because the prompt with several demonstrations is too long and is hard for LLM to understand. It is too hard for LLM to finish the combination of the two complex tasks. We plan to make the human evaluation results and our all codes publicly available.
+
+
+% [1] Survey of Hallucination in Natural Language Generation. ACM Comput. Surv., 2023.
+
+% [2] Evaluating Object Hallucination in Large Vision-Language Models. EMNLP, 2023.
+
+% [3] FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation. EMNLP, 2023.
+
+
+% \section{Response to Reviewer z5sn}
+% \textbf{ Bias issue.} 
+% In addition to LLaVA-1.5, we used OFA for verification. Consistently, LLaVA-1.5 outperformed, reaffirming the robustness of our metric.
+
+% Thanks for your question. Besides LLaVA-1.5, we also utilize OFA to implement the verifier. In this setting, LLaVA 1.5 also shows the best performance which is consistent with our previous results and demonstrates the robustness of our proposed metric.
+
+% \noindent\textbf{Critique for baselines.}  
+% POPE [19] proposed a dataset for static hallucination detection but not an evaluation metric. [9] conducts manual evaluation only. Similarly to BLEU,  we add SPICE as a baseline and it achieves worse performance (\pearson =20\%; \spearman =21.\%; \kendall =25\% ). 
+% Following your advice, we add two baselines: 
+% 1) Asking GPT4/ChatGPT to evaluate the faithfulness with the reference.  (\pearson = -3\%; \spearman =-9\% ; \kendall =-10\%)
+% 2) Asking GPT-4V to evaluate the faithfulness. (\pearson = 24\%; \spearman =24\% ; \kendall =26\% )
+% The two baselines perform worse than our framework, partially because of their lack of fine-grained understanding of the response. 
+
+% [9] utilizes human evaluation and doesn’t propose metrics. [19] [27] and [28] proposed a dataset for evaluation but not metric. For others, we've investigated that they are of low capability similar to BLEU, we'll add our comparison in the final version. We add SPICE as a baseline and achieve 20.97\% Pearson’s correlation coefficient, 21.00\% Spearman’s correlation coefficient, and 25.22\% Kendall’s correlation coefficient, which performs worse than our metric. 
+% Following your advice, we add two naïve baselines 1). Just ask GPT4/ChatGPT to evaluate the faithfulness of the answer, given the reference 2). just ask GPT-4V to evaluate the faithfulness. The results are -3\% Pearson’s correlation coefficient, -9\% Spearman’s correlation coefficient, -10\% Kendall’s correlation coefficient, 24\% Pearson’s correlation coefficient, 24\% Spearman’s correlation coefficient, and 26\% Kendall’s correlation coefficient for baselines 1) and 2). The two baselines perform worse than our framework and are also of low capability, partially because of their lack of fine-grained understanding of the response. 
+
+% \noindent\textbf{Accumulation of error.}  
+% Our metric, despite concerns about accumulation error, has attained state-of-the-art performance relative to other metrics. Its flexible design allows for the integration of future, more powerful models. Similar accuracy levels have been achieved by other QA-based models like those in~\cite{factscore,TIFA}.
+% We understand your concern about accumulation error, but our metric has achieved state-of-the-art performance compared with other metrics. Furthermore, our framework is flexible and dynamic and can include future stronger model components. Besides, there are some other works~\cite{factscore,tifa} that also use a QA-based model and achieve a similar level of accuracy to our metric. 
+
+% \noindent\textbf{ Sub-sentence recognition model.} Thanks for your good suggestions. We will consider distilling a better model.
+% from closed-source LLM.
+
+% \noindent\textbf{ Proportion of positive/negative verification.}
+% The proportion of positive/negative verification is 22\% and 78\%. We will add more metrics (F1, Recall, and Precision).
+
+% [1] TIFA: Accurate and Interpretable Text-to-Image Faithfulness Evaluation with Question Answering. ICCV 2023.
+
+% [2]  FActScore: Fine-grained Atomic Evaluation of Factual Precision in Long Form Text Generation. EMNLP, 2023.
+
+
+
+
+% \begin{table}[h]
+% \centering
+% \begin{tabular}{lccccccc}
+% \hline
+% \textbf{Recognizer} & \multicolumn{2}{c}{\textbf{LLaVA}} & \multicolumn{2}{c}{\textbf{InstructBLIP}} & \multicolumn{2}{c}{\textbf{Overall}} \\
+%  & \textbf{Accuracy} & \textbf{F1} & \textbf{Accuracy} & \textbf{F1} & \textbf{Accuracy} & \textbf{F1} \\
+% \hline
+% ChatGPT & 89.84 & - & 91.58 & - & 90.74 & - \\
+% LLaMA-7B & 68.01 & - & 71.39 & - & 69.75 & - \\
+% LLaMA-7B (w/ context) & 72.80 & - & 66.76 & - & 69.68 & - \\
+% \hline
+% \end{tabular}
+% \caption{Your caption here.}
+% \label{tab:your_label}
+% \end{table}
+
+
+
+% \begin{table}[h]
+% \centering
+% \begin{tabular}{lccccccc}
+% \hline
+% \textbf{Verifier} & \multicolumn{2}{c}{\textbf{LLaVA}} & \multicolumn{2}{c}{\textbf{InstructBLIP}} & \multicolumn{2}{c}{\textbf{Overall}} \\
+%  & \textbf{Accuracy} & \textbf{F1} & \textbf{Accuracy} & \textbf{F1} & \textbf{Accuracy} & \textbf{F1} \\
+% \hline
+% OFA-EM & 81.07 & - & 78.08 & - & 79.42 & - \\
+% OFA & 84.47 & - & 80.71 & - & 82.39 & - \\
+% mPLUG & 84.95 & - & 83.86 & - & 84.35 & - \\
+% BLIP-2-flan5x1 & 78.64 & - & 77.42 & - & 77.97 & - \\
+% BLIP-2-flan5xxl & 82.36 & - & 83.20 & - & 82.83 & - \\
+% LLaVA & 67.25 & - & 67.10 & - & 67.17 & - \\
+% LLaVA-1.5 & 85.65 & - & 84.49 & - & 85.07 & - \\
+% GPT-4V & 81.34 & - & 82.80 & - & 82.07 & - \\
+% \hline
+% \end{tabular}
+% \caption{Your caption here.}
+% \label{tab:your_label}
+% \end{table}

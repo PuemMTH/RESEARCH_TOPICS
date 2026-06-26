@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<title>[2407.11008] Figuring out Figures: Using Textual References to Caption Scientific Figures</title><meta content="Figures are essential channels for densely communicating complex ideas in scientific papers. Previous work in automatically generating figure captions has been largely unsuccessful and has defaulted to using single-lay&hellip;" property="og:description">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="summary" name="twitter:card">
+<meta content="Figuring out Figures: Using Textual References to Caption Scientific Figures" name="twitter:title">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" name="twitter:image:src">
+<meta content="ar5iv logo" name="twitter:image:alt">
+<meta content="Figuring out Figures: Using Textual References to Caption Scientific Figures" property="og:title">
+<meta content="ar5iv" property="og:site_name">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" property="og:image">
+<meta content="article" property="og:type">
+<meta content="https://ar5iv.labs.arxiv.org/html/2407.11008" property="og:url">
+<link href="https://ar5iv.labs.arxiv.org/html/2407.11008" rel="canonical" target="_blank">
+<!--Generated on Mon Aug  5 16:58:33 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<script>
+  function detectColorScheme(){
+    var theme="light";
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if(current_theme){
+      if(current_theme == "dark"){
+        theme = "dark";
+      } }
+    else if(!window.matchMedia) { return false; }
+    else if(window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      theme = "dark"; }
+    if (theme=="dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light"); } }
+
+  detectColorScheme();
+
+  function toggleColorScheme(){
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if (current_theme) {
+      if (current_theme == "light") {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+      else {
+        localStorage.setItem("ar5iv_theme", "light"); } }
+    else {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+    detectColorScheme(); }
+</script>
+<link href="/assets/ar5iv-fonts.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv-site.0.2.2.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">
+Figuring out Figures: Using Textual References to Caption Scientific Figures 
+<br class="ltx_break">
+</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">
+Stanley Cao 
+<br class="ltx_break">Department of Computer Science 
+<br class="ltx_break">Stanford University 
+<br class="ltx_break"><span class="ltx_text ltx_font_typewriter" id="id1.1.id1">stanley.l.cao@stanford.edu</span>
+<br class="ltx_break">Kevin Liu 
+<br class="ltx_break">Department of Computer Science 
+<br class="ltx_break">Stanford University 
+<br class="ltx_break"><span class="ltx_text ltx_font_typewriter" id="id2.2.id2">liuk@stanford.edu</span>
+<br class="ltx_break">
+</span></span>
+</div>
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+<p class="ltx_p" id="id3.id1">Figures are essential channels for densely communicating complex ideas in scientific papers. Previous work in automatically generating figure captions has been largely unsuccessful and has defaulted to using single-layer LSTMs, which no longer achieve state-of-the-art performance. In our work, we use the <span class="ltx_text ltx_font_smallcaps" id="id3.id1.1">SciCap</span> datasets curated by Hsu et al. <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite> and use a variant of a CLIP+GPT-2 encoder-decoder model with cross-attention to generate captions conditioned on the image. Furthermore, we augment our training pipeline by creating a new dataset <span class="ltx_text ltx_font_smallcaps" id="id3.id1.2">MetaSciCap</span> that incorporates textual metadata from the original paper relevant to the figure, such as the title, abstract, and in-text references. We use SciBERT to encode the textual metadata and use this encoding alongside the figure embedding. In our experimentation with different models, we found that the CLIP+GPT-2 model performs better when it receives all textual metadata from the SciBERT encoder in addition to the figure, but employing a SciBERT+GPT2 model that uses only the textual metadata achieved optimal performance.</p>
+</div>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2>
+<div class="ltx_para" id="S1.p1">
+<p class="ltx_p" id="S1.p1.1">Image captioning has received significant attention from the computer vision and natural language processing communities. However, most research effort is directed toward captioning natural images <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib2" title>DBLP:journals/corr/abs-2107-13114, </a>)</cite>. The captioning of computer-generated figures provides a very different challenge: it requires precise and often numerical data extraction, it uses different features (losing textures and object identities often used in region detection for captioning <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib2" title>DBLP:journals/corr/abs-2107-13114, </a>)</cite>), and it requires generation in the specific genre of scientific writing. As described in Section <a class="ltx_ref" href="#S2" title="2 Related Work ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">2</span></a>, few works have tackled this task in depth, with the leading work <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite> achieving a BLEU score hovering around 2.</p>
+</div>
+<div class="ltx_para" id="S1.p2">
+<p class="ltx_p" id="S1.p2.1">Figure captioning also has useful applications: it may improve paper accessibility for the visually impaired; help authors write meaningful and high quality captions; and it may be a useful component to help text-based language models extract meaning from figures. More broadly, as language models begin to tackle more and more complex tasks that require deep domain understanding (e.g., Math Olympiad <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib3" title>DBLP:journals/corr/abs-2202-01344, </a>)</cite>, competitive programming questions <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib4" title>alphacode, </a>; <a class="ltx_ref" href="#bib.bib5" title>hendrycksapps2021, </a>)</cite>), scientific figure captioning may be viewed as a proxy for the deeper goal of understanding academic research.</p>
+</div>
+<div class="ltx_para" id="S1.p3">
+<p class="ltx_p" id="S1.p3.1">To tackle this task, we conjecture that looking at the figure alone provides insufficient information to write the caption. Intuitively, a caption is designed to <em class="ltx_emph ltx_font_italic" id="S1.p3.1.1">augment</em> the figure and provide contextual information, unlike image captions (which are often similar to assistive descriptions). In light of this, we supplement our input with textual information, including paper metadata and in-text references. Using this approach, we see that text references improve performance significantly, although work remains to be done to ensure that image features are also efficiently incorporated.</p>
+</div>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2 </span>Related Work</h2>
+<div class="ltx_para" id="S2.p1">
+<p class="ltx_p" id="S2.p1.1">Image captioning has received significant attention from the research community. However, although cutting-edge models have performed well on image captioning, these models have largely focused on captioning natural images such as the MS-COCO dataset <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib6" title>DBLP:journals/corr/ChenFLVGDZ15, </a>)</cite>. As a result, they often use techniques like region detection through a Faster R-CNN <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib7" title>7485869, </a>)</cite> to target interesting object regions for descriptions (e.g., OSCAR <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib8" title>li2020oscar, </a>)</cite>, VIVO <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib9" title>DBLP:journals/corr/abs-2009-13682, </a>)</cite>), a technique inappropriate for non-natural imagery. Notably, the Caption Transformer <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib10" title>DBLP:journals/corr/abs-2101-10804, </a>)</cite> avoids region proposal networks and instead uses a fully transformer-based encoder-decoder architecture from pixels to caption; this approach partially inspired our present work.</p>
+</div>
+<div class="ltx_para" id="S2.p2">
+<p class="ltx_p" id="S2.p2.1">Some research has also tackled diagram question-answering. Kembhavi et al. <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib11" title>DBLP:conf/eccv/KembhaviSKSHF16, </a>)</cite> represent diagrams as a parse graph and extract knowledge using a multi-stage pipeline from diagrams in scientific textbooks, while Kim et al. do the same using a unified network <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib12" title>Kim2018DynamicGG, </a>)</cite>. However, these approaches generally rely again on object localization and relation detection that is specialized toward diagram imagery.</p>
+</div>
+<div class="ltx_para" id="S2.p3">
+<p class="ltx_p" id="S2.p3.1">The state of the art performance for learning from figures remains poor <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite>. Gomez-Perez and Ortega <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib13" title>10.1145/3360901.3364420, </a>)</cite> learn a correspondence between figures and their captions using vision and language subnetworks; however, their work does not tackle generation. Previous work has attempted to caption figures based on synthetically-generated captions, but this has been criticized for being dissimilar to captions found in real scientific articles <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite>. As one of the few groups working on figure captioning, Hsu et al. <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite> create the <span class="ltx_text ltx_font_smallcaps" id="S2.p3.1.1">SciCap</span> dataset, a large-scale dataset of arXiv paper figures (see Section <a class="ltx_ref" href="#S4.SS1" title="4.1 Data ‣ 4 Experiments ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">4.1</span></a> for details) and establish a few baseline models with their dataset. They use a convolutional neural network (CNN) combined with an LSTM architecture, using the pre-trained ResNet-101 as the CNN to encode images into a 2048-dimensional vector. This image encoding is then projected to fit into the LSTM decoder, which used hidden layers of size 512. The authors design three variations of this baseline model, evaluating the caption quality using BLEU-4. When considering all the baseline models, the BLEU-4 scores hovers around 2, showing that the current state of the performance needs severe improvement. The authors also find that models trained on a subset of the dataset containing only single-sentence captions performed the best compared to first-sentence captions and captions with less than 100 words. The authors state that this is most likely because the single-sentence caption dataset collection had the smallest vocabulary size.</p>
+</div>
+<div class="ltx_para" id="S2.p4">
+<p class="ltx_p" id="S2.p4.1">However, the CNN + LSTM approach scores very poorly, suggesting that more modern architectures might be able to improve on it significantly. One of the limitations of their model is its relatively small size and the fact that the CNN was trained on natural images, which does not match the image distribution that would appear in scientific papers. The <span class="ltx_text ltx_font_smallcaps" id="S2.p4.1.1">SciCap</span> authors also only tested a few input combinations, so testing further ones (even if unsuccessful) would help to shed light on what information is truly predictive of captions.</p>
+</div>
+<div class="ltx_para" id="S2.p5">
+<p class="ltx_p" id="S2.p5.1">In the following sections, we present how we create a more expressive end-to-end model, augmented with additional textual information, that may outperform current CNN + LSTM models.</p>
+</div>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3 </span>Approach</h2>
+<div class="ltx_para" id="S3.p1">
+<p class="ltx_p" id="S3.p1.2">At the core of our approach is the idea of combining image perception with language generation. We model figure captioning as a sequence-to-sequence problem, using an encoder-decoder architecture with CLIP-ViT/B-32 <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib14" title>DBLP:journals/corr/abs-2103-00020, </a>)</cite> as the encoder and either DistilGPT-2 or GPT-2 <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib15" title>radford2019language, </a>)</cite> as the decoder. We chose CLIP as it was trained on a diverse distribution of visual input, including potentially-synthetic web images, which we felt might provide a better ground for fine-tuning than a model trained wholly on natural images such as ImageNet. CLIP uses a Vision Transformer architecture, which processes images by breaking up a <math alttext="3\times 224\times 224" class="ltx_Math" display="inline" id="S3.p1.1.m1.1"><semantics id="S3.p1.1.m1.1a"><mrow id="S3.p1.1.m1.1.1" xref="S3.p1.1.m1.1.1.cmml"><mn id="S3.p1.1.m1.1.1.2" xref="S3.p1.1.m1.1.1.2.cmml">3</mn><mo id="S3.p1.1.m1.1.1.1" lspace="0.222em" rspace="0.222em" xref="S3.p1.1.m1.1.1.1.cmml">&times;</mo><mn id="S3.p1.1.m1.1.1.3" xref="S3.p1.1.m1.1.1.3.cmml">224</mn><mo id="S3.p1.1.m1.1.1.1a" lspace="0.222em" rspace="0.222em" xref="S3.p1.1.m1.1.1.1.cmml">&times;</mo><mn id="S3.p1.1.m1.1.1.4" xref="S3.p1.1.m1.1.1.4.cmml">224</mn></mrow><annotation-xml encoding="MathML-Content" id="S3.p1.1.m1.1b"><apply id="S3.p1.1.m1.1.1.cmml" xref="S3.p1.1.m1.1.1"><times id="S3.p1.1.m1.1.1.1.cmml" xref="S3.p1.1.m1.1.1.1"></times><cn id="S3.p1.1.m1.1.1.2.cmml" type="integer" xref="S3.p1.1.m1.1.1.2">3</cn><cn id="S3.p1.1.m1.1.1.3.cmml" type="integer" xref="S3.p1.1.m1.1.1.3">224</cn><cn id="S3.p1.1.m1.1.1.4.cmml" type="integer" xref="S3.p1.1.m1.1.1.4">224</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.p1.1.m1.1c">3\times 224\times 224</annotation></semantics></math> image tensor into <math alttext="32\times 32" class="ltx_Math" display="inline" id="S3.p1.2.m2.1"><semantics id="S3.p1.2.m2.1a"><mrow id="S3.p1.2.m2.1.1" xref="S3.p1.2.m2.1.1.cmml"><mn id="S3.p1.2.m2.1.1.2" xref="S3.p1.2.m2.1.1.2.cmml">32</mn><mo id="S3.p1.2.m2.1.1.1" lspace="0.222em" rspace="0.222em" xref="S3.p1.2.m2.1.1.1.cmml">&times;</mo><mn id="S3.p1.2.m2.1.1.3" xref="S3.p1.2.m2.1.1.3.cmml">32</mn></mrow><annotation-xml encoding="MathML-Content" id="S3.p1.2.m2.1b"><apply id="S3.p1.2.m2.1.1.cmml" xref="S3.p1.2.m2.1.1"><times id="S3.p1.2.m2.1.1.1.cmml" xref="S3.p1.2.m2.1.1.1"></times><cn id="S3.p1.2.m2.1.1.2.cmml" type="integer" xref="S3.p1.2.m2.1.1.2">32</cn><cn id="S3.p1.2.m2.1.1.3.cmml" type="integer" xref="S3.p1.2.m2.1.1.3">32</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.p1.2.m2.1c">32\times 32</annotation></semantics></math> patches. These patches are linearly embedded into token embeddings that are passed to a standard Transformer encoder. For experiments involving textual features (e.g., title, abstract, and references), we concatenate CLIP&rsquo;s output embeddings with those of SciBERT, a BERT encoder trained on scientific text <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib16" title>Beltagy2019SciBERT, </a>)</cite>. Text features are tokenized and passed into SciBERT separately from the image encoder.</p>
+</div>
+<div class="ltx_para" id="S3.p2">
+<p class="ltx_p" id="S3.p2.1">GPT-2 is a decoder-only model, which we augment to add encoder-decoder cross attention to the final hidden states of the encoder output. We chose GPT-2 as it was trained on a diversity of web text; we also ran an experiment with BART, an autoencoder version of BERT with an autoregressive decoder <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib17" title>lewis-etal-2020-bart, </a>)</cite>, but this led to notably worse performance so we decided to use GPT-2 instead. (For some training runs, memory constraints require us to use DistilGPT-2, a distilled version of GPT-2 with 82M parameters vs. 117M for GPT-2.) We train end-to-end, passing images and metadata to the encoder and using teacher-forcing on the output of the decoder.</p>
+</div>
+<div class="ltx_para" id="S3.p3">
+<p class="ltx_p" id="S3.p3.1">To implement and link these models, we fork the Huggingface Transformers library <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib18" title>wolf-etal-2020-transformers, </a>)</cite>, adding CLIP support to the Vision Encoder-Decoder architecture and adding modifications to support passing arbitrary metadata to the encoder. Moreover, we incorporate the SciBERT encoder in our encoding pipeline, which works with CLIP to produce a concatenated embedding that is then given to GPT-2 or DistilGPT-2. In later experiments (see Section <a class="ltx_ref" href="#S4.SS4" title="4.4 Results ‣ 4 Experiments ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">4.4</span></a>), to incentivize our model to learn more from the figures, we used dropout on the SciBERT encodings with a dropout probability of 0.7 so that the model will be less inclined to rely on the textual metadata alone.
+<cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib19" title>Falcon_PyTorch_Lightning_2019, </a>)</cite>.</p>
+</div>
+<div class="ltx_para" id="S3.p4">
+<p class="ltx_p" id="S3.p4.1">As a baseline, we use the results as reported by Hsu et al. <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite>, which used a ResNet-101 CNN + single-layer LSTM with global attention, as well as a baseline that uses the first sentence of the first reference (if provided, otherwise empty string) as the predicted caption.<span class="ltx_note ltx_role_footnote" id="footnote1"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup><span class="ltx_tag ltx_tag_note">1</span>We first used a baseline that predicted the entire first reference (approx. 200 characters), but we found this to give artificially-inflated BLEU scores since the generated caption was typically much longer than the reference. This was supported by notably low ROUGE scores, which (unlike BLEU) weight recall. Since our reference captions are all one sentence, we hence decided to cap the reference baseline at one sentence.</span></span></span></p>
+</div>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span>Experiments</h2>
+<section class="ltx_subsection" id="S4.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.1 </span>Data</h3>
+<div class="ltx_para" id="S4.SS1.p1">
+<p class="ltx_p" id="S4.SS1.p1.1">We use the <span class="ltx_text ltx_font_smallcaps" id="S4.SS1.p1.1.1">SciCap</span> dataset <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite>, available on <a class="ltx_ref ltx_href" href="https://github.com/tingyaohsu/SciCap" target="_blank" title>GitHub</a>. It is an 18GB large-scale figure caption dataset based on Computer Science arXiv papers published between 2010 and 2020. It contains 416,000 graph plots (the most ubiquitous figure type) extracted from over 290,000 research papers. We use the SciCap-No-Subfig-Img subset, which denotes all figures that do not contain subfigures within them, and predict the first sentence of the caption. For preprocessing, each image is resized to <math alttext="224\times 224" class="ltx_Math" display="inline" id="S4.SS1.p1.1.m1.1"><semantics id="S4.SS1.p1.1.m1.1a"><mrow id="S4.SS1.p1.1.m1.1.1" xref="S4.SS1.p1.1.m1.1.1.cmml"><mn id="S4.SS1.p1.1.m1.1.1.2" xref="S4.SS1.p1.1.m1.1.1.2.cmml">224</mn><mo id="S4.SS1.p1.1.m1.1.1.1" lspace="0.222em" rspace="0.222em" xref="S4.SS1.p1.1.m1.1.1.1.cmml">&times;</mo><mn id="S4.SS1.p1.1.m1.1.1.3" xref="S4.SS1.p1.1.m1.1.1.3.cmml">224</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.SS1.p1.1.m1.1b"><apply id="S4.SS1.p1.1.m1.1.1.cmml" xref="S4.SS1.p1.1.m1.1.1"><times id="S4.SS1.p1.1.m1.1.1.1.cmml" xref="S4.SS1.p1.1.m1.1.1.1"></times><cn id="S4.SS1.p1.1.m1.1.1.2.cmml" type="integer" xref="S4.SS1.p1.1.m1.1.1.2">224</cn><cn id="S4.SS1.p1.1.m1.1.1.3.cmml" type="integer" xref="S4.SS1.p1.1.m1.1.1.3">224</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS1.p1.1.m1.1c">224\times 224</annotation></semantics></math> and normalized by the mean and std. dev. from the CLIP training dataset. We wrote a custom dataloader and preprocessor for this dataset.</p>
+</div>
+<div class="ltx_para" id="S4.SS1.p2">
+<p class="ltx_p" id="S4.SS1.p2.1">Furthermore, Hsu et al. <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite> suggest that incorporating the paper&rsquo;s full text in which the figure belonged might boost performance of the model. However, we argue that there might only be certain features within the paper&rsquo;s text that might be useful, so we associate each figure with targeted text data, including the title, abstract, and references.</p>
+</div>
+<div class="ltx_para" id="S4.SS1.p3">
+<p class="ltx_p" id="S4.SS1.p3.1">To associate paper metadata (title and abstract) with each figure, we linked this dataset with a publicly available arXiv metadata dump <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib20" title>noauthor_arxiv_nodate, </a>)</cite>. To associate in-text references, we adapted <span class="ltx_text ltx_font_typewriter" id="S4.SS1.p3.1.1">arxiv-public-datasets</span> <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib21" title>clement2019arxiv, </a>)</cite> to extract full text from each PDF. We then masked out the original caption using the Striped Smith-Waterman algorithm for local sequence alignment and used a regular expression to extract a window of 100-characters on each side around each figure mention.</p>
+</div>
+<div class="ltx_para" id="S4.SS1.p4">
+<p class="ltx_p" id="S4.SS1.p4.1">We call this augmented dataset (<span class="ltx_text ltx_font_smallcaps" id="S4.SS1.p4.1.1">SciCap</span>, metadata, and in-text references) <span class="ltx_text ltx_font_smallcaps" id="S4.SS1.p4.1.2">MetaSciCap</span>. Given an input of (figure, title, abstract, references), the model is expected to predict the caption as output. Note that when textual features are passed into the model, due to the limited context length of SciBERT, we use the first 100 characters of the title, 150 of the abstract, and allocate the rest of the context window for references. Each feature is separated by <span class="ltx_text ltx_font_typewriter" id="S4.SS1.p4.1.3">[SEP]</span> tokens.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.2 </span>Evaluation Method</h3>
+<div class="ltx_para" id="S4.SS2.p1">
+<p class="ltx_p" id="S4.SS2.p1.4">To generate captions, we use top-<math alttext="p" class="ltx_Math" display="inline" id="S4.SS2.p1.1.m1.1"><semantics id="S4.SS2.p1.1.m1.1a"><mi id="S4.SS2.p1.1.m1.1.1" xref="S4.SS2.p1.1.m1.1.1.cmml">p</mi><annotation-xml encoding="MathML-Content" id="S4.SS2.p1.1.m1.1b"><ci id="S4.SS2.p1.1.m1.1.1.cmml" xref="S4.SS2.p1.1.m1.1.1">𝑝</ci></annotation-xml><annotation encoding="application/x-tex" id="S4.SS2.p1.1.m1.1c">p</annotation></semantics></math> sampling with <math alttext="p=0.9" class="ltx_Math" display="inline" id="S4.SS2.p1.2.m2.1"><semantics id="S4.SS2.p1.2.m2.1a"><mrow id="S4.SS2.p1.2.m2.1.1" xref="S4.SS2.p1.2.m2.1.1.cmml"><mi id="S4.SS2.p1.2.m2.1.1.2" xref="S4.SS2.p1.2.m2.1.1.2.cmml">p</mi><mo id="S4.SS2.p1.2.m2.1.1.1" xref="S4.SS2.p1.2.m2.1.1.1.cmml">=</mo><mn id="S4.SS2.p1.2.m2.1.1.3" xref="S4.SS2.p1.2.m2.1.1.3.cmml">0.9</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.SS2.p1.2.m2.1b"><apply id="S4.SS2.p1.2.m2.1.1.cmml" xref="S4.SS2.p1.2.m2.1.1"><eq id="S4.SS2.p1.2.m2.1.1.1.cmml" xref="S4.SS2.p1.2.m2.1.1.1"></eq><ci id="S4.SS2.p1.2.m2.1.1.2.cmml" xref="S4.SS2.p1.2.m2.1.1.2">𝑝</ci><cn id="S4.SS2.p1.2.m2.1.1.3.cmml" type="float" xref="S4.SS2.p1.2.m2.1.1.3">0.9</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS2.p1.2.m2.1c">p=0.9</annotation></semantics></math>. We calculate a case-insensitive BLEU score against the reference caption using the standardized SacreBLEU <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib22" title>post-2018-call, </a>)</cite>. We report all BLEU scores on a scale of 0-100. We also calculate a ROUGE-L score, which has two components: (1) precision, defined as the length of the longest common subsequence (LCS) between a reference <math alttext="R" class="ltx_Math" display="inline" id="S4.SS2.p1.3.m3.1"><semantics id="S4.SS2.p1.3.m3.1a"><mi id="S4.SS2.p1.3.m3.1.1" xref="S4.SS2.p1.3.m3.1.1.cmml">R</mi><annotation-xml encoding="MathML-Content" id="S4.SS2.p1.3.m3.1b"><ci id="S4.SS2.p1.3.m3.1.1.cmml" xref="S4.SS2.p1.3.m3.1.1">𝑅</ci></annotation-xml><annotation encoding="application/x-tex" id="S4.SS2.p1.3.m3.1c">R</annotation></semantics></math> and generated <math alttext="C" class="ltx_Math" display="inline" id="S4.SS2.p1.4.m4.1"><semantics id="S4.SS2.p1.4.m4.1a"><mi id="S4.SS2.p1.4.m4.1.1" xref="S4.SS2.p1.4.m4.1.1.cmml">C</mi><annotation-xml encoding="MathML-Content" id="S4.SS2.p1.4.m4.1b"><ci id="S4.SS2.p1.4.m4.1.1.cmml" xref="S4.SS2.p1.4.m4.1.1">𝐶</ci></annotation-xml><annotation encoding="application/x-tex" id="S4.SS2.p1.4.m4.1c">C</annotation></semantics></math> divided by the number of unigrams in the generated; and (2) recall, the length of the LCS divided by the number of unigrams in the reference. We report the F1 score, a metric that balances precision and recall. Our motivation to use ROUGE was to take into account recall in our evaluation, as our primary goal was to generate a caption that effectively confers the information in the reference. All results are reported against the <span class="ltx_text ltx_font_smallcaps" id="S4.SS2.p1.4.1">MetaSciCap</span> test split.</p>
+</div>
+<div class="ltx_para" id="S4.SS2.p2">
+<p class="ltx_p" id="S4.SS2.p2.1">In addition to automated metrics, we report a sampling of qualitative behavior from the test split. See Section <a class="ltx_ref" href="#S4.SS4" title="4.4 Results ‣ 4 Experiments ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">4.4</span></a> for further details.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.3 </span>Experimental Details</h3>
+<div class="ltx_para" id="S4.SS3.p1">
+<p class="ltx_p" id="S4.SS3.p1.1">We trained our models on a workstation with an NVIDIA RTX 2080 Ti and an Azure NC6s v3 VM with an NVIDIA V100. Select early models were trained on the Google TPU Research Cloud, but after experiencing PyTorch incompatibilities with the TPU architecture, we switched to other compute environments. We trained for 15 epochs, taking approximately 12 hours per experiment, and used AdamW with a learning rate of <math alttext="5\times 10^{-5}" class="ltx_Math" display="inline" id="S4.SS3.p1.1.m1.1"><semantics id="S4.SS3.p1.1.m1.1a"><mrow id="S4.SS3.p1.1.m1.1.1" xref="S4.SS3.p1.1.m1.1.1.cmml"><mn id="S4.SS3.p1.1.m1.1.1.2" xref="S4.SS3.p1.1.m1.1.1.2.cmml">5</mn><mo id="S4.SS3.p1.1.m1.1.1.1" lspace="0.222em" rspace="0.222em" xref="S4.SS3.p1.1.m1.1.1.1.cmml">&times;</mo><msup id="S4.SS3.p1.1.m1.1.1.3" xref="S4.SS3.p1.1.m1.1.1.3.cmml"><mn id="S4.SS3.p1.1.m1.1.1.3.2" xref="S4.SS3.p1.1.m1.1.1.3.2.cmml">10</mn><mrow id="S4.SS3.p1.1.m1.1.1.3.3" xref="S4.SS3.p1.1.m1.1.1.3.3.cmml"><mo id="S4.SS3.p1.1.m1.1.1.3.3a" xref="S4.SS3.p1.1.m1.1.1.3.3.cmml">&minus;</mo><mn id="S4.SS3.p1.1.m1.1.1.3.3.2" xref="S4.SS3.p1.1.m1.1.1.3.3.2.cmml">5</mn></mrow></msup></mrow><annotation-xml encoding="MathML-Content" id="S4.SS3.p1.1.m1.1b"><apply id="S4.SS3.p1.1.m1.1.1.cmml" xref="S4.SS3.p1.1.m1.1.1"><times id="S4.SS3.p1.1.m1.1.1.1.cmml" xref="S4.SS3.p1.1.m1.1.1.1"></times><cn id="S4.SS3.p1.1.m1.1.1.2.cmml" type="integer" xref="S4.SS3.p1.1.m1.1.1.2">5</cn><apply id="S4.SS3.p1.1.m1.1.1.3.cmml" xref="S4.SS3.p1.1.m1.1.1.3"><csymbol cd="ambiguous" id="S4.SS3.p1.1.m1.1.1.3.1.cmml" xref="S4.SS3.p1.1.m1.1.1.3">superscript</csymbol><cn id="S4.SS3.p1.1.m1.1.1.3.2.cmml" type="integer" xref="S4.SS3.p1.1.m1.1.1.3.2">10</cn><apply id="S4.SS3.p1.1.m1.1.1.3.3.cmml" xref="S4.SS3.p1.1.m1.1.1.3.3"><minus id="S4.SS3.p1.1.m1.1.1.3.3.1.cmml" xref="S4.SS3.p1.1.m1.1.1.3.3"></minus><cn id="S4.SS3.p1.1.m1.1.1.3.3.2.cmml" type="integer" xref="S4.SS3.p1.1.m1.1.1.3.3.2">5</cn></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS3.p1.1.m1.1c">5\times 10^{-5}</annotation></semantics></math> and a linearly declining schedule. We ran experiments with other learning rate schedules, e.g., a fixed learning rate as well as a one cycle learning rate policy, but performance did not exceed a linear scheduler.</p>
+</div>
+<div class="ltx_para" id="S4.SS3.p2">
+<p class="ltx_p" id="S4.SS3.p2.1">Training configurations are shown in Table <a class="ltx_ref" href="#S4.T1" title="Table 1 ‣ 4.4 Results ‣ 4 Experiments ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">1</span></a>. SciBERT refers to <span class="ltx_text ltx_font_typewriter" id="S4.SS3.p2.1.1">scibert_scivocab_uncased</span>; GPT-2 refers to GPT-2-base (117M parameters), and DistilGPT-2 refers to a pretrained distilled version of GPT-2-base with 87M parameters.</p>
+</div>
+<div class="ltx_para" id="S4.SS3.p3">
+<p class="ltx_p" id="S4.SS3.p3.1">We encapsulate each of our model architectures in a custom PyTorch Lightning class, allowing for orchestration among multiple GPUs and supporting multithreaded dataloading <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib19" title>Falcon_PyTorch_Lightning_2019, </a>)</cite>.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS4">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.4 </span>Results</h3>
+<figure class="ltx_figure" id="S4.F1">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_figure_panel ltx_img_square" height="240" id="S4.F1.g1" src="../../assets/papers/24-FiguringoutFigures_2024/bleu_score.png" width="240"></div>
+<div class="ltx_flex_cell ltx_flex_size_2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_figure_panel ltx_img_square" height="240" id="S4.F1.g2" src="../../assets/papers/24-FiguringoutFigures_2024/rouge_score.png" width="240"></div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S4.F1.3.1.1" style="font-size:90%;">Figure 1</span>: </span><span class="ltx_text" id="S4.F1.4.2" style="font-size:90%;">&ldquo;Change in BLEU and ROUGE scores with the number of source predictions.&rdquo;
+<br class="ltx_break">
+<span class="ltx_text ltx_font_italic" id="S4.F1.4.2.1" style="font-size:89%;">This caption was actually autogenerated by our text-only model given our title, abstract, and reference. Best of 3 generations selected. In reality, this figure shows the improvement in BLEU and ROUGE over training.</span></span></figcaption>
+</figure>
+<figure class="ltx_table" id="S4.T1">
+<p class="ltx_p ltx_align_center" id="S4.T1.2"><span class="ltx_text ltx_inline-block" id="S4.T1.2.1" style="width:433.6pt;">
+<span class="ltx_inline-block ltx_transformed_outer" id="S4.T1.2.1.1" style="width:530.4pt;height:163pt;vertical-align:-1.0pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<span class="ltx_p" id="S4.T1.2.1.1.1"><span class="ltx_text" id="S4.T1.2.1.1.1.1">
+<span class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="S4.T1.2.1.1.1.1.1">
+<span class="ltx_thead">
+<span class="ltx_tr" id="S4.T1.2.1.1.1.1.1.1.1">
+<span class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.2.1.1.1.1.1.1.1.1"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.1.1.1.1" style="font-size:90%;">Image?</span></span>
+<span class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.2.1.1.1.1.1.1.1.2"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.1.1.2.1" style="font-size:90%;">Text?</span></span>
+<span class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.2.1.1.1.1.1.1.1.3"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.1.1.3.1" style="font-size:90%;">Caption type</span></span>
+<span class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.2.1.1.1.1.1.1.1.4"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.1.1.4.1" style="font-size:90%;">Model</span></span>
+<span class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.2.1.1.1.1.1.1.1.5"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.1.1.5.1" style="font-size:90%;">BLEU (test) (0&ndash;100)</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T1.2.1.1.1.1.1.1.1.6"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.1.1.6.1" style="font-size:90%;">ROUGE-L F1 (test) (0&ndash;1)</span></span></span>
+</span>
+<span class="ltx_tbody">
+<span class="ltx_tr" id="S4.T1.2.1.1.1.1.1.2.1">
+<span class="ltx_td ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.2.1.1"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.2.1.1.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td ltx_border_t" id="S4.T1.2.1.1.1.1.1.2.1.2"></span>
+<span class="ltx_td ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.2.1.3"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.2.1.3.1" style="font-size:90%;">Normalized</span></span>
+<span class="ltx_td ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.2.1.4"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.2.1.4.1" style="font-size:90%;">CNN + LSTM (SciCap)</span></span>
+<span class="ltx_td ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.2.1.5"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.2.1.5.1" style="font-size:90%;">2.19</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.2.1.6"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.2.1.6.1" style="font-size:90%;">&mdash;</span></span></span>
+<span class="ltx_tr" id="S4.T1.2.1.1.1.1.1.3.2">
+<span class="ltx_td" id="S4.T1.2.1.1.1.1.1.3.2.1"></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.3.2.2"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.3.2.2.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.3.2.3"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.3.2.3.1" style="font-size:90%;">Normalized</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.3.2.4"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.3.2.4.1" style="font-size:90%;">First reference sentence (baseline)</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.3.2.5"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.3.2.5.1" style="font-size:90%;">1.59</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T1.2.1.1.1.1.1.3.2.6"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.3.2.6.1" style="font-size:90%;">0.09</span></span></span>
+<span class="ltx_tr" id="S4.T1.2.1.1.1.1.1.4.3">
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.4.3.1"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.4.3.1.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.4.3.2"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.4.3.2.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.4.3.3"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.4.3.3.1" style="font-size:90%;">Normalized</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.4.3.4"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.4.3.4.1" style="font-size:90%;">CLIP ViT-B/32 + SciBERT + DistilGPT-2</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.4.3.5"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.4.3.5.1" style="font-size:90%;">2.21</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T1.2.1.1.1.1.1.4.3.6"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.4.3.6.1" style="font-size:90%;">0.18</span></span></span>
+<span class="ltx_tr" id="S4.T1.2.1.1.1.1.1.5.4">
+<span class="ltx_td ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.5.4.1"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.5.4.1.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td ltx_border_t" id="S4.T1.2.1.1.1.1.1.5.4.2"></span>
+<span class="ltx_td ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.5.4.3"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.5.4.3.1" style="font-size:90%;">Orig</span></span>
+<span class="ltx_td ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.5.4.4"><span class="ltx_text ltx_font_italic" id="S4.T1.2.1.1.1.1.1.5.4.4.1" style="font-size:90%;">CNN + LSTM (SciCap)<span class="ltx_note ltx_role_footnote" id="footnote2"><sup class="ltx_note_mark">2</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">2</sup><span class="ltx_tag ltx_tag_note"><span class="ltx_text ltx_font_upright" id="footnote2.1.1.1" style="font-size:111%;">2</span></span><span class="ltx_text ltx_font_upright" id="footnote2.5" style="font-size:111%;">Hsu et al. did not report results on the First-Sentence captioning task with original captions and no-subfigures applied. As such, we have included here their results on First-Sentence, original captions, with </span><em class="ltx_emph" id="footnote2.6" style="font-size:111%;">subfigures included</em><span class="ltx_text ltx_font_upright" id="footnote2.7" style="font-size:111%;">, which is intended only for an intuitive sense of task difficulty and should not be seen as a definitive comparison of results. For a comparison of results, see our baselines.</span></span></span></span></span></span>
+<span class="ltx_td ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.5.4.5"><span class="ltx_text ltx_font_italic" id="S4.T1.2.1.1.1.1.1.5.4.5.1" style="font-size:90%;">2.59</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_left ltx_border_t" id="S4.T1.2.1.1.1.1.1.5.4.6"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.5.4.6.1" style="font-size:90%;">&mdash;</span></span></span>
+<span class="ltx_tr" id="S4.T1.2.1.1.1.1.1.6.5">
+<span class="ltx_td" id="S4.T1.2.1.1.1.1.1.6.5.1"></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.6.5.2"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.6.5.2.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.6.5.3"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.6.5.3.1" style="font-size:90%;">Orig</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.6.5.4"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.6.5.4.1" style="font-size:90%;">First reference sentence (baseline)</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.6.5.5"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.6.5.5.1" style="font-size:90%;">1.38</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T1.2.1.1.1.1.1.6.5.6"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.6.5.6.1" style="font-size:90%;">0.10</span></span></span>
+<span class="ltx_tr" id="S4.T1.2.1.1.1.1.1.7.6">
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.7.6.1"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.7.6.1.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.7.6.2"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.7.6.2.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.7.6.3"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.7.6.3.1" style="font-size:90%;">Orig</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.7.6.4"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.7.6.4.1" style="font-size:90%;">CLIP ViT-B/32 + SciBERT + DistilGPT-2</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.7.6.5"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.7.6.5.1" style="font-size:90%;">4.92</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T1.2.1.1.1.1.1.7.6.6"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.7.6.6.1" style="font-size:90%;">0.26</span></span></span>
+<span class="ltx_tr" id="S4.T1.2.1.1.1.1.1.8.7">
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.8.7.1"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.8.7.1.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td" id="S4.T1.2.1.1.1.1.1.8.7.2"></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.8.7.3"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.8.7.3.1" style="font-size:90%;">Orig</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.8.7.4"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.8.7.4.1" style="font-size:90%;">CLIP ViT-B/32 + GPT-2</span></span>
+<span class="ltx_td ltx_align_left" id="S4.T1.2.1.1.1.1.1.8.7.5"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.8.7.5.1" style="font-size:90%;">1.02</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_left" id="S4.T1.2.1.1.1.1.1.8.7.6"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.8.7.6.1" style="font-size:90%;">0.13</span></span></span>
+<span class="ltx_tr" id="S4.T1.2.1.1.1.1.1.9.8">
+<span class="ltx_td ltx_border_bb" id="S4.T1.2.1.1.1.1.1.9.8.1"></span>
+<span class="ltx_td ltx_align_left ltx_border_bb" id="S4.T1.2.1.1.1.1.1.9.8.2"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.9.8.2.1" style="font-size:90%;">&checkmark;</span></span>
+<span class="ltx_td ltx_align_left ltx_border_bb" id="S4.T1.2.1.1.1.1.1.9.8.3"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.9.8.3.1" style="font-size:90%;">Orig</span></span>
+<span class="ltx_td ltx_align_left ltx_border_bb" id="S4.T1.2.1.1.1.1.1.9.8.4"><span class="ltx_text" id="S4.T1.2.1.1.1.1.1.9.8.4.1" style="font-size:90%;">SciBERT + GPT-2</span></span>
+<span class="ltx_td ltx_align_left ltx_border_bb" id="S4.T1.2.1.1.1.1.1.9.8.5"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.9.8.5.1" style="font-size:90%;">6.71</span></span>
+<span class="ltx_td ltx_nopad_r ltx_align_left ltx_border_bb" id="S4.T1.2.1.1.1.1.1.9.8.6"><span class="ltx_text ltx_font_bold" id="S4.T1.2.1.1.1.1.1.9.8.6.1" style="font-size:90%;">0.30</span></span></span>
+</span>
+</span><span class="ltx_text" id="S4.T1.2.1.1.1.1.2" style="font-size:90%;"></span></span></span>
+</span></span></span></p>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="S4.T1.5.1.1" style="font-size:90%;">Table 1</span>: </span><span class="ltx_text" id="S4.T1.6.2" style="font-size:90%;">Results on the <span class="ltx_text ltx_font_smallcaps" id="S4.T1.6.2.1">MetaSciCap</span> test dataset, for both original and normalized captions. Results marked (SciCap) originate from the <span class="ltx_text ltx_font_smallcaps" id="S4.T1.6.2.2">SciCap</span> paper <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite>. For (SciCap) results, ROUGE-L F1 scores are not included as the original paper does not report ROUGE.</span></figcaption>
+</figure>
+<div class="ltx_para" id="S4.SS4.p1">
+<p class="ltx_p" id="S4.SS4.p1.1">Our results are shown in Table <a class="ltx_ref" href="#S4.T1" title="Table 1 ‣ 4.4 Results ‣ 4 Experiments ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">1</span></a>. Figure <a class="ltx_ref" href="#S4.F1" title="Figure 1 ‣ 4.4 Results ‣ 4 Experiments ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">1</span></a> also shows our BLEU and ROUGE scores on the validation set as a function of the training step.</p>
+</div>
+<div class="ltx_para" id="S4.SS4.p2">
+<p class="ltx_p" id="S4.SS4.p2.1">On normalized captions, we achieve a BLEU score comparable to the CNN + LSTM baseline and BLEU and ROUGE scores that surpass our first-reference-sentence baseline. This is slightly worse than expected, likely due to normalized captions removing domain-specific knowledge as described in Section <a class="ltx_ref" href="#S5" title="5 Analysis ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">5</span></a>.</p>
+</div>
+<div class="ltx_para" id="S4.SS4.p3">
+<p class="ltx_p" id="S4.SS4.p3.1">However, for original captions, we see a significant improvement in performance over baselines. Our image + text model achieves a BLEU of 4.92 and ROUGE-L of 0.36, better than published SciCap results, our baseline, and unpublished results from Hsu et al. on a GPT-2 architecture <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib23" title>kenneth_huang__survival_game_in-person_moment_2021, </a>)</cite>. Furthermore, a text-only ablation (not using CLIP-ViT-B/32 or an image input) taking in solely title, abstract, and references achieves a BLEU of 6.71 and ROUGE-L of 0.30. This suggests our model likely biases toward text features (and that image features seem to actually hurt performance), which we discuss in depth in Section <a class="ltx_ref" href="#S5" title="5 Analysis ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">5</span></a>. We took two approaches to improve this imbalance: (1) trying a CLIP ViT-L/14 encoder, under the assumption that a larger encoder would be able to generalize better to figures (which did not improve performance, obtaining a BLEU score of 3.45, ROUGE 0.23); and (2) applying a strong dropout (<math alttext="p=0.7" class="ltx_Math" display="inline" id="S4.SS4.p3.1.m1.1"><semantics id="S4.SS4.p3.1.m1.1a"><mrow id="S4.SS4.p3.1.m1.1.1" xref="S4.SS4.p3.1.m1.1.1.cmml"><mi id="S4.SS4.p3.1.m1.1.1.2" xref="S4.SS4.p3.1.m1.1.1.2.cmml">p</mi><mo id="S4.SS4.p3.1.m1.1.1.1" xref="S4.SS4.p3.1.m1.1.1.1.cmml">=</mo><mn id="S4.SS4.p3.1.m1.1.1.3" xref="S4.SS4.p3.1.m1.1.1.3.cmml">0.7</mn></mrow><annotation-xml encoding="MathML-Content" id="S4.SS4.p3.1.m1.1b"><apply id="S4.SS4.p3.1.m1.1.1.cmml" xref="S4.SS4.p3.1.m1.1.1"><eq id="S4.SS4.p3.1.m1.1.1.1.cmml" xref="S4.SS4.p3.1.m1.1.1.1"></eq><ci id="S4.SS4.p3.1.m1.1.1.2.cmml" xref="S4.SS4.p3.1.m1.1.1.2">𝑝</ci><cn id="S4.SS4.p3.1.m1.1.1.3.cmml" type="float" xref="S4.SS4.p3.1.m1.1.1.3">0.7</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S4.SS4.p3.1.m1.1c">p=0.7</annotation></semantics></math>) to the final outputs of the SciBERT encoder before running the GPT-2 decoder. This appeared to improve performance, but we were unable to obtain conclusive results due to compute and training time limitations. Nevertheless, this represents a potentially strong path forward.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S5">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5 </span>Analysis</h2>
+<div class="ltx_para" id="S5.p1">
+<p class="ltx_p" id="S5.p1.1">Our key hypothesis is that reference data, representing the most relevant full-text excerpts for a given paper, should boost performance compared to the baselines described in Hsu et al <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite>. Our experimentation has shown that using references and a Transformer architecture leads to comparable results on normalized captions, but significantly better results on original captions (see Table <a class="ltx_ref" href="#S4.T1" title="Table 1 ‣ 4.4 Results ‣ 4 Experiments ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">1</span></a>). We will analyze this phenomenon in Section <a class="ltx_ref" href="#S5.SS1" title="5.1 Normalized Captions vs. Original Captions ‣ 5 Analysis ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">5.1</span></a>. In addition, we will discuss the possible reasons as to why the purely textual-based SciBERT+GPT-2 encoder-decoder model performs better than the CLIP+SciBERT+GPT-2 model.</p>
+</div>
+<section class="ltx_subsection" id="S5.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.1 </span>Normalized Captions vs. Original Captions</h3>
+<div class="ltx_para" id="S5.SS1.p1">
+<p class="ltx_p" id="S5.SS1.p1.1">There are a few reasons why our model performs only comparably with the CNN + LSTM model on normalized captions, even when our model was supplied textual metadata. The text normalization process used in Hsu et al. mainly consisted of 2 strategies. The first approach was basic normalization, which essentially replaced all instances of numbers with <span class="ltx_text ltx_font_typewriter" id="S5.SS1.p1.1.1">[NUM]</span> <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite>. The second approach was advanced normalization, which utilized regular expressions to replace any equations with <span class="ltx_text ltx_font_typewriter" id="S5.SS1.p1.1.2">[EQUATION]</span>, and any text spans enclosed by any bracket pairs with <span class="ltx_text ltx_font_typewriter" id="S5.SS1.p1.1.3">[BRACKET]</span> <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib1" title>scicap, </a>)</cite>. This means many tokens that might have been included in the title, abstract, or figure references, were actually omitted from the normalized caption. Thus, our model could not effectively leverage the domain knowledge it may have learned from using the textual metadata, which means that our transformer architecture is essentially still captioning figures from the image embedding itself&mdash;the extra textual metadata proves to be of no use to our model. This supports the findings from Hsu et al.: the reason why the authors went with the CNN + LSTM model was because their experimentation with transformers did not result in any noticeable performance gain.</p>
+</div>
+<figure class="ltx_figure" id="S5.F2">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_3">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S5.F2.sf1"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="372" id="S5.F2.sf1.g1" src="../../assets/papers/24-FiguringoutFigures_2024/1001.1872v1-Figure2-1.png" width="598">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S5.F2.sf1.4.1.1" style="font-size:90%;">(a)</span> </span><span class="ltx_text ltx_font_italic" id="S5.F2.sf1.5.2" style="font-size:90%;">Gold Caption:<span class="ltx_text ltx_font_upright" id="S5.F2.sf1.5.2.1">
+<br class="ltx_break">ser performance at NUM bpcu for codes for4&times; systems. 
+<br class="ltx_break">
+</span>Predicted:<span class="ltx_text ltx_font_upright" id="S5.F2.sf1.5.2.2">
+<br class="ltx_break">ser versus snr at the ap for NUM NUM, NUM, and NUM NUM mimo.</span></span></figcaption>
+</figure>
+</div>
+<div class="ltx_flex_cell ltx_flex_size_3">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S5.F2.sf2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="344" id="S5.F2.sf2.g1" src="../../assets/papers/24-FiguringoutFigures_2024/1001.1915v1-Figure2-1.png" width="598">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S5.F2.sf2.4.1.1" style="font-size:90%;">(b)</span> </span><span class="ltx_text ltx_font_italic" id="S5.F2.sf2.5.2" style="font-size:90%;">Gold Caption:<span class="ltx_text ltx_font_upright" id="S5.F2.sf2.5.2.1">
+<br class="ltx_break">comparision between the NUM approaches in the case of a dbsc channel.
+<br class="ltx_break">
+</span>Predicted:<span class="ltx_text ltx_font_upright" id="S5.F2.sf2.5.2.2">
+<br class="ltx_break">lower bound on the rate : p BRACKET-TK = NUM - x/2</span></span></figcaption>
+</figure>
+</div>
+<div class="ltx_flex_cell ltx_flex_size_3">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S5.F2.sf3"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="344" id="S5.F2.sf3.g1" src="../../assets/papers/24-FiguringoutFigures_2024/1001.2228v2-Figure7-1.png" width="419">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S5.F2.sf3.4.1.1" style="font-size:90%;">(c)</span> </span><span class="ltx_text ltx_font_italic" id="S5.F2.sf3.5.2" style="font-size:90%;">Gold Caption:<span class="ltx_text ltx_font_upright" id="S5.F2.sf3.5.2.1">
+<br class="ltx_break">relaxed bp algorithm with a gaussian prior and bounded noise output channel. the plot compares the simulated relaxed bp performance against [&hellip;] 
+<br class="ltx_break">
+</span>Predicted:<span class="ltx_text ltx_font_upright" id="S5.F2.sf3.5.2.2">
+<br class="ltx_break">median squared error over NUM trials for relaxed bp vs EQUAT-TK EQUAT</span></span></figcaption>
+</figure>
+</div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S5.F2.2.1.1" style="font-size:90%;">Figure 2</span>: </span><span class="ltx_text" id="S5.F2.3.2" style="font-size:90%;">Model Predictions on Normalized Captions.</span></figcaption>
+</figure>
+<figure class="ltx_figure" id="S5.F3">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_3">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S5.F3.sf1"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="372" id="S5.F3.sf1.g1" src="../../assets/papers/24-FiguringoutFigures_2024/1001.1872v1-Figure2-1.png" width="598">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S5.F3.sf1.4.1.1" style="font-size:90%;">(a)</span> </span><span class="ltx_text ltx_font_italic" id="S5.F3.sf1.5.2" style="font-size:90%;">Gold Caption:<span class="ltx_text ltx_font_upright" id="S5.F3.sf1.5.2.1">
+<br class="ltx_break">Fig. 2. SER performance at 4 BPCU for codes for4&times; 2 systems 
+<br class="ltx_break">
+</span>Predicted:<span class="ltx_text ltx_font_upright" id="S5.F3.sf1.5.2.2">
+<br class="ltx_break">Fig. 2. SER performance by different schemes in 4&times; 2 MIMO Rayleigh fading</span></span></figcaption>
+</figure>
+</div>
+<div class="ltx_flex_cell ltx_flex_size_3">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S5.F3.sf2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="344" id="S5.F3.sf2.g1" src="../../assets/papers/24-FiguringoutFigures_2024/1001.1915v1-Figure2-1.png" width="598">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S5.F3.sf2.4.1.1" style="font-size:90%;">(b)</span> </span><span class="ltx_text ltx_font_italic" id="S5.F3.sf2.5.2" style="font-size:90%;">Gold Caption:<span class="ltx_text ltx_font_upright" id="S5.F3.sf2.5.2.1">
+<br class="ltx_break">Fig. 2. Comparision between the 3 approaches in the case of a DBSC channel
+<br class="ltx_break">
+</span>Predicted:<span class="ltx_text ltx_font_upright" id="S5.F3.sf2.5.2.2">
+<br class="ltx_break">Fig. 9: Capacity results obtained in Algorithm 2 as a function of the number of users</span></span></figcaption>
+</figure>
+</div>
+<div class="ltx_flex_cell ltx_flex_size_3">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S5.F3.sf3"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="492" id="S5.F3.sf3.g1" src="../../assets/papers/24-FiguringoutFigures_2024/1001.2228v2-Figure7-1.png" width="598">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S5.F3.sf3.4.1.1" style="font-size:90%;">(c)</span> </span><span class="ltx_text ltx_font_italic" id="S5.F3.sf3.5.2" style="font-size:90%;">Gold Caption:<span class="ltx_text ltx_font_upright" id="S5.F3.sf3.5.2.1">
+<br class="ltx_break">Fig. 7. Relaxed BP algorithm with a Gaussian prior and bounded noise output channel. The plot compares the simulated relaxed BP performance against [&hellip;] 
+<br class="ltx_break">
+</span>Predicted:<span class="ltx_text ltx_font_upright" id="S5.F3.sf3.5.2.2">
+<br class="ltx_break">Fig. 7. SDP with bounded-norm approximation vs. sampling ratio in a Bernou</span></span></figcaption>
+</figure>
+</div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S5.F3.2.1.1" style="font-size:90%;">Figure 3</span>: </span><span class="ltx_text" id="S5.F3.3.2" style="font-size:90%;">Model Predictions on Original Captions</span></figcaption>
+</figure>
+<div class="ltx_para" id="S5.SS1.p2">
+<p class="ltx_p" id="S5.SS1.p2.1">For a more detailed analysis of the internal workings, we provide a demonstration of our model on a few figures in the SCICAP test set. From Figure <a class="ltx_ref" href="#S5.F2" title="Figure 2 ‣ 5.1 Normalized Captions vs. Original Captions ‣ 5 Analysis ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">2</span></a>, although our model learns of the bracket, equation, and number tokens (i.e., <span class="ltx_text ltx_font_typewriter" id="S5.SS1.p2.1.1">BRACKET-TK</span>, <span class="ltx_text ltx_font_typewriter" id="S5.SS1.p2.1.2">EQUAT-TK</span>, <span class="ltx_text ltx_font_typewriter" id="S5.SS1.p2.1.3">NUM</span>), our model does not learn where to place them. This is most likely because these tokens do not appear in the textual metadata, so it is reasonable for our model to perform suboptimally on normalized captions, by virtue of it being trained on unnormalized metadata. For a more accurate assessment of our model architecture, normalization of the textual metadata would be required; this would result in training data that is suited for predicting <span class="ltx_text ltx_font_italic" id="S5.SS1.p2.1.4">normalized</span> captions, and we expect that our model will successfully specialize to this task.</p>
+</div>
+<div class="ltx_para" id="S5.SS1.p3">
+<p class="ltx_p" id="S5.SS1.p3.1">Moreover, from Figure <a class="ltx_ref" href="#S5.F2" title="Figure 2 ‣ 5.1 Normalized Captions vs. Original Captions ‣ 5 Analysis ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">2</span></a>, we observed that our model is inclined to predict equations, variables, and numbers, which might have appeared in the textual metadata. The normalized gold captions, however, do not have mathematical notation in the captions, so even though our model has acquired domain knowledge from the textual metadata, it is disincentivized from using it when generating the caption. This is supported by noting how in Figure <a class="ltx_ref" href="#S5.F3.sf1" title="In Figure 3 ‣ 5.1 Normalized Captions vs. Original Captions ‣ 5 Analysis ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">3(a)</span></a>, the correct numerical expression <math alttext="4\times 2" class="ltx_Math" display="inline" id="S5.SS1.p3.1.m1.1"><semantics id="S5.SS1.p3.1.m1.1a"><mrow id="S5.SS1.p3.1.m1.1.1" xref="S5.SS1.p3.1.m1.1.1.cmml"><mn id="S5.SS1.p3.1.m1.1.1.2" xref="S5.SS1.p3.1.m1.1.1.2.cmml">4</mn><mo id="S5.SS1.p3.1.m1.1.1.1" lspace="0.222em" rspace="0.222em" xref="S5.SS1.p3.1.m1.1.1.1.cmml">&times;</mo><mn id="S5.SS1.p3.1.m1.1.1.3" xref="S5.SS1.p3.1.m1.1.1.3.cmml">2</mn></mrow><annotation-xml encoding="MathML-Content" id="S5.SS1.p3.1.m1.1b"><apply id="S5.SS1.p3.1.m1.1.1.cmml" xref="S5.SS1.p3.1.m1.1.1"><times id="S5.SS1.p3.1.m1.1.1.1.cmml" xref="S5.SS1.p3.1.m1.1.1.1"></times><cn id="S5.SS1.p3.1.m1.1.1.2.cmml" type="integer" xref="S5.SS1.p3.1.m1.1.1.2">4</cn><cn id="S5.SS1.p3.1.m1.1.1.3.cmml" type="integer" xref="S5.SS1.p3.1.m1.1.1.3">2</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S5.SS1.p3.1.m1.1c">4\times 2</annotation></semantics></math> is predicted, demonstrating that our model would have used the domain knowledge (perhaps from the figure reference) when trained on original captions; supplemental trials (e.g., Figure <a class="ltx_ref" href="#A1.F5" title="Figure 5 ‣ Appendix A Appendix ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">5</span></a>) lead to a similar conclusion, as even exact acronyms used in the paper are replicated by our model&rsquo;s generated caption.<span class="ltx_note ltx_role_footnote" id="footnote3"><sup class="ltx_note_mark">3</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">3</sup><span class="ltx_tag ltx_tag_note">3</span>It is worthwhile to note that from the original captions in Figure <a class="ltx_ref" href="#S5.F3" title="Figure 3 ‣ 5.1 Normalized Captions vs. Original Captions ‣ 5 Analysis ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">3</span></a>, our model more or less predicts the correct figure number, contributing to a higher BLEU score.</span></span></span> Thus, the roughly similar performance of our model to the CNN + LSTM model on normalized captions is expected, since our model&rsquo;s ability to accurately predict elements of the original caption is not rewarded with a higher BLEU/ROUGE score.</p>
+</div>
+<div class="ltx_para" id="S5.SS1.p4">
+<p class="ltx_p" id="S5.SS1.p4.1">We are not as concerned with our model&rsquo;s performance on normalized captions for two main reasons. First, Hsu et al. found that there was no clear improvement in their CNN + LSTM model performance from training on normalized text, suggesting that textual normalization does not productively simplify the task for language models. Second, establishing a state of the art performance on original captions serves as a foundation for future work, because having the model predict normalized captions would omit equations and numbers that are important to understanding the figure&mdash;the goal of this task is to generate accurate, real captions rather than preprocessed ones.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S5.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.2 </span>Performance Disparities from Modal Ablations</h3>
+<figure class="ltx_figure" id="S5.F4"><svg class="ltx_picture" height="346.68" id="S5.F4.pic1" overflow="visible" version="1.1" width="600"><g fill="#000000" stroke="#000000" stroke-width="0.4pt" transform="translate(0,346.68) matrix(1 0 0 -1 0 0)"><g fill="#404040" fill-opacity="1.0"><path d="M 0 5.91 L 0 340.78 C 0 344.04 2.64 346.68 5.91 346.68 L 594.09 346.68 C 597.36 346.68 600 344.04 600 340.78 L 600 5.91 C 600 2.64 597.36 0 594.09 0 L 5.91 0 C 2.64 0 0 2.64 0 5.91 Z" style="stroke:none"></path></g><g fill="#F2F2F2" fill-opacity="1.0"><path d="M 1.97 5.91 L 1.97 340.78 C 1.97 342.95 3.73 344.71 5.91 344.71 L 594.09 344.71 C 596.27 344.71 598.03 342.95 598.03 340.78 L 598.03 5.91 C 598.03 3.73 596.27 1.97 594.09 1.97 L 5.91 1.97 C 3.73 1.97 1.97 3.73 1.97 5.91 Z" style="stroke:none"></path></g><g fill-opacity="1.0" transform="matrix(1.0 0.0 0.0 1.0 21.65 13.78)"><foreignobject color="#000000" height="319.12" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="556.69">
+<span class="ltx_inline-block ltx_minipage ltx_align_bottom" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1" style="width:402.3pt;"><img alt="Refer to caption" class="ltx_graphics ltx_img_landscape" height="156" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.g1" src="../../assets/papers/24-FiguringoutFigures_2024/1001.1902v2-Figure3-1.png" width="240">
+<span class="ltx_p" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1"><span class="ltx_text ltx_font_italic" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1">References</span>:</span>
+<span class="ltx_p" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.2">s; a RapidMind version with improved performance of the cuda backend was scheduled for version 4.1. <span class="ltx_text ltx_font_bold" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.2.1">Figure 3 shows the performance of the GPU-optimized version on various backends</span> and compares it with hardwar[SEP] [&hellip;]</span>
+<span class="ltx_p" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.3"><span class="ltx_text ltx_font_italic" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.3.1">Gold Caption:</span></span>
+<span class="ltx_p" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.4">Fig. 3. <span class="ltx_text ltx_font_bold" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.4.1">Performance comparision of the GPU-optimized version on various backends</span>. Performance measurements have been performed both on an Nvidia GPU and a Nehalem-EP socket [&hellip;]</span>
+<span class="ltx_p" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.5"><span class="ltx_text ltx_font_italic" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.5.1">Predicted:</span></span>
+<span class="ltx_p" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.6">Fig. 3. <span class="ltx_text ltx_font_bold" id="S5.F4.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.6.1">The performance comparison of the GPU-optimized version for a variety of back</span></span>
+</span></foreignobject></g></g></svg>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S5.F4.2.1.1" style="font-size:90%;">Figure 4</span>: </span><span class="ltx_text" id="S5.F4.3.2" style="font-size:90%;">
+Exemplary generation from text-only model showing the potential for memorization. If very similar wording is used in both the references and gold caption, the model may achieve strikingly good performance by simply regurgitating or slightly rewording reference text.
+</span></figcaption>
+</figure>
+<div class="ltx_para" id="S5.SS2.p1">
+<p class="ltx_p" id="S5.SS2.p1.1">In general, as seen in Table <a class="ltx_ref" href="#S4.T1" title="Table 1 ‣ 4.4 Results ‣ 4 Experiments ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">1</span></a>, adding textual metadata provided the greatest boost to performance, while the image-only models generally failed to surpass the baselines. The surprisingly strong performance of our model on the text modality thus merits investigation. One possible explanation for this is shown in Figure <a class="ltx_ref" href="#S5.F4" title="Figure 4 ‣ 5.2 Performance Disparities from Modal Ablations ‣ 5 Analysis ‣ Figuring out Figures: Using Textual References to Caption Scientific Figures"><span class="ltx_text ltx_ref_tag">4</span></a>, which shows a degenerate case where the caption can be derived from textual information alone. Essentially, while we masked out the original exact caption in our preprocessing, we took no action against text similar to the caption. Thus, if the reference text is very similar to the caption text (which may often occur in papers), the image is entirely unnecessary to caption the figure. It is arguable whether this represents a form of data poisoning or a legitimate textual feature; after all, in a use case such as an automatic caption generator, the model may very well already have references the author has written and so plagiarizing (if done well) would be acceptable.</p>
+</div>
+<div class="ltx_para" id="S5.SS2.p2">
+<p class="ltx_p" id="S5.SS2.p2.1">Regarding the poor performance of CLIP+SciBERT+GPT-2 model compared to the SciBERT+GPT-2 model, one explanation may be a confounding variable. Due to compute limitations, for the CLIP+SciBERT+GPT-2 model, we had to use a DistilGPT-2 model as the decoder, which has been shown to have slightly lower performance than GPT-2-base. However, for the SciBERT+GPT-2 model, we were able to use the full GPT-2 model due to the omission of CLIP. This may have created a comparative gap in performance, supported by promising data on an initial training run with image-text and GPT-2 (scoring a BLEU of 4.54 in only 5/15 epochs); however, compute limitations again prevented us from completing this run. Nevertheless, this suggests that scaling up decoder size may be a simple way to improve BLEU performance.</p>
+</div>
+<div class="ltx_para" id="S5.SS2.p3">
+<p class="ltx_p" id="S5.SS2.p3.1">The disparity in performance also suggests that the image data is being poorly utilized. One possible explanation for this may be the resizing and normalization performed in image preprocessing: figures in our dataset are often larger than <math alttext="224\times 224" class="ltx_Math" display="inline" id="S5.SS2.p3.1.m1.1"><semantics id="S5.SS2.p3.1.m1.1a"><mrow id="S5.SS2.p3.1.m1.1.1" xref="S5.SS2.p3.1.m1.1.1.cmml"><mn id="S5.SS2.p3.1.m1.1.1.2" xref="S5.SS2.p3.1.m1.1.1.2.cmml">224</mn><mo id="S5.SS2.p3.1.m1.1.1.1" lspace="0.222em" rspace="0.222em" xref="S5.SS2.p3.1.m1.1.1.1.cmml">&times;</mo><mn id="S5.SS2.p3.1.m1.1.1.3" xref="S5.SS2.p3.1.m1.1.1.3.cmml">224</mn></mrow><annotation-xml encoding="MathML-Content" id="S5.SS2.p3.1.m1.1b"><apply id="S5.SS2.p3.1.m1.1.1.cmml" xref="S5.SS2.p3.1.m1.1.1"><times id="S5.SS2.p3.1.m1.1.1.1.cmml" xref="S5.SS2.p3.1.m1.1.1.1"></times><cn id="S5.SS2.p3.1.m1.1.1.2.cmml" type="integer" xref="S5.SS2.p3.1.m1.1.1.2">224</cn><cn id="S5.SS2.p3.1.m1.1.1.3.cmml" type="integer" xref="S5.SS2.p3.1.m1.1.1.3">224</cn></apply></annotation-xml><annotation encoding="application/x-tex" id="S5.SS2.p3.1.m1.1c">224\times 224</annotation></semantics></math>, so shrinking them may hinder the model&rsquo;s ability to implicitly OCR text or detect lines. While we verified that the text remains readable to humans, this may not necessarily generalize to current models. It may also be that the difficulty of parsing a figure when starting from a natural image prior (as CLIP does for the most part) may be so great that the path of least resistance is to ignore the image, instead using figure metadata. If the image encoder is hence made ineffective, including it may only weaken the model by providing a noisy signal channel that the decoder must puzzle out. Further work could investigate alternative methods to encode the image that are better suited toward the vector nature of most figures, e.g., autovectorizing images and passing them in as SVG input to a text model.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S6">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6 </span>Conclusion</h2>
+<div class="ltx_para" id="S6.p1">
+<p class="ltx_p" id="S6.p1.1">Overall, we find that adding references as inputs to a figure captioning model has the potential to improve performance. We find that the transformer model architecture also achieves a better performance than the CNN + LSTM model when it is given textual metadata. However, because our model learns more from textual references, further experimentation should be done with more expressive image encoders, or perhaps improving the image encoder architecture. Pre-processing the image should also be investigated&mdash;e.g., vectorizing or extracting LaTeX/PostScript source for each image&mdash;because the vision encoder could leverage the patterns found from consistent inputs due to image pre-processing.</p>
+</div>
+<div class="ltx_para" id="S6.p2">
+<p class="ltx_p" id="S6.p2.1">Furthermore, our experimentation remained limited to graph plots, while in reality, there are many different types of plots that models might need to caption. A more in-depth analysis on the difficulty of transfer learning for figure captioning across fields, time periods, and graph types could be an interesting task for further experiments. Other possible experiments include enlarging the decoder for more accurate captions, using a more expressive intermediate representation of figure images (e.g., graphs as done in <cite class="ltx_cite ltx_citemacro_citep">(<a class="ltx_ref" href="#bib.bib11" title>DBLP:conf/eccv/KembhaviSKSHF16, </a>)</cite>), or better data processing to remove very similar reference text.</p>
+</div>
+<div class="ltx_pagination ltx_role_newpage"></div>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+<ul class="ltx_biblist">
+<li class="ltx_bibitem" id="bib.bib1">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[1]</span>
+<span class="ltx_bibblock">
+Ting-Yao Hsu, C&nbsp;Lee Giles, and Ting-Hao Huang.
+
+</span>
+<span class="ltx_bibblock">SciCap: Generating captions for scientific figures.
+
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_font_italic" id="bib.bib1.1.1">Findings of the Association for Computational Linguistics:
+EMNLP 2021</span>, pages 3258&ndash;3264, Punta Cana, Dominican Republic, November 2021.
+Association for Computational Linguistics.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib2">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[2]</span>
+<span class="ltx_bibblock">
+Ahmed Elhagry and Karima Kadaoui.
+
+</span>
+<span class="ltx_bibblock">A thorough review on recent deep learning methodologies for image
+captioning.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib2.1.1">CoRR</span>, abs/2107.13114, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib3">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[3]</span>
+<span class="ltx_bibblock">
+Stanislas Polu, Jesse&nbsp;Michael Han, Kunhao Zheng, Mantas Baksys, Igor
+Babuschkin, and Ilya Sutskever.
+
+</span>
+<span class="ltx_bibblock">Formal mathematics statement curriculum learning.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib3.1.1">CoRR</span>, abs/2202.01344, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib4">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[4]</span>
+<span class="ltx_bibblock">
+Yujia Li, David Choi, Junyoung Chung, Nate Kushman, Julian Schrittwieser, R&eacute;mi
+Leblond, Tom Eccles, James Keeling, Felix Gimeno, Agustin Dal&nbsp;Lago, Thomas
+Hubert, Peter Choy, Cyprien de&nbsp;Masson&nbsp;d&rsquo;Autume, Igor Babuschkin, Xinyun Chen,
+Po-Sen Huang, Johannes Welbl, Sven Gowal, Alexey Cherepanov, James Molloy,
+Daniel Mankowitz, Esme Sutherland&nbsp;Robson, Pushmeet Kohli, Nando de&nbsp;Freitas,
+Koray Kavukcuoglu, and Oriol Vinyals.
+
+</span>
+<span class="ltx_bibblock">Competition-level code generation with alphacode, Feb 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib5">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[5]</span>
+<span class="ltx_bibblock">
+Dan Hendrycks, Steven Basart, Saurav Kadavath, Mantas Mazeika, Akul Arora,
+Ethan Guo, Collin Burns, Samir Puranik, Horace He, Dawn Song, and Jacob
+Steinhardt.
+
+</span>
+<span class="ltx_bibblock">Measuring coding challenge competence with apps.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib5.1.1">NeurIPS</span>, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib6">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[6]</span>
+<span class="ltx_bibblock">
+Xinlei Chen, Hao Fang, Tsung-Yi Lin, Ramakrishna Vedantam, Saurabh Gupta,
+Piotr Doll&aacute;r, and C.&nbsp;Lawrence Zitnick.
+
+</span>
+<span class="ltx_bibblock">Microsoft COCO captions: Data collection and evaluation server.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib6.1.1">CoRR</span>, abs/1504.00325, 2015.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib7">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[7]</span>
+<span class="ltx_bibblock">
+Shaoqing Ren, Kaiming He, Ross Girshick, and Jian Sun.
+
+</span>
+<span class="ltx_bibblock">Faster r-cnn: Towards real-time object detection with region proposal
+networks.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib7.1.1">IEEE Transactions on Pattern Analysis and Machine Intelligence</span>,
+39(6):1137&ndash;1149, 2017.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib8">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[8]</span>
+<span class="ltx_bibblock">
+Xiujun Li, Xi&nbsp;Yin, Chunyuan Li, Xiaowei Hu, Pengchuan Zhang, Lei Zhang, Lijuan
+Wang, Houdong Hu, Li&nbsp;Dong, Furu Wei, Yejin Choi, and Jianfeng Gao.
+
+</span>
+<span class="ltx_bibblock">Oscar: Object-semantics aligned pre-training for vision-language
+tasks.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib8.1.1">ECCV 2020</span>, 2020.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib9">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[9]</span>
+<span class="ltx_bibblock">
+Xiaowei Hu, Xi&nbsp;Yin, Kevin Lin, Lijuan Wang, Lei Zhang, Jianfeng Gao, and
+Zicheng Liu.
+
+</span>
+<span class="ltx_bibblock">VIVO: surpassing human performance in novel object captioning with
+visual vocabulary pre-training.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib9.1.1">CoRR</span>, abs/2009.13682, 2020.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib10">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[10]</span>
+<span class="ltx_bibblock">
+Wei Liu, Sihan Chen, Longteng Guo, Xinxin Zhu, and Jing Liu.
+
+</span>
+<span class="ltx_bibblock">CPTR: full transformer network for image captioning.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib10.1.1">CoRR</span>, abs/2101.10804, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib11">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[11]</span>
+<span class="ltx_bibblock">
+Aniruddha Kembhavi, Mike Salvato, Eric Kolve, Min&nbsp;Joon Seo, Hannaneh
+Hajishirzi, and Ali Farhadi.
+
+</span>
+<span class="ltx_bibblock">A diagram is worth a dozen images.
+
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_font_italic" id="bib.bib11.1.1">ECCV (4)</span>, volume 9908 of <span class="ltx_text ltx_font_italic" id="bib.bib11.2.2">Lecture Notes in Computer
+Science</span>, pages 235&ndash;251. Springer, 2016.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib12">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[12]</span>
+<span class="ltx_bibblock">
+Daesik Kim, Young&nbsp;Joon Yoo, Jeesoo Kim, Sangkuk Lee, and Nojun Kwak.
+
+</span>
+<span class="ltx_bibblock">Dynamic graph generation network: Generating relational knowledge
+from diagrams.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib12.1.1">2018 IEEE/CVF Conference on Computer Vision and Pattern
+Recognition</span>, pages 4167&ndash;4175, 2018.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib13">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[13]</span>
+<span class="ltx_bibblock">
+Jose&nbsp;Manuel Gomez-Perez and Raul Ortega.
+
+</span>
+<span class="ltx_bibblock">Look, read and enrich - learning from scientific figures and their
+captions.
+
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_font_italic" id="bib.bib13.1.1">Proceedings of the 10th International Conference on Knowledge
+Capture</span>, K-CAP &rsquo;19, page 101&ndash;108, New York, NY, USA, 2019. Association for
+Computing Machinery.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib14">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[14]</span>
+<span class="ltx_bibblock">
+Alec Radford, Jong&nbsp;Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh,
+Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark,
+Gretchen Krueger, and Ilya Sutskever.
+
+</span>
+<span class="ltx_bibblock">Learning transferable visual models from natural language
+supervision.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib14.1.1">CoRR</span>, abs/2103.00020, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib15">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[15]</span>
+<span class="ltx_bibblock">
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya
+Sutskever, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Language models are unsupervised multitask learners.
+
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_font_italic" id="bib.bib15.1.1">OpenAI blog</span>, 1(8):9, 2019.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib16">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[16]</span>
+<span class="ltx_bibblock">
+Iz&nbsp;Beltagy, Kyle Lo, and Arman Cohan.
+
+</span>
+<span class="ltx_bibblock">Scibert: Pretrained language model for scientific text.
+
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_font_italic" id="bib.bib16.1.1">EMNLP</span>, 2019.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib17">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[17]</span>
+<span class="ltx_bibblock">
+Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed,
+Omer Levy, Veselin Stoyanov, and Luke Zettlemoyer.
+
+</span>
+<span class="ltx_bibblock">BART: Denoising sequence-to-sequence pre-training for natural
+language generation, translation, and comprehension.
+
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_font_italic" id="bib.bib17.1.1">Proceedings of the 58th Annual Meeting of the Association for
+Computational Linguistics</span>, pages 7871&ndash;7880, Online, July 2020. Association
+for Computational Linguistics.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib18">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[18]</span>
+<span class="ltx_bibblock">
+Thomas Wolf, Lysandre Debut, Victor Sanh, Julien Chaumond, Clement Delangue,
+Anthony Moi, Pierric Cistac, Tim Rault, R&eacute;mi Louf, Morgan Funtowicz, Joe
+Davison, Sam Shleifer, Patrick von Platen, Clara Ma, Yacine Jernite, Julien
+Plu, Canwen Xu, Teven&nbsp;Le Scao, Sylvain Gugger, Mariama Drame, Quentin Lhoest,
+and Alexander&nbsp;M. Rush.
+
+</span>
+<span class="ltx_bibblock">Transformers: State-of-the-art natural language processing.
+
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_font_italic" id="bib.bib18.1.1">Proceedings of the 2020 Conference on Empirical Methods in
+Natural Language Processing: System Demonstrations</span>, pages 38&ndash;45, Online,
+October 2020. Association for Computational Linguistics.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib19">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[19]</span>
+<span class="ltx_bibblock">
+William Falcon and The PyTorch Lightning team.
+
+</span>
+<span class="ltx_bibblock">PyTorch Lightning, 3 2019.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib20">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[20]</span>
+<span class="ltx_bibblock">
+arXiv Dataset.
+
+</span>
+<span class="ltx_bibblock">Kaggle.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib21">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[21]</span>
+<span class="ltx_bibblock">
+Colin&nbsp;B. Clement, Matthew Bierbaum, Kevin&nbsp;P. O&rsquo;Keeffe, and Alexander&nbsp;A. Alemi.
+
+</span>
+<span class="ltx_bibblock">On the use of arxiv as a dataset, 2019.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib22">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[22]</span>
+<span class="ltx_bibblock">
+Matt Post.
+
+</span>
+<span class="ltx_bibblock">A call for clarity in reporting BLEU scores.
+
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_font_italic" id="bib.bib22.1.1">Proceedings of the Third Conference on Machine Translation:
+Research Papers</span>, pages 186&ndash;191, Belgium, Brussels, October 2018.
+Association for Computational Linguistics.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib23">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">[23]</span>
+<span class="ltx_bibblock">
+Kenneth Huang.
+
+</span>
+<span class="ltx_bibblock">The moment of truth: If you use a simple captioning model
+(CNN+LSTM), the resulting BLEU scores can be painfully low
+(~0.02). We tried GPT-2 (outside the paper), and the
+scores only slightly increased (~0.04). So: 1) THIS IS
+A VERY HARD TASK 2) BLEU is probably not a good metric
+https://t.co/sNraHWREW2, November 2021.
+
+</span>
+</li>
+</ul>
+</section>
+<div class="ltx_pagination ltx_role_newpage"></div>
+<section class="ltx_appendix" id="A1">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix A </span>Appendix</h2>
+<figure class="ltx_figure" id="A1.F5"><svg class="ltx_picture" height="283.06" id="A1.F5.pic1" overflow="visible" version="1.1" width="600"><g fill="#000000" stroke="#000000" stroke-width="0.4pt" transform="translate(0,283.06) matrix(1 0 0 -1 0 0)"><g fill="#404040" fill-opacity="1.0"><path d="M 0 5.91 L 0 277.15 C 0 280.41 2.64 283.06 5.91 283.06 L 594.09 283.06 C 597.36 283.06 600 280.41 600 277.15 L 600 5.91 C 600 2.64 597.36 0 594.09 0 L 5.91 0 C 2.64 0 0 2.64 0 5.91 Z" style="stroke:none"></path></g><g fill="#F2F2F2" fill-opacity="1.0"><path d="M 1.97 5.91 L 1.97 277.15 C 1.97 279.32 3.73 281.09 5.91 281.09 L 594.09 281.09 C 596.27 281.09 598.03 279.32 598.03 277.15 L 598.03 5.91 C 598.03 3.73 596.27 1.97 594.09 1.97 L 5.91 1.97 C 3.73 1.97 1.97 3.73 1.97 5.91 Z" style="stroke:none"></path></g><g fill-opacity="1.0" transform="matrix(1.0 0.0 0.0 1.0 21.65 13.78)"><foreignobject color="#000000" height="255.5" overflow="visible" transform="matrix(1 0 0 -1 0 16.6)" width="556.69">
+<span class="ltx_inline-block ltx_minipage ltx_align_bottom" id="A1.F5.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1" style="width:402.3pt;"><img alt="Refer to caption" class="ltx_graphics ltx_img_landscape" height="192" id="A1.F5.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.g1" src="../../assets/papers/24-FiguringoutFigures_2024/1001.5364v1-Figure5-1.png" width="240">
+<span class="ltx_p" id="A1.F5.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1"><span class="ltx_text ltx_font_italic" id="A1.F5.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1">Gold Caption:</span></span>
+<span class="ltx_p" id="A1.F5.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.2">Fig. 5. Comparison of various detectors in12&times; 12 system, 16-QAM symbols.</span>
+<span class="ltx_p" id="A1.F5.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.3"><span class="ltx_text ltx_font_italic" id="A1.F5.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.3.1">Predicted:</span></span>
+<span class="ltx_p" id="A1.F5.pic1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.1.4">Fig. 5. MIMO detection performance for 16-QAM, 16-QAM</span>
+</span></foreignobject></g></g></svg>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="A1.F5.2.1.1" style="font-size:90%;">Figure 5</span>: </span><span class="ltx_text" id="A1.F5.3.2" style="font-size:90%;">
+Our model learns the exact acronyms used in figures.
+</span></figcaption>
+</figure>
+<div class="ltx_pagination ltx_role_newpage"></div>
+</section>
+</article>
+</div>
+<div class="ar5iv-footer"><a class="ar5iv-nav-button ar5iv-nav-button-prev" href="/html/2407.11007">◄</a>
+<a class="ar5iv-home-button" href="/"><img alt="ar5iv homepage" height="40" src="/assets/ar5iv.png"></a>
+<a class="ar5iv-text-button" href="/feeling_lucky">Feeling<br>lucky?</a>
+<a aria-hidden="true" href="/land_of_honey_and_milk" rel="nofollow" tabindex="-1"></a>
+<a class="ar5iv-text-button ar5iv-severity-ok" href="/log/2407.11008">Conversion<br>report</a>
+<a class="ar5iv-text-button" href="https://github.com/dginev/ar5iv/issues/new?template=improve-article--arxiv-id-.md&title=Improve+article+2407.11008" target="_blank">Report<br>an issue</a>
+<a class="ar5iv-text-button arxiv-ui-theme" href="https://arxiv.org/abs/2407.11008">View&nbsp;original<br>on&nbsp;arXiv</a><a class="ar5iv-nav-button ar5iv-nav-button-next" href="/html/2407.11009">►</a>
+</div><footer class="ltx_page_footer">
+<a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle ar5iv color scheme"><span class="color-scheme-icon"></span></a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/license" target="_blank">Copyright</a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/policies/privacy_policy" target="_blank">Privacy Policy</a>
+<div class="ltx_page_logo">Generated  on Mon Aug  5 16:58:33 2024 by <a class="ltx_LaTeXML_logo" href="http://dlmf.nist.gov/LaTeXML/" target="_blank"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img alt="Mascot Sammy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg=="></a>
+</div></footer>
+</div>
+<script>
+      var canMathML = typeof(MathMLElement) == "function";
+      if (!canMathML) {
+        var body = document.querySelector("body");
+        body.firstElementChild.setAttribute('style', 'opacity: 0;');
+        var loading = document.createElement("div");
+        loading.setAttribute("id", "mathjax-loading-spinner");
+        var message = document.createElement("div");
+        message.setAttribute("id", "mathjax-loading-message");
+        message.innerText = "Typesetting Equations...";
+        body.prepend(loading);
+        body.prepend(message);
+
+        var el = document.createElement("script");
+        el.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+        document.querySelector("head").appendChild(el);
+
+        window.MathJax = {
+          startup: {
+            pageReady: () => {
+              return MathJax.startup.defaultPageReady().then(() => {
+                body.removeChild(loading);
+                body.removeChild(message);
+                body.firstElementChild.removeAttribute('style');
+              }); } } };
+      }
+    </script>
+<script>
+    // Auxiliary function, building the preview feature when
+    // an inline citation is clicked
+    function clicked_cite(e) {
+      e.preventDefault();
+      let cite = this.closest('.ltx_cite');
+      let next = cite.nextSibling;
+      if (next && next.nodeType == Node.ELEMENT_NODE && next.getAttribute('class') == "ar5iv-bibitem-preview") {
+        next.remove();
+        return; }
+      // Before adding a preview modal,
+      // cleanup older previews, in case they're still open
+      document.querySelectorAll('span.ar5iv-bibitem-preview').forEach(function(node) {
+        node.remove();
+      })
+
+      // Create the preview
+      preview = document.createElement('span');
+      preview.setAttribute('class','ar5iv-bibitem-preview');
+      let target = document.getElementById(this.getAttribute('href').slice(1));
+      target.childNodes.forEach(function (child) {
+        preview.append(child.cloneNode(true));
+      });
+      let close_x = document.createElement('button');
+      close_x.setAttribute("aria-label","Close modal for bibliography item preview");
+      close_x.textContent = "×";
+      close_x.setAttribute('class', 'ar5iv-button-close-preview');
+      close_x.setAttribute('onclick','this.parentNode.remove()');
+      preview.append(close_x);
+      preview.querySelectorAll('.ltx_tag_bibitem').forEach(function(node) {
+        node.remove();
+      });
+      cite.parentNode.insertBefore(preview, cite.nextSibling);
+      return;
+    }
+    // Global Document initialization:
+    // - assign the preview feature to all inline citation links
+    document.querySelectorAll(".ltx_cite .ltx_ref").forEach(function (link) {
+      link.addEventListener("click", clicked_cite);
+    });
+    </script>
+</body>
+</html>

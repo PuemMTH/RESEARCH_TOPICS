@@ -1,0 +1,178 @@
+%\cy{Probably also discuss writer/reader perspective? \eg, (1) authors might work with various constraints (e.g., page limits), so they deliberately write shorter captions. Reader doesn't have this constraint and they favor longer texts. (2) for writer, Paragraph might not be available for summarization/reader doesn't have this constraint.}
+
+%In this section, we discuss 
+%(\textit{i}) whether we still need images for the figure captioning task;
+%(\textit{ii}) the problem that the real-world data contains many low-quality %captions; and
+%(\textit{iii}) the limitations of the purposed methods.
+
+\input{tables/missing-alignment}
+
+%\kenneth{TODO CY: The following is from the motivating analysis (the last paragraph). We should merge this with the first paragraph?}
+%\cy{I rewrote it. Please take a look.}
+\paragraph{Is Text Really All You Need?}
+Our results demonstrate that summarizing figure-mentioning paragraphs is sufficient to generate captions, as shown by the similar scores of Pegasus$_{P}$ and Pegasus$_{P+O}$ in Table~\ref{tab:result-summarization}.
+Adding OCR had limited impact.
+Furthermore,
+in a recent study of scientific figure captioning conducted by Yang {\em et al.}~\cite{scicap-plus}, the best-performing model only considered figure-mentioning paragraphs and OCR tokens-- note that their OCR tokens were visual features-- without taking the figure's imagery into account. 
+These results raise an interesting question: 
+Do we need visual information at all? What for?
+The token alignment study (\Cref{sec:motivating-analysis}) showed that 75.19\% of the caption information could be found in the Paragraphs, meaning 24.81\% of the information was missing.
+Understanding this missing information could help improve the models' performance.
+Thus, we calculated the correlation between the amount of missing information and three aspect ratings (image-text, visual-description, and takeaway) in the quality annotation data (\Cref{sec:quality-annotation}).
+The missing information was quantified as the number or percentage of tokens without aligning to any tokens in figure-mentioning paragraphs.
+\Cref{tab:missing-alignment} demonstrates a positive correlation between the extent of missing information and visual descriptions and takeaway messages.
+This suggests that incorporating visual descriptions (\eg, ``dashed line,'' ``red line'') is key to enhancing performance by filling in the gaps in information not covered by the article's text.
+Furthermore, the strong correlation between Helpfulness and Visual-Description in~\Cref{tab:quality-annotation-stat} also indicates that including image information is necessary for writing good captions.
+It should be noted that OCR is only capable of capturing image texts (\eg, labels, legends) and not visual element information (\eg, ``dashed line'').
+%The recent multimodal model study conducted by {SciCap+}~\cite{scicap-plus} reveals that 
+%the best-performing model is one that only considers figure-mentioning paragraphs and OCR tokens 
+%(note that their OCR tokens are visual features), without taking the figures into account. 
+%However, we believe that including visual information could fill in the missing information gap. 
+A promising future direction is developing a multimodal model that can effectively incorporate both image and text.
+
+
+% \paragraph{Limitations.}
+% \kenneth{This can probably go to the extra page, per ACL's rules?}
+% \cy{Yes!}
+
+\paragraph{What is the \textit{Best} Length for Captions?}
+%\cy{Discussion about brevity and caption length issue.}
+Our research indicates that filtering shorter captions can facilitate the generation of more helpful captions.
+However, the resulting captions tend to be longer than usual, as shown in the Pegasus$_{P+O+B}$ shift to the right in \Cref{fig:length-distribution-systems}. 
+% \kenneth{Refer to your figure! You have data to back this claim.}
+This raises a question: Is it fair to compare short and long captions on usefulness, given that longer captions inherently contain more information?
+%is it fair to compare the helpfulness of short and lengthy captions, given that the latter naturally possess more information?
+% \kenneth{Say it more direct instead of calling it a ``fair point''. Maybe just say it raised a question about how we evaluate captions.}
+% This becomes particularly significant in summarization tasks where brevity and conciseness are important \cite{liu-etal-2022-reference,sun-etal-2019-compare}. 
+% \kenneth{Maybe find some prior work in summarization evaluation that penalize long captions?}
+%While our automatic evaluation mitigates this by normalizing for length, 
+%our human evaluations and quality annotations do not explicitly ask annotators to take caption lengths into consideration.
+While our automatic evaluation addressed this by implementing length normalization, our human evaluations and quality annotations did not specifically instruct the annotators to consider caption lengths.
+% \kenneth{A logical gap here: Why do we need an ideal length? We could just group captions by length and evaluate each group separately? If no good transition, we could just say, meanwhile, deciding an ``ideal'' length is hard, as it's not a one-size-fit-all problem--- subtly point to our new EMNLP paper hehe}
+% However, determining the ideal length for captions poses a challenge due to various factors.
+Nevertheless, we argue that even if we asked annotators to consider caption lengths while identifying helpful captions, 
+the ``ideal'' caption length would differ among annotators due to multiple factors.
+For example, as shown in \Cref{fig:length-distribution-global-category}, the length distributions of captions vary across domains.
+% possibly due to domain-specific norms and format restrictions.
+%
+The low inter-agreement from our human evaluation (see \Cref{sec:human-eval}) also suggests that personal preferences could influence ideal caption length~\cite{lundgard2021accessible}.
+% with these preferences likely to vary even more among individuals from different backgrounds and knowledge understanding to decide the helpfulness of captions.
+% \cy{Add citation if possible.}
+% \cite{sun-etal-2019-compare}: A pilot human evaluation has shown that humans prefer short summaries in terms of the verbosity of a summary but overall consider longer summaries to be of higher quality.
+%
+Moreover, the ideal length could also be dictated by the context: writers might favor shorter captions due to page constraints, while readers might prefer longer but informative ones~\cite{stokes2022text,sun-etal-2019-compare}.
+To tackle this issue, a potential future direction could be enabling models to generate captions of diverse lengths to suit different users and contexts.
+
+\begin{comment}
+
+Our results show that a simple heuristic of filtering shorter captions can help generate helpful captions.
+However, the resulting captions are inevitably longer than common captions.
+As longer captions inherently carry more information, it is probably unfair to compare helpfulness between short captions and long captions.
+Especially, in a summarization task, brevity and conciseness should definitely be important factors.
+Note that our automatic evaluation penalizes excessive length via length normalization.
+However, the brevity factor is not considered in the human evaluation and quality annotations.
+
+Nevertheless, choosing the best length for captions is really hard as it depends on several factors.
+For example, as shown in \Cref{fig:length-distribution-global-category}, the length distributions of captions vary across domains, possibly due to format constraints, conventional norms, and so on.
+The low inter-agreement obtained from the human evaluation (see \Cref{sec:human-eval}) also suggests that people might have different preferences. Such variations will be even more significant for people with different backgrounds and professional levels. \cy{Citation if possible}
+
+The choice of the best caption length might also be influenced by the use case.
+For example, from a writer's viewpoint, shorter captions might be flavored as page limitations are enforced; while for readers, longer captions might be flavored if more informative descriptions are needed.
+
+To solve the problem and provide flexibility to accommodate different users and scenarios, enabling models to generate captions with different length to include varying amount of information might be a prominent future direction.
+
+\end{comment}
+
+
+
+\begin{comment}
+Although in SciCap+'s multimodal model study, the model not considering figures and only considering figure-mentioning paragraphs and OCR tokens (note that their OCR tokens are visual features) performs the best,
+we do believe incorporating visual information would fill up the missing gap of information.
+A potential future avenue of research is developing a multimodal model that could better incorporate both image and text.
+
+
+In our analysis above, we showed that up to 76\% of the information in captions can be found in the paragraph and that adding OCR information only covers 1.49\% more information. 
+Our automatic evaluation also suggested that by summarizing the textual information, 
+machines can generate captions that are reasonably similar to existing captions. 
+However, more than 50\% of the existing captions from arXiv were not \textit{good captions} (only 46.12\% of the captions were considered helpful in \Cref{sec:quality-annotation}). 
+In our analysis of good captions, we found that describing visual elements in figures was necessary. 
+Therefore, we would argue that images are needed for generating good captions. 
+In the future, we will combine both textual and visual information to generate good captions.
+
+%\paragraph{Understanding the Missing Information}
+\kenneth{TODO CY: The following is from the motivating analysis (the last paragraph). We should merge this with the first paragraph?}
+The token alignment study tells us that 76.68\% of the information from captions could be found in Paragraph and OCR, 
+meaning that 23\% of the information was missing from or newly introduced in our extracted source text. 
+To understand what this 23\% missing information was, 
+we computed the correlation between the amount of missing information and the three aspect ratings 
+(\ie, image-text, visual-description, and takeaway) from the quality annotation (\Cref{sec:quality-annotation}).
+The results shown in \Cref{tab:missing-alignment} suggest that the missing information was related to visual descriptions
+(\eg, ``dashed line,'' ``red line,'' and so on) and takeaway messages. 
+Because visual information is not captured by EasyOCR, 
+applying a vision encoder would be necessary if we want the model to generate reasonable visual descriptions.
+\end{comment}
+
+\begin{comment}
+\paragraph{Many Low-Quality Captions in the Data}
+\cy{This one is related to Challenge 1. Should we move this to \Cref{sec:analysis-challenge-1}}
+\kenneth{I kinda already said the same thing there. Maybe just remove this paragraph.}
+Models that learned from bad captions were likely to generate bad captions. 
+Without any control on caption quality in training data, 
+models learned to generate captions similar to unhelpful captions. 
+%This suggests that having many low-quality captions does cause problems and influence the performance.
+However, we also showed that using a simple rule-based filtering approach to 
+identify better quality captions for training (\ie, \# tokens $\geq$ 30) could enable the model to generate better captions. 
+%showing that it is possible to alleviate the problem. 
+In the future, we can use our quality annotation data to build classifiers to identify real ``good captions'' to help improve the model.
+\end{comment}
+
+%\kenneth{Probably add Limitation back to Discussion}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{comment}
+
+
+\kenneth{Kenneth is editing here.}
+\bigskip
+%------------------------- old draft ---------------------
+
+
+% \subsection{Why do we need images for the figure captioning task?}
+%\paragraph{Do We Still Need Images for the Figure Captioning Task?}
+% \kenneth{Why do we need images for what?}
+% \cy{OCR information is actually image information}
+Our automatic evaluation suggests that by summarizing the textual information, 
+machines can generate captions that are reasonably similar to human-written captions 
+(as demonstrated by the competitive scores achieved by Pegasus$_{P}$ compared to Pegasus$_{P+O}$ in \Cref{tab:result-summarization}).
+Therefore, we would like to know the necessity of incorporating image information. 
+To this end, we first seek to understand the 24.81\% of information that cannot be found from Paragraph.
+As shown in the token alignment study (\Cref{sec:token-alignment-study}), 75.19\% of the information from captions could be found in Paragraph, meaning that 24.81\% of the information was missing from or newly introduced in our extracted source text.
+Understanding this missing information could help us improve the performance.
+We computed the correlation between the amount of missing information and the three aspect ratings 
+(\ie, image-text, visual-description, and takeaway) from the quality annotation (\Cref{sec:quality-annotation}).
+The results shown in \Cref{tab:missing-alignment} suggested that the missing information was related to visual descriptions
+(\eg, ``dashed line,'' ``red line,'' and so on) and takeaway messages.
+To obtain information related to visual descriptions, incorporating image information is crucial.
+Our analysis of what constitutes a good figure caption (\Cref{sec:quality-annotation}), also supports this observation. 
+The strong correlation between Helpfulness and Visual-Desc in Table~\ref{tab:quality-annotation-stat} suggests that describing visual elements in figures is important for writing a good caption, and thus, image information is necessary. 
+However, it is worth noting that EasyOCR only captures image texts (\eg, labels, legends, etc.) and not visual element information (\eg, ``dashed line''). 
+In the future, we will build a multimodal model that takes both image and text into account to ensure all necessary information is captured.
+
+[why images]
+- 75.19\% of the information actually came from Paragraph.
+- In this case, adding OCR information gives 1.49\% more information.
+It seems that we can still generate (sort of) helpful captions by summarising the paragraph that mention (relate to) the target image.
+- However, description of the visual elements also plays an important role for a good caption.
+- To give the model the ability of providing correct visual information, images is necessary. 
+- Again, the OCR model can not capture the visual information so integrating a vision encoder will be needed.
+
+[many low-quality data]
+- We show that using a simple rule-based filtering approach to identify good captions (\# tokens >= 30) can improve the results.
+The model learns from this Better captions can be helpful when original one is bad.
+- In the future, we can utilize our annotation data to build classifiers to identify real ``good captions''. We believe this will further improve the model. 
+
+\end{comment}

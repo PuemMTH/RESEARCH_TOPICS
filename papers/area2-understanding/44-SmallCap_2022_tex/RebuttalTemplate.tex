@@ -1,0 +1,116 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+\usepackage[rebuttal]{cvpr}
+
+% Include other packages here, before hyperref.
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{booktabs}
+
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[pagebackref,breaklinks,colorlinks,bookmarks=false]{hyperref}
+
+% Support for easy cross-referencing
+\usepackage[capitalize]{cleveref}
+\crefname{section}{Sec.}{Secs.}
+\Crefname{section}{Section}{Sections}
+\Crefname{table}{Table}{Tables}
+\crefname{table}{Tab.}{Tabs.}
+
+\usepackage[pagebackref,breaklinks,colorlinks]{hyperref}
+
+
+
+
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\newcommand{\model}{\textsc{SmallCap}\xspace}
+
+
+
+% If you wish to avoid re-using figure, table, and equation numbers from
+% the main paper, please uncomment the following and change the numbers
+% appropriately.
+%\setcounter{figure}{2}
+%\setcounter{table}{1}
+%\setcounter{equation}{2}
+
+% If you wish to avoid re-using reference numbers from the main paper,
+% please uncomment the following and change the counter for `enumiv' to
+% the number of references you have in the main paper (here, 6).
+%\let\oldthebibliography=\thebibliography
+%\let\oldendthebibliography=\endthebibliography
+%\renewenvironment{thebibliography}[1]{%
+%     \oldthebibliography{#1}%
+%     \setcounter{enumiv}{6}%
+%}{\oldendthebibliography}
+
+
+%%%%%%%%% PAPER ID  - PLEASE UPDATE
+\def\cvprPaperID{9761} % *** Enter the CVPR Paper ID here
+\def\confName{CVPR}
+\def\confYear{2023}
+
+\begin{document}
+
+%%%%%%%%% TITLE - PLEASE UPDATE
+\title{\LaTeX\ Guidelines for Author Response}  % **** Enter the paper title here
+
+\maketitle
+\thispagestyle{empty}
+\appendix
+
+%%%%%%%%% BODY TEXT - ENTER YOUR RESPONSE BELOW
+\section{Author Response}%[DONE]}
+
+We thank the reviewers for recognising the key contributions of our work, and for their helpful feedback. 
+
+\subsection{Response to Reviewer uJ1C}%[DONE]}
+
+\vspace{-0.2cm}
+
+\textbf{Larger Language Models.} We experimented training \model with an OPT-350M decoder --- the model obtains a CIDEr score of 122.7. For comparison, the same architecture trained without retrieval yields a CIDEr score of 112.9. We thus conclude that our approach indeed remains beneficial for more powerful language models, and will include experiments with OPT-350M in a final version. Still, note that very large decoders impact the training/inference time, even if retaining few trainable parameters.
+
+\textbf{Datastore Size.} The COCO datastore is only 2.2GB, the Human-Labeled datastore is 8GB, and the Web datastore is 49GB. These details will be included in the final version. We note that alternative index classes in the FAISS library can further reduce the space required (e.g., through quantization). In Section 5, we studied the effect of datastore size with a diverse set of web data (large-scale but weakly labeled) and human-labeled data (smaller-scale but clean).
+
+\textbf{Ablate Visual Modality.} We trained \model on ``blacked out'' input images (i.e.,  setting the visual features from the encoder to zero), achieving 90.1 in CIDEr over the COCO validation set (substantially lower than training over ``visible'' images, with 117.2 in CIDEr). This shows that \model uses the visual input, not just paraphrasing the retrieved captions. We will include this ablation the paper.
+
+\textbf{More Data Hurts.} In Table 5, we see that some components of the human-labeled data can be detrimental to some datasets, e.g. with Narratives degrading the performance for VizWiz and MSR-VTT, and only benefiting Flickr30k. This provides some insight as to why combining web and human-labeled data sometimes hurts performance, but it is hard to pinpoint the exact reason. 
+
+\textbf{nocaps Setup.} nocaps encourages the development of image captioning models that use alternative data sources, albeit while training only on COCO, as described in footnote 9. Therefore, we argue that the \model{}$_{\text{+W+H}}$ setting shows a key aspect of our approach: \model can leverage external data without requiring further training, unlike other captioning models. 
+
+
+\subsection{Response to Reviewer puzo}%[DONE]}
+
+\textbf{Novelty.} The methodological contribution of our work is to explore, in an image captioning model, the trade-off between in-weights learning and the use of external information. The in-weights learning happens in the cross-attention layers of \model%(the only trainable component of the model)
+, while the external information is accessed through retrieval. The cross-attention module indeed serves as a bridge between the encoder and decoder, but its size is not merely dependent on the encoder and decoder dimensions. We further manipulate it---a procedure that is not common, since most works follow Vaswani \textit{et al}. (2017) and set the dimensions to $d_{\text{decoder}}/n\_heads$---as a way to vary the number of trainable parameters in \model. We find that a highly reduced parameterisation of the cross-attention module can successfully be compensated for through retrieval, i.e. that a model with limited potential for in-weights learning (i.e., with few trainable parameters) can still perform well via access to the external information.
+ %gener of pretrain params, the cross attentio is where we learn stuff and it can be small because wr manipulate size and the retrieval is how we compensate params. The generalizetion form the preteiian params, the lighway trianing comes from small cross-attention and good perm for retrieval...
+
+\textbf{COCO.} We acknowledge that \model is not the best performing model on COCO, but emphasize that one of the model's key strengths is its ability to transfer out-of-domain without retraining. The goal of our work is to build a cost-effective and domain-agnostic image captioning model, which is trained on a relatively small amount of data (just COCO) but shows the best average performance across a range of datasets, most of them out-of-domain.
+
+\subsection{Response to Reviewer swkY}%[DONE]}
+
+\vspace{-0.1cm}
+
+\textbf{Lightweight Training.} The total number of parameters in \model is 218M. We use the term light-weight \textit{training} to highlight the low GPU time and memory requirements for training \model. We will reformulate the Model and Experimental Setup to make this clearer. 
+
+\textbf{Training vs. Inference time.} We measured the inference time of \model, BLIP, and CAMEL on an NVIDIA A100 GPU across 1k random images from COCO. These values are 0.22, 0.18, and 0.58 seconds/image, respectively. We see that \model is faster than CAMEL, likely due to CAMEL's particular decoder architecture. In L402–404, we also describe the residual difference of generating a caption with and without retrieval at inference time. While we agree that inference time is important (and will include the numbers reported here also in the paper), we would further argue that training efficiency can be of crucial importance in contexts of limited resource availability. 
+
+ 
+
+\textbf{CAMEL.} In Table 1, CAMEL slightly outperforms \model, but the former uses a very particular decoder architecture, and has a much higher number of trainable parameters. Notice also that \model largely outperforms CAMEL in out-of-domain settings, as shown in Tables 3 and 4. The fact that our model can be readily adapted to other domains, without training, is one of its main advantages. With more resources and no concern for training efficiency, we could have fine-tuned all parameters in \model, which would have undoubtedly led to better performance in-domain, but likely would have hurt out-of-domain performance, due to over-fitting to COCO. 
+
+\textbf{References.} We will include a discussion on the suggested additional references, in a final version.
+
+
+
+
+%%%%%%%%% REFERENCES
+%{\small
+%%\bibliography{egbib, anthology,custom}
+%}
+
+\end{document}

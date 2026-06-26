@@ -1,0 +1,321 @@
+\begin{thebibliography}{10}\itemsep=-1pt
+
+\bibitem{Agrawal_2019}
+Harsh Agrawal, Karan Desai, Yufei Wang, Xinlei Chen, Rishabh Jain, Mark
+  Johnson, Dhruv Batra, Devi Parikh, Stefan Lee, and Peter Anderson.
+\newblock nocaps: novel object captioning at scale.
+\newblock In {\em Proceedings of the {IEEE}/{CVF} International Conference on
+  Computer Vision}, 2019.
+
+\bibitem{alayrac2022flamingo}
+Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr,
+  Yana Hasson, Karel Lenc, Arthur Mensch, Katie Millican, Malcolm Reynolds,
+  et~al.
+\newblock Flamingo: a visual language model for few-shot learning.
+\newblock {\em arXiv preprint arXiv:2204.14198}, 2022.
+
+\bibitem{anderson2016spice}
+Peter Anderson, Basura Fernando, Mark Johnson, and Stephen Gould.
+\newblock Spice: Semantic propositional image caption evaluation.
+\newblock In {\em Proceedings of the European Conference on Computer Vision},
+  2016.
+
+\bibitem{anderson2018bottom}
+Peter Anderson, Xiaodong He, Chris Buehler, Damien Teney, Mark Johnson, Stephen
+  Gould, and Lei Zhang.
+\newblock Bottom-up and top-down attention for image captioning and visual
+  question answering.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, 2018.
+
+\bibitem{barraco2022camel}
+Manuele Barraco, Matteo Stefanini, Marcella Cornia, Silvia Cascianelli, Lorenzo
+  Baraldi, and Rita Cucchiara.
+\newblock {CaMEL: Mean Teacher Learning for Image Captioning}.
+\newblock In {\em International Conference on Pattern Recognition}, 2022.
+
+\bibitem{changpinyo2021conceptual}
+Soravit Changpinyo, Piyush Sharma, Nan Ding, and Radu Soricut.
+\newblock Conceptual 12m: Pushing web-scale image-text pre-training to
+  recognize long-tail visual concepts.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, 2021.
+
+\bibitem{chen2015microsoft}
+Xinlei Chen, Hao Fang, Tsung-Yi Lin, Ramakrishna Vedantam, Saurabh Gupta, Piotr
+  Doll{\'a}r, and C.~Lawrence Zitnick.
+\newblock Microsoft {COCO} captions: Data collection and evaluation server.
+\newblock {\em arXiv preprint arXiv:1504.00325}, 2015.
+
+\bibitem{denkowski2014meteor}
+Michael Denkowski and Alon Lavie.
+\newblock Meteor universal: Language specific translation evaluation for any
+  target language.
+\newblock In {\em Proceedings of the ACL Workshop on Statistical Machine
+  Translation}, 2014.
+
+\bibitem{drossos2020clotho}
+Konstantinos Drossos, Samuel Lipping, and Tuomas Virtanen.
+\newblock Clotho: An audio captioning dataset.
+\newblock In {\em Proceedings of the IEEE International Conference on
+  Acoustics, Speech and Signal Processing}, 2020.
+
+\bibitem{gurari2020captioning}
+Danna Gurari, Yinan Zhao, Meng Zhang, and Nilavra Bhattacharya.
+\newblock Captioning images taken by people who are blind.
+\newblock In {\em Proceedings of European Conference on Computer Vision}.
+  Springer, 2020.
+
+\bibitem{hu2022scaling}
+Xiaowei Hu, Zhe Gan, Jianfeng Wang, Zhengyuan Yang, Zicheng Liu, Yumao Lu, and
+  Lijuan Wang.
+\newblock Scaling up vision-language pre-training for image captioning.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, 2022.
+
+\bibitem{izacard2022few}
+Gautier Izacard, Patrick Lewis, Maria Lomeli, Lucas Hosseini, Fabio Petroni,
+  Timo Schick, Jane Dwivedi-Yu, Armand Joulin, Sebastian Riedel, and Edouard
+  Grave.
+\newblock Few-shot learning with retrieval augmented language models.
+\newblock {\em arXiv preprint arXiv:2208.03299}, 2022.
+
+\bibitem{jin2021good}
+Woojeong Jin, Yu Cheng, Yelong Shen, Weizhu Chen, and Xiang Ren.
+\newblock A good prompt is worth millions of parameters? low-resource
+  prompt-based learning for vision-language models.
+\newblock {\em arXiv preprint arXiv:2110.08484}, 2021.
+
+\bibitem{JDH17}
+Jeff Johnson, Matthijs Douze, and Herv{\'e} J{\'e}gou.
+\newblock Billion-scale similarity search with {GPUs}.
+\newblock {\em arXiv preprint arXiv:1702.08734}, 2017.
+
+\bibitem{karpathy2015deep}
+Andrej Karpathy and Li Fei-Fei.
+\newblock Deep visual-semantic alignments for generating image descriptions.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, 2015.
+
+\bibitem{rag}
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir
+  Karpukhin, Naman Goyal, Heinrich K\"{u}ttler, Mike Lewis, Wen-tau Yih, Tim
+  Rockt\"{a}schel, Sebastian Riedel, and Douwe Kiela.
+\newblock Retrieval-augmented generation for knowledge-intensive nlp tasks.
+\newblock In {\em Proceedings of the Annual Conference on Neural Information
+  Processing Systems}, 2020.
+
+\bibitem{li2022survey}
+Huayang Li, Yixuan Su, Deng Cai, Yan Wang, and Lemao Liu.
+\newblock A survey on retrieval-augmented text generation.
+\newblock {\em arXiv preprint arXiv:2202.01110}, 2022.
+
+\bibitem{li2022blip}
+Junnan Li, Dongxu Li, Caiming Xiong, and Steven Hoi.
+\newblock Blip: Bootstrapping language-image pre-training for unified
+  vision-language understanding and generation.
+\newblock {\em arXiv preprint arXiv:2201.12086}, 2022.
+
+\bibitem{li2020oscar}
+Xiujun Li, Xi Yin, Chunyuan Li, Pengchuan Zhang, Xiaowei Hu, Lei Zhang, Lijuan
+  Wang, Houdong Hu, Li Dong, Furu Wei, et~al.
+\newblock {OSCAR}: Object-semantics aligned pre-training for vision-language
+  tasks.
+\newblock In {\em Proceedings of European Conference on Computer Vision}, 2020.
+
+\bibitem{li2016tgif}
+Yuncheng Li, Yale Song, Liangliang Cao, Joel Tetreault, Larry Goldberg,
+  Alejandro Jaimes, and Jiebo Luo.
+\newblock Tgif: A new dataset and benchmark on animated gif description.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, 2016.
+
+\bibitem{loshchilov2018fixing}
+Ilya Loshchilov and Frank Hutter.
+\newblock Fixing weight decay regularization in adam.
+\newblock {\em arXiv preprint arXiv:1711.05101}, 2018.
+
+\bibitem{luo2022tuning}
+Ziyang Luo, Yadong Xi, Rongsheng Zhang, and Jing Ma.
+\newblock I-tuning: Tuning language models with image for caption generation.
+\newblock {\em arXiv preprint arXiv:2202.06574}, 2022.
+
+\bibitem{luo2022vc}
+Ziyang Luo, Yadong Xi, Rongsheng Zhang, and Jing Ma.
+\newblock {VC-GPT}: Visual conditioned {GPT} for end-to-end generative
+  vision-and-language pre-training.
+\newblock {\em arXiv preprint arXiv:2201.12723}, 2022.
+
+\bibitem{mccloskey1989catastrophic}
+Michael McCloskey and Neal~J Cohen.
+\newblock Catastrophic interference in connectionist networks: The sequential
+  learning problem.
+\newblock In {\em Psychology of learning and motivation}. 1989.
+
+\bibitem{clipcap}
+Ron Mokady, Amir Hertz, and Amit~H. Bermano.
+\newblock Clipcap: {CLIP} prefix for image captioning.
+\newblock {\em arXiv preprint arXiv:2111.09734}, 2021.
+
+\bibitem{ordonez2011im2text}
+Vicente Ordonez, Girish Kulkarni, and Tamara Berg.
+\newblock Im2text: Describing images using 1 million captioned photographs.
+\newblock In {\em Proceedings of the Anual Conference on Neural Information
+  Processing Systems}, 2011.
+
+\bibitem{papineni2002bleu}
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu.
+\newblock {BLEU}: a method for automatic evaluation of machine translation.
+\newblock In {\em Proceedings of the Annual Meeting of the Association for
+  Computational Linguistics}, 2002.
+
+\bibitem{pont2020connecting}
+Jordi Pont-Tuset, Jasper Uijlings, Soravit Changpinyo, Radu Soricut, and
+  Vittorio Ferrari.
+\newblock Connecting vision and language with localized narratives.
+\newblock In {\em Proceedings of the European Conference on Computer Vision},
+  2020.
+
+\bibitem{radford2021learning}
+Alec Radford, Jong~Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh,
+  Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark,
+  et~al.
+\newblock Learning transferable visual models from natural language
+  supervision.
+\newblock In {\em Proceedings of the International Conference on Machine
+  Learning}, 2021.
+
+\bibitem{radford2019language}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya
+  Sutskever, et~al.
+\newblock Language models are unsupervised multitask learners.
+\newblock In {\em OpenAI blog}, 2019.
+
+\bibitem{ramos2023retrieval}
+Rita Ramos, Desmond Elliott, and Bruno Martins.
+\newblock Retrieval-augmented image captioning.
+\newblock In {\em Proceedings of the Conference of the European Chapter of the
+  Association for Computational Linguistics}, 2023.
+
+\bibitem{ramos2021retrieval}
+Rita~Parada Ramos, Patr{\'\i}cia Pereira, Helena Moniz, Joao~Paulo Carvalho,
+  and Bruno Martins.
+\newblock Retrieval augmentation for deep neural networks.
+\newblock In {\em Proceedings of the International Joint Conference on Neural
+  Networks}, 2021.
+
+\bibitem{sarto2022retrieval}
+Sara Sarto, Marcella Cornia, Lorenzo Baraldi, and Rita Cucchiara.
+\newblock Retrieval-augmented transformer for image captioning.
+\newblock {\em arXiv preprint arXiv:2207.13162}, 2022.
+
+\bibitem{sharma2018conceptual}
+Piyush Sharma, Nan Ding, Sebastian Goodman, and Radu Soricut.
+\newblock Conceptual captions: A cleaned, hypernymed, image alt-text dataset
+  for automatic image captioning.
+\newblock In {\em Proceedings of the Annual Meeting of the Association for
+  Computational Linguistics}, 2018.
+
+\bibitem{frozen}
+Maria Tsimpoukelli, Jacob~L Menick, Serkan Cabi, S.~M.~Ali Eslami, Oriol
+  Vinyals, and Felix Hill.
+\newblock Multimodal few-shot learning with frozen language models.
+\newblock In M. Ranzato, A. Beygelzimer, Y. Dauphin, P.S. Liang, and J.~Wortman
+  Vaughan, editors, {\em In Advances in Neural Information Processing Systems}.
+  Curran Associates, Inc., 2021.
+
+\bibitem{NIPS2017_3f5ee243}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, \L~ukasz Kaiser, and Illia Polosukhin.
+\newblock In {\em Proceedings of the Anual Conference on Neural Information
+  Processing Systems}, 2017.
+
+\bibitem{vedantam2015cider}
+Ramakrishna Vedantam, C Lawrence~Zitnick, and Devi Parikh.
+\newblock Cider: Consensus-based image description evaluation.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, 2015.
+
+\bibitem{wang2022git}
+Jianfeng Wang, Zhengyuan Yang, Xiaowei Hu, Linjie Li, Kevin Lin, Zhe Gan,
+  Zicheng Liu, Ce Liu, and Lijuan Wang.
+\newblock Git: A generative image-to-text transformer for vision and language.
+\newblock {\em arXiv preprint arXiv:2205.14100}, 2022.
+
+\bibitem{wang-etal-2022-training}
+Shuohang Wang, Yichong Xu, Yuwei Fang, Yang Liu, Siqi Sun, Ruochen Xu,
+  Chenguang Zhu, and Michael Zeng.
+\newblock Training data is more valuable than you think: A simple and effective
+  method by retrieving from training data.
+\newblock In {\em Proceedings of the Annual Meeting of the Association for
+  Computational Linguistics}, 2022.
+
+\bibitem{wang2019vatex}
+Xin Wang, Jiawei Wu, Junkun Chen, Lei Li, Yuan-Fang Wang, and William~Yang
+  Wang.
+\newblock Vatex: A large-scale, high-quality multilingual dataset for
+  video-and-language research.
+\newblock In {\em Proceedings of the IEEE/CVF International Conference on
+  Computer Vision}, 2019.
+
+\bibitem{wang2021simvlm}
+Zirui Wang, Jiahui Yu, Adams~Wei Yu, Zihang Dai, Yulia Tsvetkov, and Yuan Cao.
+\newblock Simvlm: Simple visual language model pretraining with weak
+  supervision.
+\newblock {\em arXiv preprint arXiv:2108.10904}, 2021.
+
+\bibitem{wolf2020transformers}
+Thomas Wolf, Julien Chaumond, Lysandre Debut, Victor Sanh, Clement Delangue,
+  Anthony Moi, Pierric Cistac, Morgan Funtowicz, Joe Davison, Sam Shleifer,
+  et~al.
+\newblock Transformers: State-of-the-art natural language processing.
+\newblock In {\em Proceedings of the Conference on Empirical Methods in Natural
+  Language Processing: System Demonstrations}, 2020.
+
+\bibitem{Xu2019AUG}
+Chunpu Xu, Wei Zhao, Min Yang, Xiang Ao, Wangrong Cheng, and Jinwen Tian.
+\newblock A unified generation-retrieval framework for image captioning.
+\newblock {\em Proceedings of the ACM International Conference on Information
+  and Knowledge Management}, 2019.
+
+\bibitem{xu2016msr}
+Jun Xu, Tao Mei, Ting Yao, and Yong Rui.
+\newblock {MSR-VTT}: A large video description dataset for bridging video and
+  language.
+\newblock In {\em Proceedings of the IEEE/CVF Conference on Computer Vision and
+  Pattern Recognition}, 2016.
+
+\bibitem{xu2015show}
+Kelvin Xu, Jimmy Ba, Ryan Kiros, Kyunghyun Cho, Aaron Courville, Ruslan
+  Salakhudinov, Rich Zemel, and Yoshua Bengio.
+\newblock Show, attend and tell: Neural image caption generation with visual
+  attention.
+\newblock In {\em Proceedings of the International Conference on Machine
+  Learning}, 2015.
+
+\bibitem{yang2022reformer}
+Xuewen Yang, Yingru Liu, and Xin Wang.
+\newblock Reformer: The relational transformer for image captioning.
+\newblock In {\em Proceedings of the ACM International Conference on
+  Multimedia}, 2022.
+
+\bibitem{young2014image}
+Peter Young, Alice Lai, Micah Hodosh, and Julia Hockenmaier.
+\newblock From image descriptions to visual denotations: New similarity metrics
+  for semantic inference over event descriptions.
+\newblock {\em Transactions of the Association for Computational Linguistics},
+  2, 2014.
+
+\bibitem{zhang2022opt}
+Susan Zhang, Stephen Roller, Naman Goyal, Mikel Artetxe, Moya Chen, Shuohui
+  Chen, Christopher Dewan, Mona Diab, Xian Li, Xi~Victoria Lin, et~al.
+\newblock {OPT}: Open pre-trained transformer language models.
+\newblock {\em arXiv preprint arXiv:2205.01068}, 2022.
+
+\bibitem{app10186235}
+Shanshan Zhao, Lixiang Li, Haipeng Peng, Zihang Yang, and Jiaxuan Zhang.
+\newblock Image caption generation via unified retrieval and generation-based
+  method.
+\newblock {\em Applied Sciences}, 10(18), 2020.
+
+\end{thebibliography}

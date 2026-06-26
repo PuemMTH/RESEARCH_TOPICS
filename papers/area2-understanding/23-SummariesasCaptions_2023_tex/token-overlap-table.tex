@@ -1,0 +1,70 @@
+\begin{table}[t]
+    \centering \small
+    \addtolength{\tabcolsep}{-1.4mm}
+    
+    \begin{tabular}{@{}lrrrrrrrrr@{}}
+    % \begin{tabular}{lccccccccc}
+    \toprule
+     \multicolumn{1}{@{}c}{\textbf{Caption}} & \multicolumn{3}{c}{\textbf{FST Mention}} & \multicolumn{3}{c}{\textbf{RDM Mention}} & \multicolumn{3}{c@{}}{\textbf{RDM Sentence}} \\ \midrule
+     
+    \textbf{Context} & \multicolumn{1}{c}{\textbf{+0}} & \multicolumn{1}{c}{\textbf{+1}} &  \multicolumn{1}{c}{\textbf{+2}} & \multicolumn{1}{c}{\textbf{+0}} & \multicolumn{1}{c}{\textbf{+1}} & \multicolumn{1}{c}{\textbf{+2}} & \multicolumn{1}{c}{\textbf{+0}} & \multicolumn{1}{c}{\textbf{+1}} & \multicolumn{1}{c}{\textbf{+2}} \\ \midrule
+    
+    \textbf{First} & 9.39 & 6.25 & 4.91 & 9.15 & 6.09 & 4.78 & 0.01 & 0.59 & 0.54 \\
+    \textbf{Whole} & \textbf{10.54} & 8.08 & 6.96 & 10.28 & 7.92 & 6.83 & 0.01 & 0.80 & 0.76 \\ 
+    \bottomrule
+    
+    \end{tabular}
+    \addtolength{\tabcolsep}{+1.4mm}
+    % \vspace{-.5pc}
+
+    \caption{N-gram matching (BLEU-4) between captions and mentions of each figure. First and Whole refer to the first sentence of the caption and the whole caption, respectively. Context means the number of the following sentences included. First Mention was better than Random Mention in the corresponding settings, suggesting that writers may give more details when first introducing the figure.}
+    %\vspace{-2mm}
+    \label{tab:analysis_caption-mention}
+    
+\end{table}
+
+
+\begin{comment}
+
+\begin{table}[ht]
+\small
+\addtolength{\tabcolsep}{-0.15cm}
+\begin{tabular}{llr}
+% {llr}
+\toprule
+% \hline
+\textbf{Output} & \textbf{Reference} & \textbf{BLEU-4} \\ 
+% \hline
+\midrule
+1st Mention & 1st Sentence of caption & 9.39 \\
+1st Mention & Whole Caption & \textbf{10.54} \\ 
+1st Mention + 1 sent & 1st Sentence of caption & 6.25 \\
+1st Mention + 1 sent & Whole Caption & 8.08 \\
+1st Mention + 2 sents & 1st Sentence of caption & 4.91 \\
+1st Mention + 2 sents & Whole Caption & 6.96 \\ 
+\midrule
+% \hline
+Random Mention & 1st Sentence of caption & 9.15 \\ 
+Random Mention & Whole Caption & 10.28 \\ 
+Random Mention +1 sent & 1st Sentence of caption & 6.09 \\
+Random Mention +1 sent & Whole Caption & 7.92 \\
+Random Mention +2 sents & 1st Sentence of caption & 4.78 \\ 
+Random Mention +2 sents & Whole Caption & 6.83 \\ 
+\midrule
+% \hline
+Random Sentence & 1st Sentence of caption & *0.01 \\
+Random Sentence & Whole Caption & *0.01 \\
+Random Sentence +1 sent & 1st Sentence of caption & 0.59 \\
+Random Sentence +1 sent & Whole Caption & 0.80 \\
+Random Sentence +2 sents & 1st Sentence of caption & 0.54 \\
+Random Sentence +2 sents & Whole Caption & 0.76 \\ 
+% \hline 
+\bottomrule
+\end{tabular}
+\addtolength{\tabcolsep}{+0.15cm}
+
+\caption{N-gram matching between captions and mentions of each figure. 1st Mention represents first mention and +n sent represent plus the next n sentences. 1st Sentence of caption represents the first sentence of the caption.}
+\label{tab:analysis_caption-mention}
+\end{table}
+
+\end{comment}

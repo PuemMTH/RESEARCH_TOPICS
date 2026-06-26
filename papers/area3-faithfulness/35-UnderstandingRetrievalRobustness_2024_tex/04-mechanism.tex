@@ -1,0 +1,147 @@
+
+
+\section{Majority Tokens Explain Behavior}
+\label{sec:mv} %
+
+To better understand how each token of the retrieved content relates to the observed sensitivity discussed in the previous section, we hypothesize that the model is driven by the presence of majority tokens. In other words, when the model is prompted with retrieved captions, we assume that the predicted tokens are influenced by the tokens that appear in the majority of the retrieved captions. To test this assumption, we propose a majority voting analysis, followed by input attribution, and an attention analysis of the model behavior.
+
+\subsection{Majority Tokens}
+\label{subsection:mv_calc}
+We first introduce the definition of majority tokens.
+Let $R=[T_1, \cdots, T_n]$ represent a retrieved caption $R$, which contains a sequence of $n$ tokens. For a given image, we assume that a total of $K$ retrieved captions are used in the model prompt: $R_1$, $R_2$, \dots, $R_K$. For each token $T_i$ in the set of unique tokens from the retrieved captions, we define $T_i$ as a \textit{majority token} (denoted as $T_M$) if $T_i$ appears in more than half of the retrieved captions\footnote{Note that we remove the stop words in the retrieved captions when determining the majority tokens. The stop words are filtered from the top-100 most frequent tokens in the COCO dataset, where we manually remove meaningful tokens such as ``man'', ``two'' from the list. Please see the Appendix \ref{appendix:maj_tokens} for the complete list.}, i.e., $C_{T_i} > \frac{K}{2}$ where $C_{T_i}$ is the number of retrieved captions that contains token ${T_i}$ as in Equation~\ref{eq1}:
+
+\begin{equation}
+C_{T_i} = \sum_{l=1}^{K}\mathbbm{1}[T_i \in R_k]
+\label{eq1}
+\end{equation}
+ For a generated caption $Y=[y_1, \cdots, y_n]$ in the evaluation data, we can calculate the majority-vote probability $P_{T_M \in Y}$ as the probability of the majority token $T_{M}$ appearing in the generated caption.
+
+We expect that the higher the value of $P_{T_M \in Y}$, the more likely it is that the model is generating captions based on the majority tokens. 
+
+\subsection{Experimental Setup} 
+\label{subsec:mv_exp}
+We test our majority vote assumption with a controlled experiment. Specifically, we analyze the predictions of the model in two settings, each provided with $K=3$ retrieved captions to ensure the presence of a majority token:
+
+\begin{description}[style=unboxed, leftmargin=0cm]
+    \item[2 Good 1 Bad (2G1B):] The retrieval set contains two relevant captions and one irrelevant caption;
+    \item[2 Bad 1 Good (2B1G):] The retrieval set contains two irrelevant captions and one relevant caption.
+\end{description}
+
+The assumption is that, if there is a majority voting behavior with respect to the retrieved captions, the model will copy such majority tokens to the final output. The distinction will be clear in this setting --- in the setup 2B1G, if the model is robust to the retrieved context, the model will focus more on the good caption instead of the majority tokens in the two bad captions.
+
+
+We use the COCO evaluation set and the pretrained checkpoint with the OPT decoder of \citet{ramos2023smallcap} for this analysis. Good captions are obtained using the top-two and top-one retrieved captions, respectively, for a given image. Bad captions are obtained by retrieving one or two captions, respectively, from a randomly selected image.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=\linewidth,trim={3mm 1mm 2cm 2mm},clip]{figs/attr_example.pdf}
+    \caption{Input attribution for each generated token (y-axis). The brighter the color, the more greater the attribution from the input token. We observe high attribution scores to ``umbrella'', ``boy'', ``cattle'', and ``over''. \label{fig:attr-ex}}
+\end{figure*}
+
+\paragraph{Results.} %
+We find that the probability of majority vote in the 2G1B setting is 86.47\%. This high probability suggests that the majority tokens in the good captions could be being used to guide the model generation. In the 2B1G setting, the model is much less likely to generate majority tokens from the bad captions, indicating some robustness in not always following them. However, 20.84\% of the time, the model can still be misled by their appearance, resulting in the majority tokens being copied into the model output. 
+
+
+\subsection{Input Attribution with Integrated Gradients}
+\label{subsec:attribution}
+
+
+
+
+
+
+
+
+To better understand the role of majority tokens in model generation, we use integrated gradients~\citep{ig} for input attribution analysis. This enables us to examine the influence of each individual token in the retrieved captions on the model prediction.
+
+\paragraph*{Attribution visualization.} 
+Figure~\ref{fig:attr-ex} shows an example of an attribution visualization, where the attribution score of each input token (x-axis) is computed at each generation step (y-axis). Bright color cells correspond to high attribution to the input token. High attribution scores to the same tokens seen in the retrieved captions may indicate copying. Negative attribution scores are observed at contradicting tokens observed in the retrieved captions to the current generation. Negative scores are observed at token ``her'' when model is predicting the token ``boy'' and at token ``small'' when predicting ``herd''. Additional input attribution visualizations can be found in Appendix~\ref{appendix:attribution_vis}.
+
+\paragraph*{Quantitative analysis.}
+We also quantitatively analyze the impact of majority tokens by calculating pairwise attribution scores between tokens in retrieved captions and those predicted by the model. Higher attribution values suggest greater sensitivity to the input token~\cite{ancona2018towards}. Figure~\ref{fig:pairwise-attr} shows the distribution of the pairwise attribution scores for the 2B1G setup. It is clear that the model is sensitive to the majority tokens, especially when the generated token exists in the retrieved captions. Such behavior indicates weak robustness: we would not expect a robust model to be distracted by the tokens from the two irrelevant retrieved sentences at inference time. To better visualize the impact, we show distribution of original attribution values and the absolute values~\cite{ancona2018towards} across all evaluation samples.
+
+\begin{figure}[t]
+    \includegraphics[width=0.5\textwidth,trim={3mm 2mm 2mm 2mm},clip]{figs/pairwise_attr_boxplot.pdf}
+    \caption{Pairwise average attribution score between retrieved and generated tokens in the 2B1G setup. MT: majority tokens in the retrieved captions. OT: all other tokens. The larger pairwise attribution values shows that the majority tokens have a larger impact during generation than the other tokens in the retrieved captions. \label{fig:pairwise-attr}}
+\end{figure}
+
+
+
+
+
+
+
+\subsection{Attention and Model Behavior}
+\label{subsec:attention}
+Finally, we visualize the self-attention and cross-attention to locate the heads and layers in the \textsc{SmallCap}-OPT125M model that may contribute to the majority voting behaviour when generating a caption. This is crucial because all interactions between captions (self-attention) and images (cross-attention) take place in this stage. 
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=1\linewidth]{figs/opt_attention-modified.pdf}
+    \caption{Statistics of all maximum attention scores' distribution across different layers and heads from self and cross attention. $XA$ denotes cross attention, while $SA$ signifies self-attention. $img$ represents the distribution of maximum attention scores across image patches, whereas $text$ pertains to the distribution of maximum attention scores across text tokens. }
+    \label{fig:opt-self-cross-attentions}
+\end{figure}
+
+\paragraph{Distribution of max attention occurrence.}
+We partition the text input prompt into five distinct segments: begin of the sentence token (\textit{<BOS>}), prompt tokens before retrieved $k$ captions (\textit{prefix}), i.e. ``Similar image shows'', the retrieved captions (\textit{retrieval}) $cap_1, \cdots cap_k$, prompt tokens before generation (\textit{suffix}), i.e. ``This image show'', and the \textit{generation} itself. For image patches, we segment them into two pieces -- the \textsc{CLS} output embedding, and the set of patch output embeddings.
+
+
+
+
+
+
+Let $S_n$ denote the sets of indices, where $n = 1, 2, \ldots, 5$ for five segments. For the text input, each segment $S_n$ contains the indices of the tokens in each segment. To track the occurrence of max attention values in $S_n$,
+we define the indicator function $\mathbbm{1}[I_n(i, j)]$ as follows:
+\begin{equation}
+\mathbbm{1}[I_n(i, j)] = \begin{cases}
+1 & \text{if } \arg\max_z Att(j,z)_i \in S_n \\
+0 & \text{otherwise}
+\end{cases},
+\label{eq:indicator}
+\end{equation}
+where $\arg\max_z Att(j,z)_i$ is the index of the input with the maximum attention score for sample $i$.
+
+For self-attention between the textual tokens, $Att(j,z)$ represents the attention score between the $j^{th}$ generated token and the $z^{th}$ text context token, denoted as $SA_{text}(j, z)$. 
+
+
+For cross-attention between the decoder and the image representations, we report both a text-centric and an image-centric analysis. The text-centric analysis $XA_{text}(j, z)$ measures the attention between the $j^{th}$ image patch and the $z^{th}$ text token, to identify which segments of the text have the highest cross-attention scores in relation to the image. In the image-centric analysis $XA_{img}(j, z)$, we measure the attention between the $j^{th}$ generated token and the $z^{th}$ image patch. We now redefine the $S_n$ notation to let $S_1$ represent the CLS output embedding, and $S_2$ represent the set of image patch embeddings, respectively. This allows $XA_{img}(j, z)$ to identify if the CLS patch embedding receives the highest cross-attention scores in relation to the generated tokens, or if it is the actual image patch embeddings.
+
+For each analysis, $SA_{text}(j, z)$, $XA_{text}(j, z)$, and $XA_{img}(j, z)$, we calculate the proportion of occurrences of the maximum score in $S_n$ by averaging through all generated tokens for a dataset.
+
+\paragraph{Self-attention.} %
+\label{para:sa}
+
+
+
+    
+    
+
+We gather attention scores between the generated tokens and context tokens, and categorize the distribution of the maximum scores into the five text segments (BOS, prefix, retrieval, suffix, and generation).
+
+
+
+Figure \ref{fig:opt-self-cross-attentions}(a) illustrates the 
+changes in the distribution of maximum self-attention scores in each layer of the decoder language model. 
+Notably, at the initial layers, a majority of attention heads exhibit heightened focus on retrieved captions or the current context for generation. However, after the second layer, we observe an increased emphasis on the beginning of sentence token (\texttt{</s>}). This behavior is consistent with prior research on the attention mechanism of GPT-2 \cite{gpt2-analyzing}. Figures~\ref{subfig:gpt2-self-attention} and~\ref{subfig:opt-self-attention} show the behaviour for all self-attention heads in for the GPT and OPT model variants, respectively.
+
+\paragraph{Cross-attention.}
+
+
+
+
+Similar to the self-attention behaviour, we categorize the occurrence of the maximum cross-attention to the five text segments.
+As shown in Figure \ref{fig:opt-self-cross-attentions}(b), in most attention heads, the cross-attention attains its maximum value between the image and the retrieved captions or between the image and the generated tokens. Figures~\ref{subfig:gpt2-cross-attention-text} and \ref{subfig:opt-cross-attention-text} show the text-centric analysis for all cross-attention heads for the GPT and OPT backbones.
+
+Finally, we inspect whether the model focuses on the \textsc{CLS} patch or actual image patches. In Figure \ref{fig:opt-self-cross-attentions}(c), we observe that the model only pays maximum attention to the image patches in the final layers (the blue line). Figures \ref{subfig:gpt2-cross-attention-cls} and \ref{subfig:opt-cross-attention-cls} show the full results for the image-centric analysis. 
+
+Overall, these observations show that the model attends to both modalities during the caption generation process. However the lack of strong cross-attention to actual image patches suggests that the model is misled by text prompts, even when irrelevant information is absent in the provided image.
+
+
+
+
+
+
+
+
+
+

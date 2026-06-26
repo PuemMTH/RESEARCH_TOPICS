@@ -1,0 +1,52 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Hierarchy Table
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bgroup
+\begin{table*}
+\caption{A four-level model of semantic content for accessible visualization.
+Levels are defined by the semantic content conveyed by natural language descriptions of visualizations.
+Additionally, we offer computational considerations for generating the semantic content at each level of the model.
+}
+
+\centering
+\def\arraystretch{1.5}
+
+\begin{tabular}{m{0.2cm} m{2.5cm} m{5.5cm} m{6cm}}
+\hline
+\textsc{\#}
+& \textsc{level keywords}
+& \textsc{semantic content}
+& \textsc{computational considerations} \\
+\hline
+
+\cellcolor{Level4}\textcolor{white}{\texttt{4}}
+& \cellcolor{Level4Light}\texttt{contextual and domain-specific}
+& \cellcolor{Level4Light}{\em domain-specific \mbox{insights}, current events, \mbox{social} and \mbox{political} context, explanations}
+& \cellcolor{Level4Light}{contextual knowledge and domain-specific \mbox{expertise} (\emph{perceiver-dependent})}
+\\
+
+\cellcolor{Level3}\texttt{3}
+& \cellcolor{Level3Light}\texttt{perceptual and cognitive}
+& \cellcolor{Level3Light}{\em complex trends, pattern synthesis, \mbox{exceptions}, commonplace concepts}
+& \cellcolor{Level3Light}{reference to the rendered visualization and \mbox{``common} knowledge'' (\emph{perceiver-dependent})}
+\\
+
+\cellcolor{Level2}\texttt{2}
+& \cellcolor{Level2Light}\texttt{statistical and relational}
+& \cellcolor{Level2Light}{\em descriptive statistics, extrema, outliers, \mbox{correlations}, point-wise comparisons}
+& \cellcolor{Level2Light}{access to the visualization specification or \mbox{backing} dataset (\emph{perceiver-independent})}
+\\
+
+\cellcolor{Level1}{\texttt{1}}
+& \cellcolor{Level1Light}\texttt{elemental and encoded}
+& \cellcolor{Level1Light}{\em chart type, encoding channels, title, axis ranges, labels, colors}
+& \cellcolor{Level1Light}{access to the visualization specification or \mbox{rasterized} image (\emph{perceiver-independent})}
+\\
+
+\hline
+\end{tabular}
+\label{table:hierarchy}
+\vspace{-5mm}
+\end{table*}
+\egroup
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

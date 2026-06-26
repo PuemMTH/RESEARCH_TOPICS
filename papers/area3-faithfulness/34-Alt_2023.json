@@ -1,0 +1,30 @@
+{
+  "arxiv_id": "2305.14779",
+  "title": "Alt-Text with Context: Improving Accessibility for Images on Twitter",
+  "authors": [
+    "Nikita SrivatsanCarnegie Mellon Universitynsrivats@cmu.edu&Sofía Samaniegosofia.samaniego.f@gmail.com&Omar FlorezLatinX in AIomarflorez.research@gmail.com&Taylor Berg-KirkpatrickUniversity of California San Diegotberg@ucsd.edu"
+  ],
+  "abstract": "In this work we present an approach for generating alternative text (or alt-text) descriptions for images shared on social media, specifically Twitter.\nMore than just a special case of image captioning, alt-text is both more literally descriptive and context-specific.\nAlso critically, images posted to Twitter are often accompanied by user-written text that despite not necessarily describing the image may provide useful context that if properly leveraged can be informative.\nWe address this task with a multimodal model that conditions on both textual information from the associated social media post as well as visual signal from the image, and demonstrate that the utility of these two information sources stacks.\nWe put forward a new dataset of 371k images paired with alt-text and tweets scraped from Twitter and evaluate on it across a variety of automated metrics as well as human evaluation.\nWe show that our approach of conditioning on both tweet text and visual information significantly outperforms prior work, by more than 2x on BLEU@4.",
+  "year": "2023",
+  "figure_count": 3,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:Left:An image that requires textual context to write accurate alt-text for. Without conditioning on the tweet text, the election flyers are indistinguishable from books to a traditional captioning system.Right:Two similar images from our dataset and Conceptual Captions with their gold labels. The alt-text for the first image is literally descriptive while the second is more colloquial.",
+      "src": "/html/2305.14779/assets/x1.png"
+    },
+    {
+      "id": "S1.F2",
+      "caption": "Figure 2:Visualization of the alt-text model. An image is encoded via CLIP to an embedding capturing any visual information. This gets projected via a mapping network into word embedding space, where it is then concatenated with an embedded representation of the raw text from the corresponding tweet. This prefix is then passed to a finetuned GPT-2 which autoregressively generates the predicted alt-text caption.",
+      "src": "/html/2305.14779/assets/x3.png"
+    },
+    {
+      "id": "S6.F3",
+      "caption": "Figure 3:Selected tweets with the gold user-written alt-text alongside our prediction and ClipCap’s. We see that by conditioning on the tweet text, our model is generally able to focus on relevant details in the images, reference specific named places, and provide more accurate text transcription despite not being trained on OCR.",
+      "src": "/html/2305.14779/assets/x4.png"
+    }
+  ],
+  "paper_number": 34,
+  "slug": "Alt",
+  "base_name": "34-Alt_2023"
+}

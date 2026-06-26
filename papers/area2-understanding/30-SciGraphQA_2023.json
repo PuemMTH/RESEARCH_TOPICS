@@ -1,0 +1,40 @@
+{
+  "arxiv_id": "2308.03349",
+  "title": "SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs",
+  "authors": [
+    "Shengzhi Lialex.shengzhi@gmail.com\\AndNima Tajbakhshn.tajbakhsh63@gmail.com"
+  ],
+  "abstract": "In this work, we present SciGraphQA, a synthetic multi-turn question-answer dataset related to academic graphs. SciGraphQA is 13\ntimes larger than ChartVQA, the previously largest chart-visual question-answering dataset. It is also\nthe largest open-sourced chart VQA dataset with non-synthetic charts. To build our dataset, we selected 290,000 Computer Science or Machine Learning ArXiv papers published between 2010 and 2020, and then used Palm-2 to generate 295K samples of open-vocabulary multi-turn question-answering dialogues about the graphs. As context, we provided the text-only Palm-2 with paper title, abstract, paragraph mentioning the graph, and rich text contextual data from the graph itself, obtaining dialogues with an average 2.23 question-answer turns for each graph. We asked GPT-4 to assess the matching quality of our question-answer turns given the paper’s context, obtaining an average rating of 8.7/10 on our 3K test set. We evaluated the 0-shot capability of the most popular MLLM models such as LLaVa, mPLUGowl, BLIP-2, and openFlamingo’s on our dataset, finding LLaVA-13B being the most performant with a CIDEr score of 0.08. We further enriched the question prompts for LLAVA by including the serialized data tables extracted from the graphs using the DePlot model, boosting LLaVA’s 0-shot CIDEr to 0.15. To verify the validity of our dataset, we also fine-tuned LLaVa using our dataset, reaching a substantially higher CIDEr score of 0.26. We anticipate further accuracy improvement by including segmentation mask tokens and leveraging larger LLM backbones coupled with emergent prompting techniques. Our code and data are open-sourced at Github and HuggingFace dataset .",
+  "year": "2023",
+  "figure_count": 5,
+  "figure_captions": [
+    {
+      "id": "S3.F1",
+      "caption": "Figure 1:Illustration of multi-turn dialogue generation process. For higher quality dialogues, we use comprehensive textual context together with in-context learning when prompting Palm-2.",
+      "src": "/html/2308.03349/assets/images/scigraph.png"
+    },
+    {
+      "id": "S3.F2",
+      "caption": "Figure 2:(left) distribution of the number of question-answer turns in our SciGraphQA dataset. (right) distribution of GPT-4 ratings (0–10) when GPT-4 was used as a judge to measure the matching of questions and answers from a 3k subset of the the SciGraphQA dataset.",
+      "src": "/html/2308.03349/assets/images/histogram.png"
+    },
+    {
+      "id": "S3.F3",
+      "caption": "Figure 3:Examples from our SciGraphQA dataset where questions and answers are both generated using a commercial LLM rather than being selected from a fixed, limited template pool. Note how the questions are specific to the graphs and often have a conversational nature, asking to elaborate on a concept mentioned in previous answer. For brevity, some answers are truncated, denoted by “…“ at the end.",
+      "src": "/html/2308.03349/assets/images/example_hd.png"
+    },
+    {
+      "id": "S3.F4",
+      "caption": "Figure 4:Illustration of how the DePlot model extracts the data table from a figure followed by serializing the table into a string. <0x0A> is a newline token in hexadecimal format. Note how the data table contains the interpolated values along the x-axis and y-axis for both legends. We used the DePlot’s output string as a prompt augmentation technique in our work.",
+      "src": "/html/2308.03349/assets/images/image5.png"
+    },
+    {
+      "id": "S4.F5",
+      "caption": "Figure 5:Impact of the dataset size and training with prompt augmentation on fine-tuning performance. For the latter, we constructed 30K DePlot-enhanced SciGraphQA samples. The LLaVA-13B checkpoint was used as the base model in our fine-tuning experiments.",
+      "src": "/html/2308.03349/assets/images/image4.png"
+    }
+  ],
+  "paper_number": 30,
+  "slug": "SciGraphQA",
+  "base_name": "30-SciGraphQA_2023"
+}

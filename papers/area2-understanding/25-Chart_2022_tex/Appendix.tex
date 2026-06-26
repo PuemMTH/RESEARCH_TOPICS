@@ -1,0 +1,286 @@
+% \cleardoublepage
+\appendix
+\section{Appendices}
+\subsection{Additional Details on Data Annotation}
+\label{app:annotation-details}
+\subsubsection{Example Webpage from Statista}
+\label{app:statista-first-caption}
+An example of a webpage from Statista is given in \Cref{statista-first-caption}. It contains a chart image and its accompanying description text. The first part of the text (highlighted in blue) provides a succinct summary of the chart while the remaining parts of the text (not highlighted) provides irrelevant background information, such as Facebook's history.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.9\textwidth]{statista_first_caption.png}
+    \caption{A screenshot of a webpage from Statista.}
+    \label{statista-first-caption}
+\end{figure*}
+
+\subsubsection{Annotation of x-axis Labels in Statista}
+\label{app:statista-annot-interface}
+The user interface for the annotation task of labeling the x-axis labels in the Statista dataset is given in \Cref{statista-annot-interface}.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.9\textwidth]{statista_annot_interface.png}
+    \caption{The user interface for labeling the x-axis labels in the Statista dataset.}
+    \label{statista-annot-interface}
+\end{figure*}
+
+\subsubsection{Identify Candidate Paragraphs in Pew}
+\label{app:pew-relevance-score}
+The details for computing the relevance score of a paragraph to the given chart, and the heuristic for finding relevant paragraphs in the Pew dataset are given in \Cref{pew-relevance-score}.
+% The full details for the computation of a paragraph's relevance score to a chart, and the conditions for the heuristic in the Pew dataset are given in \Cref{pew-relevance-score}.
+
+\begin{figure*}
+\centering
+\begin{equation*}
+    \begin{split}
+        & \text{Let }s_i\text{ be the relevance score for sentence }i\text{ in the paragraph.}\\
+        & \text{Let }l_i\text{ be the number of lexical token matches between sentence }i\text{ and the chart.}\\
+        & \text{Let }n_i\text{ be the number of numerical token matches, excluding year tokens, between sentence }i\text{ and} \\ &\text{the chart.}\\
+        & \text{Let }y_i\text{ be the number of year token matches between sentence }i\text{ and the chart.}\\
+        & \text{Let }u_i\text{ be the number of numerical tokens that appear in sentence }i\text{ but not in the chart.}\\
+        & \text{Let }c\text{ be the number of sentences in the paragraph.}\\
+        & s_i = 0.58l_i + 1.4n_i - 0.5u_i \\
+        \\
+        & \text{Let }content\text{ be the content score of the paragraph.}\\
+        & content = \frac{1}{1 + \exp{\left(0.3 \times \left(-\underset{i}{\max}\left(s_i\right) + 1.7\right)\right)}} \\
+        \\
+        & \text{Let }proximity\text{ be the proximity score of the paragraph.}\\
+        & \text{Let }dist\text{ be the proximity of the paragraph to the chart.} -5 \leq dist \leq 5\\
+        & \text{For example, }dist = -1\text{ if the paragraph is directly before the chart, }dist = 0\text{ if it contains the chart }\\
+        & \text{and}~ dist = 1 \text{ if it is directly after the chart.}\\
+        & proximity = 0.4 \times \exp{\left(-0.1 \times {\lvert dist \rvert}^2\right)} + 0.6\\
+        \\
+        & \text{Let }rel\text{ be the relevance score of the paragraph.}\\
+        & rel = content \times proximity\\
+        \\
+        & \text{Heuristic: A paragraph is relevant if it satisfies the following conditions:}\\
+        & \sum_i l_i > 3\\
+        & \sum_i n_i + y_i > 0\\
+        & \sum_i u_i = 0\\
+        & rel > 0.72\\
+        & c > 0\\
+    \end{split}
+\end{equation*}
+\caption{The computation of a paragraph's relevance score to a chart, and the conditions for the heuristic in the Pew dataset.}
+\label{pew-relevance-score}
+\end{figure*}
+
+
+
+\subsubsection{Relevant Paragraph Selection in Pew}
+\label{app:pew-annot-interface}
+For the relevant paragraph selection task, the annotators received 0.10 - 0.15 US\$ for each chart, depending on the number of candidate paragraphs associated with it. To ensure the quality, we recruited participants with at least 95\% approval rate and 5000 approved HITs (Human Intelligence Tasks) and they were only allowed to complete the tasks after they successfully completed a sample task.
+
+The user interface for the Mechanical Turk annotation task of selecting paragraphs relevant to charts in the Pew dataset is given in \Cref{pew-annot-interface}.
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.8\textwidth]{pew_annot_interface.png}
+    \caption{The user interface for the Mechanical Turk annotation task in the Pew dataset.}
+    \label{pew-annot-interface}
+\end{figure*}
+
+\subsection{Dataset Analysis}
+ Figure~\ref{topics} shows the distribution of topics in two datasets.
+ 
+\subsection{Chart-to-text Baseline Models}
+\label{app:baselines}
+
+The experiments are done on our machine (CPU: Intel(R) Xeon(R) Gold 6240 CPU @ 2.60GHz, GPU: 4 $\times$  NVIDIA GTX 2080Ti). Training T5 is the most computationally costly task, which takes around 16-20 hours on 4$\times$ GPUs.
+
+\paragraph{Image Captioning Models}
+For pretraining the image encoders and  captioning model, we follow the same training setup as presented in the original papers. 
+Inference is done with beam search with a beam size of 4.
+
+\paragraph{Chart2text} We follow the same settings 
+of \citet{obeid} with 1 encoder layer, 6 decoder layers and a dropout ratio of 0.1, and train the model for 80 epochs with a batch size of 6. For inference, we use beam search with a beam size of 4.
+
+\paragraph{Field-Infusing Model} We follow the same settings 
+as \citet{chen2020logical} and train the model for 10 epochs with a dropout ratio of 0.1 and batch size of 1. 
+
+\paragraph{BART} We fine-tune BART-Base\footnote{\url{huggingface.co/transformers}\label{footnote:hugging}} (140M, 6-layers) 
+for 500K iterations with a batch size of 4 and evaluate after every 2,000 iterations on the validation set. The initial learning rate is set to 0.0005. For inference, we use the model with the lowest validation loss and decode with a beam size of 4. 
+
+\paragraph{T5} Similar to BART, we fine-tune T5-Base\footref{footnote:hugging} (220M, 12-layer Transformer as the encoder and decoder) for 500K iteration with a batch size of 4 and an initial learning rate of 0.0005, evaluate after every 2,000 iterations on validation set, and use {the model with best validation loss for testing. Inference is done with beam search with a beam size 4.} 
+
+
+\label{app:data-analysis}
+\begin{figure*}[t!]
+\begin{subfigure}[b]{.49\textwidth}
+\centering
+    \includegraphics[width=1\textwidth]{statista_topics.png}
+\caption{\small Statista}
+\end{subfigure}
+\begin{subfigure}[b]{.49\textwidth}
+\centering
+    \includegraphics[width=1\textwidth]{pew_topics.png}
+\caption{\small Pew}
+\end{subfigure}
+\vspace{-0.5em}
+\caption{\small Distribution of topics in the two datasets.}
+\label{topics}
+\end{figure*}
+
+
+\subsection{Additional Results from Evaluation}
+\label{app:results}
+\subsubsection{Transfer Results}
+\label{app:transfer}
+
+
+
+\begin{table}[t]
+    \centering
+    \scalebox{0.75}{\begin{tabular}{llc}
+        \toprule
+        \textbf{Pre-train Dataset} & \textbf{Fine-tune Dataset}  & \textbf{BLEU} \\
+        \midrule
+        Totto & Pew  & 10.66 \\
+        Totto & Statista & 37.19 \\
+        Pew & Statista & 37.32 \\
+        Statista & Pew  & 10.73  \\
+        \bottomrule
+    \end{tabular}}
+    \vspace{-0.5em}
+    \caption{\small Results measured by BLEU for transferability based on the T5 model. }
+    \label{tab:transfer}
+\end{table}
+
+
+
+{Since both Statista and Pew share some of the topics with each other, we conduct transfer experiment to verify if pretraining on one dataset could help to improve the final results on the other. In addition, since table-to-text has similarities with our task, we also experiment with pretraining on a large-scale open-domain English table-to-text dataset ToTTo \cite{parikh2020totto} before training on our datasets. We use full table for ToTTo since our task does not contain highlighted cell. Pretraining and fine-tuning use T5-based models and have the same training procedure as described in \cref{subsec:data2text}. From \Cref{tab:transfer}, we see that pretraining on other datasets only improves the final performance by a small margin. }
+
+
+\subsubsection{Performance by Chart Types}
+\label{app:charttype}
+
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Chart Types} & \bf{Bar} & \bf{Line} & \bf{Pie} & \bf{Table}  \\
+    \midrule
+    \textbf{BLEU}     & 36.46 & 45.28 & 21.35 & 26.12 \\
+    \bf{PPL} & 10.08 & 7.53 & 8.79 & 11.34\\
+    \bf{CIDEr} & 4.62 & 5.59 & 3.27 & 3.67\\
+    \bf{BLEURT} & 0.14 & 0.27 & -0.13 & -0.22 \\
+    \bottomrule
+    \end{tabular}
+    \caption{Results on Statista test set \wrt chart types.}
+    \label{tab:results_charttype}
+\end{table}
+\vspace{-0.5em}
+
+
+Chart types can influence the performance of the model. We present the performance breakdown on Statista of our best model (\ie TAB-T5)  based on chart types in \Cref{tab:results_charttype}. We observe that the model is good at summarizing simple and frequent chart types (\eg line chart), whereas the model is less effective in generating informative summaries for  complex and less frequent charts (\eg pie charts) in our datasets.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsubsection{Human Evaluation}
+\label{app:human-eval}
+The user interface for the human evaluation annotation task of comparing chart summaries is given in \Cref{human-eval-interface}. 
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=.9\textwidth]{human_eval_interface.png}
+    \caption{The user interface for human evaluation: it presents two summaries at a time and asks the participant to compare between them based on three measures.}
+    \label{human-eval-interface}
+\end{figure*}
+\begin{figure*}[t!]
+    \centering
+    \includegraphics[width=\textwidth]{imgs/statista_pipeline_3.png}
+    \caption{Data Extraction example from Statista. }
+    \label{statista-data-extraction}
+\end{figure*}
+
+\subsection{Automatic Data Extraction from Charts}
+\label{app:data_extraction}
+
+\textbf{Model:} We extend ChartOCR \cite{ChartOCR} which combines deep-learning and rule-based methods to extract the underlying data values from the chart images. First, key-point detection networks detects the chart main elements (e.g. plot area, y-axis-title, x-axis-title, and legend area) and marks (e.g. bars, line points, and pie slices). We extend the detection network to detect textual labels and the legend marks in the chart (see an example in Figure \ref{statista-data-extraction}). For the rectangular objects, the network outputs the top-left and bottom-right points which are grouped together based on the distance. For lines, the network outputs the coordinates of the line points which are grouped together based on the color. For pie charts, the network outputs the separating points between the slices along the perimeter of the pie. As shown in Figure \ref{statista-data-extraction}, the scale of the chart  is estimated using the \textit{y-axis-labels'} values and y coordinates. Finally, the data values of the chart marks (e.g. bars, line points) are calculated using the scale of the chart. For pie charts, the values are estimated by calculating the angle between each two neighbouring points. 
+
+Since the original ChartOCR model only outputs the raw data values, we we further extend their approach to output the fully-structured data table as follows. First, we utilize the CRAFT model \cite{craftrecognition} to recognize the texts of the detected textual chart elements (\textit{x-axis labels}, and \textit{legend labels}). Then, we associate the data values with their closest \textit{x-axis-label} and the data series (e.g. a group of bars or line points) with the legend labels based on the color. For example, in Figure \ref{statista-data-extraction}b, the bars are matched with their closest \textit{x-axis-labels} (`Sunday' and `Daily'). Moreover, the values of dark blue bars are associated with `2019' \textit{legend-label} and the values of light blue bars are associated with `2018' \textit{legend-label} based on the matched colors. In this way, our approach recovers the fully structured data table from the chart as shown in Figure \ref{statista-data-extraction}c.
+
+\textbf{Evaluation Metric:} We evaluate our extracted data table using the following metric (adapted from ChartOCR \cite{ChartOCR}).
+We define the distance function between two data points as:
+\[
+D(gt, pr) = min(1, ||\frac{gt - pr}{gt}||)
+\]
+where $gt$ is the ground truth value and $pr$ is the predicted value. We then compute the cost matrix $C$, where $C_{n,m} = D(gt_n, pr_m)$. The total minimum cost is then estimated by solving the linear sum assignment problem as follows:
+\[
+cost = \sum_{i=1}^{K}{\sum_{j=1}^{K}{C_{i, j} X_{i,j}}}
+\]
+Where $K = max(N, M)$ and $X$ is a binary assignment matrix. The final score is then computed using the following equation:
+\[
+score = 1 - \frac{cost}{K}
+\]
+Finally, we average the scores of all the charts to compute the overall score. 
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Additional Examples from Statista and Pew datasets}
+Figure~\ref{tab:more examples} presents additional samples from our chart-to-text benchmark covering a diverse range of chart types and styles.
+
+
+
+\begin{figure*}[t] 
+\linespread{0.5}\selectfont\centering 
+\scalebox{0.9}{\begin{tabular}{p{7.0cm} | p{8cm} }    
+\toprule
+        \raisebox{-1\height}{\includegraphics[height=5cm]{new_examples_imgs/350.png}}
+        &
+        {Americans overwhelmingly support limits on political campaign spending, and most think new laws could effectively reduce the role of money in politics.
+And there is extensive support for reining in campaign spending: 77\% of the public says “there should be limits on the amount of money individuals and organizations” can spend on political campaigns; just 20\% say they should be able to spend as much as they want.
+A somewhat smaller majority (65\%) says that new campaign finance laws could be written that would be effective in reducing the role of money in politics, while 31\% say any new laws would not be effective.}
+        \\
+\midrule 
+        \raisebox{-1\height}{\includegraphics[height=7.0cm]{new_examples_imgs/697.png}}
+        & 
+        {In a recent survey of what Americans know about science, we asked people to interpret the chart you see here and tell us what it showed. Six-in-ten (63\%) identify the best interpretation of this chart as “the more sugar people eat, the more likely they are to get cavities.”}
+        \\
+\midrule  
+
+        
+        \raisebox{-1.0\height}{\includegraphics[height=4.0cm]{new_examples_imgs/s_317.png}}
+        &
+        {The statistic shows the distribution of employment in Brazil by economic sector from 2010 to 2020. In 2020, 9.12 percent of the employees in Brazil were active in the agricultural sector, 19.59 percent in industry and 71.29 percent in the service sector.}
+        \\
+\midrule  
+        \raisebox{-1.0\height}{\includegraphics[height=5cm]{new_examples_imgs/s_592.png}}
+        &
+        {As of 2019, a third of online users worldwide were aged between 25 and 34 years. Website visitors in this age bracket constituted the biggest group of online users worldwide. Also, 18 percent of global online users were aged 18 to 24 years. }
+        \\
+\midrule  
+        
+        \raisebox{-1.0\height}{\includegraphics[height=5cm]{new_examples_imgs/s_802.png}}
+        &
+        { The cost of fossil fuels in the electric power industry can vary depending on the source that is used. In general, fossil fuels cost about 2.50 U.S. dollars per million British thermal units (Btu) but can range from 2.02 U.S. dollars per million Btu for coal to 9.07 U.S. dollars per million Btu for petroleum. }
+        \\
+\bottomrule  
+    \end{tabular}
+    }
+    \caption{Examples of chart-summary pairs in our benchmark. The top two examples are from the Pew research dataset and the rest of the examples are from the Statista dataset.
+    }
+    \label{tab:more examples}
+\end{figure*}

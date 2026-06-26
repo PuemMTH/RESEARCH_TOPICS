@@ -1,0 +1,121 @@
+\begin{thebibliography}{10}
+
+\bibitem{khabsa2014plosone}
+Madian Khabsa and C.~Lee Giles.
+\newblock The number of scholarly documents on the public web.
+\newblock {\em PLoS ONE}, 9(5):e93949, May 2014.
+
+\bibitem{Siegel_2018}
+Noah Siegel, Nicholas Lourie, Russell Power, and Waleed Ammar.
+\newblock Extracting scientific figures with distantly supervised neural
+  networks.
+\newblock {\em Proceedings of the 18th ACM/IEEE on JCDL}, May 2018.
+
+\bibitem{Wu2015PDFMEFAM}
+Jian Wu, Jason Killian, Huaiyu Yang, Kyle Williams, Sagnik~Ray Choudhury,
+  Suppawong Tuarob, Cornelia Caragea, and C.~Lee Giles.
+\newblock Pdfmef: A multi-entity knowledge extraction framework for scholarly
+  documents and semantic search.
+\newblock {\em Proceedings of the 8th International Conference on Knowledge
+  Capture}, 2015.
+
+\bibitem{Herrera2015OverviewOT}
+Alba Garc{\'i}a~Seco de~Herrera, Henning M{\"u}ller, and Stefano Bromuri.
+\newblock Overview of the imageclef 2015 medical classification task.
+\newblock In {\em CLEF}, 2015.
+
+\bibitem{Clark2015LookingBT}
+Christopher Clark and S.~Divvala.
+\newblock Looking beyond text: Extracting figures, tables and captions from
+  computer science papers.
+\newblock In {\em AAAI Workshop: Scholarly Big Data}, 2015.
+
+\bibitem{Clark2016PDFFigures2M}
+Christopher Clark and S.~Divvala.
+\newblock Pdffigures 2.0: Mining figures from research papers.
+\newblock {\em 2016 IEEE/ACM Joint Conference on Digital Libraries (JCDL)},
+  pages 143--152, 2016.
+
+\bibitem{Savva2011ReVisionAC}
+M.~Savva, Nicholas Kong, Arti Chhajta, Li~Fei-Fei, Maneesh Agrawala, and
+  J.~Heer.
+\newblock Revision: automated classification, analysis and redesign of chart
+  images.
+\newblock {\em Proceedings of 24th annual ACM symposium on User interface
+  software and tech}, 2011.
+
+\bibitem{Choudhury2015AnAF}
+Sagnik~Ray Choudhury and C.~Lee Giles.
+\newblock An architecture for information extraction from figures in digital
+  libraries.
+\newblock {\em Proceedings of the 24th International Conference on World Wide
+  Web}, 2015.
+
+\bibitem{Zhou2000HoughTF}
+Y.~Zhou and C.~Tan.
+\newblock Hough technique for bar charts detection and recognition in document
+  images.
+\newblock {\em Proceedings 2000 International Conference on Image Processing
+  (Cat. No.00CH37101)}, 2:605--608 vol.2, 2000.
+
+\bibitem{Siegel2016FigureSeerPR}
+Noah Siegel, Zachary Horvitz, Roie Levin, S.~Divvala, and Ali Farhadi.
+\newblock Figureseer: Parsing result-figures in research papers.
+\newblock In {\em ECCV}, 2016.
+
+\bibitem{tange2016deepchart}
+Binbin Tang, Xiao Liu, Jie Lei, Mingli Song, Dapeng Tao, Shuifa Sun, and
+  Fangmin Dong.
+\newblock Deepchart: Combining deep convolutional networks and deep belief
+  networks in chart classification.
+\newblock {\em Signal Processing}, 124:156--161, 2016.
+
+\bibitem{8892905}
+K.~V. Jobin, Ajoy Mondal, and C.~V. Jawahar.
+\newblock Docfigure: A dataset for scientific document figure classification.
+\newblock In {\em 2019 International Conference on Document Analysis and
+  Recognition Workshops (ICDARW)}, pages 74--79, 2019.
+
+\bibitem{Karthikeyani2012MachineLC}
+V.~Karthikeyani and S.~Nagarajan.
+\newblock Machine learning classification algorithms to recognize chart types
+  in portable document format (pdf) files.
+\newblock {\em International Journal of Computer Applications}, 39:1--5, 2012.
+
+\bibitem{kahou2018figureqa}
+Samira~Ebrahimi Kahou, Vincent Michalski, Adam Atkinson, Akos Kadar, Adam
+  Trischler, and Yoshua Bengio.
+\newblock Figureqa: An annotated figure dataset for visual reasoning, 2018.
+
+\bibitem{simonyan2014very}
+Karen Simonyan and Andrew Zisserman.
+\newblock Very deep convolutional networks for large-scale image recognition.
+\newblock {\em arXiv preprint arXiv:1409.1556}, 2014.
+
+\bibitem{deng2009imagenet}
+Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li~Fei-Fei.
+\newblock Imagenet: A large-scale hierarchical image database.
+\newblock In {\em 2009 IEEE Conference on CVPR}, pages 248--255, 2009.
+
+\bibitem{rousseeue1987silhouettes}
+Peter~J. Rousseeuw.
+\newblock Silhouettes: A graphical aid to the interpretation and validation of
+  cluster analysis.
+\newblock {\em Journal of Computational and Applied Mathematics}, 20:53--65,
+  1987.
+
+\bibitem{dosovitskiy2020image}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn,
+  Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg
+  Heigold, Sylvain Gelly, et~al.
+\newblock An image is worth 16x16 words: Transformers for image recognition at
+  scale.
+\newblock {\em arXiv preprint arXiv:2010.11929}, 2020.
+
+\bibitem{yu2022coca}
+Jiahui Yu, Zirui Wang, Vijay Vasudevan, Legg Yeung, Mojtaba Seyedhosseini, and
+  Yonghui Wu.
+\newblock Coca: Contrastive captioners are image-text foundation models.
+\newblock {\em CoRR}, abs/2205.01917, 2022.
+
+\end{thebibliography}

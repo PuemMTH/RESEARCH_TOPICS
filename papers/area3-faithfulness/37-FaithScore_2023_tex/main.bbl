@@ -1,0 +1,274 @@
+\begin{thebibliography}{55}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Anderson et~al.(2016)Anderson, Fernando, Johnson, and Gould}]{DBLP:conf/eccv/AndersonFJG16}
+Peter Anderson, Basura Fernando, Mark Johnson, and Stephen Gould. 2016.
+\newblock {SPICE:} semantic propositional image caption evaluation.
+\newblock In \emph{{ECCV}}, volume 9909 of \emph{Lecture Notes in Computer Science}, pages 382--398. Springer.
+
+\bibitem[{Antol et~al.(2015)Antol, Agrawal, Lu, Mitchell, Batra, Zitnick, and Parikh}]{vqatask}
+Stanislaw Antol, Aishwarya Agrawal, Jiasen Lu, Margaret Mitchell, Dhruv Batra, C.~Lawrence Zitnick, and Devi Parikh. 2015.
+\newblock {VQA:} visual question answering.
+\newblock In \emph{{IEEE} International Conference on Computer Vision}, pages 2425--2433. {IEEE} Computer Society.
+
+\bibitem[{Awadalla et~al.(2023)Awadalla, Gao, Gardner, Hessel, Hanafy, Zhu, Marathe, Bitton, Gadre, Sagawa, Jitsev, Kornblith, Koh, Ilharco, Wortsman, and Schmidt}]{DBLP:journals/corr/abs-2308-01390}
+Anas Awadalla, Irena Gao, Josh Gardner, Jack Hessel, Yusuf Hanafy, Wanrong Zhu, Kalyani Marathe, Yonatan Bitton, Samir~Yitzhak Gadre, Shiori Sagawa, Jenia Jitsev, Simon Kornblith, Pang~Wei Koh, Gabriel Ilharco, Mitchell Wortsman, and Ludwig Schmidt. 2023.
+\newblock Openflamingo: An open-source framework for training large autoregressive vision-language models.
+\newblock \emph{CoRR}, abs/2308.01390.
+
+\bibitem[{Banerjee and Lavie(2005)}]{meteor}
+Satanjeev Banerjee and Alon Lavie. 2005.
+\newblock {METEOR:} an automatic metric for {MT} evaluation with improved correlation with human judgments.
+\newblock In \emph{Summarization@ACL}, pages 65--72. ACL.
+
+\bibitem[{Bommasani et~al.(2021)Bommasani, Hudson, Adeli, Altman, Arora, von Arx, Bernstein, Bohg, Bosselut, Brunskill, Brynjolfsson, Buch, Card, Castellon, Chatterji, Chen, Creel, Davis, Demszky, Donahue, Doumbouya, Durmus, Ermon, Etchemendy, Ethayarajh, Fei{-}Fei, Finn, Gale, Gillespie, Goel, Goodman, Grossman, Guha, Hashimoto, Henderson, Hewitt, Ho, Hong, Hsu, Huang, Icard, Jain, Jurafsky, Kalluri, Karamcheti, Keeling, Khani, Khattab, Koh, Krass, Krishna, Kuditipudi, and et~al.}]{DBLP:journals/corr/abs-2108-07258}
+Rishi Bommasani, Drew~A. Hudson, Ehsan Adeli, Russ~B. Altman, Simran Arora, Sydney von Arx, Michael~S. Bernstein, Jeannette Bohg, Antoine Bosselut, Emma Brunskill, Erik Brynjolfsson, Shyamal Buch, Dallas Card, Rodrigo Castellon, Niladri~S. Chatterji, Annie~S. Chen, Kathleen Creel, Jared~Quincy Davis, Dorottya Demszky, Chris Donahue, Moussa Doumbouya, Esin Durmus, Stefano Ermon, John Etchemendy, Kawin Ethayarajh, Li~Fei{-}Fei, Chelsea Finn, Trevor Gale, Lauren Gillespie, Karan Goel, Noah~D. Goodman, Shelby Grossman, Neel Guha, Tatsunori Hashimoto, Peter Henderson, John Hewitt, Daniel~E. Ho, Jenny Hong, Kyle Hsu, Jing Huang, Thomas Icard, Saahil Jain, Dan Jurafsky, Pratyusha Kalluri, Siddharth Karamcheti, Geoff Keeling, Fereshte Khani, Omar Khattab, Pang~Wei Koh, Mark~S. Krass, Ranjay Krishna, Rohith Kuditipudi, and et~al. 2021.
+\newblock \href {http://arxiv.org/abs/2108.07258} {On the opportunities and risks of foundation models}.
+\newblock \emph{CoRR}, abs/2108.07258.
+
+\bibitem[{Brown(2020)}]{gpt3}
+Tom~B Brown. 2020.
+\newblock Language models are few-shot learners.
+\newblock \emph{arXiv preprint arXiv:2005.14165}.
+
+\bibitem[{Chang et~al.(2024)Chang, Jing, Zhang, and Zhang}]{chang2024unifiedhallucinationmitigationframework}
+Yue Chang, Liqiang Jing, Xiaopeng Zhang, and Yue Zhang. 2024.
+\newblock \href {http://arxiv.org/abs/2409.16494} {A unified hallucination mitigation framework for large vision-language models}.
+
+\bibitem[{Chiang et~al.(2023)Chiang, Li, Lin, Sheng, Wu, Zhang, Zheng, Zhuang, Zhuang, Gonzalez, Stoica, and Xing}]{vicuna}
+Wei-Lin Chiang, Zhuohan Li, Zi~Lin, Ying Sheng, Zhanghao Wu, Hao Zhang, Lianmin Zheng, Siyuan Zhuang, Yonghao Zhuang, Joseph~E. Gonzalez, Ion Stoica, and Eric~P. Xing. 2023.
+\newblock vicuna: An opensource chatbot impressing gpt-4 with 90%* chatgpt quality.
+
+\bibitem[{Dai et~al.(2023)Dai, Li, Li, Tiong, Zhao, Wang, Li, Fung, and Hoi}]{InstructBLIP}
+Wenliang Dai, Junnan Li, Dongxu Li, Anthony Meng~Huat Tiong, Junqi Zhao, Weisheng Wang, Boyang Li, Pascale Fung, and Steven C.~H. Hoi. 2023.
+\newblock Instructblip: Towards general-purpose vision-language models with instruction tuning.
+\newblock \emph{CoRR}, abs/2305.06500.
+
+\bibitem[{Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn, Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and Houlsby}]{vit}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby. 2021.
+\newblock An image is worth 16x16 words: Transformers for image recognition at scale.
+\newblock In \emph{{ICLR}}. OpenReview.net.
+
+\bibitem[{Gong et~al.(2023)Gong, Lyu, Zhang, Wang, Zheng, Zhao, Liu, Zhang, Luo, and Chen}]{MultiModal-GPT}
+Tao Gong, Chengqi Lyu, Shilong Zhang, Yudong Wang, Miao Zheng, Qian Zhao, Kuikun Liu, Wenwei Zhang, Ping Luo, and Kai Chen. 2023.
+\newblock Multimodal-gpt: {A} vision and language model for dialogue with humans.
+\newblock \emph{CoRR}, abs/2305.04790.
+
+\bibitem[{Gunjal et~al.(2023)Gunjal, Yin, and Bas}]{gunjal2023detecting}
+Anisha Gunjal, Jihan Yin, and Erhan Bas. 2023.
+\newblock Detecting and preventing hallucinations in large vision language models.
+\newblock \emph{arXiv preprint arXiv:2308.06394}.
+
+\bibitem[{Hessel et~al.(2021)Hessel, Holtzman, Forbes, Bras, and Choi}]{clipscore}
+Jack Hessel, Ari Holtzman, Maxwell Forbes, Ronan~Le Bras, and Yejin Choi. 2021.
+\newblock Clipscore: {A} reference-free evaluation metric for image captioning.
+\newblock In \emph{EMNLP}, pages 7514--7528. ACL.
+
+\bibitem[{Hu et~al.(2022)Hu, Shen, Wallis, Allen{-}Zhu, Li, Wang, Wang, and Chen}]{lora}
+Edward~J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen{-}Zhu, Yuanzhi Li, Shean Wang, Lu~Wang, and Weizhu Chen. 2022.
+\newblock Lora: Low-rank adaptation of large language models.
+\newblock In \emph{ICLR}. OpenReview.net.
+
+\bibitem[{Hu et~al.(2023)Hu, Liu, Kasai, Wang, Ostendorf, Krishna, and Smith}]{TIFA}
+Yushi Hu, Benlin Liu, Jungo Kasai, Yizhong Wang, Mari Ostendorf, Ranjay Krishna, and Noah~A. Smith. 2023.
+\newblock {TIFA:} accurate and interpretable text-to-image faithfulness evaluation with question answering.
+\newblock In \emph{{ICCV}}, pages 20349--20360. {IEEE}.
+
+\bibitem[{Huang et~al.(2016)Huang, Ferraro, Mostafazadeh, Misra, Agrawal, Devlin, Girshick, He, Kohli, Batra, Zitnick, Parikh, Vanderwende, Galley, and Mitchell}]{Huang2016VisualStory}
+Ting-Hao~'Kenneth' Huang, Francis Ferraro, N.~Mostafazadeh, Ishan Misra, Aishwarya Agrawal, Jacob Devlin, Ross~B. Girshick, Xiaodong He, Pushmeet Kohli, Dhruv Batra, C.~Lawrence Zitnick, Devi Parikh, Lucy Vanderwende, Michel Galley, and Margaret Mitchell. 2016.
+\newblock Visual storytelling.
+\newblock In \emph{NAACL}.
+
+\bibitem[{Ji et~al.(2023)Ji, Lee, Frieske, Yu, Su, Xu, Ishii, Bang, Madotto, and Fung}]{ji2023survey}
+Ziwei Ji, Nayeon Lee, Rita Frieske, Tiezheng Yu, Dan Su, Yan Xu, Etsuko Ishii, Ye~Jin Bang, Andrea Madotto, and Pascale Fung. 2023.
+\newblock Survey of hallucination in natural language generation.
+\newblock \emph{ACM Computing Surveys}, 55(12):1--38.
+
+\bibitem[{Jing and Du(2024)}]{fgaif}
+Liqiang Jing and Xinya Du. 2024.
+\newblock {FGAIF:} aligning large vision-language models with fine-grained {AI} feedback.
+\newblock \emph{CoRR}, abs/2404.05046.
+
+\bibitem[{Jing et~al.(2024)Jing, Zuo, and Zhang}]{mmss}
+Liqiang Jing, Jingxuan Zuo, and Yue Zhang. 2024.
+\newblock Fine-grained and explainable factuality evaluation for multimodal summarization.
+\newblock \emph{CoRR}, abs/2402.11414.
+
+\bibitem[{Johnson et~al.(2016)Johnson, Karpathy, and Fei-Fei}]{densecap}
+Justin Johnson, Andrej Karpathy, and Li~Fei-Fei. 2016.
+\newblock Densecap: Fully convolutional localization networks for dense captioning.
+\newblock In \emph{CVPR}.
+
+\bibitem[{Krishna et~al.(2023)Krishna, Bransom, Kuehl, Iyyer, Dasigi, Cohan, and Lo}]{DBLP:conf/eacl/KrishnaBKIDCL23}
+Kalpesh Krishna, Erin Bransom, Bailey Kuehl, Mohit Iyyer, Pradeep Dasigi, Arman Cohan, and Kyle Lo. 2023.
+\newblock Longeval: Guidelines for human evaluation of faithfulness in long-form summarization.
+\newblock In \emph{EACL}, pages 1642--1661. ACL.
+
+\bibitem[{Li et~al.(2023{\natexlab{a}})Li, Zhang, Chen, Wang, Yang, and Liu}]{DBLP:journals/corr/abs-2305-03726}
+Bo~Li, Yuanhan Zhang, Liangyu Chen, Jinghao Wang, Jingkang Yang, and Ziwei Liu. 2023{\natexlab{a}}.
+\newblock Otter: {A} multi-modal model with in-context instruction tuning.
+\newblock \emph{CoRR}, abs/2305.03726.
+
+\bibitem[{Li et~al.(2022)Li, Xu, Tian, Wang, Yan, Bi, Ye, Chen, Xu, Cao, Zhang, Huang, Huang, Zhou, and Si}]{mplug}
+Chenliang Li, Haiyang Xu, Junfeng Tian, Wei Wang, Ming Yan, Bin Bi, Jiabo Ye, He~Chen, Guohai Xu, Zheng Cao, Ji~Zhang, Songfang Huang, Fei Huang, Jingren Zhou, and Luo Si. 2022.
+\newblock mplug: Effective and efficient vision-language learning by cross-modal skip-connections.
+\newblock In \emph{EMNLP}, pages 7241--7259. ACL.
+
+\bibitem[{Li et~al.(2023{\natexlab{b}})Li, Li, Savarese, and Hoi}]{blip2}
+Junnan Li, Dongxu Li, Silvio Savarese, and Steven C.~H. Hoi. 2023{\natexlab{b}}.
+\newblock {BLIP-2:} bootstrapping language-image pre-training with frozen image encoders and large language models.
+\newblock In \emph{ICML}, volume 202 of \emph{PMLR}, pages 19730--19742. {PMLR}.
+
+\bibitem[{Li et~al.(2023{\natexlab{c}})Li, Du, Zhou, Wang, Zhao, and rong Wen}]{Li2023EvaluatingOH}
+Yifan Li, Yifan Du, Kun Zhou, Jinpeng Wang, Wayne~Xin Zhao, and Ji~rong Wen. 2023{\natexlab{c}}.
+\newblock Evaluating object hallucination in large vision-language models.
+\newblock \emph{ArXiv}, abs/2305.10355.
+
+\bibitem[{Likert(1932)}]{likert1932technique}
+Rensis Likert. 1932.
+\newblock A technique for the measurement of attitudes.
+\newblock \emph{Archives of psychology}.
+
+\bibitem[{Lin(2004)}]{ROUGE}
+Chin-Yew Lin. 2004.
+\newblock {ROUGE}: A package for automatic evaluation of summaries.
+\newblock In \emph{Text Summarization Branches Out}, pages 74--81. ACL.
+
+\bibitem[{Lin et~al.(2014)Lin, Maire, Belongie, Hays, Perona, Ramanan, Doll{\'{a}}r, and Zitnick}]{mscoco}
+Tsung{-}Yi Lin, Michael Maire, Serge~J. Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll{\'{a}}r, and C.~Lawrence Zitnick. 2014.
+\newblock Microsoft {COCO:} common objects in context.
+\newblock In \emph{ECCV}, volume 8693 of \emph{Lecture Notes in Computer Science}, pages 740--755. Springer.
+
+\bibitem[{Liu et~al.(2023{\natexlab{a}})Liu, Guan, Li, Chen, Yacoob, Manocha, and Zhou}]{liu2023hallusionbench}
+Fuxiao Liu, Tianrui Guan, Zongxia Li, Lichang Chen, Yaser Yacoob, Dinesh Manocha, and Tianyi Zhou. 2023{\natexlab{a}}.
+\newblock Hallusionbench: You see what you think? or you think what you see? an image-context reasoning benchmark challenging for gpt-4v (ision), llava-1.5, and other multi-modality models.
+\newblock \emph{arXiv preprint arXiv:2310.14566}.
+
+\bibitem[{Liu et~al.(2023{\natexlab{b}})Liu, Lin, Li, Wang, Yacoob, and Wang}]{liu2023aligning}
+Fuxiao Liu, Kevin Lin, Linjie Li, Jianfeng Wang, Yaser Yacoob, and Lijuan Wang. 2023{\natexlab{b}}.
+\newblock Aligning large multi-modal model with robust instruction tuning.
+\newblock \emph{arXiv preprint arXiv:2306.14565}.
+
+\bibitem[{Liu et~al.(2023{\natexlab{c}})Liu, Lin, Li, Wang, Yacoob, and Wang}]{DBLP:journals/corr/abs-2306-14565}
+Fuxiao Liu, Kevin Lin, Linjie Li, Jianfeng Wang, Yaser Yacoob, and Lijuan Wang. 2023{\natexlab{c}}.
+\newblock Aligning large multi-modal model with robust instruction tuning.
+\newblock \emph{CoRR}, abs/2306.14565.
+
+\bibitem[{Liu et~al.(2024)Liu, Lin, Li, Wang, Yacoob, and Wang}]{liu2024mitigating}
+Fuxiao Liu, Kevin Lin, Linjie Li, Jianfeng Wang, Yaser Yacoob, and Lijuan Wang. 2024.
+\newblock \href {http://arxiv.org/abs/2306.14565} {Mitigating hallucination in large multi-modal models via robust instruction tuning}.
+
+\bibitem[{Liu et~al.(2023{\natexlab{d}})Liu, Li, Li, and Lee}]{llava15}
+Haotian Liu, Chunyuan Li, Yuheng Li, and Yong~Jae Lee. 2023{\natexlab{d}}.
+\newblock Improved baselines with visual instruction tuning.
+\newblock \emph{arXiv preprint arXiv:2310.03744}.
+
+\bibitem[{Liu et~al.(2023{\natexlab{e}})Liu, Li, Wu, and Lee}]{llava}
+Haotian Liu, Chunyuan Li, Qingyang Wu, and Yong~Jae Lee. 2023{\natexlab{e}}.
+\newblock Visual instruction tuning.
+\newblock \emph{CoRR}, abs/2304.08485.
+
+\bibitem[{Lovenia et~al.(2023)Lovenia, Dai, Cahyawijaya, Ji, and Fung}]{lovenia2023negative}
+Holy Lovenia, Wenliang Dai, Samuel Cahyawijaya, Ziwei Ji, and Pascale Fung. 2023.
+\newblock \href {http://arxiv.org/abs/2310.05338} {Negative object presence evaluation (nope) to measure object hallucination in vision-language models}.
+
+\bibitem[{Lu et~al.(2023)Lu, Rao, Chen, Guo, Zhang, Sun, Yang, and Yang}]{DBLP:journals/corr/abs-2309-04041}
+Jiaying Lu, Jinmeng Rao, Kezhen Chen, Xiaoyuan Guo, Yawen Zhang, Baochen Sun, Carl Yang, and Jie Yang. 2023.
+\newblock Evaluation and mitigation of agnosia in multimodal large language models.
+\newblock \emph{CoRR}, abs/2309.04041.
+
+\bibitem[{MacLeod et~al.(2017)MacLeod, Bennett, Morris, and Cutrell}]{DBLP:conf/chi/MacLeodBMC17}
+Haley MacLeod, Cynthia~L. Bennett, Meredith~Ringel Morris, and Edward Cutrell. 2017.
+\newblock Understanding blind people's experiences with computer-generated captions of social media images.
+\newblock In \emph{CHI}, pages 5988--5999. {ACM}.
+
+\bibitem[{Min et~al.(2023)Min, Krishna, Lyu, Lewis, Yih, Koh, Iyyer, Zettlemoyer, and Hajishirzi}]{factscore}
+Sewon Min, Kalpesh Krishna, Xinxi Lyu, Mike Lewis, Wen{-}tau Yih, Pang~Wei Koh, Mohit Iyyer, Luke Zettlemoyer, and Hannaneh Hajishirzi. 2023.
+\newblock Factscore: Fine-grained atomic evaluation of factual precision in long form text generation.
+\newblock \emph{CoRR}, abs/2305.14251.
+
+\bibitem[{Moore et~al.(2006)Moore, Notz, and Notz}]{moore2006statistics}
+David~S Moore, William~I Notz, and William Notz. 2006.
+\newblock \emph{Statistics: Concepts and controversies}.
+\newblock Macmillan.
+
+\bibitem[{OpenAI(2022)}]{chatgpt}
+OpenAI. 2022.
+\newblock Chatgpt blog post.
+
+\bibitem[{OpenAI(2023)}]{OpenAI2023GPT4V}
+OpenAI. 2023.
+\newblock Gpt-4v(ision) system card.
+\newblock \emph{OpenAI Blog Post}.
+
+\bibitem[{Papineni et~al.(2002)Papineni, Roukos, Ward, and Zhu}]{bleu}
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei{-}Jing Zhu. 2002.
+\newblock Bleu: a method for automatic evaluation of machine translation.
+\newblock In \emph{ACL}, pages 311--318. {ACL}.
+
+\bibitem[{Rohrbach et~al.(2018)Rohrbach, Hendricks, Burns, Darrell, and Saenko}]{DBLP:conf/emnlp/RohrbachHBDS18}
+Anna Rohrbach, Lisa~Anne Hendricks, Kaylee Burns, Trevor Darrell, and Kate Saenko. 2018.
+\newblock Object hallucination in image captioning.
+\newblock In \emph{EMNLP}, pages 4035--4045. ACL.
+
+\bibitem[{Schwenk et~al.(2022)Schwenk, Khandelwal, Clark, Marino, and Mottaghi}]{AOKVQA}
+Dustin Schwenk, Apoorv Khandelwal, Christopher Clark, Kenneth Marino, and Roozbeh Mottaghi. 2022.
+\newblock A-okvqa: A benchmark for visual question answering using world knowledge.
+\newblock \emph{arXiv}.
+
+\bibitem[{Sun et~al.(2023)Sun, Shen, Cao, Liu, Shen, Gan, Gui, Wang, Yang, Keutzer, and Darrell}]{llava_rlhf}
+Zhiqing Sun, Sheng Shen, Shengcao Cao, Haotian Liu, Yikang Shen, Chuang Gan, Liang{-}Yan Gui, Yu{-}Xiong Wang, Yiming Yang, Kurt Keutzer, and Trevor Darrell. 2023.
+\newblock Aligning large multimodal models with factually augmented {RLHF}.
+\newblock \emph{CoRR}, abs/2309.14525.
+
+\bibitem[{Sundar and Heck(2022)}]{DBLP:conf/acl-convai/SundarH22}
+Anirudh Sundar and Larry Heck. 2022.
+\newblock Multimodal conversational {AI:} {A} survey of datasets and approaches.
+\newblock In \emph{ConvAI@ACL}, pages 131--147. ACL.
+
+\bibitem[{Team et~al.(2023)Team, Anil, Borgeaud, Wu, Alayrac, Yu, Soricut, Schalkwyk, Dai, Hauth et~al.}]{DBLP:gemini}
+Gemini Team, Rohan Anil, Sebastian Borgeaud, Yonghui Wu, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut, Johan Schalkwyk, Andrew~M Dai, Anja Hauth, et~al. 2023.
+\newblock Gemini: a family of highly capable multimodal models.
+\newblock \emph{arXiv preprint arXiv:2312.11805}.
+
+\bibitem[{Touvron et~al.(2023)Touvron, Lavril, Izacard, Martinet, Lachaux, Lacroix, Rozi{\`{e}}re, Goyal, Hambro, Azhar, Rodriguez, Joulin, Grave, and Lample}]{llama}
+Hugo Touvron, Thibaut Lavril, Gautier Izacard, Xavier Martinet, Marie{-}Anne Lachaux, Timoth{\'{e}}e Lacroix, Baptiste Rozi{\`{e}}re, Naman Goyal, Eric Hambro, Faisal Azhar, Aur{\'{e}}lien Rodriguez, Armand Joulin, Edouard Grave, and Guillaume Lample. 2023.
+\newblock Llama: Open and efficient foundation language models.
+\newblock \emph{CoRR}, abs/2302.13971.
+
+\bibitem[{Vedantam et~al.(2015)Vedantam, Lawrence~Zitnick, and Parikh}]{vedantam2015cider}
+Ramakrishna Vedantam, C~Lawrence~Zitnick, and Devi Parikh. 2015.
+\newblock Cider: Consensus-based image description evaluation.
+\newblock In \emph{CVPR}, pages 4566--4575.
+
+\bibitem[{Wang et~al.(2022)Wang, Yang, Men, Lin, Bai, Li, Ma, Zhou, Zhou, and Yang}]{ofa}
+Peng Wang, An~Yang, Rui Men, Junyang Lin, Shuai Bai, Zhikang Li, Jianxin Ma, Chang Zhou, Jingren Zhou, and Hongxia Yang. 2022.
+\newblock {OFA:} unifying architectures, tasks, and modalities through a simple sequence-to-sequence learning framework.
+\newblock In \emph{ICML}, volume 162 of \emph{Proceedings of Machine Learning Research}, pages 23318--23340. {PMLR}.
+
+\bibitem[{Wei et~al.(2023)Wei, Cui, Cheng, Wang, Zhang, Huang, Xie, Xu, Chen, Zhang, Jiang, and Han}]{DBLP:journals/corr/abs-2302-10205}
+Xiang Wei, Xingyu Cui, Ning Cheng, Xiaobin Wang, Xin Zhang, Shen Huang, Pengjun Xie, Jinan Xu, Yufeng Chen, Meishan Zhang, Yong Jiang, and Wenjuan Han. 2023.
+\newblock Zero-shot information extraction via chatting with chatgpt.
+\newblock \emph{CoRR}, abs/2302.10205.
+
+\bibitem[{Xie et~al.(2019)Xie, Lai, Doran, and Kadav}]{DBLP:journals/corr/abs-1901-06706}
+Ning Xie, Farley Lai, Derek Doran, and Asim Kadav. 2019.
+\newblock Visual entailment: {A} novel task for fine-grained image understanding.
+\newblock \emph{CoRR}, abs/1901.06706.
+
+\bibitem[{Ye et~al.(2023)Ye, Xu, Xu, Ye, Yan, Zhou, Wang, Hu, Shi, Shi, Li, Xu, Chen, Tian, Qi, Zhang, and Huang}]{mPLUG-Owl}
+Qinghao Ye, Haiyang Xu, Guohai Xu, Jiabo Ye, Ming Yan, Yiyang Zhou, Junyang Wang, Anwen Hu, Pengcheng Shi, Yaya Shi, Chenliang Li, Yuanhong Xu, Hehong Chen, Junfeng Tian, Qian Qi, Ji~Zhang, and Fei Huang. 2023.
+\newblock mplug-owl: Modularization empowers large language models with multimodality.
+\newblock \emph{CoRR}, abs/2304.14178.
+
+\bibitem[{Yin et~al.(2023)Yin, Fu, Zhao, Xu, Wang, Sui, Shen, Li, Sun, and Chen}]{DBLP:journals/corr/abs-2310-16045}
+Shukang Yin, Chaoyou Fu, Sirui Zhao, Tong Xu, Hao Wang, Dianbo Sui, Yunhang Shen, Ke~Li, Xing Sun, and Enhong Chen. 2023.
+\newblock Woodpecker: Hallucination correction for multimodal large language models.
+\newblock \emph{CoRR}, abs/2310.16045.
+
+\bibitem[{Zhu et~al.(2023)Zhu, Chen, Shen, Li, and Elhoseiny}]{minigpt4}
+Deyao Zhu, Jun Chen, Xiaoqian Shen, Xiang Li, and Mohamed Elhoseiny. 2023.
+\newblock Minigpt-4: Enhancing vision-language understanding with advanced large language models.
+\newblock \emph{CoRR}, abs/2304.10592.
+
+\end{thebibliography}

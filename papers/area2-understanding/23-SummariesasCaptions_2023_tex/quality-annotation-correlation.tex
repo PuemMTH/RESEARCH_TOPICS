@@ -1,0 +1,26 @@
+\begin{table}[t]
+    \small
+    \center
+    \addtolength{\tabcolsep}{-1.5mm}
+    
+    
+    \begin{tabular}{@{}lcccc@{}}
+    \toprule
+                         & \textbf{Image-Text} & \textbf{Visual-Desc} & \textbf{Takeaway} & \textbf{Length} \\ \midrule
+    \textbf{Helpfulness} & 0.206        & \textbf{0.523}           & \textbf{0.686}             & \underline{0.383}           \\
+    \textbf{Image-Text}  & -            & 0.177           & 0.186             & 0.248           \\
+    \textbf{Visual-Desc} & -            & -               & \textbf{0.625}             & \textbf{0.535}\\
+    \textbf{Takeaway}    & -            & -               & -                 & \textbf{0.514} \\
+    \bottomrule
+    \end{tabular}
+    \addtolength{\tabcolsep}{+1.5cm}
+    %\vspace{-1pc}
+
+    \caption{Pearson correlations between different aspects. We used the row scores (five-point Likert scale) to compute the correlation. 
+    \textbf{Strong correlation} ($\geq$0.5) and \underline{medium correlation} (0.3 to 0.5) are highlighted.
+    % \textbf{Bold} indicates strong correlation ($\geq$0.5) and \underline{underlined} shows medium correlation (0.3 to 0.5).
+    Helpfulness is highly correlated with Visual-Description and Takeaway and is moderately correlated with Length.}
+    %\vspace{-3mm}
+    \label{tab-quality-annotation-correlation}
+    
+\end{table}

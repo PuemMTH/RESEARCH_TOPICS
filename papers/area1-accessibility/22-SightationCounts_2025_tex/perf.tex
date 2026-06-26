@@ -1,0 +1,128 @@
+\section{Performance Analysis}\label{sec:perf}
+
+We designed a series of experiments to measure the performance of \textsc{Sightation} as a \textit{dataset}. First, we fine-tuned various models on our dataset. Then, we asked sighted and BLV teachers at schools for the blind to evaluate the generated texts. Additionally, we employ VLM judges and a number of well-known classic metrics to evaluate the descriptions. We report the main findings on the extent and breadth of performance enhancement our dataset can cultivate.
+
+\subsection{Fine Tuning}
+
+We chose to experiment with the \textsc{Qwen2-VL} series \citep{wang2024qwen2} considering its size variety, state-of-the-art performance at the time of writing, as well as whether the largest variant (72B) could fit on our compute cluster in its default precision, \texttt{bf16}, unquantized. We fine-tuned the 2B and 7B models and performed comparative analyses. Finer details on the tuning configuration are found in Appendix~\ref{app:tuning_config}.
+
+\subsubsection{On \textsc{SightationCompletions}}
+
+We conducted supervised fine tuning (SFT) on our completions dataset. The 2B model underwent full fine tuning, whereas the 7B model underwent parameter-efficient fine tuning (PEFT).
+
+\subsubsection{On \textsc{SightationPreference}}
+
+For preference alignment tuning, we chose to perform Direct Preference Optimization (DPO, \cite{rafailov2024direct}). Since reward models trained on generic data may not accurately represent BLV preferences, we opted for DPO, a widely used algorithm free of reward models. Before the actual DPO training, as is common in practice, we first subjected the 2B and 7B models to SFT. However, we recognized that sharing the same set of diagrams across the SFT and DPO stages could pose higher overfitting risks. With that in mind, instead of using \textsc{SightationCompletions} for SFT, we randomly sampled 1k diagrams along with their 4 descriptions from the remaining pool of generated descriptions (\textit{i.e.}, the ones not in \textsc{SightationCompletions}) and used these to compile 4k completion samples. Afterwards, DPO was run on \textsc{SightationPreference}. At both the SFT and DPO stages, the 2B model was fully fine-tuned, and the 7B model was trained with PEFT.
+
+\subsubsection{On \textsc{SightationRetrieval}}
+
+We performed contrastive training to fine-tune \textsc{BLIP-2}~\citep{li2023blip} for its appeal in image-text matching. To save compute, we trained only parts of the model and with just the top 1 positive and a randomly chosen negative. The training was carried out with InfoNCE loss~\citep{oord2018representation}, a widely used choice for contrastive objectives.
+
+\subsection{Evaluation Setup}
+
+\subsubsection{By Teaching Professionals}\label{sec:pros}
+
+We recruited 17 specialized educators who teach BLV learners at schools for the visually impaired. 8 of them are themselves blind or have low vision; remaining 9 are sighted. We refer to these groups as the BLV educator group and the sighted educator group, respectively. Their demographics are reported in Tables~\ref{tab:blv_educators_demo} and ~\ref{tab:sighted_educators_demo}
+
+\begin{figure*}[h!]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/together.png}
+    \caption{Tuning VLMs on \textsc{Sightation} enhanced various qualities of the diagram descriptions, evaluated by BLV educators, and shown here as normalized ratings averaged in each aspect. The capability of the dataset is most strongly pronounced with the 2B variant, shown above. Full results across 4 models and 22 metrics are reported in Tables~\ref{tab:big1a}, ~\ref{tab:big1b}, ~\ref{tab:big2B}, and ~\ref{tab:big7B}.}
+    \label{fig:blv_ratings}
+\end{figure*}
+
+\paragraph{BLV Educators}
+
+Each BLV educator was given 40 diagrams, each with two competing descriptions. They were asked to rate text-based qualities. They were asked to perform a quantitative assessment on the aspect set pictured in Figure~\ref{fig:dimension_assignments}.
+
+Following \citet{tang2023vistext,9555469}, we chose to investigate the usefulness of the diagram descriptions, but in three finer manifestations. Specifically, we asked the BLV educators to assess how useful the description is as a textual aid providing \textit{\romannumeral 1)} a summary of the diagram content, \textit{\romannumeral 2)} clues that would be helpful when solving short-answer multiple-choice questions about the diagram, and \textit{\romannumeral 3)} clues that would be helpful when answering long-answer open-ended questions about the diagram.
+
+\paragraph{Sighted Educators}
+
+Each sighted educator was given 40 diagrams, each with two competing descriptions with randomized order of presentation. They were then asked to evaluate the descriptions according to the guidelines for the sighted educator group, found in Appendix~\ref{app:guidelines}. Their aspect set, also shown in Fig.~\ref{fig:dimension_assignments}, includes a usefulness estimate to BLV users.
+
+\subsubsection{By Automatic Metrics}
+We perform a VLM-as-a-Judge (\citet{dubois2023alpacafarm},\citet{zheng2023judgingllm}) evaluation with \textsc{QVQ-72B-Preview}, where we instruct the VLM to take the \textbf{Image}, $\textbf{Desc}^{model}_{}$, and $\textbf{Desc}^{model}_{\texttt{++}}$ triplet as input and produce a JSON-formatted evaluation with the same aspects as with the human annotation.
+
+As for classic metrics, we collect widely recognized reference-free metrics since the AI2D dataset does not contain references: CLIP score \citep{hessel2021clipscore}, SigLIP score \citep{zhai2023sigmoid}, BLIP-2 Retrieval score \citep{li2023blip}, Self-BLEU (based on BLEU \citep{papineni2002bleu}), PAC score \citep{sarto2023positive}, and LongCLIP-B/L \citep{zhang2024longclip}. For the retrieval task, we chose to measure recall@$K$ and precision@$K$ for $K=1, 5, 10$, as do numerous retrieval studies.
+
+\section{Results}\label{sec:november}
+
+We report the evaluation results by the BLV educator group, the sighted educator group, VLM judges, and classic metrics. For each group, we discuss the effectiveness of the combined recipe, then with the guided generation ablated, and with the tuning step ablated. Here, we focus on the evaluation by BLV; sighted educator and VLM-as-a-Judge evaluation, as well as classic metric results are found in Appendix~\ref{app:results}.
+
+\subsection{Evaluation by BLV Educators}
+
+Here, we conduct an analysis of effect size, an intuitive choice for aggregate analysis on different sample sets rated by different evaluators. Figure~\ref{fig:blv_ratings} shows the effect size computed from BLV educators' assessment. The radial axis corresponds to the mean ratings on each of the two sets of samples under comparison, normalized by their pooled standard deviation ($\sigma$). Naturally, the radial axis is in units of the pooled standard deviation.
+
+The first radar chart in Figure~\ref{fig:blv_ratings} shows the result of comparing $\textbf{Desc}^\texttt{q2bbase}$ and $\textbf{Desc}^\texttt{q2bdpo}_\texttt{++}$. The latter was rated more than $1\sigma$ higher in interpretiveness (\textbf{Nature}); $0.8\sigma$ better in diversity and usefulness for open-ended questions; $0.4\sigma$ units more useful as a summary.
+
+In the middle of the same figure is shown the ablated result of fine tuning, with the guided generation turned on for both sets: a comparison between $\textbf{Desc}^\texttt{q2bbase}_\texttt{++}$ and $\textbf{Desc}^\texttt{q2bdpo}_\texttt{++}$. All 6 aspects were judged in favor of the latter, with as large as $1.2\sigma$ difference in interpretiveness and diversity and $0.8\sigma$ in usefulness for open-ended questions.
+
+On the right is shown the effect of the guided generation on a \textsc{SightationPreference}-tuned 2B model: a comparison between $\textbf{Desc}^\texttt{q2bdpo}$ and $\textbf{Desc}^\texttt{q2bdpo}_\texttt{++}$. Guided generation yields significant enhancement for the DPO-tuned case, with $1\sigma$ higher in usefulness for multiple choice questions, followed by approximately $0.8\sigma$ improvement in usefulness for open-ended questions, an overall improvement in every aspect down to succinctness, with $0.2\sigma$. However, as will be discussed with Table~\ref{tab:blv_gg}, this effect by the guided generation is achieved only after the model is fine-tuned on our dataset, implying that a good alignment is a pre-requisite for attempting to benefit from test-time prompting.
+
+\begin{table*}[h]
+    \centering
+    \small
+    \begin{minipage}[t]{0.25\textwidth}
+        \centering
+        \tiny
+        % \begin{tabular}{lrr}
+        \begin{tabular}{l>{\columncolor{gray!15}}rr}
+
+            \toprule
+            & \multicolumn{2}{c}{\textbf{Combined Effect Size}} \\\cmidrule{2-3}
+            \textbf{Aspect} & 2B & 7B \\ \midrule
+            Succinct & -0.09 & 1.69 \\
+            Diverse & 0.90 & 0.46 \\
+            Useful-Sum & 0.39 & 0.53 \\
+            Useful-MCQ & -0.18 & 0.20 \\
+            Useful-OEQ & 0.76 & 0.00 \\\cmidrule{1-3}
+            Average & 0.36 & 0.58 \\
+            Nature & 1.08 & -2.38 \\
+            \bottomrule
+        \end{tabular}
+        \caption{Combined recipe effect size on each aspect, measured with BLV assessment.}
+        \label{tab:blv_cr}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.40\textwidth}
+        \centering
+        \tiny
+        \begin{tabular}{l>{\columncolor{gray!15}}r>{\columncolor{gray!15}}rrr}
+            \toprule
+            & \multicolumn{4}{c}{\textbf{Tuning Effect Size}} \\\cmidrule{2-5}
+            \textbf{Aspect} & 2B & 2B+GG & 7B & 7B+GG \\ \midrule
+            Succinct & 0.06 & 0.08 & 0.37 & -0.11 \\
+            Diverse & 0.87 & 1.08 & -0.06 & 0.00 \\
+            Useful-Sum & 0.20 & 0.55 & 0.14 & 0.36 \\
+            Useful-MCQ & 0.29 & 0.00 & -0.54 & 0.00 \\
+            Useful-OEQ & 1.01 & 0.90 & -0.74 & -0.19 \\\cmidrule{1-5}
+            Average & 0.49 & 0.52 & -0.17 & 0.01 \\
+            Nature & 1.49 & 1.06 & -3.14 & -0.31 \\
+            \bottomrule
+        \end{tabular}
+        \caption{Fine tuning effect size on each aspect, measured with BLV assessment.}
+        \label{tab:blv_tn}
+    \end{minipage}%
+    \hfill
+    \begin{minipage}[t]{0.29\textwidth}
+        \centering
+        \tiny
+        \begin{tabular}{l>{\columncolor{gray!15}}rrr}
+            \toprule
+            & \multicolumn{3}{c}{\textbf{Guided Generation Effect Size}} \\\cmidrule{2-4}
+            \textbf{Aspect} & GPT & 2B Base & 2B DPO \\ \midrule
+            Succinct & 0.18 & -0.17 & 0.17 \\
+            Diverse & -0.13 & -0.13 & 0.47 \\
+            Useful-Sum & 0.48 & -0.17 & 0.57 \\
+            Useful-MCQ & 0.13 & -0.20 & 0.92 \\
+            Useful-OEQ & 0.76 & -0.07 & 0.77 \\\cmidrule{1-4}
+            Average & 0.28 & -0.15 & 0.58 \\
+            Nature & 0.33 & 0.08 & 3.17 \\
+            \bottomrule
+        \end{tabular}
+        \caption{Guided generation effect size on each aspect, measured with BLV assessment.}
+        \label{tab:blv_gg}
+    \end{minipage}
+\end{table*}
+

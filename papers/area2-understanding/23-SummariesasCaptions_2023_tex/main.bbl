@@ -1,0 +1,451 @@
+\begin{thebibliography}{58}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Bao et~al.(2022)Bao, Dong, Piao, and Wei}]{bao2022beit}
+Hangbo Bao, Li~Dong, Songhao Piao, and Furu Wei. 2022.
+\newblock \href {https://openreview.net/forum?id=p-BhZSz59o4} {{BE}it: {BERT}
+  pre-training of image transformers}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Barzilay and Lapata(2005)}]{barzilay-lapata-2005-collective}
+Regina Barzilay and Mirella Lapata. 2005.
+\newblock \href {https://aclanthology.org/H05-1042} {Collective content
+  selection for concept-to-text generation}.
+\newblock In \emph{Proceedings of Human Language Technology Conference and
+  Conference on Empirical Methods in Natural Language Processing}, pages
+  331--338, Vancouver, British Columbia, Canada. Association for Computational
+  Linguistics.
+
+\bibitem[{Beltagy et~al.(2019)Beltagy, Lo, and
+  Cohan}]{beltagy-etal-2019-scibert}
+Iz~Beltagy, Kyle Lo, and Arman Cohan. 2019.
+\newblock \href {https://doi.org/10.18653/v1/D19-1371} {{S}ci{BERT}: A
+  pretrained language model for scientific text}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 3615--3620, Hong Kong,
+  China. Association for Computational Linguistics.
+
+\bibitem[{Biegel and Kamat(2019)}]{doi:10.1021/acsenergylett.9b00253}
+Constance~M. Biegel and Prashant~V. Kamat. 2019.
+\newblock \href {https://doi.org/10.1021/acsenergylett.9b00253} {Ten tips for
+  capturing figures with captions}.
+\newblock \emph{ACS Energy Letters}, 4(3):637--638.
+
+\bibitem[{Chen et~al.(2019)Chen, Zhang, Kim, Cohen, Yu, Rossi, and
+  Bunescu}]{10.1145/3341162.3345601}
+Charles Chen, Ruiyi Zhang, Sungchul Kim, Scott Cohen, Tong Yu, Ryan Rossi, and
+  Razvan Bunescu. 2019.
+\newblock \href {https://doi.org/10.1145/3341162.3345601} {Neural caption
+  generation over figures}.
+\newblock In \emph{Adjunct Proceedings of the 2019 ACM International Joint
+  Conference on Pervasive and Ubiquitous Computing and Proceedings of the 2019
+  ACM International Symposium on Wearable Computers}, UbiComp/ISWC '19 Adjunct,
+  page 482–485, New York, NY, USA. Association for Computing Machinery.
+
+\bibitem[{Chen et~al.(2020{\natexlab{a}})Chen, Zhang, Koh, Kim, Cohen, and
+  Rossi}]{chen2019figure}
+Charles Chen, Ruiyi Zhang, Eunyee Koh, Sungchul Kim, Scott Cohen, and Ryan
+  Rossi. 2020{\natexlab{a}}.
+\newblock \href {https://doi.org/10.1109/WACV45572.2020.9093592} {Figure
+  captioning with relation maps for reasoning}.
+\newblock In \emph{2020 IEEE Winter Conference on Applications of Computer
+  Vision (WACV)}, pages 1526--1534.
+
+\bibitem[{Chen et~al.(2020{\natexlab{b}})Chen, Chen, Su, Chen, and
+  Wang}]{chen-etal-2020-logical}
+Wenhu Chen, Jianshu Chen, Yu~Su, Zhiyu Chen, and William~Yang Wang.
+  2020{\natexlab{b}}.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.708} {Logical
+  natural language generation from open-domain tables}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 7929--7942, Online. Association for
+  Computational Linguistics.
+
+\bibitem[{Chen et~al.(2020{\natexlab{c}})Chen, Chen, Zha, Zhou, Zhang,
+  Sundaresan, and Wang}]{chen-etal-2020-logic2text}
+Zhiyu Chen, Wenhu Chen, Hanwen Zha, Xiyou Zhou, Yunkai Zhang, Sairam
+  Sundaresan, and William~Yang Wang. 2020{\natexlab{c}}.
+\newblock \href {https://doi.org/10.18653/v1/2020.findings-emnlp.190}
+  {{L}ogic2{T}ext: High-fidelity natural language generation from logical
+  forms}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2020}, pages 2096--2111, Online. Association for Computational
+  Linguistics.
+
+\bibitem[{Corio and Lapalme(1999)}]{corio1999generation}
+Marc Corio and Guy Lapalme. 1999.
+\newblock Generation of texts for information graphics.
+\newblock In \emph{Proceedings of the 7th European Workshop on Natural Language
+  Generation EWNLG’99}, pages 49--58.
+
+\bibitem[{Demir et~al.(2008)Demir, Carberry, and McCoy}]{demir2008generating}
+Seniz Demir, Sandra Carberry, and Kathleen~F McCoy. 2008.
+\newblock Generating textual summaries of bar charts.
+\newblock In \emph{Proceedings of the Fifth International Natural Language
+  Generation Conference}, pages 7--15.
+
+\bibitem[{Dosovitskiy et~al.(2021)Dosovitskiy, Beyer, Kolesnikov, Weissenborn,
+  Zhai, Unterthiner, Dehghani, Minderer, Heigold, Gelly, Uszkoreit, and
+  Houlsby}]{dosovitskiy2020vit}
+Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn,
+  Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg
+  Heigold, Sylvain Gelly, Jakob Uszkoreit, and Neil Houlsby. 2021.
+\newblock An image is worth 16x16 words: Transformers for image recognition at
+  scale.
+\newblock \emph{ICLR}.
+
+\bibitem[{Dou and Neubig(2021)}]{dou2021word}
+Zi-Yi Dou and Graham Neubig. 2021.
+\newblock Word alignment by fine-tuning embeddings on parallel corpora.
+\newblock In \emph{Conference of the European Chapter of the Association for
+  Computational Linguistics (EACL)}.
+
+\bibitem[{Doulaty et~al.(2015)Doulaty, Saz, and Hain}]{doulaty2015data}
+Mortaza Doulaty, Oscar Saz, and Thomas Hain. 2015.
+\newblock \href {https://doi.org/10.21437/Interspeech.2015-609} {Data-selective
+  transfer learning for multi-domain speech recognition}.
+\newblock In \emph{{INTERSPEECH} 2015, 16th Annual Conference of the
+  International Speech Communication Association, Dresden, Germany, September
+  6-10, 2015}, pages 2897--2901. {ISCA}.
+
+\bibitem[{Durbin(2004)}]{durbin2004effective}
+Charles~G Durbin. 2004.
+\newblock Effective use of tables and figures in abstracts, presentations, and
+  papers.
+\newblock \emph{Respiratory care}, 49(10):1233--1237.
+
+\bibitem[{Fasciano and Lapalme(1996)}]{fasciano1996postgraphe}
+Massimo Fasciano and Guy Lapalme. 1996.
+\newblock Postgraphe: a system for the generation of statistical graphics and
+  text.
+\newblock In \emph{Eighth International Natural Language Generation Workshop}.
+
+\bibitem[{Gelman et~al.(2002)Gelman, Pasarica, and Dodhia}]{gelman2002let}
+Andrew Gelman, Cristian Pasarica, and Rahul Dodhia. 2002.
+\newblock Let's practice what we preach: turning tables into graphs.
+\newblock \emph{The American Statistician}, 56(2):121--130.
+
+\bibitem[{Gong et~al.(2019)Gong, Crego, and
+  Senellart}]{gong-etal-2019-enhanced}
+Li~Gong, Josep Crego, and Jean Senellart. 2019.
+\newblock \href {https://doi.org/10.18653/v1/D19-5615} {Enhanced transformer
+  model for data-to-text generation}.
+\newblock In \emph{Proceedings of the 3rd Workshop on Neural Generation and
+  Translation}, pages 148--156, Hong Kong. Association for Computational
+  Linguistics.
+
+\bibitem[{google research(2022)}]{rouge-scorer}
+google research. 2022.
+\newblock Python rouge implementation.
+\newblock
+  \url{https://github.com/google-research/google-research/tree/master/rouge}.
+
+\bibitem[{Hartley(2003)}]{hartley2003single}
+James Hartley. 2003.
+\newblock Single authors are not alone: Colleagues often help.
+\newblock \emph{Journal of Scholarly Publishing}, 34(2):108--113.
+
+\bibitem[{Hsu et~al.(2021)Hsu, Giles, and
+  Huang}]{hsu-etal-2021-scicap-generating}
+Ting-Yao Hsu, C~Lee Giles, and Ting-Hao Huang. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.findings-emnlp.277}
+  {{S}ci{C}ap: Generating captions for scientific figures}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2021}, pages 3258--3264, Punta Cana, Dominican Republic. Association
+  for Computational Linguistics.
+
+\bibitem[{JaidedAI(2022)}]{easyocr}
+JaidedAI. 2022.
+\newblock Easyocr.
+\newblock \url{https://github.com/JaidedAI/EasyOCR}.
+
+\bibitem[{Jiang et~al.(2019)Jiang, Huang, Li, and Mao}]{jiang2019dialogact2vec}
+Zhuoxuan Jiang, Ziming Huang, Dong~Sheng Li, and Xian-Ling Mao. 2019.
+\newblock \href {http://arxiv.org/abs/1911.04088} {Dialogact2vec: Towards
+  end-to-end dialogue agent by multi-task representation learning}.
+\newblock \emph{CoRR}, abs/1911.04088.
+
+\bibitem[{Kafle et~al.(2018)Kafle, Price, Cohen, and Kanan}]{kafle2018dvqa}
+Kushal Kafle, Brian Price, Scott Cohen, and Christopher Kanan. 2018.
+\newblock Dvqa: Understanding data visualizations via question answering.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 5648--5656.
+
+\bibitem[{Kahou et~al.(2017)Kahou, Michalski, Atkinson, K{\'a}d{\'a}r,
+  Trischler, and Bengio}]{kahou2017figureqa}
+Samira~Ebrahimi Kahou, Vincent Michalski, Adam Atkinson, {\'A}kos
+  K{\'a}d{\'a}r, Adam Trischler, and Yoshua Bengio. 2017.
+\newblock Figureqa: An annotated figure dataset for visual reasoning.
+\newblock \emph{Sixth International Conference on Learning Representations
+  Workshop}.
+
+\bibitem[{Kantharaj et~al.(2022)Kantharaj, Leong, Lin, Masry, Thakkar, Hoque,
+  and Joty}]{kanthara2022chart}
+Shankar Kantharaj, Rixie~Tiffany Leong, Xiang Lin, Ahmed Masry, Megh Thakkar,
+  Enamul Hoque, and Shafiq Joty. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.acl-long.277} {Chart-to-text:
+  A large-scale benchmark for chart summarization}.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 4005--4023,
+  Dublin, Ireland. Association for Computational Linguistics.
+
+\bibitem[{kermitt2(2022)}]{grobid}
+kermitt2. 2022.
+\newblock Grobid.
+\newblock \url{https://github.com/kermitt2/grobid}.
+
+\bibitem[{Li et~al.(2021)Li, Lv, Cui, Lu, Florencio, Zhang, Li, and
+  Wei}]{li2021trocr}
+Minghao Li, Tengchao Lv, Lei Cui, Yijuan Lu, Dinei Florencio, Cha Zhang,
+  Zhoujun Li, and Furu Wei. 2021.
+\newblock Trocr: Transformer-based optical character recognition with
+  pre-trained models.
+\newblock \emph{arXiv preprint arXiv:2109.10282}.
+
+\bibitem[{Lin(2004)}]{lin-2004-rouge}
+Chin-Yew Lin. 2004.
+\newblock \href {https://aclanthology.org/W04-1013} {{ROUGE}: A package for
+  automatic evaluation of summaries}.
+\newblock In \emph{Text Summarization Branches Out}, pages 74--81, Barcelona,
+  Spain. Association for Computational Linguistics.
+
+\bibitem[{Liu and Liu(2021)}]{liu-liu-2021-simcls}
+Yixin Liu and Pengfei Liu. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.acl-short.135} {{S}im{CLS}: A
+  simple framework for contrastive learning of abstractive summarization}.
+\newblock In \emph{Proceedings of the 59th Annual Meeting of the Association
+  for Computational Linguistics and the 11th International Joint Conference on
+  Natural Language Processing (Volume 2: Short Papers)}, pages 1065--1072,
+  Online. Association for Computational Linguistics.
+
+\bibitem[{Loshchilov and Hutter(2019)}]{loshchilov2018decoupled}
+Ilya Loshchilov and Frank Hutter. 2019.
+\newblock \href {https://openreview.net/forum?id=Bkg6RiCqY7} {Decoupled weight
+  decay regularization}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Lundgard and Satyanarayan(2021)}]{lundgard2021accessible}
+Alan Lundgard and Arvind Satyanarayan. 2021.
+\newblock Accessible visualization via natural language descriptions: A
+  four-level model of semantic content.
+\newblock \emph{IEEE transactions on visualization and computer graphics},
+  28(1):1073--1083.
+
+\bibitem[{Mahinpei et~al.(2022)Mahinpei, Kostic, and Tanner}]{9973197}
+A.~Mahinpei, Z.~Kostic, and C.~Tanner. 2022.
+\newblock \href {https://doi.org/10.1109/VIS54862.2022.00016} {Linecap: Line
+  charts for data visualization captioning models}.
+\newblock In \emph{2022 IEEE Visualization and Visual Analytics (VIS)}, pages
+  35--39, Los Alamitos, CA, USA. IEEE Computer Society.
+
+\bibitem[{Methani et~al.(2020)Methani, Ganguly, Khapra, and
+  Kumar}]{Methani_2020_WACV}
+Nitesh Methani, Pritha Ganguly, Mitesh~M. Khapra, and Pratyush Kumar. 2020.
+\newblock Plotqa: Reasoning over scientific plots.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on
+  Applications of Computer Vision (WACV)}.
+
+\bibitem[{microsoft(2022)}]{blingfire}
+microsoft. 2022.
+\newblock Blingfire.
+\newblock \url{https://github.com/microsoft/BlingFire}.
+
+\bibitem[{Mittal et~al.(1998)Mittal, Moore, Carenini, and
+  Roth}]{mittal1998describing}
+Vibhu~O Mittal, Johanna~D Moore, Giuseppe Carenini, and Steven Roth. 1998.
+\newblock Describing complex charts in natural language: A caption generation
+  system.
+\newblock \emph{Computational Linguistics}, 24(3):431--467.
+
+\bibitem[{Moraes et~al.(2014)Moraes, Sina, McCoy, and
+  Carberry}]{moraes2014generating}
+Priscilla Moraes, Gabriel Sina, Kathy McCoy, and Sandra Carberry. 2014.
+\newblock Generating summaries of line graphs.
+\newblock In \emph{Proceedings of the 8th International Natural Language
+  Generation Conference (INLG)}, pages 95--98.
+
+\bibitem[{Nallapati et~al.(2016)Nallapati, Zhou, dos Santos, Gul{\c{c}}ehre,
+  and Xiang}]{nallapati-etal-2016-abstractive}
+Ramesh Nallapati, Bowen Zhou, Cicero dos Santos, {\c{C}}a{\u{g}}lar
+  Gul{\c{c}}ehre, and Bing Xiang. 2016.
+\newblock \href {https://doi.org/10.18653/v1/K16-1028} {Abstractive text
+  summarization using sequence-to-sequence {RNN}s and beyond}.
+\newblock In \emph{Proceedings of The 20th {SIGNLL} Conference on Computational
+  Natural Language Learning}, pages 280--290, Berlin, Germany. Association for
+  Computational Linguistics.
+
+\bibitem[{Obeid and Hoque(2020)}]{obeid-hoque-2020-chart}
+Jason Obeid and Enamul Hoque. 2020.
+\newblock \href {https://aclanthology.org/2020.inlg-1.20} {Chart-to-text:
+  Generating natural language descriptions for charts by adapting the
+  transformer model}.
+\newblock In \emph{Proceedings of the 13th International Conference on Natural
+  Language Generation}, pages 138--147, Dublin, Ireland. Association for
+  Computational Linguistics.
+
+\bibitem[{Parikh et~al.(2020)Parikh, Wang, Gehrmann, Faruqui, Dhingra, Yang,
+  and Das}]{parikh-etal-2020-totto}
+Ankur Parikh, Xuezhi Wang, Sebastian Gehrmann, Manaal Faruqui, Bhuwan Dhingra,
+  Diyi Yang, and Dipanjan Das. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.emnlp-main.89} {{ToTTo}: A
+  controlled table-to-text generation dataset}.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pages 1173--1186, Online. Association
+  for Computational Linguistics.
+
+\bibitem[{Pelka et~al.(2021)Pelka, Ben~Abacha, Garc\'ia Seco~de Herrera,
+  Jacutprakart, Friedrich, and M\"uller}]{ImageCLEFmedConceptOverview2021}
+Obioma Pelka, Asma Ben~Abacha, Alba Garc\'ia Seco~de Herrera, Janadhip
+  Jacutprakart, Christoph~M Friedrich, and Henning M\"uller. 2021.
+\newblock Overview of the {ImageCLEFmed} 2021 concept \& caption prediction
+  task.
+\newblock In \emph{CLEF2021 Working Notes}, {CEUR} Workshop Proceedings,
+  Bucharest, Romania. CEUR-WS.org.
+
+\bibitem[{Qian et~al.(2021)Qian, Koh, Du, Kim, Chan, Rossi, Malik, and
+  Lee}]{qian2021generating}
+Xin Qian, Eunyee Koh, Fan Du, Sungchul Kim, Joel Chan, Ryan~A Rossi, Sana
+  Malik, and Tak~Yeon Lee. 2021.
+\newblock Generating accurate caption units for figure captioning.
+\newblock In \emph{Proceedings of the Web Conference 2021}, pages 2792--2804.
+
+\bibitem[{Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, Sutskever
+  et~al.}]{radford2019language}
+Alec Radford, Jeffrey Wu, Rewon Child, David Luan, Dario Amodei, Ilya
+  Sutskever, et~al. 2019.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{OpenAI blog}, 1(8):9.
+
+\bibitem[{Reiter et~al.(2005)Reiter, Sripada, Hunter, Yu, and
+  Davy}]{reiter2005choosing}
+Ehud Reiter, Somayajulu Sripada, Jim Hunter, Jin Yu, and Ian Davy. 2005.
+\newblock Choosing words in computer-generated weather forecasts.
+\newblock \emph{Artificial Intelligence}, 167(1-2):137--169.
+
+\bibitem[{Rodgers and Nicewander(1988)}]{doi:10.1080/00031305.1988.10475524}
+Joseph~Lee Rodgers and W.~Alan Nicewander. 1988.
+\newblock \href {https://doi.org/10.1080/00031305.1988.10475524} {Thirteen ways
+  to look at the correlation coefficient}.
+\newblock \emph{The American Statistician}, 42(1):59--66.
+
+\bibitem[{Rougier et~al.(2014)Rougier, Droettboom, and
+  Bourne}]{10.1371/journal.pcbi.1003833}
+Nicolas~P. Rougier, Michael Droettboom, and Philip~E. Bourne. 2014.
+\newblock \href {https://doi.org/10.1371/journal.pcbi.1003833} {Ten simple
+  rules for better figures}.
+\newblock \emph{PLOS Computational Biology}, 10(9):1--7.
+
+\bibitem[{Siegel et~al.(2016)Siegel, Horvitz, Levin, Divvala, and
+  Farhadi}]{siegel2016figureseer}
+Noah Siegel, Zachary Horvitz, Roie Levin, Santosh Divvala, and Ali Farhadi.
+  2016.
+\newblock Figureseer: Parsing result-figures in research papers.
+\newblock In \emph{European Conference on Computer Vision}, pages 664--680.
+  Springer.
+
+\bibitem[{Stokes and Hearst(2022)}]{stokes2022text}
+Chase Stokes and Marti Hearst. 2022.
+\newblock Why more text is (often) better: Themes from reader preferences for
+  integration of charts and text.
+\newblock \emph{The NLVIZ workshop at IEEE Transaction on Visualization and
+  Graphics conference}.
+
+\bibitem[{Su et~al.(2021)Su, Vandyke, Wang, Fang, and
+  Collier}]{su-etal-2021-plan-generate}
+Yixuan Su, David Vandyke, Sihui Wang, Yimai Fang, and Nigel Collier. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.findings-emnlp.76}
+  {Plan-then-generate: Controlled data-to-text generation via planning}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2021}, pages 895--909, Punta Cana, Dominican Republic. Association for
+  Computational Linguistics.
+
+\bibitem[{Sun et~al.(2019)Sun, Shapira, Dagan, and
+  Nenkova}]{sun-etal-2019-compare}
+Simeng Sun, Ori Shapira, Ido Dagan, and Ani Nenkova. 2019.
+\newblock \href {https://doi.org/10.18653/v1/W19-2303} {How to compare
+  summarizers without target length? pitfalls, solutions and re-examination of
+  the neural summarization literature}.
+\newblock In \emph{Proceedings of the Workshop on Methods for Optimizing and
+  Evaluating Neural Language Generation}, pages 21--29, Minneapolis, Minnesota.
+  Association for Computational Linguistics.
+
+\bibitem[{Wang and Zhao(2019)}]{wang2019theme}
+Jie Wang and Xinyan Zhao. 2019.
+\newblock Theme-aware generation model for chinese lyrics.
+\newblock \emph{arXiv preprint arXiv:1906.02134}.
+
+\bibitem[{Wiseman et~al.(2017)Wiseman, Shieber, and
+  Rush}]{wiseman-etal-2017-challenges}
+Sam Wiseman, Stuart Shieber, and Alexander Rush. 2017.
+\newblock \href {https://doi.org/10.18653/v1/D17-1239} {Challenges in
+  data-to-document generation}.
+\newblock In \emph{Proceedings of the 2017 Conference on Empirical Methods in
+  Natural Language Processing}, pages 2253--2263, Copenhagen, Denmark.
+  Association for Computational Linguistics.
+
+\bibitem[{Wolf et~al.(2020)Wolf, Debut, Sanh, Chaumond, Delangue, Moi, Cistac,
+  Rault, Louf, Funtowicz, Davison, Shleifer, von Platen, Ma, Jernite, Plu, Xu,
+  Scao, Gugger, Drame, Lhoest, and Rush}]{wolf-etal-2020-transformers}
+Thomas Wolf, Lysandre Debut, Victor Sanh, Julien Chaumond, Clement Delangue,
+  Anthony Moi, Pierric Cistac, Tim Rault, Rémi Louf, Morgan Funtowicz, Joe
+  Davison, Sam Shleifer, Patrick von Platen, Clara Ma, Yacine Jernite, Julien
+  Plu, Canwen Xu, Teven~Le Scao, Sylvain Gugger, Mariama Drame, Quentin Lhoest,
+  and Alexander~M. Rush. 2020.
+\newblock \href {https://www.aclweb.org/anthology/2020.emnlp-demos.6}
+  {Transformers: State-of-the-art natural language processing}.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing: System Demonstrations}, pages 38--45, Online.
+  Association for Computational Linguistics.
+
+\bibitem[{Xu et~al.(2020)Xu, Gan, Cheng, and Liu}]{xu-etal-2020-discourse}
+Jiacheng Xu, Zhe Gan, Yu~Cheng, and Jingjing Liu. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.451}
+  {Discourse-aware neural extractive text summarization}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 5021--5031, Online. Association for
+  Computational Linguistics.
+
+\bibitem[{Yang et~al.(2023)Yang, Dabre, Tanaka, and Okazaki}]{scicap-plus}
+Zhishen Yang, Raj Dabre, Hideki Tanaka, and Naoaki Okazaki. 2023.
+\newblock Scicap+: A knowledge augmented dataset to study the challenges of
+  scientific figure captioning.
+
+\bibitem[{Zhang et~al.(2020)Zhang, Zhao, Saleh, and Liu}]{zhang2020pegasus}
+Jingqing Zhang, Yao Zhao, Mohammad Saleh, and Peter Liu. 2020.
+\newblock Pegasus: Pre-training with extracted gap-sentences for abstractive
+  summarization.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  11328--11339. PMLR.
+
+\bibitem[{Zhao et~al.(2019)Zhao, Peyrard, Liu, Gao, Meyer, and
+  Eger}]{zhao-etal-2019-moverscore}
+Wei Zhao, Maxime Peyrard, Fei Liu, Yang Gao, Christian~M. Meyer, and Steffen
+  Eger. 2019.
+\newblock \href {https://doi.org/10.18653/v1/D19-1053} {{M}over{S}core: Text
+  generation evaluating with contextualized embeddings and earth mover
+  distance}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing and the 9th International Joint Conference on
+  Natural Language Processing (EMNLP-IJCNLP)}, pages 563--578, Hong Kong,
+  China. Association for Computational Linguistics.
+
+\bibitem[{Zhong et~al.(2020)Zhong, Liu, Chen, Wang, Qiu, and
+  Huang}]{zhong-etal-2020-extractive}
+Ming Zhong, Pengfei Liu, Yiran Chen, Danqing Wang, Xipeng Qiu, and Xuanjing
+  Huang. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.552} {Extractive
+  summarization as text matching}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 6197--6208, Online. Association for
+  Computational Linguistics.
+
+\bibitem[{Zhu et~al.(2021)Zhu, Ran, Lee, Li, and Choo}]{zhu2021autochart}
+Jiawen Zhu, Jinye Ran, Roy Ka-Wei Lee, Zhi Li, and Kenny Choo. 2021.
+\newblock \href {https://aclanthology.org/2021.ranlp-1.183} {{A}uto{C}hart: A
+  dataset for chart-to-text generation task}.
+\newblock In \emph{Proceedings of the International Conference on Recent
+  Advances in Natural Language Processing (RANLP 2021)}, pages 1636--1644, Held
+  Online. INCOMA Ltd.
+
+\end{thebibliography}

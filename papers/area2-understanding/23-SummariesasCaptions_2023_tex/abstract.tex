@@ -1,0 +1,158 @@
+Good figure captions help paper readers understand complex scientific figures.
+Unfortunately, even published papers often have poorly written captions.
+Automatic caption generation could aid paper writers by providing good starting captions that can be refined for better quality.
+Prior work often treated figure caption generation as a vision-to-language task.
+In this paper, we show that it can be more effectively tackled as a \textbf{text summarization} task in scientific documents.
+%PEGASUS, an abstractive summarization model~\cite{zhang2020pegasus}
+%We fine-tuned PEGASUS, an abstractive summarization model, 
+We fine-tuned PEGASUS, a pre-trained abstractive summarization model, to specifically summarize figure-referencing paragraphs (\eg, ``Figure 3 shows...'') into figure captions.
+Experiments on large-scale arXiv figures show that our method outperforms prior vision methods in both automatic and human evaluations.
+%\kenneth{TODO: Update the numbers} \cy{Do you mean test set or all?}
+%\kenneth{I took out the numbers. Is this description accurate?}
+We further conducted an in-depth investigation focused on two key challenges: {\em (i)} the common presence of low-quality author-written captions and {\em (ii)} the lack of clear standards for good captions.
+Our code and data are available at: \url{https://github.com/Crowd-AI-Lab/Generating-Figure-Captions-as-a-Text-Summarization-Task}.
+
+
+
+%------------------------------ dead kitten ---------------------------------------
+
+\begin{comment}
+
+\bigskip
+
+Our experiments with 1,XXX,XXX arXiv figures and captions show that summarizing paragraphs that mention figures (\eg, ``Figure 4 shows...'') produces better captions according to both automatic and human evaluations.
+
+
+
+Prior work often treated figure caption generation as a vision-to-language task.
+In this paper, we show that it can be effectively tackled as a \textbf{text summarization} task in scientific documents.
+
+
+Good figure captions help paper readers understand complex scientific figures.
+Unfortunately, poorly-written captions occur frequently, even in published papers.
+Automatic caption generation can aid paper writers by providing decent initial captions; writers can then revise these machine-generated captions to craft higher-quality ones.
+Prior work often treated figure captioning for scholarly articles as a vision-to-language task. 
+In this paper, we show that it can be effectively tackled as a \textbf{text summarization} task.
+
+
+
+
+
+
+
+%\textbf{\LARGE
+%\textcolor{red}{To change the title or to find your commenting command: see {\tt %macro.tex}!}
+%}
+
+%\kenneth{}
+
+
+%The task of generating captions for scientific figures presents a significant challenge for artificial intelligence, as it requires a computational model to not only comprehend the visual content of the figure, but also to grasp the complex contextual information present in the accompanying scientific document. 
+%Generating captions for scientific figures is a significant AI challenge, requiring a model to comprehend visual content and grasp complex contextual information. %\kenneth{Maybe rephrase this, as it turns out we do not REQUIRE visual features?}
+Effective figure captions are crucial for clear comprehension of scientific figures, yet poor caption writing remains a common issue in scientific articles.
+%
+%Clear and effective figure captions play a critical role in facilitating the %However, poor caption writing remains a widespread issue in scientific articles despite its importance.
+%Effective figure captions are vital for clear comprehension of scientific figures, yet poor caption writing continues to plague scientific articles.
+Our study of arXiv {\tt cs.CL} papers found that 53.88\% of captions were rated as unhelpful or worse by domain experts, 
+%Our study of arXiv cs.CL papers found that a substantial 53.88\% of captions were rated as unhelpful or worse by domain experts, 
+showing the need for better caption generation.
+Previous efforts in figure caption generation treated it as a vision task, aimed at creating a model to understand visual content and complex contextual information.
+Our findings, however, demonstrate that over 75\% of figure captions' tokens align with corresponding figure-mentioning paragraphs, indicating great potential for language technology to solve this task.
+%demonstrate that more than 75\% of tokens in figure captions can be aligned with the corresponding figure-mentioning paragraphs, suggesting that language technology is a more effective solution for this task.
+%To address this, 
+In this paper, we present a novel approach for generating figure captions in scientific documents using \textbf{text summarization} techniques. 
+%In this work, we present a novel approach for generating figure captions in scientific documents using \textbf{text summarization} techniques.
+Our approach extracts sentences referencing the target figure, then summarizes them into a concise caption.
+%Figures play an essential role in scientific articles., but they are not always easy to understand.
+%Good captions are necessary to understand the figures in scientific articles, 
+%but people often write bad captions.
+%Scientists use charts in papers to show experimental results; companies use charts in business reports to show financial status; journalists use charts in news articles to show trends and statistics.
+%\kenneth{Can use one more or one better example here where *a chart is in a document*.}\ed{government use chart in the official documents to show the trends and disease statistics}.
+%When glancing through a full-length document, the visuals, such as charts, graphics, and diagrams, help readers understand the content effectively.
+%In this paper, we propose a novel approach to figure caption generation in scientific documents by treating it as a \textbf{text summarization task.} 
+%Our method leverages the full text of the document to generate captions that are more informative and effective than traditional vision-to-language approaches.
+%Our method utilizes the complete document text to generate captions that surpass traditional vision-to-language methods in terms of informativeness and effectiveness.
+%Our approach first extracts all sentences in the document explicitly referencing the target figure (\eg, ``As shown in Figure 2...''). 
+%These sentences are then summarized into a coherent and concise caption.\kenneth{Maybe mention the model we use.}
+%Our approach extracts sentences referencing the target figure, then summarizes them into a concise caption.
+%In our experiments on XXX,XXX real-world arXiv  papers, our method achieved superior results compared to previous approaches, despite relying solely on textual information.\kenneth{TODO TY: Update the numbers + how many often are published?}
+In the experiments on real-world arXiv papers (81.2\% were published at academic conferences), 
+our method, using only text data, outperformed previous approaches in both automatic and human evaluations.
+%our method achieved superior results compared to previous approaches, despite relying solely on textual information.
+%To move the needle in figure captioning, 
+We further conducted data-driven investigations into the two core challenges: 
+{\em (i)} low-quality author-written captions and 
+{\em (ii)} the absence of a standard for good captions.
+%\sukim{The following statement sounds like a motivating example, rather than the result showing the superiority of our method. It needs be moved to the beginning of the abstract to use it as a motivation, or be highlighted more how helpful the captions generated by our method are over the baselines. -- we further conducted in-depth investigations into the two core challenges: low-quality author-written captions and the absence of a standard for good captions.
+%Our study found that 
+%53.88\% of the author-written captions in arXiv {\tt cs.CL} papers were rated as unhelpful or worse by domain experts in our study, motivating the need for high-quality caption generation.}
+%\kenneth{TODO CY: Insert the two most interesting finding from the quality beam study.}
+We found that our models could generate improved captions for figures with original captions rated as unhelpful, and the model trained on captions with more than 30 tokens produced higher-quality captions. 
+We also found that good captions often include the high-level takeaway of the figure.
+% \kenneth{TODO CY: Read these to make sure they're accurate.}
+%The paper concludes with a data-driven analysis of the relationships between captions, paragraphs, and figure images.
+Our work proves the effectiveness of text summarization in generating figure captions for scholarly articles, outperforming prior vision-based approaches.
+Our findings have practical implications for future figure captioning systems, improving scientific communication clarity.
+%Our paper breaks new ground by demonstrating the superiority of text summarization in generating captions for figures.
+%Our findings have the potential to advance the field of figure caption generation and improve the clarity of scientific communication.
+
+%\kenneth{TODO TY: Update the numbers. How many of the arXiv papers were published?}
+%\ed{To reduce the quality concerns about using arXiv papers compared to peer-reviewed papers. We manually verified the subset of real-world arxiV papers (399 figures in total) and found that 81.2\%(324/399) were published at academic conferences, and 51.9\%(207/399) were at ACL Anthology/IEEE/ACM.}
+%\sukim{I think we need to add a few more sentences summarizing as many findings as we observed from our extensive analysis since the method part is relatively simple.}
+
+\bigskip
+
+To shed light on the relationship between a figure's caption and the paper paragraphs that mention the figure, we conducted a comprehensive analysis.
+Our findings indicate that more than 75\% of the tokens in author-written captions can be aligned with the corresponding figure-mentioning paragraphs, reinforcing the validity of our approach.
+Finally, to drive further advancements in the field of figure captioning, we conducted an additional analysis that sheds light on a major challenge in this domain - the low quality of author-written captions.
+
+This presents a significant challenge for using these low-quality captions as training data or for evaluating the performance of captioning models.
+
+
+
+
+
+In our experiments on XXX,XXX real-world arXiv papers\kenneth{Update the numbers}, our method outperformed previous approaches in terms of both automatic evaluation metrics and human preference ratings despite using only textual information.
+To gain a deeper understanding of the relationship between a figure's caption and the paper paragraphs mentioning the figure, we conducted an extensive analysis.
+%Our experiments on XXX,XXXX real-world arXiv papers\kenneth{TODO: update the numbers}
+%we used these captions for figures and compare our method to existing approaches. Our 
+%results 
+%showed that our method outperformed previous approaches in terms of both automatic evaluation metrics and human preference ratings.
+Our results show that over 75\% of the tokens in author-written captions can be aligned to the figure-mentioning paragraphs, supporting the foundation of our approach.
+
+%and generates a coherent and concise summary for them.
+%Results from experiments on the \oldDataset dataset show that our method outperformed existing approaches in terms of both automatic evaluation and human preferences.
+%Our analysis further suggested that over 75\% of the caption tokens can be aligned with the figure-mentioning paragraphs, demonstrating the effectiveness of our approach. 
+%Finally, we highlight the need for further research in the area, given that 53.88\% of the author-written captions in arXiv {\tt cs.CL} papers are considered unhelpful.
+
+\kenneth{Do we change the title as reviewers suggested?}
+Generating figure captions has traditionally been treated as a vision-to-language task, \ie, the model produces a caption primarily based on the image.
+% However, such approaches seem not to be effective. %for readers.
+%often failed to generate good-enough captions for real-world charts.
+In this paper, we argue that when the full text of the document is available, the task of figure captioning can be viewed as a \textit{text-summarization task}.
+%instead of a vision-to-language task.
+That is, summarizing the paragraphs that mention a figure can generate high-quality captions for it.
+Automatic evaluation in experiments on the \oldDataset dataset showed that summarizing the figure-mentioning paragraphs produces significantly better captions than vision-to-language approaches.
+%Even simply using the figure-mentioning sentence-- without any modifications-- as the captions reached better ROUGE scores.
+%For human evaluation, we recruited 
+When three NLP researchers ranked captions,
+%On average, 
+our best-performing model's caption was preferred over the original caption 46.67\% of the time.
+%Our experiments conducted on the \oldDataset dataset showed that the summarization approach drastically outperforms all other baselines in automatic and human evaluations.
+Further analysis demonstrated that over 75\% of tokens in an average caption can be aligned to the tokens in the figure-mentioning paragraph.
+%We also reveal a surprising number of low-quality chart captions exist in arXiv paper.\kenneth{Closing sentences need more work.}
+We also reveal that 53.88\% of the captions in arXiv {\tt cs.CL} papers were considered unhelpful, motivating future research to support caption readers and writers.
+
+The theme that emerged in our meetings seemed to be the relations between: 
+
+\begin{itemize}
+    \item figure captions, 
+    \item explicit mentions of the figures, and 
+    \item the paragraphs that contain the mentions. 
+\end{itemize}
+
+This paper's possible story could be about how figure captions can be approximated by summarizing or paraphrasing mentions/paragraphs, raising questions about the role of figure images in caption generation.
+A side bonus could be some: in cases where human-written captions are bad, we can generate better captions using mentions.
+
+
+\end{comment}

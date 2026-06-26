@@ -1,0 +1,46 @@
+%\subsection{Is Text Really All You Need?}
+%\subsection{Information Overlap Between Captions and Paragraphs}
+
+%\kenneth{TODO CY: Write a opening to explicit say this is a motivating analysis.}
+
+%\kenneth{Was the overlap lower for captions rated as uninformative, if so, then it can be used to strengthen the motivation for our approach. (By Ani)}
+%\cy{Please check \Cref{tab:missing-alignment}. (Not sure why I remove the helpfulness score previously.) Having more missing information (information can not be found in the Paragraph directly) would be slightly more helpful (correlation=0.186). But this is probably because the missing information mostly contains high-level takeaway + Visual-description. These two are highly related to helpfulness.}
+
+%\sukim{I wonder if we could use this section as motivating analysis results (if so, if we could move it to before the method as well) since it has nothing to do with the proposed system or evaluation. Section 6.2 might could also be moved together.}
+
+
+
+
+
+
+
+
+
+
+
+%We studied the relationships between the captions and the paragraphs that mention them by analyzing their {\em (i)} token overlap and {\em (ii)} token alignment.
+To understand the correlation between mentions and captions, we performed a series of analyses using the data described in \Cref{sec:data}.
+% in \Cref{sec:result} - Dataset.
+% \kenneth{Do we need to say the Section title?}
+%We focused on the overlap of information between figure captions and the related paragraphs.
+Specifically, we investigated the extent to which the words in the figure captions are represented in the corresponding figure-mentioning paragraphs.
+%\paragraph{Token Alignment Study.}
+%\label{sec:token-alignment-study}
+% BLEU score only considers exactly matching tokens and ignores semantically similar words.
+%To analyze where the information in the caption was derived, 
+We used awesome-align~\cite{dou2021word} to obtain the alignment between the source texts 
+(mentions, paragraphs, and OCRs) and captions.
+Awesome-align compared the similarity of the words' contextual embeddings 
+and assigned an alignment between words if the similarity passed a threshold. 
+% Compared to the token overlap study, 
+% the alignment study provided a more flexible mapping where semantically similar tokens could still be identified. 
+We used SciBERT~\cite{beltagy-etal-2019-scibert}
+%\footnote{\texttt{allenai/scibert\_scivocab\_cased} was used.} 
+to obtain contextual embeddings and softmax threshold = 0.99 to reduce false alignments.
+
+After obtaining the alignments, we computed what percentage of information in the caption could be found in the source texts.
+The results shown in \Cref{tab:alignment-result} indicate that \textbf{76.68\% of the caption's information could be found in Paragraph and OCR,} motivating us to generate figure captions by summarizing Paragraph.
+%\footnote{Punctuation marks and stop words were excluded when calculating the percentage.}
+We also observed that a randomly selected sentence and paragraph from the same paper can cover 35.23\% and 44.43\% of the caption,
+respectively, showing that there was some generic information-sharing across the paper.
+We also conducted a study using the exact overlapping (\ie, BLEU score) in \Cref{sec:token-overlap-study}.

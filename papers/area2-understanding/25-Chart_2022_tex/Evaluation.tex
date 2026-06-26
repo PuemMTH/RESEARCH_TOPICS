@@ -1,0 +1,202 @@
+
+\subsection{Automatic Evaluation}
+
+\paragraph{Measures} For automatic evaluation of the summary quality, we utilized five measures. BLEU \cite{post-2018-call} and CIDEr \cite{vedantam2015cider} measure n-gram overlaps between the model generated text and the reference text. CIDEr computes TF-IDF weighted n-gram overlaps. BLEURT \cite{sellam2020bleurt} is a model-based evaluation metric that indicates to what extent the candidate is grammatical and conveys the meaning of the reference. We use BLEURT-base-128.    
+Content Selection (CS) metric   measures how well the generated summaries match the gold summaries in terms of selecting records to generate~\cite{wiseman2017challenges}. Since both the BLEURT and CS are calculated at the sentence-level, we 
+average these scores over the whole test set.
+Finally, for 
+readability and fluency, we measure Perplexity (PPL) using a pre-trained  GPT-2 Medium \cite{radford2019language}. 
+
+
+\begin{table}[t!]
+    \centering
+    \scalebox{0.56}{\begin{tabular}{lccccc}
+        \textbf{Models} & \textbf{BLEU} $\uparrow{}$ & \textbf{CS} $\uparrow{}$ & \textbf{BLEURT} $\uparrow{}$ & \textbf{CIDEr} $\uparrow{}$ & \textbf{PPL} $\downarrow{}$ \\
+        \midrule
+        \multicolumn{6}{c}{\textbf{Statista}}  \\
+        {Image Caption} & 15.94 & 25.70\% & -0.76 & 0.95 & 10.53 \\
+        {TAB-Chart2text} & 21.10 & 56.10\% & 0.06 & 2.61 & 28.79 \\
+        {TAB-Field-Infuse} & 12.09 & 42.07\% & -0.32 & 1.78 & 17.01 \\
+        {TAB-BART} & 36.36  & \bf{77.14\%} & 0.12 & 4.40 & 12.55 \\
+        {TAB-T5} & \bf{37.01}  & 75.72\% & \bf{0.15} & \bf{4.68} & 10.00 \\
+        {OCR-T5} & 35.29 & 73.77\% & 0.10 & 4.43 & 8.66 \\
+        {OCR-T5}$^{\star}$ & 34.55 & 73.55\% & 0.09 & 4.37 & \bf{8.59} \\
+        \change{TAB\_OCR-Chart2text} & 7.64 & 47.58\% & -0.44 & 1.09 & 54.98 \\
+        \change{TAB\_OCR-Field-Infuse} & 7.03 & 37.63\% & -0.49 & 1.18 & 14.76 \\
+        \change{TAB\_OCR-BART} & 35.83 & 72.15\% & 0.09 & 3.97 & 13.99\\
+        \change{TAB\_OCR-T5} & 36.74 & 72.22\% & 0.13 & 4.33 & 10.20\\
+        \midrule
+        \multicolumn{6}{c}{\textbf{Pew}} \\
+        {Image Caption} & 4.09 & 2.14\% & -0.96 & 0.38 & 16.43 \\
+        {OCR-Chart2Text}$^{\star}$ & 7.20 & 24.49\% & -0.56 & 0.65 & 12.11 \\
+        {OCR-Field-Infuse}$^{\star}$ & 0.19 & 10.12\% & -1.01 & 0.26 & 9.57 \\
+        OCR-BART &  9.09 & 39.99\% &  -0.38 &  1.97 & 11.04 \\
+        {OCR-T5} & \bf{10.49} & \bf{40.87\%} &  \bf{-0.35} &  \bf{2.20} & 10.11 \\
+        {OCR-T5}$^{\star}$ & 10.42 & 40.31\% & -0.42 & 2.13  & \bf{8.65} \\
+        \bottomrule
+    \end{tabular}}
+    \caption{Evaluation results for different models on Statista and Pew test sets. $\uparrow{}$: Higher is better, $\downarrow{}$: Lower is better. {``TAB- " models have access to the underlying data table and ``OCR- " models use OCR-extracted data. OCR variants with $\star$ superscript use bounding box information. \change{``TAB\_OCR- " models use automatically generated data tables.}}
+    }
+\label{tab:evaluation-table}
+\end{table}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\paragraph{Results}
+
+
+In general, from the results in Table~\ref{tab:evaluation-table}, we notice that large-scale unsupervised pretraining (\ie ``~-BART", ``~-T5") helps to boost the performance significantly. In terms of the model variants, the image captioning model has failed to capture relevant information from charts (low CS score) even though it generates fluent text (low PPL).
+
+On Statista, when the data tables are available,  Chart2text and Field-Infuse models are able to extract information from the data table, but they struggle to produce texts with good quality. {This could be because these models did not use any large-scale pretraining.} On the other hand, TAB-BART and TAB-T5 are able to produce well-structured and relevant summaries. The OCR-based models can generally generate fluent summaries but they are slightly less effective in extracting the relevant information since the OCR process introduces some noise in the input data. 
+
+\change{ We also experiment with automatically extracted tables to see how the models perform in the absence of gold data tables. To this end, we extended ChartOCR \cite{ChartOCR}, which predicts the raw data values of chart elements, to extract the fully-structured data table. The accuracy of automatic data extraction was 77.31\% (see Appendix \ref{app:data_extraction} for details). We find that similar to OCR-based models, TAB\_OCR-based models tend to be less effective in extracting the relevant information compared to their TAB-based counterparts which use ground truth data tables. 
+}
+
+
+Pew, on the other hand, is much challenging because it contains many charts with ill-defined structure and the underlying data tables are not available. Unsurprisingly, the performance of all the models has dropped significantly compared to that on Statista. Nonetheless, we can see that without the presence of the underlying data table, the vision+text (OCR-based) models have brought notable improvements over the vision only model. {Further breakdown of model performance based on chart types is provided in \Cref{app:charttype}.} 
+
+
+We also evaluate the \emph{transferability} of the models and the datasets, where we first pretrain a model on a source dataset and fine-tune it on the target dataset. In addition to our two datasets (Statista or Pew), we experiment with ToTTo \cite{parikh2020totto} as another source dataset, which is a large-scale open-domain English table-to-text dataset.
+Our results show that pretraining on other datasets only brings about marginal improvement. Details of this experiment can be found in \Cref{app:transfer}.
+
+
+
+
+\begin{table*}[t!]
+    \centering
+    \small
+    \scalebox{0.9}{\begin{tabular}{lccc|ccc|ccc}
+    \toprule
+    & \multicolumn{3}{c}{\textbf{TAB-T5 (1) vs. OCR-T5 (2)}} & \multicolumn{3}{c}{\change{\textbf{Gold (1) vs. TAB-T5 (2)}}} & \multicolumn{3}{c}{\change{\textbf{Gold (1) vs. OCR-T5 (2)}}} \\ 
+    \cmidrule(r){2-4} \cmidrule(l){5-7} \cmidrule(l){8-10}
+    \textbf{Summary} & \textbf{Factual} & \textbf{Coherence} & \textbf{Fluency} & \textbf{Factual} & \textbf{Coherence} & \textbf{Fluency} & \textbf{Factual} & \textbf{Coherence} & \textbf{Fluency} \\
+    \midrule
+    Summary 1 Win &    55.3\% &    23.3\% &    20.0\% &    30.0\% &    36.7\% &    22.0\% &    59.3\% &    43.3\% &    28.7\% \\
+    Summary 2 Win &    12.0\% &    11.3\% &    11.3\% &    13.3\% &    16.7\% &    14.0\% &    7.33\% &    15.3\% &    17.3\% \\
+    Tie &           32.7\% &    65.3\% &    68.7\% &    56.7\% &    46.7\% &    64.0\% &    33.3\% &    41.3\% &    54.0\% \\
+    \midrule
+    $p$-value (sign test) & 1.86e-11 & 8.77e-3 & 0.0395 & 1.31e-3 & 5.26e-4 & 0.0668 & 1.27e-16 & 4.25e-6 & 0.0266 \\
+    \bottomrule
+    \end{tabular}}
+    \caption{Human evaluation results for comparing between the outputs of TAB-T5, OCR-T5 and the gold summary.}
+    \label{tab:evaluation-table-human}
+\end{table*}
+
+
+\begin{figure*}[t] 
+\linespread{0.5}\selectfont\centering 
+\scalebox{.99}{\begin{tabular}{p{3.5cm} | p{3.7cm} | p{3.5cm} | p{3.5cm}}     
+\toprule
+        \raisebox{-.9\height}{\includegraphics[height=2cm]{sample charts/31_bigger_font_edit.png}}
+        &
+        {\tiny \textbf{Gold:} Footballer Cristiano Ronaldo heads the ranking of the most popular Instagram accounts as of December 2020. He is the most-followed person on the photo sharing app platform with nearly 244 million followers. Instagram's own account was ranked first with over 369 million followers.}
+        &
+        {\tiny \textbf{TAB-T5} As of December 2020, the Instagram account with the most followers worldwide was Cristiano Ronaldo's account with 243.95 million followers. The social network's most popular account was Instagram, which had 380.09 million followers.}
+        &
+        {\tiny \textbf{OCR-T5:} As of December 2020, Cristiano Ronaldo was the Instagram account with the most followers worldwide, with \textcolor{blue}{380.09} million followers. The \textcolor{red}{Brazilian singer had 243.95 million followers on the photo sharing app.}}
+        \\
+\midrule 
+        \raisebox{-.9\height}{\includegraphics[height=2.4cm]{sample charts/pew_55_cropped_edit.png}}
+        & 
+        {\tiny \textbf{Gold:} Germans give the U.S. some of its worst ratings in the survey. Only 26\% have a positive view of America, while just 10\% have confidence in Trump when it comes to his handling of world affairs. These opinions are in stark contrast to the very favorable assessments Germans had during Barack Obama’s presidency, but roughly on par with views at the end of George W. Bush’s tenure.}
+        &
+        {\tiny \textbf{OCR-BART} \textcolor{red}{Roughly nine-in-ten Germans (88\%) express a favorable view of the U.S. This is up sharply from 73\% in 2016}, but it also is the highest percentage since Pew Research Center began surveying in Germany in 2000. Germans’ views of America have also become more positive since the end of the George W. Bush era..}
+        &
+        {\tiny \textbf{OCR-T5} Germany is a country where U.S. image has declined sharply in recent years. \textcolor{red}{For example, in 2008, before the coronavirus outbreak began to spread, about a third of Germans had confidence in President Barack Obama to do the right thing in world affairs. By 2014, confidence in Obama had fallen to about a third, but by 2019 confidence had nearly doubled to about a quarter.}}
+        \\
+\midrule  
+        
+        \raisebox{-.9\height}{\includegraphics[height=2.4cm]{sample charts/pew_27_cropped_edit.png}}
+        &
+        {\tiny \textbf{Gold:} In general, internet access has been shown to be higher in wealthier countries, and this plays out to a greater likelihood of using the internet for news as well. For example, 61\% in Australia – which had a 2015 gross domestic product (GDP) per capita of \$46,271 – get news at least once a day through the internet. Just 20\% in Senegal, with a GDP per capita of \$2,421, do the same.}
+        &
+        {\tiny \textbf{OCR-BART} People in wealthier countries are more likely than those in poorer nations to get news online at least once a day. This is especially the case in \textcolor{blue}{Venezuela, where about seven-in-ten people (71\%)} get news daily.}
+        &
+        {\tiny \textbf{OCR-T5} However, it is not the case that the correlation between digital news consumption and personal income is not quite so strong. The study found that in wealthier countries, people were more likely to use the internet for news on a daily basis than in poorer countries. The finding that people in wealthier countries tended to do this more often than those in poorer nations to get news online.}
+        \\
+\bottomrule  
+    \end{tabular}
+    }
+    \caption{Sample outputs from Statista (first column) and Pew datasets (last two columns). \red{Red} indicates hallucination errors and \blue{blue} indicates  tokens that are resulted in factual errors in the model output.
+    }
+    \label{tab:examples}
+\end{figure*}
+
+
+\subsection{Human Evaluation}
+
+
+
+
+To further assess the summary quality 
+we performed a human evaluation on 150 randomly sampled charts from the Statista dataset with four internal annotators who are native speakers of English.  For each chart, annotators performed pairwise comparisons between the outputs of TAB-T5, OCR-T5 and the original gold summary (served as a control), resulting in a total of 450 pairwise comparisons (\Cref{app:human-eval}). They compared the summaries based on three criteria: \Ni \textbf{Factual correctness}: Which summary is more factually correct (\ie\ facts mentioned are supported by the chart)? \Nii \textbf{Coherence}: Which summary is more coherent (\ie\ sentences are well connected)? and \Niii \textbf{Fluency}: Which summary is more fluent and grammatically correct? For each criterion, the annotator 
+picked the better one (win) or equally good (tie). {Each comparison was performed by one annotator, except the first 150 comparisons for which we had two annotators to measure the agreement. The  agreement for these 150 comparisons, excluding ties, was 74.3\% (ties were excluded since they do not affect the overall ranking of the summaries).}
+
+
+Table~\ref{tab:evaluation-table-human} shows that the TAB-T5 performed significantly better than OCR-T5 based on all three criteria, especially on factual correctness. This is likely because, without the data table as input, OCR-T5 model often fails to generate factually correct statements from the OCR text. \change{We also observe that while the fluency of the model outputs is comparable to the gold summary, their factual correctness and coherence were significantly worse, especially for the OCR-T5 model}. 
+
+
+
+
+
+
+
+
+
+
+\subsection{Error Analysis and Challenges}
+\label{sec:error-analysis}
+
+
+
+We manually analyzed 200 random samples from Statista and Pew. We chose TAB-T5 and OCR-T5 for Statista and OCR-BART and OCR-T5 models for Pew. This analysis helps us to understand model errors and identify key challenges that existing models face as we describe below.
+
+\vspace{0.5em}
+\noindent \textbf{Perceptual and reasoning aspects~} \change{As mentioned in \cref{sec:intro},} charts often describe complex patterns and trends which can be perceived by humans easily but they are not necessarily easy to derive through \change{analysis of raw data tables}. 
+In ~\Cref{tab:examples}b, the OCR-T5 model manages to describe a trend correctly in the first sentence but describes a trend incorrectly in the last sentence. \change{These examples demonstrate the shortcomings of existing models.} \change{In order to explain perceptual and reasoning aspects effectively, we need  more sophisticated models that better capture prominent visual relationships in charts. In particular, we aim to develop better representations 
+including semantic graph representation of the chart that encodes numerical and logical relationships among chart objects}.
+
+
+
+
+\vspace{0.5em}
+\noindent \textbf{Hallucinations~} Sometimes, the model outputs tokens that are irrelevant to the chart.
+For example, while the model outputs 
+in \Cref{tab:examples}a,b are quite fluent, they contain hallucination errors. This problem is commonly observed in other  data-to-text work as well \cite{wiseman2017challenges,parikh2020totto}. 
+
+
+
+\vspace{0.5em}
+\noindent \textbf{Factual errors~} 
+Factually incorrect statements are more common for the OCR-based models (\eg\ 
+in ~\Cref{tab:examples}a-b) since they do not take the data table as input, thus fail to associate the data values correctly. In contrast, TAB-T5 which utilizes the data table as input tends to 
+generate less factual errors.
+This confirms that summarizing charts when the data table is not available is usually more challenging. 
+ 
+
+\vspace{0.5em}
+\noindent \textbf{Computer vision challenges~} The factual errors  illustrate some unique computer vision challenges. First, charts do not always show data values as text labels, 
+thus the OCR models cannot access those 
+values. Even if the  data values are labeled, the absence of association between data values (\eg\ \texttt{Instagram} is related to \texttt{380.09M} 
+in ~\Cref{tab:examples}a) leads to factual errors. 
+This problem might be alleviated if the model can extract the data table from a chart image. While there are some initial attempts in this direction (\eg\ \citet{ChartOCR,  Choi2019VisualizingFT}), 
+more accurate data extraction from charts is necessary. 
+
+\vspace{0.5em}
+{\noindent \textbf{Generalizability~} The charts in our benchmark cover several different chart types and a wide variety of topics (\cref{topics}). The charts in the Pew in particular have a wide variety of visual styles in terms of color, layout and typography as they were created over several years by different authors (see examples in \cref{tab:example}). Nevertheless,  finding more chart-summary pairs with more diverse visual styles is  an open challenge. In future, we aim to find more different sources of chart-summaries and perform cross-domain experiments across those different sources to evaluate the generalizability of models.}
+
+
+
+
+
+

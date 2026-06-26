@@ -1,0 +1,195 @@
+%\gromit{I feel sudden when jumping from related work to data. Feels like we assume people know our method needs data and annotations. I add a sentence below to make a transition.}
+
+\kenneth{Add a few sentences to say (1) the remaining of the paper was built using SciCap, including motivating analysis and testing of the proposed methods and in-depth analysis. (2) We additionally add mention/paragraph and resplit the data (suggesting we did a lot more than just using it.)}
+
+\kenneth{I agree with Gromit that it reads a bit sudden. We can add a sentence to explain that we want to introduce dataset here as it was used in Motivating Anlaysis too.}
+\cy{done}
+
+%The figure-captioning framework requires a model to be trained from a large corpus with figures and texts. 
+%Before introducing our method, we will describe the data used in the experiments.
+
+Before diving into our experiments and analyses, we first describe the dataset upon which our study is grounded.
+Our results are based on a scientific figure caption dataset, \oldDataset, and several pre-processing steps to fit it into our workflow.
+
+% \footnote{We will release the code and data upon publication. Please see 200 data samples in the supplementary material (\url{https://anonymous.4open.science/r/Generating-Figure-Captions-as-a-Text-\\Summarization-Task-15B4}).}
+%\kenneth{The footnote should be AFTER the period or ,}
+%\paragraph{\oldDataset}
+%
+%\paragraph{Extracting Mentions and Paragraphs for Figures in \oldDataset.}
+% \paragraph{Extracting Mentions and Paragraphs for Figures in \oldDataset.}
+%
+\oldDataset is a dataset that contains over 416,000 line charts and captions extracted from more than 290,000 arXiv papers~\cite{hsu-etal-2021-scicap-generating}. 
+It was one of the first large-scale figure-captioning datasets based on real-world \sfigs. 
+However, it does not contain the paragraphs that mention the figure.
+To address this, we downloaded all the PDF files of the original arXiv papers used in \oldDataset and
+extracted all the Mentions and Paragraphs as outlined in \Cref{sec:extract-mention}.
+% We then followed the steps described in Section~\ref{sec:extract-mention} to extract all the Mentions and Paragraphs.
+% It is worth noting that we manually verified 399 figures (the set used in \Cref{sec:analysis}) and found that 81.2\% (324/399) were published at academic conferences, and 51.9\% (207/399) were at ACL Anthology, IEEE, or ACM, suggesting that the data is representative.\kenneth{``It is worth noting...that the data is representative.'' can be moved to Appendix.}
+Detailed information on preprocessing, including the dataset resplit and OCR extraction, are described in \Cref{sec:appendix-data-preprocessing}.
+
+\begin{comment}
+
+In this paper, ``\textbf{Mention}'' refers to the sentence in an article that explicitly refers to the target figure, and 
+``\textbf{Paragraph}'' refers to all the text under the same \texttt{<p>} tag (paragraph tag) as the Mention in the PDF parsing result.
+As sentences near a Mention might be more relevant, we also extracted $n$ preceding sentences and $m$ following sentences to form \textbf{Windows~[n, m]}.
+For example, ``Windows [1, 2]'' refers to a text snippet of five sentences, \ie, one preceding sentence, one Mention sentence, and two following sentences.
+
+% \vspace{-1pc}
+
+\end{comment}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%------------------ dead kitten ----------------
+
+\begin{comment}
+
+
+
+
+Five models were trained using five different inputs, 
+including Mention, Paragraph, OCR, Mention+OCR, and Paragraph+OCR. 
+Paragraph+OCR covered all the relevant information in this paper and thus should provide the best summary. 
+
+
+%Pre-training with Extracted Gap-sentences for 
+
+the Pegasus text-summarization model~\cite{zhang2020pegasus}, fine-tuned on our dataset. 
+Five models were trained using five different inputs, 
+including Mention, Paragraph, OCR, Mention+OCR, and Paragraph+OCR. 
+Paragraph+OCR covered all the relevant information in this paper and thus should provide the best summary. 
+One special variation of the model, Paragraph+OCR-Better, was intended to be trained with better-quality captions. 
+We selected sample captions longer than 30 tokens to be \textbf{better-quality} samples (27,224 samples remaining) 
+because caption length is positively correlated to caption quality (see \Cref{sec:quality-annotation}).\kenneth{Any justification for picking 30?} 
+Prior work also argued that increasing caption length could increase readers' comprehension~\cite{hartley2003single,gelman2002let}.
+This model was then trained with Paragraph+OCR inputs on only the better-quality subset.
+
+\kenneth{The cutting on 30 tokens need to be better justified.}
+
+
+
+
+
+% \paragraph{OCR}
+\subsection{OCR}
+% \cy{TODO: ED please add the tool you use.}
+We used EasyOCR~\cite{easyocr}
+% \footnote{EasyOCR: \url{https://github.com/JaidedAI/EasyOCR}} 
+to extract texts from all the figures.
+EasyOCR provided OCR texts along with their bounding boxes.
+%To represent the OCR texts into a single sentence, 
+When feeding OCR texts into models, 
+we joined the OCR texts with the order of the coordinates from left to right and then top to bottom.
+
+\begin{itemize} %[leftmargin=*,itemsep=0mm]
+
+    \item 
+    A ``\textbf{Mention}'' refers to a sentence in an article that explicitly mentions the target figure, such as ``As shown in Figure 6 ...'' Since there might be multiple Mentions throughout the paper, without further specification, we referred to the first Mention.
+    
+%\vspace{-.5pc}
+
+    \item 
+    
+    A ``\textbf{Paragraph}'' refers to all the text under the same \texttt{<p>} tag as the Mention in the PDF-parsing result.
+
+    
+%\vspace{-1pc}
+
+    \item 
+    As sentences near a Mention may also be relevant, we extracted $n$ preceding sentences and $m$ following sentences to form \textbf{Window[n, m]}. For example, ``Window[1, 2]'' refers to a text snippet of four sentences, \ie, one preceding sentence, one Mention sentence, and two following sentences.
+
+\end{itemize}
+
+\bigskip
+
+used Grobid~\cite{grobid}, a publicly available tool that parses PDF files into structured XML documents, 
+to extract the plain text of all the paragraphs (including the \texttt{<p>} tags) in each paper. 
+Next, we used BlingFire~\cite{blingfire} to segment each sentence. 
+We created regular expressions to identify the sentences that mention specific figures. 
+For example, the sentence ``As shown in Figure 6, ...'' would be identified and linked to Figure 6. 
+To this end, we used the following terminology:
+
+%Paper : 53771/6721/6722
+%Figure : 106391/13926/13226
+%CL figure: 3559 / 419 / 438 (train/val/test)
+
+%
+%\gromit{What is \oldDataset? needs a brief intro for new readers.}
+%\ed{We also notice that the figures are sometimes merely captioned and not mentioned in the paper. We then further filter out the figures that are not mentioned in the paper because there are no text references to do summary. This step is do before resplit}
+
+
+% \kenneth{We only find mentions for 80\% of images. I moved this to Limitations, which gives us some more space.}
+\oldDataset was originally created for vision-to-language tasks and we need new train/val/test splits for our work.
+As figures do not overlap with each other, different figures in the same paper could be assigned to different data splits in \oldDataset.
+However, paper's texts overlap with each other more easily and can be 
+%As \oldDataset assigned figures to each split randomly,
+%In \oldDataset, a paper's figures could be assigned to different data splits.
+%This would be reasonable for vision-to-language tasks, , 
+%but can 
+problematic for text summarizing tasks. %, as texts can overlap with each other. 
+We resplit \oldDataset to make sure no paper has figures from different data splits; we also excluded the figures whose mentions without any identified mentions.
+As a result, 
+the train/val/test sets used in the paper have
+86,825/10,833/10,763 figures, 
+sourced from 48,603/6,055/6,053 papers.
+
+
+
+
+
+
+Extracted mentions, ...
+Get better result with mentions.
+Next step: use not only the first sentence, but ones after, as they are more likely to add additional info about the insight, key result, etc.
+
+
+
+\kenneth{TODO Ed: Fill in the data details.}
+\cy{We only used samples whose Mention exists. This is also different from \oldDataset.}
+
+\paragraph{Data Source.}
+\ed{We download the PDF from Arxiv dataset. We then use Grobid, a public ML library to parse PDF into structured XML encoded documents. We only keep the plain text in <p> tag that represents each paragraph in the paper.} 
+
+
+
+
+% Figure Caption with Pretrained OCR models (baseline)
+% Also, had some examples where OCR would improve (small captions, or bad captions, cumulative...)
+
+\paragraph{Text Pre-processing.}
+
+\ed{We retrieve the figure index from the figure caption (Fig. 1, Figure 2, etc.) and then use regular expression to discover all the paragraphs in the paper that mention corresponding figure index. BlingFire is also used to separate the sentences in the paragraph. The sentence mention the figure index that we called it \textbf{Mention}. To better understand the relationship between caption and mention, we also remove the figure index in the caption when we do experiment and analysis.}
+ 
+\cy{TODO: ED please describe (1) how we identify identify Mentions, (2) remove figure index}
+
+
+\paragraph{Extracting Mentions and Paragraphs.}
+% Probably give a definition for both ``Mention'', ``Window[n, m]'', and``Paragraph''.
+\cy{Should we show an example here?}
+The \textbf{Mention} refers to the sentence in the paper that mentions the target figure (e.g., the sentence before (Fig. X)). 
+The \textbf{Paragraph} is all the text under the same \texttt{<p>} tag (paragraph tag) 
+with the Mention in the PDF parsing result.
+As sentences closer to Mention might be more relevant, 
+we also extract $n$ preceding sentences and $m$ following sentences to form \textbf{Windows[n, m]}.
+For example, Windows [1, 2] will result in a text snippet of five sentences (one preceding sentence, one Mention sentence, and two following sentences).
+To extract the Mention we use regular expression. 
+\cy{TODO: ED please explain how we get the mention.}
+
+
+\end{comment}
+
+
+
+

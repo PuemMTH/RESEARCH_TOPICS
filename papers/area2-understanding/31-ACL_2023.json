@@ -1,0 +1,35 @@
+{
+  "arxiv_id": "2301.12293",
+  "title": "ACL-Fig: A Dataset for Scientific Figure Classification",
+  "authors": [
+    "Zeba Karishma, Shaurya Rohatgi, Kavya Shrinivas PuranikThe Pennsylvania State Universityzebakarishma@gmail.com, {szr207, kzp5555}@psu.edu\\AndJian WuOld Dominion Universityjwu@cs.odu.edu\\AndC. Lee GilesThe Pennsylvania State Universityclg20@psu.edu"
+  ],
+  "abstract": "Most existing large-scale academic search engines are built to retrieve text-based information. However, there are no large-scale retrieval services for scientific figures and tables. One challenge for such services is understanding scientific figures’ semantics, such as their types and purposes. A key obstacle is the need for datasets containing annotated scientific figures and tables, which can then be used for classification, question-answering, and auto-captioning. Here, we develop a pipeline that extracts figures and tables from the scientific literature and a deep-learning-based framework that classifies scientific figures using visual features. Using this pipeline, we built the first large-scale automatically annotated corpus, ACL-Fig consisting of 112,052 scientific figures extracted from ≈ 56 absent 56 \\approx 56 K research papers in the ACL Anthology. The ACL-Fig-pilot dataset contains 1,671 manually labeled scientific figures belonging to 19 categories. The dataset is accessible at https://huggingface.co/datasets/citeseerx/ACL-fig under a CC BY-NC license.",
+  "year": "2023",
+  "figure_count": 4,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:Example figures of each type inACL-Fig-pilot.",
+      "src": "/html/2301.12293/assets/x1.png"
+    },
+    {
+      "id": "S2.F2",
+      "caption": "Figure 2:Overview of the data generation pipeline.",
+      "src": "/html/2301.12293/assets/x2.png"
+    },
+    {
+      "id": "S4.F3",
+      "caption": "Figure 3:Numbers of extracted images.",
+      "src": "/html/2301.12293/assets/x3.png"
+    },
+    {
+      "id": "S4.F4",
+      "caption": "Figure 4:Figure class distribution in theACL-Fig-pilotdataset.",
+      "src": "/html/2301.12293/assets/x4.png"
+    }
+  ],
+  "paper_number": 31,
+  "slug": "ACL",
+  "base_name": "31-ACL_2023"
+}

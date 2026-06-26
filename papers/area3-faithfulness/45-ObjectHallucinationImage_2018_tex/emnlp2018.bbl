@@ -1,0 +1,166 @@
+\begin{thebibliography}{22}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Anderson et~al.(2016)Anderson, Fernando, Johnson, and Gould}]{spice}
+Peter Anderson, Basura Fernando, Mark Johnson, and Stephen Gould. 2016.
+\newblock Spice: Semantic propositional image caption evaluation.
+\newblock In \emph{European Conference on Computer Vision}, pages 382--398.
+  Springer.
+
+\bibitem[{Anderson et~al.(2018)Anderson, He, Buehler, Teney, Johnson, Gould,
+  and Zhang}]{anderson2017bottom}
+Peter Anderson, Xiaodong He, Chris Buehler, Damien Teney, Mark Johnson, Stephen
+  Gould, and Lei Zhang. 2018.
+\newblock Bottom-up and top-down attention for image captioning and vqa.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}.
+
+\bibitem[{Banerjee and Lavie(2005)}]{meteor}
+Satanjeev Banerjee and Alon Lavie. 2005.
+\newblock Meteor: An automatic metric for mt evaluation with improved
+  correlation with human judgments.
+\newblock In \emph{Proceedings of the ACL Workshop on Intrinsic and Extrinsic
+  Evaluation Measures for Machine Translation and/or Summarization}, pages
+  65--72.
+
+\bibitem[{Chen et~al.(2015)Chen, Fang, Lin, Vedantam, Gupta, Doll{\'a}r, and
+  Zitnick}]{chen2015microsoft}
+Xinlei Chen, Hao Fang, Tsung-Yi Lin, Ramakrishna Vedantam, Saurabh Gupta, Piotr
+  Doll{\'a}r, and C~Lawrence Zitnick. 2015.
+\newblock Microsoft coco captions: Data collection and evaluation server.
+\newblock \emph{arXiv preprint arXiv:1504.00325}.
+
+\bibitem[{Cui et~al.(2018)Cui, Yang, Veit, Huang, and
+  Belongie}]{cui2018learning}
+Yin Cui, Guandao Yang, Andreas Veit, Xun Huang, and Serge Belongie. 2018.
+\newblock Learning to evaluate image captioning.
+\newblock In \emph{CVPR}.
+
+\bibitem[{Donahue et~al.(2015)Donahue, Anne~Hendricks, Guadarrama, Rohrbach,
+  Venugopalan, Saenko, and Darrell}]{donahue2015long}
+Jeffrey Donahue, Lisa Anne~Hendricks, Sergio Guadarrama, Marcus Rohrbach,
+  Subhashini Venugopalan, Kate Saenko, and Trevor Darrell. 2015.
+\newblock Long-term recurrent convolutional networks for visual recognition and
+  description.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 2625--2634.
+
+\bibitem[{He et~al.(2016)He, Zhang, Ren, and Sun}]{he2016deep}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016.
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 770--778.
+
+\bibitem[{Hendricks et~al.(2016)Hendricks, Venugopalan, Rohrbach, Mooney,
+  Saenko, and Darrell}]{hendricks2016deep}
+Lisa~Anne Hendricks, Subhashini Venugopalan, Marcus Rohrbach, Raymond Mooney,
+  Kate Saenko, and Trevor Darrell. 2016.
+\newblock Deep compositional captioning: Describing novel object categories
+  without paired training data.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 1--10.
+
+\bibitem[{Hochreiter and Schmidhuber(1997)}]{hochreiter1997long}
+Sepp Hochreiter and J{\"u}rgen Schmidhuber. 1997.
+\newblock Long short-term memory.
+\newblock \emph{Neural computation}, 9(8):1735--1780.
+
+\bibitem[{Karpathy and Fei-Fei(2015)}]{karpathy2015deep}
+Andrej Karpathy and Li~Fei-Fei. 2015.
+\newblock Deep visual-semantic alignments for generating image descriptions.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 3128--3137.
+
+\bibitem[{Kilickaya et~al.(2016)Kilickaya, Erdem, Ikizler-Cinbis, and
+  Erdem}]{kilickaya2016re}
+Mert Kilickaya, Aykut Erdem, Nazli Ikizler-Cinbis, and Erkut Erdem. 2016.
+\newblock Re-evaluating automatic metrics for image captioning.
+\newblock In \emph{European Chapter of the Association for Computational
+  Linguistics}.
+
+\bibitem[{Krishna et~al.(2017)Krishna, Zhu, Groth, Johnson, Hata, Kravitz,
+  Chen, Kalantidis, Li, Shamma et~al.}]{krishna2017visual}
+Ranjay Krishna, Yuke Zhu, Oliver Groth, Justin Johnson, Kenji Hata, Joshua
+  Kravitz, Stephanie Chen, Yannis Kalantidis, Li-Jia Li, David~A Shamma, et~al.
+  2017.
+\newblock Visual genome: Connecting language and vision using crowdsourced
+  dense image annotations.
+\newblock \emph{International Journal of Computer Vision}, 123(1):32--73.
+
+\bibitem[{Lin et~al.(2014)Lin, Maire, Belongie, Hays, Perona, Ramanan,
+  Doll{\'a}r, and Zitnick}]{lin2014microsoft}
+Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva
+  Ramanan, Piotr Doll{\'a}r, and C~Lawrence Zitnick. 2014.
+\newblock Microsoft coco: Common objects in context.
+\newblock In \emph{European conference on computer vision}, pages 740--755.
+  Springer.
+
+\bibitem[{Lu et~al.(2018)Lu, Yang, Batra, and Parikh}]{lu2018neural}
+Jiasen Lu, Jianwei Yang, Dhruv Batra, and Devi Parikh. 2018.
+\newblock Neural baby talk.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}.
+
+\bibitem[{Luo et~al.(2018)Luo, Price, Cohen, and
+  Shakhnarovich}]{luo2018discriminability}
+Ruotian Luo, Brian Price, Scott Cohen, and Gregory Shakhnarovich. 2018.
+\newblock Discriminability objective for training descriptive captions.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}.
+
+\bibitem[{MacLeod et~al.(2017)MacLeod, Bennett, Morris, and Cutrell}]{macleod}
+Haley MacLeod, Cynthia~L. Bennett, Meredith~Ringel Morris, and Edward Cutrell.
+  2017.
+\newblock Understanding blind people’s experiences with computer-generated
+  captions of social media images.
+\newblock In \emph{Proceedings of the 2017 SIGCHI Conference on Human Factors
+  in Computing Systems}.
+
+\bibitem[{Rennie et~al.(2017)Rennie, Marcheret, Mroueh, Ross, and
+  Goel}]{rennie2017cvpr}
+Steven~J Rennie, Etienne Marcheret, Youssef Mroueh, Jarret Ross, and Vaibhava
+  Goel. 2017.
+\newblock Self-critical sequence training for image captioning.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}.
+
+\bibitem[{Rohrbach et~al.(2017{\natexlab{a}})Rohrbach, Tapaswi, Torabi,
+  Maharaj, Rohrbach, Pal, and Schiele}]{lsmdc-2017}
+Anna Rohrbach, Makarand Tapaswi, Atousa Torabi, Tegan Maharaj, Marcus Rohrbach,
+  Sanja Fidler~Christopher Pal, and Bernt Schiele. 2017{\natexlab{a}}.
+\newblock {The Joint Video and Language Understanding Workshop: MovieQA and The
+  Large Scale Movie Description Challenge (LSMDC)}.
+\newblock \url{https://sites.google.com/site/describingmovies/lsmdc-2017}.
+
+\bibitem[{Rohrbach et~al.(2017{\natexlab{b}})Rohrbach, Torabi, Rohrbach,
+  Tandon, Pal, Larochelle, Courville, and Schiele}]{rohrbach2017movie}
+Anna Rohrbach, Atousa Torabi, Marcus Rohrbach, Niket Tandon, Christopher Pal,
+  Hugo Larochelle, Aaron Courville, and Bernt Schiele. 2017{\natexlab{b}}.
+\newblock Movie description.
+\newblock \emph{International Journal of Computer Vision}, 123(1):94--120.
+
+\bibitem[{Shetty et~al.(2017)Shetty, Rohrbach, Hendricks, Fritz, and
+  Schiele}]{shetty2017speaking}
+Rakshith Shetty, Marcus Rohrbach, Lisa~Anne Hendricks, Mario Fritz, and Bernt
+  Schiele. 2017.
+\newblock Speaking the same language: Matching machine to human captions by
+  adversarial training.
+\newblock In \emph{Proceedings of the IEEE International Conference on Computer
+  Vision (ICCV)}.
+
+\bibitem[{Vedantam et~al.(2015)Vedantam, Lawrence~Zitnick, and Parikh}]{cider}
+Ramakrishna Vedantam, C~Lawrence~Zitnick, and Devi Parikh. 2015.
+\newblock Cider: Consensus-based image description evaluation.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 4566--4575.
+
+\bibitem[{Xu et~al.(2015)Xu, Ba, Kiros, Cho, Courville, Salakhudinov, Zemel,
+  and Bengio}]{xu2015show}
+Kelvin Xu, Jimmy Ba, Ryan Kiros, Kyunghyun Cho, Aaron Courville, Ruslan
+  Salakhudinov, Rich Zemel, and Yoshua Bengio. 2015.
+\newblock Show, attend and tell: Neural image caption generation with visual
+  attention.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  2048--2057.
+
+\end{thebibliography}

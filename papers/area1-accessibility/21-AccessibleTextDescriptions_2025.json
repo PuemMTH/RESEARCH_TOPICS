@@ -1,0 +1,85 @@
+{
+  "arxiv_id": "2503.17517",
+  "title": "Accessible Text Descriptions for UpSet Plots",
+  "authors": [
+    "A. McNutt1\\orcid0000-0001-8255-4258,\nM. K. McCracken1\\orcid0009-0006-5280-0546,\nI. J. Eliza1\\orcid0000-0003-3087-5951 ,D. Hajas2\\orcid0000-0002-2811-1197,\nJ. Wagoner1\\orcid0009-0000-5053-2281,\nN. Lanza1,\nJ. Wilburn1\\orcid0000-0002-7672-0798,\nS. Creem-Regehr1\\orcid0000-0001-7740-1118, and\nA. Lex1\\orcid0000-0001-6930-54681University of Utah, Salt Lake City, Utah2Global Disability Innovation Hub, University College London"
+  ],
+  "abstract": "Data visualizations are typically not accessible to blind and low-vision (BLV) users.\nAutomatically generating text descriptions offers an enticing mechanism for democratizing access to the information held in complex scientific charts, yet appropriate procedures for generating those texts remain elusive.\nPursuing this issue, we study a single complex chart form: UpSet plots.\nUpSet Plots are a common way to analyze set data, an area largely unexplored by prior accessibility literature.\nBy analyzing the patterns present in real-world examples, we develop a system for automatically captioning any UpSet plot.\nWe evaluated the utility of our captions via semi-structured interviews with (N=11) BLV users and found that BLV users find them informative.\nIn extensions, we find that sighted users can use our texts similarly to UpSet plots and that they are better than naive LLM usage. \\ccsdesc [500]Human-centered computing Accessibility systems and tools \\ccsdesc [500]Human-centered computing Visualization \\printccsdesc",
+  "year": "2025",
+  "figure_count": 14,
+  "figure_captions": [
+    {
+      "id": "S3.F1",
+      "caption": "Figure 1:An UpSet plot of the winners of major tennis tournaments, cropped to intersections with at least a size of 4. The sets are represented in the columns of the matrix; the set sizes as vertical bars; the size of the intersections as horizontal bars.\nIntersections are shown in the rows and identify the sets that intersect with filled in and connected circles.\n“Intersections” can be of only one set, here representing the players who have only won one tournament.",
+      "src": "/html/2503.17517/assets/x2.png"
+    },
+    {
+      "id": "S3.F2",
+      "caption": "Figure 2:Our short and long text descriptions annotated with Lundgard and Satyanarayan’s[LS22]semantic text model.",
+      "src": "/html/2503.17517/assets/x3.png"
+    },
+    {
+      "id": "S4.F3",
+      "caption": "Figure 3:Correct responses by condition (left) and by question (right).\nEach condition had 83 participants, all of whom saw all conditions.",
+      "src": "/html/2503.17517/assets/x4.png"
+    },
+    {
+      "id": "A3.F4",
+      "caption": "Figure 4:Example of the study interface for theBothcondition. The title (right) is human-generated, the introduction leverages a human-provided specification. Seefor more.",
+      "src": "/html/2503.17517/assets/x5.png"
+    },
+    {
+      "id": "A3.F5",
+      "caption": "Figure 5:Percent of questions correctness by dataset and condition. Q6, which focuses on qualitative distribution similarity, had a high influence on the average correctness by dataset.",
+      "src": "/html/2503.17517/assets/x6.png"
+    },
+    {
+      "id": "A3.F6",
+      "caption": "Figure 6:Time to completion by section and condition. Participants take longer to respond in the text condition.",
+      "src": "/html/2503.17517/assets/x7.png"
+    },
+    {
+      "id": "A3.F8",
+      "caption": "Figure 7:Espoused preferences from survey respondents in the post-experiment survey.",
+      "src": "/html/2503.17517/assets/x8.png"
+    },
+    {
+      "id": "A3.F8.fig1",
+      "caption": "Figure 7:Espoused preferences from survey respondents in the post-experiment survey.",
+      "src": "/html/2503.17517/assets/x8.png"
+    },
+    {
+      "id": "A3.F8.fig2",
+      "caption": "Figure 8:Survey respondent reported confidence, understandability, and effectiveness for each of the three conditions via 1-5 Likert items (5 being high). Top rows show histogram by count, bottom shows significance of means.",
+      "src": "/html/2503.17517/assets/x9.png"
+    },
+    {
+      "id": "A3.F9",
+      "caption": "Figure 9:Insight found condition and type of insight.",
+      "src": "/html/2503.17517/assets/x10.png"
+    },
+    {
+      "id": "A4.F10",
+      "caption": "Figure 10:A summary of our LLM study showing study instance by the number of facts generated for that description, sorted by Lundgard et al.’s[LS22]semantic content levels. We also highlight the number of hallucinated and duplicated facts in the generation—although, as they were identified manually, these values are lower bounds, as there might be additional subtleties to the data not analyzed. Claude here is Anthropic’s Claude 3.5 Sonnet and GPT is OpenAI’s GPT-4o. N.b. the inputs for the Best Effort Movies run and the Ablation Claude Movies were identical.",
+      "src": "/html/2503.17517/assets/x11.png"
+    },
+    {
+      "id": "A7.F11",
+      "caption": "Figure 11:A screen shot of a notebook using our automated text generation system.",
+      "src": "/html/2503.17517/assets/figs/python-usage.png"
+    },
+    {
+      "id": "A7.F12",
+      "caption": "Figure 12:Selected thumbnails of UpSet plots collected for our classification of patterns found in UpSet plots.",
+      "src": "/html/2503.17517/assets/figs/upset_classification.png"
+    },
+    {
+      "id": "A7.F13",
+      "caption": "Figure 13:The final version of the text description, refined based on feedback received during the interviews. While the text itself is unchanged, individual statements are listed as bullet points, and a glossary is added to the end of the description.",
+      "src": "/html/2503.17517/assets/figs/bullets-glossary.png"
+    }
+  ],
+  "paper_number": 21,
+  "slug": "AccessibleTextDescriptions",
+  "base_name": "21-AccessibleTextDescriptions_2025"
+}

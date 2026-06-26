@@ -1,0 +1,211 @@
+\begin{thebibliography}{27}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Kahou et~al.(2017)Kahou, Michalski, Atkinson, K{\'a}d{\'a}r,
+  Trischler, and Bengio]{kahou2017figureqa}
+Samira~Ebrahimi Kahou, Vincent Michalski, Adam Atkinson, {\'A}kos
+  K{\'a}d{\'a}r, Adam Trischler, and Yoshua Bengio.
+\newblock Figureqa: An annotated figure dataset for visual reasoning.
+\newblock \emph{arXiv preprint arXiv:1710.07300}, 2017.
+
+\bibitem[Kafle et~al.(2018)Kafle, Price, Cohen, and Kanan]{kafle2018}
+Kushal Kafle, Brian Price, Scott Cohen, and Christopher Kanan.
+\newblock Dvqa: Understanding data visualizations via question answering.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 5648--5656, 2018.
+
+\bibitem[Methani et~al.(2020)Methani, Ganguly, Khapra, and
+  Kumar]{methani2020plotqa}
+Nitesh Methani, Pritha Ganguly, Mitesh~M Khapra, and Pratyush Kumar.
+\newblock Plotqa: Reasoning over scientific plots.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on
+  Applications of Computer Vision}, pages 1527--1536, 2020.
+
+\bibitem[Masry et~al.(2022)Masry, Long, Tan, Joty, and Hoque]{masry2022chartqa}
+Ahmed Masry, Do~Xuan Long, Jia~Qing Tan, Shafiq Joty, and Enamul Hoque.
+\newblock Chartqa: A benchmark for question answering about charts with visual
+  and logical reasoning.
+\newblock \emph{arXiv preprint arXiv:2203.10244}, 2022.
+
+\bibitem[Chaudhry et~al.(2020)Chaudhry, Shekhar, Gupta, Maneriker, Bansal, and
+  Joshi]{chaudhry2019}
+Ritwick Chaudhry, Sumit Shekhar, Utkarsh Gupta, Pranav Maneriker, Prann Bansal,
+  and Ajay Joshi.
+\newblock Leaf-qa: Locate, encode \& attend for figure question answering.
+\newblock In \emph{Proceedings of the IEEE/CVF Winter Conference on
+  Applications of Computer Vision}, pages 3512--3521, 2020.
+
+\bibitem[Hsu et~al.(2021)Hsu, Giles, and Huang]{hsu2021scicap}
+Ting-Yao Hsu, C~Lee Giles, and Ting-Hao'Kenneth' Huang.
+\newblock Scicap: Generating captions for scientific figures.
+\newblock \emph{arXiv preprint arXiv:2110.11624}, 2021.
+
+\bibitem[H and S(2020)]{singh2020stl}
+Singh H and Shekhar S.
+\newblock Stl-cqa: Structure-based transformers with localization and encoding
+  for chart question answering.
+\newblock \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing}, pages 3275--3284, 2020.
+
+\bibitem[Lee et~al.(2023)Lee, Joshi, Turc, Hu, Liu, Eisenschlos, Khandelwal,
+  Shaw, Chang, and Toutanova]{lee2023pix2struct}
+Kenton Lee, Mandar Joshi, Iulia~Raluca Turc, Hexiang Hu, Fangyu Liu,
+  Julian~Martin Eisenschlos, Urvashi Khandelwal, Peter Shaw, Ming-Wei Chang,
+  and Kristina Toutanova.
+\newblock Pix2struct: Screenshot parsing as pretraining for visual language
+  understanding.
+\newblock In \emph{International Conference on Machine Learning}, pages
+  18893--18912. PMLR, 2023.
+
+\bibitem[Liu et~al.(2022{\natexlab{a}})Liu, Piccinno, Krichene, Pang, Lee,
+  Joshi, Altun, Collier, and Eisenschlos]{liu2023}
+Fangyu Liu, Francesco Piccinno, Syrine Krichene, Chenxi Pang, Kenton Lee,
+  Mandar Joshi, Yasemin Altun, Nigel Collier, and Julian~Martin Eisenschlos.
+\newblock Matcha: Enhancing visual language pretraining with math reasoning and
+  chart derendering.
+\newblock \emph{arXiv preprint arXiv:2212.09662}, 2022{\natexlab{a}}.
+
+\bibitem[Liu et~al.(2022{\natexlab{b}})Liu, Eisenschlos, Piccinno, Krichene,
+  Pang, Lee, Joshi, Chen, Collier, and Altun]{liu2022deplot}
+Fangyu Liu, Julian~Martin Eisenschlos, Francesco Piccinno, Syrine Krichene,
+  Chenxi Pang, Kenton Lee, Mandar Joshi, Wenhu Chen, Nigel Collier, and Yasemin
+  Altun.
+\newblock Deplot: One-shot visual language reasoning by plot-to-table
+  translation.
+\newblock \emph{arXiv preprint arXiv:2212.10505}, 2022{\natexlab{b}}.
+
+\bibitem[Liu et~al.(2023)Liu, Li, Li, Yu, Huang, Peng, Liu, Chen, Li, Jin,
+  et~al.]{liu2023hidden}
+Yuliang Liu, Zhang Li, Hongliang Li, Wenwen Yu, Mingxin Huang, Dezhi Peng,
+  Mingyu Liu, Mingrui Chen, Chunyuan Li, Lianwen Jin, et~al.
+\newblock On the hidden mystery of ocr in large multimodal models.
+\newblock \emph{arXiv preprint arXiv:2305.07895}, 2023.
+
+\bibitem[Y et~al.(2020)Y, M, L, S, F, and M]{xu2020layoutlm}
+Xu~Y, Li~M, Cui L, Huang S, Wei F, and Zhou M.
+\newblock Layoutlm: Pre-training of text and layout for document image
+  understanding.
+\newblock \emph{Proceedings of the 26th ACM SIGKDD International Conference on
+  Knowledge Discovery $\&$ Data Mining}, pages 1192--1200, 2020.
+\newblock \doi{10.1145/3394486.3403172}.
+
+\bibitem[Akhtar et~al.(2023)Akhtar, Cocarascu, and Simperl]{akhtar2023reading}
+Mubashara Akhtar, Oana Cocarascu, and Elena Simperl.
+\newblock Reading and reasoning over chart images for evidence-based automated
+  fact-checking.
+\newblock \emph{arXiv preprint arXiv:2301.11843}, 2023.
+
+\bibitem[Yin et~al.(2023)Yin, Fu, Zhao, Li, Sun, Xu, and Chen]{yin2023survey}
+Shukang Yin, Chaoyou Fu, Sirui Zhao, Ke~Li, Xing Sun, Tong Xu, and Enhong Chen.
+\newblock A survey on multimodal large language models.
+\newblock \emph{arXiv preprint arXiv:2306.13549}, 2023.
+
+\bibitem[Li et~al.(2023)Li, Li, Savarese, and Hoi]{li2023}
+Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi.
+\newblock Blip-2: Bootstrapping language-image pre-training with frozen image
+  encoders and large language models.
+\newblock \emph{arXiv preprint arXiv:2301.12597}, 2023.
+
+\bibitem[Alayrac et~al.(2022)Alayrac, Donahue, Luc, Miech, Barr, Hasson, Lenc,
+  Mensch, Millican, Reynolds, et~al.]{alayrac2022flamingo}
+Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr,
+  Yana Hasson, Karel Lenc, Arthur Mensch, Katherine Millican, Malcolm Reynolds,
+  et~al.
+\newblock Flamingo: a visual language model for few-shot learning.
+\newblock \emph{Advances in Neural Information Processing Systems},
+  35:\penalty0 23716--23736, 2022.
+
+\bibitem[Awadalla et~al.(2023)Awadalla, Gao, Gardner, Hessel, Hanafy, Zhu,
+  Marathe, Bitton, Gadre, Jitsev, Kornblith, Koh, Ilharco, Wortsman, and
+  Schmidt]{anas2023}
+Anas Awadalla, Irena Gao, Joshua Gardner, Jack Hessel, Yusuf Hanafy, Wanrong
+  Zhu, Kalyani Marathe, Yonatan Bitton, Samir Gadre, Jenia Jitsev, Simon
+  Kornblith, Pang~Wei Koh, Gabriel Ilharco, Mitchell Wortsman, and Ludwig
+  Schmidt.
+\newblock Openflamingo, mar 2023.
+\newblock URL \url{https://doi.org/10.5281/zenodo.7733589}.
+
+\bibitem[Ye et~al.(2023)Ye, Xu, Xu, Ye, Yan, Zhou, Wang, Hu, Shi, Shi,
+  et~al.]{ye2023}
+Qinghao Ye, Haiyang Xu, Guohai Xu, Jiabo Ye, Ming Yan, Yiyang Zhou, Junyang
+  Wang, Anwen Hu, Pengcheng Shi, Yaya Shi, et~al.
+\newblock mplug-owl: Modularization empowers large language models with
+  multimodality.
+\newblock \emph{arXiv preprint arXiv:2304.14178}, 2023.
+
+\bibitem[Schuhmann et~al.(2021)Schuhmann, Vencu, Beaumont, Kaczmarczyk, Mullis,
+  Katta, Coombes, Jitsev, and Komatsuzaki]{schuhmann2021laion}
+Christoph Schuhmann, Richard Vencu, Romain Beaumont, Robert Kaczmarczyk,
+  Clayton Mullis, Aarush Katta, Theo Coombes, Jenia Jitsev, and Aran
+  Komatsuzaki.
+\newblock Laion-400m: Open dataset of clip-filtered 400 million image-text
+  pairs.
+\newblock \emph{arXiv preprint arXiv:2111.02114}, 2021.
+
+\bibitem[Byeon et~al.(2022)Byeon, Park, Kim, Lee, Baek, and
+  Kim]{kakaobrain2022coyo-700m}
+Minwoo Byeon, Beomhee Park, Haecheon Kim, Sungjun Lee, Woonhyuk Baek, and
+  Saehoon Kim.
+\newblock Coyo-700m: Image-text pair dataset, 2022.
+
+\bibitem[Sharma et~al.(2018)Sharma, Ding, Goodman, and
+  Soricut]{sharma2018conceptual}
+Piyush Sharma, Nan Ding, Sebastian Goodman, and Radu Soricut.
+\newblock Conceptual captions: A cleaned, hypernymed, image alt-text dataset
+  for automatic image captioning.
+\newblock In \emph{Proceedings of the 56th Annual Meeting of the Association
+  for Computational Linguistics (Volume 1: Long Papers)}, pages 2556--2565,
+  2018.
+
+\bibitem[Lin et~al.(2014)Lin, Maire, Belongie, Hays, Perona, Ramanan,
+  Doll{\'a}r, and Zitnick]{lin2014microsoft}
+Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva
+  Ramanan, Piotr Doll{\'a}r, and C~Lawrence Zitnick.
+\newblock Microsoft coco: Common objects in context.
+\newblock In \emph{Computer Vision--ECCV 2014: 13th European Conference,
+  Zurich, Switzerland, September 6-12, 2014, Proceedings, Part V 13}, pages
+  740--755. Springer, 2014.
+
+\bibitem[Chiang et~al.(2023)Chiang, Li, Lin, Sheng, Wu, Zhang, Zheng, Zhuang,
+  Zhuang, Gonzalez, Stoica, and Xing]{vicuna2023}
+Wei-Lin Chiang, Zhuohan Li, Zi~Lin, Ying Sheng, Zhanghao Wu, Hao Zhang, Lianmin
+  Zheng, Siyuan Zhuang, Yonghao Zhuang, Joseph~E. Gonzalez, Ion Stoica, and
+  Eric~P. Xing.
+\newblock Vicuna: An open-source chatbot impressing gpt-4 with 90\%* chatgpt
+  quality, March 2023.
+\newblock URL \url{https://lmsys.org/blog/2023-03-30-vicuna/}.
+
+\bibitem[Yang et~al.(2023)Yang, Dabre, Tanaka, and Okazaki]{yang2023scicap+}
+Zhishen Yang, Raj Dabre, Hideki Tanaka, and Naoaki Okazaki.
+\newblock Scicap+: A knowledge augmented dataset to study the challenges of
+  scientific figure captioning.
+\newblock \emph{arXiv preprint arXiv:2306.03491}, 2023.
+
+\bibitem[Touvron et~al.(2023)Touvron, Martin, Stone, Albert, Almahairi, Babaei,
+  Bashlykov, Batra, Bhargava, Bhosale, et~al.]{touvron2023}
+Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine
+  Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale,
+  et~al.
+\newblock Llama 2: Open foundation and fine-tuned chat models.
+\newblock \emph{arXiv preprint arXiv:2307.09288}, 2023.
+
+\bibitem[Yang et~al.(2022)Yang, Gan, Wang, Hu, Lu, Liu, and
+  Wang]{yang2022empirical}
+Zhengyuan Yang, Zhe Gan, Jianfeng Wang, Xiaowei Hu, Yumao Lu, Zicheng Liu, and
+  Lijuan Wang.
+\newblock An empirical study of gpt-3 for few-shot knowledge-based vqa.
+\newblock In \emph{Proceedings of the AAAI Conference on Artificial
+  Intelligence}, pages 3081--3089, 2022.
+
+\bibitem[Kirillov et~al.(2023)Kirillov, Mintun, Ravi, Mao, Rolland, Gustafson,
+  Xiao, Whitehead, Berg, Lo, et~al.]{kirillov2023segment}
+Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao, Chloe Rolland, Laura
+  Gustafson, Tete Xiao, Spencer Whitehead, Alexander~C Berg, Wan-Yen Lo, et~al.
+\newblock Segment anything.
+\newblock \emph{arXiv preprint arXiv:2304.02643}, 2023.
+
+\end{thebibliography}

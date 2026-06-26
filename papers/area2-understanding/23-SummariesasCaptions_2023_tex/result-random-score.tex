@@ -1,0 +1,28 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+\begin{table*}[t]
+\centering \small
+\begin{tabular}{@{}llcccccc@{}}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Feature}} & \multirow{2}{*}{\textbf{Length}} & \textbf{Rouge-1 (F1)} & \textbf{Rouge-2 (F1)} & \textbf{Rouge-L (F1)} & \textbf{WMS} & \textbf{BERTScore} \\ \cmidrule{4-8}
+ &  &  & \textbf{Rand} & \textbf{Rand} & \textbf{Rand} & \textbf{Rand} & \textbf{Rand} \\ \midrule
+\multirow{6}{*}{\textbf{Reuse}} & \textbf{M} & 33.2 & .216 & .077 & .171 & .524 & .590 \\
+ & \textbf{P} & 238.3 & .164 & .088 & .130 & .501 & .563 \\
+ & \textbf{W{[}0, 1{]}} & 50.3 & .231 & .087 & .176 & .520 & .592 \\
+ & \textbf{W{[}0, 2{]}} & 68.0 & .230 & .092 & .173 & .518 & .591 \\
+ & \textbf{W{[}1, 1{]}} & 67.8 & .230 & .092 & .173 & .518 & .591 \\
+ & \textbf{W{[}2, 2{]}} & 98.7 & .217 & .095 & .162 & .513 & .588 \\ \midrule
+\multirow{6}{*}{\textbf{Pegasus}} & \textbf{M} & 12.2 & .169 & .053 & .144 & .519 & .565 \\
+ & \textbf{M+O} & 12.8 & .173 & .055 & .147 & .520 & .567 \\
+ & \textbf{P} & 14.0 & .181 & .058 & .152 & .521 & .570 \\
+ & \textbf{P+O} & 14.0 & .181 & .058 & .152 & .521 & .570 \\
+ & \textbf{P+O+B} & 38.3 & .221 & .080 & .172 & .523 & .590 \\
+ & \textbf{O} & 12.1 & .168 & .052 & .143 & .519 & .565 \\ \midrule
+\textbf{TrOCR} & \multirow{2}{*}{\textbf{Figure}} & 10.0 & .150 & .044 & .130 & .517 & .557 \\
+\textbf{BEiT+GPT2} &  & 15.8 & .190 & .062 & .158 & .522 & .574 \\
+\bottomrule
+\end{tabular}
+\caption{Random scores corresponding to the length for each automatic evaluation metric.}
+\label{tab:random-scores}
+\end{table*}

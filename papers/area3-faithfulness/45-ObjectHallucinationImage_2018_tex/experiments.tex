@@ -1,0 +1,499 @@
+\section{Evaluation}
+%
+In this section we present the findings of our study, where we aim to answer the questions posed in Section~\ref{sec:intro}: \emph{Which models are more prone to hallucination? 
+%
+What are the likely causes of hallucination? How well do the standard metrics capture hallucination?}
+
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+
+\subsection{Baseline Captioning Models}
+We compare object hallucination across a wide range of models.
+We define two axes for comparison: model architecture and learning objective. 
+
+\textit{Model architecture.}
+Regarding model architecture, we consider models both with and without attention mechanisms.
+In this work, we use ``attention'' to refer to any mechanism which learns to focus on different image regions, whether image regions be determined by a high level feature map, or by object proposals from a trained detector.
+All models are end-to-end trainable and use a recurrent neural network (LSTM~\cite{hochreiter1997long} in our case) to output text.
+For non-attention based methods we consider the \textbf{FC model} from~\citet{rennie2017cvpr} which incorporates visual information by initializing the LSTM hidden state with high level image features. 
+We also consider \textbf{LRCN}~\cite{donahue2015long} which considers visual information at each time step, as opposed to just initializing the LSTM hidden state with extracted features.
+
+For attention based models, we consider  \textbf{Att2In}~\cite{rennie2017cvpr}, which is similar to the original attention based model proposed by~\cite{xu2015show}, except the image feature is only input into the cell gate as this was shown to lead to better performance.
+We then consider the attention model proposed by~\cite{anderson2017bottom} which proposes a specific ``top-down attention'' LSTM as well as a ``language'' LSTM.  %
+Generally attention mechanisms operate over high level convolutional layers.
+The attention mechanism from~\cite{anderson2017bottom} can be used on such feature maps, but \citeauthor{anderson2017bottom} also consider feature maps corresponding to object proposals from a detection model.
+We consider both models, denoted as \textbf{TopDown} (feature map extracted from high level convolutional layer) and \textbf{TopDown-BB} (feature map extracted from object proposals from a detection model).
+Finally, we consider the recently proposed \textbf{Neural Baby Talk (NBT)} model~\cite{lu2018neural} which explicitly uses object detections (as opposed to just bounding boxes) for sentence generation.%
+
+\begin{table*}
+\centering
+\small
+\begin{tabular}{ l | c|r r r r r|r r r r r} 
+ \toprule
+ &  & \multicolumn{5}{c|}{Cross Entropy} &  \multicolumn{5}{c}{Self Critical} \\
+  Model & Att. & S & M & C & CHs & CHi & S & M & C & CHs & CHi\\ 
+  \hline
+ LRCN* & & 17.0	& 23.9	& 90.8	& 17.7	& 12.6 & 16.9	& 23.5	& 93.0	& 17.7	& 12.9 \\
+ FC* & & 17.9	&24.9	&95.8	& 15.4	& 11.0  & 18.4	&25.0	&103.9	&	14.4 & 10.1\\
+ Att2In* & \checkmark & 18.9&	25.8	& 102.0& 10.8	&	7.9 & 19.0	&25.7	&106.7	&	12.2 & 8.4\\
+ TopDown*& \checkmark & 19.9	&26.7	&107.6	&	8.4 & 6.1   & 20.4	&27.0	&117.2	& 13.6	& 8.8 \\
+ \midrule
+ TopDown-BB $^\dagger$ & \checkmark & 20.4 &	27.1	& 113.7	& 8.3	& 5.9 &  21.4	&27.7	&120.6	&	10.4 & 6.9  \\
+ NBT $^\dagger$ & \checkmark & 19.4 & 26.2 & 105.1 &  7.4 & 5.4  & - & - & - & - \\
+ \midrule 
+  &  & \multicolumn{5}{c|}{Cross Entropy} &  \multicolumn{5}{c}{GAN} \\
+ GAN $^\ddagger$ & & 18.7 &	25.7	& 100.4	& 10.7	&  7.7 & 16.6 &	22.7 &	79.3 &	8.2 & 6.5	 \\
+ \bottomrule
+\end{tabular}
+\caption{\small Hallucination analysis on the Karpathy Test set: Spice (S), CIDEr (C) and METEOR (M) scores across different image captioning models as well as \metric{}s (sentence level, CHs) and \metric{}i (instance level, CHi).
+All models are generated with beam search (beam size=5).  * are trained/evaluated within the same implementation~\cite{luo2018discriminability}, $^\dagger$ are trained/evaluated with implementation publicly released with corresponding papers, and $^\ddagger$ sentences obtained directly from the author. For discussion see Section~\ref{sec:sota_hallucination}.}
+\label{tab:hallucination}
+\end{table*}
+
+\textit{Learning objective.}
+All of the above models are trained with the standard \emph{cross entropy} (CE) loss as well as the \emph{self-critical} (SC) loss proposed by~\citet{rennie2017cvpr} (with an exception of NBT, where only the CE version is included).
+The SC loss directly optimizes the CIDEr metric with a reinforcement learning technique.
+We additionally consider a model trained with a \emph{GAN} loss~\cite{shetty2017speaking} (denoted \textbf{GAN}), which applies adversarial training to obtain more diverse and ``human-like'' captions, and their respective non-GAN baseline with the CE loss.
+
+\textit{TopDown deconstruction.} %
+%
+To better evaluate how each component of a model might influence hallucination, we ``deconstruct'' the TopDown model by gradually removing components until it is equivalent to the FC model. 
+The intermediate networks are \textit{NoAttention}, in which the attention mechanism is replaced by mean pooling, \textit{NoConv} in which spatial feature maps are not input into the network (the model is provided with fully connected feature maps), \textit{SingleLayer} in which only one LSTM is included in the model, and finally, instead of inputting visual features at each time step, visual features are used to initialize the LSTM embedding as is done in the FC model.  By deconstructing the TopDown model in this way, we ensure that model design choices and hyperparameters do not confound results.
+
+\textit{Implementation details.}
+All the baseline models employ features extracted from the fourth layer of ResNet-101~\cite{he2016deep}, except for the GAN model which employs ResNet-152.
+Models without attention traditionally use fully connected layers as opposed to convolutional layers.
+However, as ResNet-101 does not have intermediate fully connected layers, it is standard to average pool convolutional activations and input these features into non-attention based description models.
+Note that this means the difference between the \textit{NoAttention} and \textit{NoConv} model is that the \textit{NoAttention} model learns a visual embedding of spatial feature maps as opposed to relying on pre-pooled feature maps.
+%
+All models except for TopDown-BB, NBT, and GAN are implemented in the same open source framework from~\citet{luo2018discriminability}.\footnote{\url{https://github.com/ruotianluo/self-critical.pytorch}}
+
+%
+\textit{Training/Test splits.}
+We evaluate the captioning models on two MSCOCO splits. First, we consider the split from Karpathy et al.~\cite{karpathy2015deep}, specifically in that case the models are trained on the respective Karpathy Training set, tuned on Karpathy Validation set and the reported numbers are on the Karpathy Test set.
+We also consider the \emph{Robust} split, introduced in \cite{lu2018neural}, which provides a compositional split for MSCOCO. Specifically, it is ensured that the object pairs present in the training, validation and test captions do not overlap. %
+In this case the captioning models are trained on the Robust Training set, tuned on the Robust Validation set and the reported numbers are on the Robust Test set.
+%
+%
+
+%
+\subsection{Which Models Are More Prone To Hallucination?}
+\label{sec:sota_hallucination}
+
+We first present how well competitive models perform on our proposed \metric{} metric (Table~\ref{tab:hallucination}). We report \metric{}  at sentence-level and at instance-level (CHs and CHi in the table).
+In general, we see that models which perform better on standard evaluation metrics, perform better on \metric{}, though this is not always true.
+In particular, models which optimize for CIDEr frequently hallucinate more.
+Out of all generated captions on the Karpathy Test set, anywhere between 7.4\% and 17.7\% include a hallucinated object.
+When shifting to more difficult training scenarios in which new combinations of objects are seen at test time, hallucination consistently increases (Table~\ref{tab:hallucination-robust}).
+
+%
+
+
+\textit{Karpathy Test set.}  Table~\ref{tab:hallucination} presents object hallucination 
+%
+on the Karpathy Test set.
+All sentences are generated using beam search and a beam size of 5.
+We note a few important trends. First, models with attention tend to perform better on the \metric{} metric than models without attention.
+As we explore later, this is likely because they have a better understanding of the image.
+In particular, methods that incorporate bounding box attention (as opposed to relying on coarse feature maps), consistently have lower hallucination as measured by our \metric{} metric.
+Note that the NBT model does not perform as well on standard captioning metrics as the TopDown-BB model but has lower hallucination.
+This is perhaps because bounding box proposals come from the MSCOCO detection task and are thus ``in-domain'' as opposed to the TopDown-BB model which relies on proposals learned from the Visual Genome~\cite{krishna2017visual} dataset.
+Second, frequently training models with the self-critical loss actually increases the amount of hallucination. One hypothesis is that CIDEr does not penalize object hallucination sufficiently, leading to both increased CIDEr and increased hallucination.
+Finally, the LRCN model has a higher hallucination rate than the FC model, indicating that inputting the visual features only at the first step, instead of at every step, leads to more image relevant captions.
+
+We also consider a GAN based model ~\cite{shetty2017speaking} in our analysis. We include a baseline model (trained with CE) as well as a model trained with the GAN loss.\footnote{Sentences were procured directly from the authors.}
+Unlike other models, the GAN model uses a stronger visual network (ResNet-152) which could explain the lower hallucination rate for both the baseline and the GAN model.
+Interestingly, when comparing the baseline and the GAN model (both trained with ResNet-152), standard metrics decrease substantially, even though human evaluations from ~\cite{shetty2017speaking} demonstrate that sentences are of comparable quality.
+On the other hand, hallucination decreases, implying that the GAN loss actually helps decrease hallucination. %
+Unlike the self critical loss, the GAN loss encourages sentences to be human-like as opposed to optimizing a metric.
+Human-like sentences are not likely to hallucinate objects, and a hallucinated object is likely a strong signal to the discriminator that a sentence is generated, and is not from a human.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/hallucination_examples.pdf}
+\caption{\label{fig:qualitative} \small Examples of object hallucination from two state-of-the-art captioning models, TopDown and NBT, see Section~\ref{sec:sota_hallucination}.}
+\end{figure*}
+
+We also assess the effect of beam size on \metric{}. We find that generally beam search decreases hallucination. 
+We use beam size of 5, and for all models trained with cross entropy, it outperforms lower beam sizes on \metric{}.
+However, when training models with the self-critical loss, beam size sometimes leads to worse performance on \metric{}.
+For example, on the Att2In model trained with SC loss, a beam size of 5 leads to $12.2$ on \metric{}s and $8.4$ on \metric{}i, while a beam size of 1 leads to $10.8$ on \metric{}s and $8.1$ on \metric{}i.
+
+%
+
+%
+%
+%
+%
+%
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}l@{\ }|@{\ }c@{\ }|@{\ }c@{\ \ }c@{\ \ }c@{\ \ }c@{\ \ }c@{\ \ }c@{}}
+\toprule
+        & Att  & S & M & C & CHs   & CHi     \\
+\midrule
+FC*      &            & 15.5 & 22.7  & 76.2 & 21.3 & 15.3   \\
+Att2In*  & \checkmark  & 16.9 & 24.0   & 85.8 &  14.1 & 10.1    \\
+TopDown* & \checkmark  & 17.7 & 24.7  & 89.8 & 11.3 & 7.9    \\
+NBT $^\dagger$    & \checkmark   & 18.2  & 24.9   & 93.5  & 6.2 & 4.2    \\
+\bottomrule
+\end{tabular}
+\caption{\small Hallucination Analysis on the Robust Test set: Spice (S), CIDEr (C) and METEOR (M) scores across different image captioning models as well as \metric{}s (sentence level, CHs) and \metric{}i (instance level, CHi). * are trained/evaluated within the same implementation~\cite{luo2018discriminability}, $^\dagger$ are trained/evaluated with implementation publicly released with corresponding papers. All models trained with cross-entropy loss. See Section~\ref{sec:sota_hallucination}.}
+\label{tab:hallucination-robust}
+\end{table}
+
+
+
+\textit{Robust Test set.}
+Next we review the hallucination behavior on the Robust Test set (Table~\ref{tab:hallucination-robust}).
+For almost all models the hallucination increases on the Robust split (e.g. for TopDown from 8.4\% to 11.3\% of sentences), indicating that the issue of hallucination is more critical in scenarios where test examples can not be assumed to have the same distribution as train examples. We again note that attention is helpful for decreasing hallucination.
+We note that the NBT model actually has lower hallucination scores on the robust split.
+This is in part because when generating sentences we use the detector outputs provided by~\citet{lu2018neural}.
+Separate detectors on the Karpathy test and robust split are not available and the detector has access to images in the robust split during training.
+Consequently, the comparison between NBT and other models is not completely fair, but we include the number for completeness.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/Consistency-Analysis.pdf}
+\caption{\label{fig:consistency} \small Image and Language model consistency (IM, LM) and \metric{}i (instance-level, CHi) on deconstructed TopDown models. Images with less hallucination tend to make errors consistent with the image model, whereas models with more hallucination tend to make errors consistent with the language model, see Section~\ref{sec:causes}.}
+\end{figure*}
+
+%
+In addition to the Robust Test set, we also consider a set of MSCOCO in which certain objects are held out, which we call the \emph{Novel Object split}~\cite{hendricks2016deep}.
+We train on the training set outlined in~\cite{hendricks2016deep} and test on the Karpathy test split, which includes objects unseen during training.
+Similarly to the Robust Test set, we see hallucination increase substantially on this split.
+For example, for the TopDown model hallucination increases from 8.4\% to 12.1\% for CHAIRs and 6.0\% to 9.1\% for CHAIRi.%
+
+We find no obvious correlation between the average length of the generated captions and the hallucination rate. Moreover, vocabulary size does not correlate with hallucination either, i.e. models with \emph{more diverse} descriptions may actually \emph{hallucinate less}. We notice that hallucinated objects tend to be mentioned towards \emph{the end of the sentence} (on average at position 6, with average sentence length 9), suggesting that some of the preceding words may have triggered hallucination. We investigate this below.
+
+
+\paragraph{Which objects are hallucinated and in what context?}
+Here we analyze which MSCOCO objects tend to be hallucinated more often and what are the common preceding words and  image context. %
+Across all models the super-category \emph{Furniture} is hallucinated most often, accounting for $20 - 50\%$ of all hallucinated objects. Other common super-categories are \emph{Outdoor objects}, \emph{Sports} and \emph{Kitchenware}. On the Robust Test set, \emph{Animals} are often hallucinated. The \emph{dining table} is the most frequently hallucinated object across all models (with an exception of GAN, where \emph{person} is the most hallucinated object). We find that often words like ``sitting'' and ``top'' precede the ``dining table'' hallucination, implying the two common scenarios: a person ``sitting at the table'' and an object ``sitting on top of the table'' (Figure~\ref{fig:qualitative}, row 1, examples 1, 2). Similar observations can be made for other objects, e.g. word ``kitchen'' often precedes ``sink'' hallucination (Figure~\ref{fig:qualitative}, row 1, example 3) and ``laying'' precedes ``bed'' (Figure~\ref{fig:qualitative}, row 1, example 4). 
+At the same time, if we look at which objects are actually present in the image (based on MSCOCO object annotations), we can similarly identify that presence of a ``cat'' co-occurs with hallucinating a ``laptop'' (Figure~\ref{fig:qualitative}, row 2, example 1), a ``dog'' -- with a ``chair'' (Figure~\ref{fig:qualitative}, row 2, example 2) etc. In most cases we observe that the hallucinated objects appear in the relevant scenes (e.g. ``surfboard'' on a beach), but there are cases where objects are hallucinated out of context (e.g. ``bed'' in the bathroom, Figure~\ref{fig:qualitative}, row 1, example 4). 
+
+
+
+%
+\subsection{What Are The Likely Causes Of Hallucination?}
+\label{sec:causes}
+%
+%
+%
+%
+
+In this section we investigate the likely causes of object hallucination. We have earlier described how we deconstruct the TopDown model to enable a controlled experimental setup. We rely on the deconstructed TopDown models to analyze the impact of model components on hallucination.
+
+First, we summarize the hallucination analysis on the deconstructed TopDown models (Table~\ref{tab:deconstruction}).
+%
+%
+Interestingly, the \textit{NoAttention} model does not do substantially worse than the full model (w.r.t. sentence metrics and \metric{}).
+However, removing Conv input (\textit{NoConv} model) and relying only on FC features, decreases the performance dramatically.
+This suggests that much of the gain in attention based models is primarily due to \emph{access to feature maps with spatial locality}, not the actual attention mechanism.
+Also, similar to LRCN vs. FC in Table~\ref{tab:hallucination}, initializing the LSTM hidden state with image features, as opposed to inputting image features at each time step, leads to lower hallucination (\textit{Single Layer} vs. \textit{FC}). 
+%
+This is somewhat surprising, as a model which has access to image information at each time step should be less likely to ``forget'' image content and hallucinate objects. However, it is possible that models which include image inputs at each time step with no access to spatial features overfit to the visual features.%
+%
+%
+
+%
+
+\begin{table}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l|rrrrr}
+\toprule
+Karpathy Split & S & M & C  & CHs & CHi      \\
+\midrule
+TD           & 19.5 & 26.1 & 103.4 & 10.8        &  7.5  \\
+No Attention & 18.8 & 25.6 & 99.7 & 14.2        &  9.5  \\
+No Conv      & 15.7 & 22.9 & 81.3 & 25.7        &  17.8  \\
+Single Layer & 15.5 & 22.7 & 80.2 & 25.7        &  18.2 \\
+FC           & 16.4 & 23.3 & 85.1  & 23.6        &  15.8  \\
+%
+%
+%
+%
+%
+%
+%
+%
+\end{tabular}
+}
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
+\caption{\small Hallucination analysis on deconstructed TopDown models with sentence metrics SPICE (S), METEOR (M), and CIDEr (C), \metric{}s (sentence level, CHs) and \metric{}i (instance level, CHi). See Section~\ref{sec:causes}.}
+\label{tab:deconstruction}
+\end{table}
+
+Now we investigate what causes hallucination using the deconstructed TopDown models and the  \textit{image consistency} and \textit{language consistency} scores, introduced in Sections~\ref{sec:img_consistency} and \ref{sec:lang_consistency} which capture how consistent the hallucinations errors are with image- / language-only models. 
+
+
+Figure~\ref{fig:consistency} shows the \metric{} metric, image consistency and language consistency for the deconstructed TopDown models on the Karpathy Test set (left) and the Robust Test set (right).
+We note that models with \textit{less} hallucination tend to make errors consistent with the image model, whereas models with \textit{more} hallucination tend to make errors consistent with the language model. 
+This implies that models with less hallucination are better at integrating knowledge from an image into the sentence generation process.
+When looking at the Robust Test set, Figure~\ref{fig:consistency} (right), which is more challenging, as we have shown earlier, 
+%
+we see that image consistency \emph{decreases} when comparing to the same models on the Karpathy split, whereas language consistency is similar across all models trained on the Robust split. 
+This is perhaps because the Robust split contains novel compositions of objects at test time, and all of the models are heavily biased by language.  %
+
+Finally, we measure image and language consistency during training for the FC model and note that at the beginning of training errors are more consistent with the language model, whereas towards the end of training, errors are more consistent with the image model. %
+This suggests that models first learn to produce fluent language before learning to incorporate visual information. %
+%
+%
+%
+%
+%
+
+%
+%
+%
+%
+%
+%
+
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/Restrict-BS.pdf}
+\caption{\label{fig:restrict} \small Examples of how TopDown (TD) sentences change when we enforce that objects cannot be hallucinated: SPICE (S), Meteor (M), CIDEr (C), see Section~\ref{sec:metrics_analysis}.}
+\vspace{-0.5cm}
+\end{figure}
+
+ 
+
+
+
+%
+%
+%
+
+%
+\subsection{How Well Do The Standard Metrics Capture Hallucination?}
+\label{sec:metrics_analysis}
+%
+%
+%
+%
+
+In this section we analyze how well SPICE~\cite{spice}, METEOR~\cite{meteor}, and CIDEr~\cite{cider} capture hallucination. All three metrics do penalize sentences for mentioning incorrect words, either via an F score (METEOR and SPICE) or cosine distance (CIDEr). However, if a caption mentions enough words correctly, it can have a high METEOR, SPICE, or CIDEr score while still hallucinating specific objects.
+
+
+
+Our first analysis tool is the TD-Restrict model. This is a  modification of the TopDown model, where we enforce that MSCOCO objects which are not present in an image are \emph{not generated} in the caption. We determine which words refer to objects absent in an image following our approach in Section~\ref{sec:metric}. We then set the log probability for such words to a very low value. We generate sentences with the TopDown and TD-Restrict model with beam search of size $1$, meaning all words produced by both models are the same, until the TopDown model produces a hallucinated word.
+
+We compare which scores are assigned to such captions in Figure~\ref{fig:restrict}. TD-Restrict generates captions that do not contain hallucinated objects, while TD hallucinates a ``cat'' in both cases. In Figure~\ref{fig:restrict} (left) we see that CIDEr scores the more correct caption much lower. %
+In Figure~\ref{fig:restrict} (right), the TopDown model incorrectly calls the animal a ``cat.'' Interestingly, it then correctly identifies the ``frisbee,'' which the TD-Restrict model fails to mention, leading to lower SPICE and CIDEr.
+
+%
+\begin{table}[t]
+\centering
+\small
+%
+\begin{tabular}{l|c|cccc}
+\toprule
+        &  CIDEr & METEOR & SPICE    \\
+\midrule
+FC      & 0.258 & 0.240  & 0.318 \\
+Att2In  & 0.228 &  0.210  & 0.284 \\
+TopDown & 0.185  & 0.168  & 0.215 \\
+\bottomrule
+\end{tabular}
+\caption{\small Pearson correlation coefficients between 1-CHs and CIDEr, METEOR, and SPICE scores, see Section~\ref{sec:metrics_analysis}.}
+\label{tab:metric-correlation}
+\end{table}
+
+In Table~\ref{tab:metric-correlation} we compute Pearson correlation coefficient between individual sentence scores and the \emph{absence} of hallucination, i.e. $1-$\metric{}s; %
+we find that SPICE consistently correlates higher with $1-$\metric{}s. E.g., for the FC model the correlation for SPICE is 0.32, while for METEOR and CIDEr -- around 0.25.%
+
+
+%
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.95\linewidth]{figures/SPICE-Risk.pdf}
+\caption{\label{fig:metrics} \small Difference in percentage of sentences with \emph{no} hallucination for TopDown and FC models when SPICE scores fall into specific ranges. For sentences with low SPICE scores, the hallucination is generally larger for the FC model, even though the SPICE scores are similar, see Section~\ref{sec:metrics_analysis}.}
+\end{figure}
+
+We further analyze the metrics in terms of their predictiveness of hallucination risk. Predictiveness means that a certain score should imply a certain percentage of hallucination. Here we show the results for SPICE and the captioning models FC and TopDown. For each model and a score interval (e.g. $10-20$) we compute the percentage of captions \emph{without} hallucination ($1-$\metric{}s). We  plot the difference between the percentages from both models (TopDown - FC) in Figure~\ref{fig:metrics}. 
+Comparing the models, we note that even when scores are similar (e.g., all sentences with SPICE score in the range of $10-20$), the TopDown model has fewer sentences with hallucinated objects.
+%
+%
+%
+%
+We see similar trends across other metrics.
+Consequently, object hallucination can \textit{not} be always predicted based on the traditional sentence metrics.
+
+
+
+\paragraph{Is CHAIR complementary to standard metrics?}
+In order to measure usefulness of our proposed metrics, we have conducted the following human evaluation (via the Amazon Mechanical Turk). We have randomly selected 500 test images and respective captions from 5 models: non-GAN baseline, GAN, NBT, TopDown and TopDown - Self Critical. The AMT workers were asked to score the presented captions w.r.t. the given image based on their preference. %
+They could score each caption from 5 (very good) to 1 (very bad). We did not use ranking, i.e. different captions could get the same score; each image was scored by three annotators, and the average score is used as the final human score. For each image we consider the 5 captions from all models and their corresponding sentence scores (METEOR, CIDEr, SPICE). We then compute Pearson correlation between the human scores and sentence scores; we also consider a simple combination of sentence metrics and 1-CHAIRs or 1-CHAIRi by summation. The final correlation is computed by averaging across all 500 images. The results are presented in Table~\ref{tab:correlation_human}. Our findings indicate that a simple combination of CHAIRs or CHAIRi with the sentence metrics leads to an increased correlation with the human scores, showing the usefulness and complementarity of our proposed metrics.
+
+\begin{table}[t]
+\centering
+\small
+\resizebox{\linewidth}{!}{
+\begin{tabular}{l|ccccc}
+\toprule
+&  Metric &  Metric & Metric\\
+&   &  +(1-CHs) & +(1-CHi)\\
+\midrule
+METEOR & 0.269 & 0.299 & 0.304 \\
+CIDEr  & 0.282 & 0.321 & 0.322 \\
+SPICE  & 0.248 & 0.277 & 0.281 \\
+\end{tabular}
+}
+\caption{\small Pearson correlation coefficients between individual/combined metrics and human scores. See Section~\ref{sec:metrics_analysis}.}
+\label{tab:correlation_human}
+\end{table}
+
+\paragraph{Does hallucination impact generation of other words?} 
+%
+Hallucinating objects impacts sentence quality not only because an object is predicted incorrectly, but also because the hallucinated word impacts generation of other words in the sentence. Comparing the sentences generated by TopDown and TD-Restrict allows us to analyze this phenomenon. We find that after the hallucinated word is generated, the following words in the sentence are different 47.3\% of the time. This implies that hallucination impacts sentence quality beyond simply naming an incorrect object.
+%
+We observe that one hallucination may lead to another, e.g. hallucinating a ``cat'' leading to hallucinating a ``chair'', hallucinating a ``dog'' -- to a ``frisbee''.
+
+%
+
+\begin{comment}
+\cite{vinyals2015show}, \citep{donahue2015long}, \cite{xu2015show}, \cite{anderson2017bottom}, \cite{rennie2017cvpr}
+\begin{itemize}
+\item We define two axes for comparing image captioning models: architecture and loss
+\item some models have explicit localization components, e.g. attention mechanism or object boxes: do those decrease/prevent hallucinating?
+\item are self-critic models better than cross-entropy?
+\item For better analysis, we also take the topdown model and tweak it step by step until we have something that looks like the FC model.
+\item noise in MSCOCO (can measure hallucination in MSCOCO -- sanity check, but also measures noise a bit)
+\item should have analysis showing that including multiple types of annotation is important (gt annotations/segmentation).  Should at least have one example.
+\end{itemize}
+
+\end{comment}
+
+\begin{comment}
+
+
+\subsection{Object ``hallucination'' analysis}
+
+Table~\ref{tab:hallucination} shows the percentage of sentences in our validation set \lisa{update with test later} in which objects are hallucinated as well as the CIDEr score.
+We note that the FC model, which does not use attention, leads to both a lower CIDEr score and hallucinates more object than the Top-Down models.
+However, for the model trained with the self-critical loss, which is designed to directly optimize CIDEr, we note that the model actually hallucinated \textit{more} objects.
+
+Table~\ref{tab:beam-size} compares hallucination of two different models with different beam sizes.
+
+\begin{itemize}
+\item this subsection: confirm that the issue is real
+\item Interesting observations, co-occurrences, statistics, etc...
+\item Comparison across models
+\item \anja{this means that we need a scalable way of computing such statistics, i.e. automate the hallucination detection!}
+\item qualitative examples
+\end{itemize}
+
+\subsection{Disentangling vision vs. language impact}
+
+We consider three separate sources that might drive word predictions in captioning models.
+First, a visual word (like ``dog'') might be predicted because the image processing component of the captioning model understands that a ``dog'' is in an image.
+Second, a word like ``dog'' might also be predicted because a learned language model understands that ``dog'' generally follows certain words (e.g., ``A little girl petting a...'' might be followed by ``dog'' rather than another noun like ``cup'').
+Finally, word prediction can be driven by nearest neighbor examples.
+
+\begin{itemize}
+\item this subsection: try to figure out why the hallucination happens; whatever we hypothesize will be confirmed in the next section, where we try to fix the problem
+\item \anja{not sure how we want to go about it; will put some thoughts here... 
+Generally, it is not 100\% clear how the hallucination happens, i.e. whether the words are triggered by image context or by the language ``prefix'', right? (It is also not clear if there is a way to disentangle them.) Some possible things to analyze are: is the generated word often appearing in a specific N-gram in training captions? we wanted to look at image-only based models (?) same for language-only (?) GradCAM over image and sentence (?)} \lisa{I like the idea of trying to create a separate image model and language model.}
+\item \anja{I am also not sure if/how the nearest neighbor story fits here; I suppose, if we find that all the models do is ``improve'' the visual nearest neighbor, that would mean that language prior is less important? not sure}
+\item \lisa{Another suggestion was perhaps perturbing the words to see what happened later on in a sentence; for example, if we change ``field'' to ``kitchen'' in Fig 1, do we still generate the word dog?}
+\item evaluating how much image information is retained in different models over time
+\end{itemize}
+
+%
+%
+%
+%
+%
+%
+%
+
+\begin{table}
+\centering
+\begin{tabular}{ l|r|r|r|r|r } 
+ \toprule
+  Model & C & H & IM-C & LM-C & NN-C\\ 
+  \hline
+ TopDown & & & & & \\
+ - Attention & & & & &  \\
+ - Conv & & & & &  \\
+ - $2^{nd}$ Layers & & & & &  \\
+ FC & & & & &    \\
+ \hline
+\end{tabular}
+\caption{Hallucination on the robust split.  Could do for "deconstructed" topdown or on other models... can decide.}
+\label{tab:hallucination}
+\end{table}
+
+\begin{table*}
+\centering
+\begin{tabular}{ l|r r r|r r r } 
+ \toprule
+ & \multicolumn{3}{c|}{Cross Entropy} &  \multicolumn{3}{c}{Self Critical} \\
+  Model & CIDEr & METEOR & Hallucinated & CIDEr & METEOR & Hallucinated\\ 
+  \hline
+ LRCN &  & & & \\
+ FC &  &  & & \\
+ Att2In & & & & \\
+ Top-Down &  &  &  & \\
+ \hline
+\end{tabular}
+\caption{Our proposed method can decrease the amount of object hallucination on both the Karpathy and robust test split.  On the traditional test split, our method does not impact traditional sentence metrics considerably, but on the robust split METOER and CIDEr scores are improved.}
+\label{tab:beam-size}
+\end{table*}
+\end{comment}

@@ -1,0 +1,279 @@
+\section*{Appendix}
+
+ 
+
+
+\section{Experimental Setup}
+\subsection{Datasets}\label{app:datasets}
+We use two popular chat-to-summary datasets for our experiments. The first one is Chart-to-Text~\cite{kantharaj-etal-2022-chart}, which can be found in \url{https://github.com/JasonObeid/Chart2Text}. The second one is SciCap~\cite{hsu-etal-2021-scicap-generating}, which is available at \url{https://github.com/
+tingyaohsu/SciCap}. More details about the two datasets are introduced below.
+
+\paragraph{Chart-To-Text} has mainly two sources: (i) Statista and (ii) Pew Research. (i) Statista is automatically extracted from an online platform that publishes charts in different topics including economics, market, and opinion; it is composed of 34,811 table, charts and summary triplets. (ii) Pew is automatically extracted then manually annotated from data-driven articles about social issues, public opinion and demographic trends; it is composed of 9,285 chart summary pairs.
+
+\paragraph{SciCap~\cite{hsu-etal-2021-scicap-generating}} is a large-scale benchmark for figure-captioning. It is extracted from science arXiv papers published between 2010 and 2020 and contains more than 2 million figures. The figure-caption pairs are extracted using PDFFigures 2.0~\cite{clark2016ieee}, then an automatic figure type classifier is used to select graph plots. To be comparable to the work of \citet{hsu-etal-2021-scicap-generating}, we evaluate our model on the three subsets containing no sub-figures: \emph{First Sentence collection} including $133,543$ figures, \emph{Single-Sentence Caption} collection containing $94,110$ figures and \emph{Caption with No More than $100$ Words} composed of $131,319$ figures.
+
+
+\subsection{De-rendering}
+\label{app:Deplot}
+We use DePlot~\citep{liu-etal-2023-deplot} model in all our experiments. The model code and checkpoint are available at \url{https://github.com/google-research/google-research/tree/master/deplot}. We use the GCS path to the base model \url{gs://deplot/models/base/deplot/v1} fine-tuned to solve the chart-to-table task. We do not perform any additional training, and use the model as a pre-processing step to extract the tables from the chart.
+
+
+\subsection{Baselines}
+We report the state-of-the-art models BLEU scores as presented in their papers. To be able to compare their models to ours and compute our new metric, we fine-tune a PaLI \cite{chen2023pali} model that gives a comparable results in BLEU as the other models. We select PaLI (Pathways Language and Image model) as our method of choice, because it takes the image as input directly, without the need for pre-processing or any OCR model to extract metadata, which can be difficult to reproduce.
+In our experiments, we use the larger $17B$ variant and fine-tune for $5k$ iterations with an image resolution of $588\times588$. The PaLI model is fine-tuned with $128$ GCP-TPUv4. We use a batch size of $256$ and max sequence length of $128$.
+
+\subsection{Our models}
+\subsubsection{DePlot+T5 and DePlot+Flan-T5}
+\label{app:flan_t5}
+We adapt T5~\cite{raffel2020exploring} and FLAN-T5~\cite{suresh2023semantic} models: T5 is available at \url{https://huggingface.co/t5-base} and FLAN-T5 is available at \url{https://huggingface.co/google/flan-t5-base}. We adapt both base models to the chart-to-summary task. We add a de-rendering model to extract the table form the chart and use it as input of the models. Additionally, table embeddings are added to enhance table structure understanding. We fine-tune both models for $220k$ with $16$ GCP-TPUv3 cores using a batch size of $128$ and a max sequence length of $128$.
+
+\subsubsection{MatCha-DePLot+FLAN-T5}
+We use in our experiments MatCha-DePlot+FLAN-T5, which is composed of a MatCha~\cite{liu-etal-2023-matcha} image understanding module coupled to a DePlot+FLAN-T5 model, both of which are base size. MatCha base is available at
+\url{https://github.com/google-research/google-research/tree/master/deplot}. This model takes in input both the a chart image and its table content (i.e. obtained by invoking DePlot). This setup should allow capturing visual aspects that DePlot ignores in its de-rendering process. MatCha-DePlot+FLAN-T5 is fine-tuned for $220k$ training steps with $32$ GCP-TPUv3, $128$ batch size, $1024$ image length and a max sequence length of $128$.
+
+\subsubsection{PALM-2}
+\label{app:LLM-prompting}
+In our experiments for summary generation we use PALM-2(L)~\cite{anil2023palm} with in-context learning. The prompt is displayed in Figure~\ref{fig_app:summary_gen_prompt}.
+
+\begin{figure*}
+    \centering
+    \lstinputlisting[frame=single,basicstyle=\linespread{0.8}\ttfamily\tiny,breaklines=true,inputencoding=utf8,postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}]{prompts/summary_gen_prompt.txt}
+    \caption{PALM 3-shots prompting for summary generation}
+    \label{fig_app:summary_gen_prompt}
+\end{figure*}
+
+\subsubsection{Critic model for \metric{}}
+\label{app:prompting}
+We use PALM-2~\cite{anil2023palm} as a critic model for \metric{}. Prompting is crucial for the interpretability of the entailment results. PaLM-2 outputs a text to refute or entail the claim. Following \citet{wei2022chain}, we use Chain-of-thought prompting to emphasize the reasoning before making the decision on the claim. More precisely we use 2 shots prompting for the critic models as shown in Figure~\ref{fig_app:chart2text_prompt}.
+We use the same prompting for the large and small PALM-2 models.
+The small model is available at \url{https://cloud.google.com/vertex-ai/docs/generative-ai/model-reference/text?hl=en}.
+
+
+\begin{figure*}
+    \centering
+    \lstinputlisting[frame=single,basicstyle=\linespread{0.8}\ttfamily\tiny,breaklines=true,postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space}]{prompts/chart2text_prompt.txt}
+    \caption{PALM 2-shots prompting for \metric.}
+    \label{fig_app:chart2text_prompt}
+\end{figure*}
+
+
+\section{Results}
+
+\subsection{Annotation framework}
+\label{app:annotation-framework}
+\Cref{fig_app:annotation-example} contains a screenshot of the annotation framework used to collect human ratings.
+\begin{figure}
+    \centering
+    \scalebox{1.07}{
+    \includegraphics[width=0.9\linewidth]{figures/annotation_example.pdf}}
+    \vspace{-2ex}
+    \caption{Annotation system example}
+    \label{fig_app:annotation-example}
+    \vspace{-1.0ex}
+\end{figure}
+
+\subsection{Annotation guidelines}
+\label{app:annotation_guidelines}
+We provided to the raters the following annotation guidelines:
+
+\begin{enumerate}
+    \item \textbf{is\_interesting} highlights an important insight from the chart such as min / max / avg value or comparison.
+    
+    The \textbf{title} copy is \textbf{not interesting}.
+    
+    If the sentence is \textbf{not entailed or grammatically not correct} but highlights important info please select \textbf{is\_interesting}.
+    
+    \item \textbf{cleaned\_summary\_is\_grammatically} \textbf{\_correct =} grammar and fluency. Here the critic \textbf{model drops some sentences}. Please focus on the \textbf{fluency of the paragraph}.
+    
+    \item \textbf{Entailed =} you do not need additional info: \textbf{using the chart only}, be able to \textbf{extract the text}. (look at the chart the table can help you but not considered as ground truth.)
+    
+    If the prediction is equal to the title it is entailed you can consider it as not interesting.
+    
+    Please make sure that the meaning of the sentence does \textbf{not} add \textbf{additional info} about the chart.
+    
+    Examples:
+    
+    \begin{enumerate}
+        \item The chart is about kids enrolled in kindergarten and nursery. The sentence contains: kids aged from 3 to 5. The title or the chart dose not refer to the age. \textbf{This adds a condition on the conducted study not referred in the title or the chart.} We considered it \textbf{not entailed}.\\
+    
+    
+        \item If the sentence contains a \textbf{general knowledge} such as definitions:
+        \begin{itemize}
+            \item if \textbf{you know} that the definition \textbf{is correct} select \textbf{is\_entailed}
+            \item if \textbf{you know} that it is \textbf{wrong} or \textbf{do not know} please select \textbf{not entailed}.
+        \end{itemize}
+    \end{enumerate}
+    
+    \item \textbf{Approximate numbers} is allowed up to \textbf{2 digits after the decimal.}
+    
+    Example: exact number in the chart between 2000 and 3000.
+    \begin{itemize}
+        \item Text\_1: "... around 2.51k" is \textbf{entailed}.
+        \item Text\_2: "... around 2.5123k" is \textbf{not entailed}.
+    \end{itemize}
+
+    \item \textbf{grammatically\_correct =} look at grammar errors / fluency / repetition. Punctuation only if \textbf{it changes the meaning of the sentence}. Small errors are acceptable.
+    
+    Example: forget a letter/ invert letters / forget punctuation.
+\end{enumerate}
+\subsection{Correlation to human ratings}
+\subsubsection{Pearson’s coefficient and p-value}
+\label{app:results_Human_annotation_summaries_thresholds}
+We extract the summary level human annotation as following; when a summary contains at least one unsupported sentence it is considered as unfaithful. As a result, the human summary annotation is binary while all the summary metrics BLEU, BLEURT-20, ChaTS-Critic are continuous. Without the use of a threshold to binarize them, the results of the p-value and Pearson coefficients are extremely uninformative. We choose the best possible threshold for each of the metrics in order to compare them in a fair way. In other words, we evaluate the classification task by selecting a threshold.
+In the case of giving 2 binary vectors to compute the Pearson coefficient we have  Pearson = Spearman = Phi (standardized Chi-square). Table~\ref{tab_app:results_Human_annotation_summaries_thresholds} reports the different thresholds used to measure the p-value and Pearson’s coefficient in Table~\ref{tab:results_Human_annotation_summaries}.
+\begin{table*}
+\centering
+\resizebox{1.\linewidth}{!}{
+\begin{tabular}{lc|ccc}
+    \toprule
+    \textbf{Data collection}               &\textbf{$\metric_{summary}$}& \textbf{BLEURT-20 } & \textbf{BLEU}     & \textbf{PARENT} \\%& \textbf{ROUGE1}  & \textbf{ROUGE2}  & \textbf{ROUGELsum} &  &\textbf{$\metric_{sentence}$}
+    \midrule
+    Reference                                                   &  $ 0.9$                   & $ 0.9$              & $nan$             & $0.79$\\ %
+    PALM-2                                                     &  $ 0.9$                   & $ 0.4$              & $ 0.04$           & $ 0.3$\\%& $0.32$           & $ 0.06$          & $ 0.5$       & $0.75$          
+    \pipeline(PALM-2, \metric(PALM-2))                         &  $ 0.9$                   & $ 0.57$             & $ 0.13$           & $ 0.16$\\%& $0.34$           & $ 0.23$          & $ 0.37$       & $0.75$         
+    \pipeline(PALM-2, \metric(DePlot, PALM-2))                  &  $ 0.9$                   & $0.37$              & $ 0.16$           & $0.16$\\%& $0.34$           & $ 0.21$          & $ 0.18$         & $0.75$     
+    \bottomrule
+\end{tabular}
+}
+\caption{The thresholds used to report the values in Table~\ref{tab:results_Human_annotation_summaries} were selected as follows. For all metrics except for \metric{}, we looked for the best threshold that maximized first the chance of observing a lower p-value and then a higher person coefficient. A constant threshold was considered for all sets when using \metric{}.}
+\label{tab_app:results_Human_annotation_summaries_thresholds} 
+\end{table*}
+
+\subsubsection{Precision and Recall curves}
+\label{app:precision_and_recall_metrics}
+Figure~\ref{fig:results_Human_annotation_metrics} shows the correlation of different metrics with human ratings by reporting Precision and Recall on the predicted summaries generated by PALM-2 compared to the original reference. A good correlation would display a continuously decreasing step function allowing to trade-off between Precision and Recall at a given threshold level. The \metric{} summary scores curve shows that it is a better classifier compared to all other metrics.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{figures/metrics_percision_recall.png}
+    \caption{Human evaluation results for summary level to study the correlation of reference based metric to human ratings. Precision and Recall curve is displayed for the different metrics computed on Statista with summaries generated by PALM-2. The reported \metric{} Precision and Recall refers to the summary level.}
+    \label{fig:results_Human_annotation_metrics} 
+\end{figure}
+
+
+\subsection{\pipeline{} pipeline evaluation}
+\label{app:Evaluation_of_the_summary_repair_pipeline}
+We report supplementary experiments and baselines in Table~\ref{tab_app:all-nlg-llm_results}, alongside additional metrics. We report \metric{} and \pipeline{} using DePlot as a de-rendering model and if the original table is provided we add an extra row to ablate the effect of DePlot.
+We use the following model checkpoint for BLEURT computation: \url{https://storage.googleapis.com/bleurt-oss-21/BLEURT-20.zip}.
+\label{app:all-nlg-llm_results}
+\begin{table*}
+\centering
+\resizebox{1.\linewidth}{!}{
+\begin{tabular}{l|l|l|c|cc|c}
+\toprule
+   \textbf{Dataset}          & \textbf{Inputs}              &  \textbf{Model}          &\textbf{\metric} & \textbf{BLEURT-20} & \textbf{BLEU}             & \textbf{PARENT} \\
+\midrule
+
+    \multirow{19}{*}{Chart-To-Text (Statista)}&               & \citet{kantharaj-etal-2022-chart} TAB-T5 + (pretrained-pew)&--&$0.15$&$ 37.32$         & --\\               
+                             &                              & TAB-T5                   & $0.55$          &  $0.53 $           &$ 40.48$     & $0.16 $ \\
+                             &                              & TAB-FLAN-T5              & $0.67$          &  $0.56 $           &$ 41.48$     & $0.32 $ \\
+                             &      original table          & PALM-2                   & $0.9$           &  $0.42 $           &$ 13.2$      & $0.52 $ \\
+                             &      title                   & \piemoji(TAB-T5)        & $0.67$          &  $0.54 $           &$ 41.45$   & $0.16 $\\
+                             &                              & \piemoji(TAB-FLAN-T5)   & $0.76$          &  $\mathbf{0.56}$   &$\mathbf{42.52}$& $0.32 $ \\
+                             &                              & \piemoji(PALM-2)        & $\textbf{0.94}$ &  $0.45 $           &$ 12.43$     & $\mathbf{0.65}$ \\
+    \cline{2-3}
+                             &    original table           & MATCHA-TAB-FLAN-T5       & $0.68 $         &  $ 0.52$           &$38.57$       & $0.2 $\\
+                             &     title + image            & \piemoji(MATCHA-TAB-FLAN-T5) & $0.71 $    &  $0.53 $           &$37.94 $     & $0.25 $ \\
+   \cline{2-7}
+                             &     OCR   table              & \citet{kantharaj-etal-2022-chart} OCR-T5    &--&$0.10$           &$35.29$     & -- \\ 
+    \cline{2-3}
+                             &    image                     & \citet{liu-etal-2023-matcha} MATCHA &--     &--                  &$39.4 $     & -- \\ 
+                             &    image                    & \citet{chen2023pali} PaLI-17B (res. 588) &$0.49$      &$0.49$     &$40.95$   & -- \\ 
+     \cline{2-3}
+                             &                              & DePLot+T5                & $0.54$          &  $0.54$            &$41.83$      & $0.15 $  \\
+                             &                              & DePLot+FLAN-T5           & $ 0.66$         &  $0.55$            &$42.5$       & $ 0.19$ \\
+                             &     DePLot table             & PALM-2                   & $ 0.89$         &  $0.44 $           &$ 14.8$      & $0.32 $ \\
+                             &     title                    & \piemoji(DePLot+T5)     & $ 0.66$         &  $ 0.56$           &$ 42.67$     & $ 0.15$\\
+                             &                              & \piemoji(DePLot+FLAN-T5)& $0.76 $         &  $\mathbf{0.57}$   &$\mathbf{43.1}$ & $0.15 $ \\
+                             &                              & \piemoji(PALM-2)        & $\mathbf{0.96}$ &  $ 0.45$           &$13.34 $     & $\mathbf{0.32}$\\
+    \cline{2-3}
+                             &     DePLot table             & MATCHA-DePLot+FLAN-T5    & $0.7 $          &  $ 0.54$           &$ 37.24$     & $0.25 $\\
+                             &     title + image            & \piemoji(MATCHA-DePLot+FLAN-T5) & $0.79 $ &  $0.55 $           &$39.24 $     & $0.25 $ \\
+    \hline\hline
+    \multirow{10}{*}{Chart-To-Text (Pew)}& OCR   table         & \citet{kantharaj-etal-2022-chart} OCR-T5 &--&$-0.35$             &$10.49$         & --                 \\ 
+    \cline{2-3}            
+                             &    image                     & \citet{liu-etal-2023-matcha} MATCHA &--     &--                  &$12.2 $         & --  \\ 
+                             &                              & \citet{chen2023pali} PaLI-17B (res. 588) &$0.35$     &$0.49$   &$13.93$     & --  \\ 
+    \cline{2-3}    
+                             &                              & DePLot+T5                & $0.27$          &  $0.49$            &$12.06$      & $0.04$ \\
+                             &                              & DePLot+FLAN-T5           & $0.33$          &  $0.5$             &$15.33$      & $0.06$ \\
+                             &     DePLot table             & PALM-2                   & $0.87$          &  $0.47$            &$8.83$       & $\mathbf{0.2}$ \\
+                             &      title                   & \piemoji(DePLot+T5)     & $0.34$          &$0.5$               &$14.9$       & $0.04$ \\
+                             &                              & \piemoji(DePLot+FLAN-T5)& $0.41$          &$0.5$               &$15.09$      & $0.06$ \\
+                             &                              & \piemoji(PALM-2)        & $\mathbf{0.95}$ &$0.48$              &$9.18$       & $\mathbf{0.2}$ \\
+    \cline{2-3}
+                             &     DePLot table             & MATCHA-DePLot+FLAN-T5    &  $0.36$         &$\mathbf{0.51}$     &$\mathbf{15.41}$& $0$ \\
+                             &      title                   & \piemoji(MATCHA-DePLot+FLAN-T5)&$0.42$    &$\mathbf{0.51}$     &$15.27$      & $0$ \\
+    \hline\hline
+
+    SciCap                   & SciTune info                 & \citet{horawalavithana2023scitune} LLaMA-SciTune (13B,CTOM) &--& -- &$5$         & -- \\
+                             &                               & \citet{horawalavithana2023scitune} M4C-Captioner           &--& -- &$6.4$       & -- \\
+    \hline\hline
+    
+    \multirow{10}{*}{SciCap (First Sentence)}& image           & \citet{hsu-etal-2021-scicap-generating} CNN+LSTM(vision only)  &--& -- &$2.19$         & -- \\
+               & & \citet{chen2023pali} PaLI-17B (res. 588) &$0.41$& $0.3$          &$11.05$       & -- \\ 
+    \cline{2-3}
+                             &\multirow{6}{*}{DePLot table} &DePLot+T5                 & $0.3$           &  $0.28$            &$15.27$      & $0$  \\
+                             &                              & DePLot+FLAN-T5           & $0.34$          &  $0.29$            &$15.12$      & $0.18$ \\
+                             &                              & PALM-2                   &  $0.84$         &  $0.3$             &$0.94$       & $0.36$\\
+                             &                              & \piemoji(DePLot+T5)     & $0.44$          &  $0.29$            &$15.2$       & $0.22$\\
+                             &                              & \piemoji(DePLot+FLAN-T5)& $0.48$          &  $0.3$             &$\mathbf{15.53}$ & $0.18$\\
+                             &                              & \piemoji(PALM-2)        & $\mathbf{0.93}$ &  $\mathbf{0.31}$   &$0.76$       & $\mathbf{0.36}$ \\
+    \cline{2-3}
+                             &      DePLot-table            & MATCHA-DePLot+FLAN-T5    & $0.36$          &  $0.29$            &$14.89$      & $0.2$\\
+                             &      image                   & \piemoji(MATCHA-DePLot+FLAN-T5) &$0.49$   &  $0.3$             &$14.19$      & $0.49$ \\
+   \hline\hline
+   \multirow{9}{*}{SciCap (Single-Sent Caption)} & Text          & \citet{hsu-etal-2021-scicap-generating} CNN+LSTM(Text only)  &--& -- &$2.12$         & --  \\
+    \cline{2-3}
+                            & \multirow{6}{*}{DePLot table} & DePLot+T5                &$0.34$           &  $0.28$            &$13.27$       & $0$\\
+                             &                              & DePLot+FLAN-T5           & $0.38$          &  $0.3$             &$15.28$      & $0.37$\\
+                             &                              & PALM-2                   & $0.84$          &  $0.31$            &$0.69$       & $0.35$\\
+                             &                              & \piemoji(DePLot+T5)     & $0.52$          &  $0.3$             &$15.72$      & $0$\\
+                             &                              & \piemoji(DePLot+FLAN-T5)& $0.53$          &  $\mathbf{0.32}$   &$\mathbf{18}$ & $0.35$\\
+                             &                              & \piemoji(PALM-2)        & $\mathbf{0.93}$ &  $\mathbf{0.32}$   &$0.61$       & $\mathbf{0.42}$\\
+    \cline{2-3}
+                             &      DePLot-table            & MATCHA-DePLot+FLAN-T5    &$0.37$           &  $0.3$             &$15.33$      & $0.23$ \\
+                             &      image                   & \piemoji(MATCHA-DePLot+FLAN-T5)&$0.51$    &  $\mathbf{0.32}$   &$16.96$      & $0.23$ \\
+  \hline\hline
+   \multirow{9}{*}{SciCap (Caption w/ <=100 words)}  & Text  & \citet{hsu-etal-2021-scicap-generating} CNN+LSTM(Text only)  &--& -- &$1.72$         & --\\
+    \cline{2-3}
+                             & \multirow{6}{*}{DePLot table}&DePLot+T5                 & $0.31$          &  $0.28$            &$14.52$      & $0.15$\\
+                             &                              & DePLot+FLAN-T5           & $0.35$          &  $0.29$            &$15.71$      & $0.17$\\
+                             &                              & PALM-2                   & $0.82$          &  $0.3$             &$0.81$       & $0.41$\\
+                             &                              & \piemoji(DePLot+T5)     & $0.45$          &  $0.29$            &$14.2$       & $0.15$\\
+                             &                              & \piemoji(DePLot+FLAN-T5)& $0.48$          &  $0.3$             &$15.51$      & $0.17$\\
+                             &                              & \piemoji(PALM-2)        & $\mathbf{0.93}$ &  $\mathbf{0.32}$   &$0.64$       & $0.46$\\
+    \cline{2-3}
+                             &      DePLot-table            & MATCHA-DePLot+FLAN-T5    & $0.34$          &  $0.29$            &$15.90$      & $\mathbf{0.48}$\\
+                             &      image                   & \piemoji(MATCHA-DePLot+FLAN-T5)&$0.46$    &  $0.30$            &$\mathbf{16.16}$ & $\mathbf{0.48}$ \\
+\bottomrule
+\end{tabular}
+}
+\caption{Comparing different models on \metric{} performance. \metric{} refers to \metric{}(PALM-2) using the original table if it is provided in the input, else it refers to \metric{}(DePLot, PALM-2). Additionally, \pipeline{} \piemoji{} uses \metric{} following the same logic. The reported numbers for \citet{kantharaj-etal-2022-chart} uses BLEURT-128 base. For the our experiment we use BLEURT-20}
+\label{tab_app:all-nlg-llm_results} 
+\end{table*}
+
+
+\subsection{Multilingual generalization}
+
+\Cref{fig:i18n-examples-second} contains additional i18n examples from the TATA dataset~\cite{gehrmann2022tata}. Aside from a few stylistic quirks and redundancies, both summaries are accurate and faitfhful.
+
+
+\begin{figure}
+    \centering
+    \begin{tabular}{>{\arraybackslash}p{0.45\textwidth}}
+        \midrule[1.2pt]
+
+        \multicolumn{1}{c}{\includegraphics[width=0.8\linewidth]{figures/tata/image3.png}} \\
+        \footnotesize\textbf{\textsc{\cmark \quad Summary:}} In the survey , 43\% of women reported that they and their partner made decisions about money together . 29\% of women reported that they made decisions about money on their own . 18\% of women reported that their partner made decisions about money on their own . 11\% of women reported that someone else made decisions about money . \\
+        
+        \midrule[1.2pt]
+
+        \multicolumn{1}{c}{\includegraphics[width=0.8\linewidth]{figures/tata/image6.png}} \\
+        \footnotesize\textbf{\textsc{\cmark \quad Summary:}} The statistics display the Huduma kabla ya kujifungua, wakati wa kujifungua na baada . The statistics show that 93\% of the people received professional care before giving birth . The statistics show that 83\% of the people received 1 or 2 injections to prevent tetanus . The statistics show that 44\% of the people gave birth in health services . The statistics show that 36\% of the people received expert assistance during childbirth . The statistics show that 52\% of the people received postpartum care within 2 days of giving birth . \\
+        
+        \midrule[1.2pt]
+    \end{tabular}
+    
+    \caption{Additional i18n examples from TATA alongside with the summaries produced by \pipeline{} instantiated as \piemoji(Gemini, \criticemoji(Gemini)).}
+    \label{fig:i18n-examples-second}
+\end{figure}

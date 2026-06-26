@@ -1,0 +1,455 @@
+\documentclass{article}
+
+
+\usepackage{PRIMEarxiv}
+\usepackage[numbers]{natbib}
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{lipsum}
+\usepackage{fancyhdr}       % header
+\usepackage{graphicx}       % graphics
+\usepackage{times}  % DO NOT CHANGE THIS
+\usepackage{helvet}  % DO NOT CHANGE THIS
+\usepackage{courier}  % DO NOT CHANGE THIS
+% \usepackage[hyphens]{url}  % DO NOT CHANGE THIS
+% \usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{threeparttable}
+\newcommand{\scifig}{{\sc ACL-Fig}}
+\newcommand{\scifigp}{{\sc ACL-Fig-pilot}}
+\graphicspath{{media/}}     % organize your images and other figures under media/ folder
+
+%Header
+\pagestyle{fancy}
+\thispagestyle{empty}
+\rhead{ \textit{ }} 
+
+% Update your Headers here
+\fancyhead[LO]{ACL-Fig: A Dataset for Scientific Figure Classification}
+% \fancyhead[RE]{Firstauthor and Secondauthor} % Firstauthor et al. if more than 2 - must use \documentclass[twoside]{article}
+
+
+
+  
+%% Title
+\title{ACL-Fig: A Dataset for Scientific Figure Classification
+%%%% Cite as
+%%%% Update your official citation here when published 
+% \thanks{\textit{\underline{Citation}}: 
+% \textbf{Authors. Title. Pages.... DOI:000000/11111.}} 
+}
+
+\author{
+  Zeba Karishma, Shaurya Rohatgi, Kavya Shrinivas Puranik \\
+  The Pennsylvania State University \\
+  \texttt{zebakarishma@gmail.com, \{szr207, kzp5555\}@psu.edu} \\
+  \And
+  Jian Wu \\
+  Old Dominion University \\
+  \texttt{jwu@cs.odu.edu} \\
+  %% examples of more authors
+   \And
+  C. Lee Giles \\
+  The Pennsylvania State University \\
+  \texttt{clg20@psu.edu} \\
+  %% \AND
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+  %% \And
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+  %% \And
+  %% Coauthor \\
+  %% Affiliation \\
+  %% Address \\
+  %% \texttt{email} \\
+}
+
+
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+%Large-scale scholarly repositories provide scientists and engineers with a wealth of information retrieved from data present in scientific literature. 
+Most existing large-scale academic search engines are built to retrieve text-based information. However, there are no large-scale retrieval services for scientific figures and tables. One challenge for such services is understanding scientific figures' semantics, such as their types and purposes. A key obstacle is the need for datasets containing annotated scientific figures and tables, which can then be used for classification, question-answering, and auto-captioning. Here, we develop a pipeline that extracts figures and tables from the scientific literature and a deep-learning-based framework that classifies scientific figures using visual features. Using this pipeline, we built the first large-scale automatically annotated corpus, \scifig\, consisting of 112,052 scientific figures extracted from $\approx56$K research papers in the ACL Anthology. The \scifigp\ dataset contains 1,671 manually labeled scientific figures belonging to 19 categories. The dataset is  accessible at 
+% link\footnote{link hidden for annonymity}.
+\href{https://huggingface.co/datasets/citeseerx/ACL-fig}{https://huggingface.co/datasets/citeseerx/ACL-fig}
+under a CC BY-NC license.
+\end{abstract}
+
+
+\section{Introduction}
+
+Figures are ubiquitous in scientific papers  illustrating experimental and analytical results. We refer to these figures as \emph{scientific figures} to distinguish them from natural images, which usually contain richer colors and gradients. Scientific figures provide a compact way to present numerical and categorical data, often facilitating researchers in drawing insights and conclusions. Machine understanding of scientific figures can assist in developing effective retrieval systems from the hundreds of millions of scientific papers readily available on the Web \cite{khabsa2014plosone}.
+%%Academic search engines such as Google Scholar, Semantic Scholar, and CiteSeerX are built by indexing text extracted from scientific papers and the search engine returns relevant paper in the main result pages. Semantic Scholar \cite{ammar2018construction} extracts figures from scientific documents and display them in the document summary page.
+%%However, understanding the data and scientific knowledge from scientific figures remains a major obstacle to build large-scale scientific figure retrieval systems.
+%%In many scenarios, the key information from the figures are not explicitly presented in the textual content, such as figure types. It is relatively straightforward for humans to infer from the figures but the task is still challenging for AI algorithms. 
+The state-of-the-art machine learning models can parse captions and shallow semantics for specific categories of scientific figures. \cite{Siegel_2018} However, the task of reliably classifying general scientific figures based on their visual features remains a challenge.
+%building a general and robust system that can reliably represent and interpret visual information and connect it with text content remains a challenge. One key step to facilitate advancing figure understanding is to build datasets containing diverse collections of scientific figures and their textual descriptions.
+\begin{figure}
+     \centering
+     \includegraphics[width = {0.6\textwidth}]{images/scie-fig-pilot-2.pdf}
+     \caption{Example figures of each type in {\scifigp}.}
+     \label{fig:samImg}
+ \end{figure}
+ 
+Here, we propose a pipeline to build categorized and contextualized scientific figure datasets. Applying the pipeline on 55,760 papers in the ACL Anthology (downloaded from https://aclanthology.org/ in mid-2021), we built two datasets: \scifig\ and \scifigp. \scifig\ consists of 112,052 scientific figures, their captions, inline references, and  metadata. \scifigp\ (Figure \ref{fig:samImg}) is a subset of unlabeled \scifig, consisting of 1671 scientific figures, which were manually labeled into 19 categories. The \scifigp\ dataset was used as a benchmark for scientific figure classification. The pipeline is open-source and configurable, enabling others to expand the datasets  from other scholarly datasets with pre-defined or new labels. 
+%%First, we extract figures from scientific papers using state-of-the-art figure extraction frameworks, e.g., Deepfigure \cite{siegel2018deepfigures} and PDFFigures2 \cite{Clark2016PDFFigures2M}. 
+%These two state-of-the-art extraction tools produce complimentary results. Deepfigures outputs locations of figures and their captions for born-digital documents. 
+%%We augment the extracted figures by automatically extracting reference context and link them to corresponding figures. In the second stage, we use an unsupervised model to classify figures based on text and/or visual features. The visual-based classifier outperforms the text-based classifier by about 7\%, achieving an accuracy of up to 86.52\%.
+% \begin{figure}
+%      \centering
+%      \includegraphics[width = {0.48\textwidth}]{images/img19.PNG}
+%      \caption{Samples from classes in the proposed \scifigp dataset}
+%      \label{fig:samImg}
+%  \end{figure}
+
+
+
+%Manual Annotation Tool was used by previous work to identify the class labels. Unsupervised clustering algorithms has not been trained on large scientific figures corpus for the purpose of labelling.
+%To the best of our knowledge, there is limited work available in the literature that systematically creates a dataset of scientific figures. Most of the work in multiclass figure classification has been focused on datasets compiled from web [e.g., 6; 7] and synthetic data [e.g., 8] except DocFig [e.g., 9] which has been created from scientific papers but are not publicly available. Since the earlier datasets were created by crawling a specific type of charts,labels were pre-determined and only addressed a limited category of figure types. Manual Annotation Tool was used by previous work to identify the class labels. Unsupervised clustering algorithms has not been trained on large scientific figures corpus for the purpose of labelling.
+%, where we induce high-quality training labels for the task of figure extraction in a large number of scientific documents, with no human intervention. 
+%To accomplish the task of extracting figures, we leverage the auxiliary data provided in the ACL’s large web collections of scientific documents to locate figures and their associated captions in the rendered PDF. Next, we frame this problem as multiclass document figure classification in which one label is assigned to each figure. Here, we propose a system that classifies scholarly document figures into 19 categories using their deep visual and text features. The system takes as input a scholarly document figure, its captions and inline references and outputs a label pre-determined by the clustering mechanism.
+
+
+
+\section{Related Work}
+% First, we focus on extraction of figures from scientific papers. Second, we discuss work on document figure understanding and classification.
+
+\paragraph{Scientific Figures Extraction}
+%Various types of figures such as charts and tables are used to visually represent a wide range of textual information in books, scientific articles, newspapers, etc. Text recognition using optical character recognition (OCR) is the primary process for understanding the content of the document images. However, 
+ %important sub-task for OCR for better and complete understanding the content of the document images. 
+Automatically extracting figures from scientific papers is essential for many downstream tasks, and many frameworks have been developed. 
+%Recent years have seen the emergence of a body of work focusing on use cases for extracted figures. All of these downstream tasks rely upon accurate figure extraction. 
+A multi-entity extraction framework called PDFMEF incorporating a figure extraction module was proposed \cite{Wu2015PDFMEFAM}. Shared tasks such as ImageCLEF \cite{Herrera2015OverviewOT} drew attention to compound figure detection %\cite{Yu2017AssemblingDN}%
+and separation. %\cite{Tsutsui2017ADD}% 
+%Although many off-the-shelf tools exist that can extract embedded images from PDFs , these tools neither extract vector-graphic based images nor the associated captions of the figures. Recent works have explored figure extraction by processing the PDF primitives. 
+\cite{Clark2015LookingBT} proposed a framework called {\sc PDFFigures} that extracted figures and captions in research papers. The authors extended their work and built a more robust framework called {\sc PDFFigures2} \cite{Clark2016PDFFigures2M}. {\sc DeepFigures} was later proposed to incorporate deep neural network models \cite{Siegel_2018}. 
+%Comparing with In comparison to  rule-based methods, DeepFigures exhibited better generalization across different scientific domains  \cite{davila2020chart}.
+
+\paragraph{Scientific Figure Classification}
+Scientific figure classification \cite{Savva2011ReVisionAC, Choudhury2015AnAF} aids machines in understanding figures. Early work used a visual bag-of-words representation with a support vector machine classifier \cite{Savva2011ReVisionAC}. \cite{Zhou2000HoughTF} applied hough transforms to recognize bar charts in document images. %Prasad et al. considered Scale Invariant Feature Transform (SIFT) \cite{lowe2004sift} and Histogram of Oriented Gradient (HOG) \cite{dalal2005hog} features to recognize five different types of charts \cite{4275059}.% 
+\cite {Siegel2016FigureSeerPR} used handcrafted features to classify charts in scientific documents. %,Vitaladevuni2007ClassifyingCG%
+%However, handcrafted features usually did not generalize well.As such a convolutional neural network (CNN)-based model was proposed \cite{kavasidis2018saliencybased} which identified the locations of tables, bar charts, and pie charts in research papers.%
+\cite{tange2016deepchart} combined convolutional neural networks (CNNs) and the deep belief networks, which showed improved performance compared with feature-based classifiers . 
+
+%Tang et al.\cite{TANG2016156} proposed a novel framework (DeepChart) to classify charts by combining (CNNs) and deep belief networks (DBNs). The authors experimentally established that their method is far better than the handcrafted feature based chart classification techniques. In the same direction, Siegel et al. \cite{Siegel2016FigureSeerPR} proposed various kind of document figure classification algorithm using deep features. Again, a summary of other related work can be found in \cite{davila2020chart}. In this paper, we propose a CNN-based classifier that surpasses the state-of-the-art performance.
+
+% \begin{table}
+\begin{table}
+\centering
+\begin{threeparttable}[b]
+\small
+\centering
+\caption{Scientific figure classification datasets. }
+\label{Ch1-table:Stats}
+\begin{tabular}{l|l|l|l} 
+\toprule
+Dataset                    & \textbf{Labels} & \textbf{\#Figures} & \textbf{Image Source}       \\ 
+\midrule
+Deepchart                  & 5               & 5,000               & Web Image                   \\
+Figureseer\tnote{1}                 & 5               & 30,600             & Web Image                   \\
+Prasad et al.              & 5               & 653                & Web Image                   \\
+Revision                   & 10              & 2,000               & Web Image                   \\
+FigureQA\tnote{3}                  & 5               & 100,000             & Synthetic figures           \\ 
+\midrule
+DeepFigures & 2 & 1,718,000 & Scientific Papers\\
+DocFigure\tnote{2}                  & 28              & 33,000             & Scientific Papers           \\
+\textbf{\scifigp}      & \textbf{19}     & \textbf{1,671}      & Scientific Papers  \\
+{\scifig} (inferred)\tnote{4} & -               & \textbf{112,052}    & Scientific Papers \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}
+\item [1] {Only 1000 images are public}.
+\item [2] {Not publicly available.}
+\item [3] {Scientific-style synthesized data}.
+\item [4] {\scifig}-inferred does not contain human-assigned labels.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+\paragraph{Figure classification Datasets}
+There are several existing datasets for figure classification such as DocFigure \citep{8892905}, FigureSeer \cite{Siegel2016FigureSeerPR}, Revision \cite{Savva2011ReVisionAC}, and datasets presented by \cite{Karthikeyani2012MachineLC} (Table~\ref{Ch1-table:Stats}). %and  \cite{Vitaladevuni2007ClassifyingCG}%. Most datasets were collected from the Web except for DocFigure, which was created by extracting figures from scientific documents. FigureSeer and DocFigure each contain more than 30k images. The sizes of other datasets are relatively small. Only a small subset ($\approx1000$)  of the FigureSeer dataset was labeled. Most datasets have no more than 10 labels except for DocFigure, which has 28 labels. %To the best of our knowledge, this dataset is not publicly available.
+FigureQA is a public dataset that is similar to ours, consisting of over one million question-answer pairs grounded in over 100,000 synthesized scientific images \cite{kahou2018figureqa} with five styles.
+%, namely line plots, dot-line plots, vertical and horizontal bar graphs, and pie charts. 
+%This dataset was built to answer linguistic questions about the underlying data. 
+Our dataset is different from FigureQA because the figures were directly extracted from research papers. Especially, the training data of {\sc DeepFigures} are from arXiv and PubMed, labeled with only ``figure'' and ``table'', and does not include fine-granular labels. Our dataset contains fine-granular labels, inline context, and is compiled from a different domain.  
+
+%We created two datasets: The Scifig and SciFig-pilot. The datasets contains automatically annotated and classified scientific figures and tables extracted from scientific papers along with the captions, metadata, and inline reference context. 
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width={0.5\textwidth}]{images/arch.pdf}
+    \caption{Overview of the data generation pipeline.}\label{fig:arch}
+\end{figure}
+
+\section{Data Mining Methodology}
+%Creating a large-scale dataset of scientific figures requires access to full-text in PDF formats. 
+The ACL Anthology is a sizable, well-maintained PDF corpus with clean metadata covering papers in computational linguistics with freely available full-text. Previous work on figure classification used a set of pre-defined categories (e.g., \cite{kahou2018figureqa}, which may only cover some figure types.  We use an unsupervised method to determine figure categories to overcome this limitation. After the category label is assigned, each figure is automatically annotated with metadata, captions, and inline references. The pipeline includes 3 steps: figure extraction,  clustering, and automatic annotation (Figure~\ref{fig:arch}).
+%Following the practice of previous works \cite{Clark2016PDFFigures2M}, we include \emph{tables}, identified by caption labels, as a type of figures. In the following description, unless specially stated, the figure type includes ``tables''. 
+
+
+\subsection{Figure Extraction}
+To mitigate the potential bias of a single figure extractor, we extracted figures using {\sc pdffigures2} \cite{Clark2016PDFFigures2M}  and {\sc deepfigures} \cite{Siegel_2018} which work in different ways. {\sc PDFFigures2} first identifies  captions and the body text because they are identified relatively accurately. Regions containing figures can then be located by identifying rectangular bounding boxes adjacent to captions that do not overlap with the body text. {\sc DeepFigures}  uses the distant supervised learning method to induce labels of figures from a large collection of scientific documents in LaTeX and XML format. The model is based on TensorBox, applying the Overfeat detection architecture to image embeddings generated using ResNet-101 \cite{Siegel_2018}. We utilized the publicly available model weights\footnote{https://github.com/allenai/deepfigures-open} trained on 4M induced figures and 1M induced tables for extraction. The model outputs the bounding boxes of figures and tables. Unless otherwise stated, we collectively refer to figures and tables together as ``figures''. 
+%%Our method successfully extracted 249,669 figures and 254,906 figure from 55,760 papers using {\sc DeepFigures} and {\sc PDFFigures2}, respectively. 
+We used multi-processing to process PDFs. Each process extracts figures following the steps below. The system processed, on average, 200 papers per minute on a Linux server with 24 cores.
+\begin{enumerate}[leftmargin=*,noitemsep]
+    \item Retrieve a paper identifier from the job queue.
+    \item Pull the paper from the file system.
+    \item Extract figures and captions from the paper.
+    \item Crop the figures out of the rendered PDFs using detected bounding boxes.
+    \item Save cropped figures in PNG format and the metadata in JSON format. 
+\end{enumerate}
+
+%%The extraction pipeline was deployed on a Linux server with 24 physical cores. The system was able to extract figures at a rate of approximately 200 papers per minute, taking around 5 hours to extract figures and metadata from all the ACL papers. \wu{remove}
+
+%\subsection{Visual Feature Extraction}
+%\zk{Visual feature extraction was performed on the Scifig dataset for the purpose of clustering and on the Scifig-pilot dataset for classification.} Visual features were extracted using the VGG16 model \cite{simonyan2015vgg16}, pre-trained on the imagenet dataset. VGG16 contains a series of convolutional layers followed by max pooling layers and finally a set of 3 fully connected dense layers.
+
+%Include\_top lets you select if you want the final dense layers or not. False indicates that the final dense layers are excluded when loading the model. 
+%From the input layer to the last max pooling layer (labeled by 7 x 7 x 512) is regarded as feature extraction part of the model, while the rest of the network is regarded as classification part of the model. 
+
+%After defining the model, we load the input image with the size expected by the model, in this case, 224×224. 
+%All input figures are scaled to a dimension of $224\times224$ to be compatible with the input requirement of the VGG16 model.The features were extracted from the second last hidden(dense) layer of the VGG16 model, which consisted of 4096 features for each input figure.We used the Principal Component Analysis (PCA) and reduced the dimension to 1000.
+
+%Since our feature vector has over 4,000 dimensions,we need to reduce the number of features; we need to reduce the dimensionality of the feature vectors to help with training of the clustering model. Next, we employed the Principal Component Analysis to reduce the dimension of feature vectors. It reduces the dimension of the variables of a larger dataset; that is compressed to the smaller one which contains most of the information to build an efficient model.
+
+\subsection{Clustering Methods\label{sec:clusteringmethod}} 
+Next, we use an unsupervised method to label
+extracted figures automatically.  We extract visual features using
+VGG16 \cite{simonyan2014very}, pretrained on ImageNet \cite{deng2009imagenet}. %VGG16 contains a series of convolutional layers followed by max-pooling layers and a set of 3 fully connected dense layers. VGG16 has been used in document representation learning and pattern analysis, e.g., \cite{simonyan2014very}.% 
+All input figures are scaled to a dimension of $224\times224$ to be compatible with the input requirement of VGG16. The features were extracted from the second last hidden (dense) layer, consisting of
+4096 features. Principal Component Analysis was adopted to reduce the dimension to 1000.
+
+Next, we cluster figures represented by the 1000-dimension vectors using $k$-means clustering. We compare two heuristic methods to determine the optimal number of clusters, including the Elbow method %\cite{thorndik1953who}%
+and the Silhouette Analysis \citep{rousseeue1987silhouettes}. The Elbow method examines the \emph{explained variation}, a measure that quantifies the difference between the between-group variance to the total variance,  as a function of the number of clusters. The pivot point (elbow) of the curve determines the number of clusters. 
+
+Silhouette Analysis determines the number of clusters by measuring the distance between clusters. 
+It considers multiple factors such as variance, skewness, and high-low differences and is usually preferred to the Elbow method. The Silhouette plot displays how close each point in one cluster is to points in the neighboring clusters, allowing us to assess the cluster number visually.  %This measure has a range of $[-1, 1]$.%
+ 
+
+\subsection{Linking Figures to Metadata}
+This module associates figures to metadata, including captions, inline reference, figure type, figure boundary coordinates, caption boundary coordinates, and figure text (text appearing on figures, only available for results from {\sc PDFFigures2}). The figure type is determined in the clustering step above. The inline references are obtained using GROBID (see below). The other metadata fields were output by figure extractors. {\sc PDFFigures2} and {\sc DeepFigures} extract the same metadata fields except for ``image text'' and ``regionless captions'' (captions for which no figure regions were found), which are only available for results of {\sc PDFFigures2}.
+
+%\begin{figure}[htb]
+%    \centering
+%    \includegraphics[scale=1]{images/inline.PNG}
+%    \caption{Inline references to figures and tables 
+%are annotated in the created dataset. \wu{I don't think this figure is %necessary. plus it is not a good idea to include a figure from another %paper, even if you cited it.}\cite{lo-etal-2020-s2orc}}
+%    \label{Ch3-figure: residual-resnet}
+%\end{figure}
+
+An inline reference is a text span that contains a reference to a figure or a table. Inline references can help to understand the relationship between text and the objects it refers to. After processing a paper, GROBID outputs a TEI file (a type of XML file), containing marked-up full-text and references. We locate inline references using regular expressions and extract the sentences containing reference marks. 
+
+\section{Results}
+%Here, we describe the results at each step and the final data produced for processing the ACL Anthology papers.
+\subsection{Figure Extraction}
+%\begin{table}[ht]
+%\centering
+%\caption{\label{Ch5-table1}Results of extracting figures from 55760 research papers using two  software packages.}
+%\renewcommand{\footnoterule}{\vspace{-7pt}\rule{0pt}{0pt}}
+%\renewcommand{\arraystretch}{1.2}
+%\begin{tabular}{lll}
+
+%\toprule
+%{\bf Software} &  {\bf \#figures} & \textbf{{DPI}} \\ 
+%\midrule
+%pdffigures2  & 255738 & 72\\
+%%
+%DeepFigures & 249032 & 100\\ 
+%\bottomrule
+%\end{tabular}
+%\end{table}
+
+\begin{figure}[h!]
+     \centering
+     \includegraphics[width = {0.75\textwidth}]{images/extraction.pdf}
+     \caption{\label{fig:venndiagram}Numbers of extracted images.}
+ \end{figure}
+%%We use both {\sc PDFFigures2} and {\sc DeepFigures} to extract images (figures + tables). 
+The numbers of  figures extracted by {\sc PDFFigures2} and {\sc DeepFigures} are illustrated in Figure~\ref{fig:venndiagram}, which indicates a significant overlap between figures extracted by two software packages. However, either package extracted ($\approx5\%$) figures that were not extracted by the other package. By inspecting a random sample of figures extracted by either software package, we found that {\sc DeepFigures} tended to miss cases in which two figures were vertically adjacent to each other. 
+%We also observed that the coordinates of bounding bores detected by {\sc DeepFigures} were not as accurate as {\sc pdffigures2}. 
+We took the union of all figures extracted by both software packages to build the {\scifig}  dataset, which contains a total of 263,952 figures. All images extracted are converted to 100 DPI using standard OpenCV libraries. The total size of the data is $\sim25$GB before compression. Inline references were extracted using GROBID. About 78\% figures have inline references. 
+
+%%\begin{table}[ht]
+%%\centering
+%%\renewcommand{\footnoterule}{\vspace{-7pt}\rule{0pt}{0pt}}
+%%\renewcommand{\arraystretch}{1.2}
+%%\begin{tabular}{c c c c}
+%%\hline
+%%\# of & \# of  & Batch  & Time
+%%Processes &Threads&Size&(in seconds) \\ 
+%%\hline
+%%30& 1000  & 1000 & 5620.75s (93.67min)\\
+%%50 & 1000  & 1000 & 5697.08s (94.95 min)\\
+%%128 & 1000  & 500 & 5964.75s (99.41 min)\\
+%%128 & 10  & 1000 & 7600.67s (126.68 min)\\
+%%\textbf{128} & \textbf{1000}  & \textbf{1000} & \textbf{5571.85s (92.86 min)}\\
+%%256 & 1000  & 1000 & 6158.75 (102.65 min)\\ 
+%%\hline
+%%\end{tabular}
+%%\caption{\label{Ch5-table2} Time taken for the extraction of Inline references in different configurations}
+%%\end{table}
+
+
+%The extraction was conducted on a server with 128 CPU cores, 256GB RAM, and a GPU with 11GB memory. We configured PDFMEF to launch 128 processes and a batch size of 1000 documents. It took about 93 minutes to extract inline references for all papers. 
+
+\subsection{Automatic Figure Annotation}
+The extraction outputs 151,900 tables and 112,052 figures. Only the figures were clustered using the $k$-means algorithm. We varied $k$ from 2 to 20 with an increment of 1 to determine the number of clusters. The results were analyzed using the Elbow method and Silhouette Analysis. No evident elbow was observed in the Elbow method curve. The Silhouette diagram, a plot of the number of clusters versus silhouette score exhibited a clear turning point at $k=15$, where the score reached the global maximum. Therefore, we grouped the figures into 15 clusters. 
+
+To validate the clustering results, 100 figures randomly sampled from each cluster were visually inspected. During the inspection, we identified three new figure types: \emph{word cloud}, \emph{pareto}, and \emph{venn diagram}. The \scifigp\ dataset was then built using all manually inspected figures. Two annotators manually labeled and inspected these clusters. The consensus rate was measured using Cohen's Kappa coefficient, which was $\kappa-0.78$ (substantial agreement) for the {\scifigp} dataset.  
+For completeness, we added 100 randomly selected tables. Therefore, the \scifigp\ dataset contains a total of 1671 figures and tables labeled with 19 classes. The distribution of all classes is shown in Figure~\ref{fig:pilotdist}. 
+
+%%In the Elbow diagram (left panel of Figure~\ref{fig:clusternum}), if the curve resembles an arm, then the ``elbow'' on the arm marks the value of $k$. However, no evident arm was observed in our plot. Therefore, the Elbow Method could not be used for determining the number of clusters. In the Silhouette diagram (right panel of Figure~\ref{fig:clusternum}), the curve exhibits an evident turning point at $k=15$, where the score reaches the maximum. Therefore, we group the figures into 15 clusters. To validate the clustering results, we manually inspected 100 figures randomly sampled from each cluster. We identified three additional types of figures, name
+
+
+%(Figure~\ref{fig:clusternum}).
+%results output by the extraction system was clearly divided into 2 labels: (1) Figure and (2) Tables. There were a total of 150K tables, whereas, only 100k scientific figures was extracted. 
+
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=0.5\textwidth]{EMNLP 2022/images/cluster.pdf}
+%    \caption{Left: Squared distance vs. the number of clusters. Right: Silhouette scores vs. the number of clusters. \wu{describe and remove it.}}
+%    \label{fig:clusternum}
+%\end{figure}
+
+%\begin{figure}[t]
+%    \centering
+%    \begin{minipage}[b]{0.23\textwidth}
+%     \includegraphics[width=\textwidth]{EMNLP 2022/images/Cluster_sil_score.png}
+%    %%\subcaption{(a) A plot of number of Silhouette score vs. \#clusters. }
+%    \label{Ch5-figure:f1}
+%    \end{minipage}
+%   %\hfill
+%    \begin{minipage}[b]{0.22\textwidth}
+%    %\hspace{-0.5cm}
+%    \includegraphics[width=\textwidth]{EMNLP 2022/images/modified_elbow.png}
+%    %%\subcaption{(b) A plot of number of squared distance vs. \#clusters.}
+%    \label{Ch5-figure:f2}
+%    \end{minipage}
+%    %%\vspace*{0.2in}
+%    \caption{Upper: The Silhouette score vs. \#clusters. Lower: The squared distance vs. %\#clusters.\label{fig:clusternum}}
+%\end{figure}
+
+
+% % \begin{table}
+% \centering\small
+% \caption{\label{Ch5-table3}Figure class distribution in the \scifig\ dataset.}
+% % this should be a pie chart
+% \begin{tabular}{l|l||l|l}
+% \toprule
+% \bf{Class}&\bf{\%}&\bf{Class}&\bf{\%}\\ 
+% \midrule
+
+% Trees & 13 & Graphs  & 6\\
+% Natural Images  & 8 & Tables & 6\\
+% Confusion Matrix  & 7 & Screenshots & 6\\
+% Pie Charts  & 6 & Scatter Plot  & 4 \\
+% Bar Charts & 6 & Maps  & 3\\
+% NLP text/grammar  & 6  & Boxplots & 2\\
+% Architecture Diagram & 6  & Venn Diagram & 1\\
+% Algorithm & 6 & Word Cloud  & 1 \\
+% Neural Networks  & 6 & Pareto & 1\\
+% Line Graph  & 6 & & \\
+% \bottomrule
+% \end{tabular}
+% \end{table}
+\begin{figure}
+     \centering
+     \includegraphics[width = {0.7\textwidth}]{images/sci-fig-pilot.pdf}
+     \caption{Figure class distribution in the \scifigp\ dataset.}
+     \label{fig:pilotdist}
+ \end{figure}
+
+
+%%Both Elbow method / SSE Plot and Silhouette method can be used interchangeably based on the details presented by the plots. It may be good idea to use both the plots just to make sure that you select most optimal number of clusters.
+
+% \begin{figure}[h!]
+%    \hspace{-1cm}
+%    \includegraphics[scale=0.15]{images/digits_tsne-generated_18_cluster.png}
+%    \caption{t-SNE plot of scientific figures clustered by k-means.}
+%    \label{Ch5-figure:sne}
+% \end{figure}
+
+%%In the Elbow diagram (left panel of Figure~\ref{fig:clusternum}), if the curve resembles an arm, then the ``elbow'' on the arm marks the value of $k$. However, no evident arm was observed in our plot. Therefore, the Elbow Method could not be used for determining the number of clusters. In the Silhouette diagram (right panel of Figure~\ref{fig:clusternum}), the curve exhibits an evident turning point at $k=15$, where the score reaches the maximum. Therefore, we group the figures into 15 clusters. To validate the clustering results, we manually inspected 100 figures randomly sampled from each cluster. We identified three additional types of figures, name
+
+
+%Cluster analysis were performed using top 10 nearest neighbors to the cluster centroids AND cluster labels were determined manually. Figure~\ref{Ch5-figure:sne} is a t-SNE plot showing \wu{how many} scientific figures in 15 clusters. \wu{If you want to show this plot, start numbering from 1 instead of 0}  Figure~\ref{fig:scifigdist} illustrates a distribution of figures in each type in the {\sc SciFig} dataset. \wu{It is better to label each type and highlight the type that has the largest number and lowest number of figures.} 
+%Furthermore, we determined the distribution of scientific figures over 15 categories in our SciFig corpus. Figure \ref{Ch5-figure:imgCnt} illustrates an uneven distribution of images in each of the classes.
+
+
+
+%\begin{table}[h!]
+%\caption{\label{Ch5-table2} Results of experiments performed. All the models were trained on SciFig-pilot dataset with annotated labels. }
+%\begin{minipage}{\textwidth}
+%\centering
+%\renewcommand{\footnoterule}{\vspace{-7pt}\rule{0pt}{0pt}}
+%\renewcommand{\arraystretch}{1.2}
+%\begin{tabular}{l l l l l l}
+%\toprule
+%\multicolumn{1}{l}{\bf Model} &  {\bf optimizer}  & {\bf Val Acc} \\ 
+%\midrule
+%3-layer CNN  &  RMSProp & 0.5371\\
+%3-layer CNN  & Adam &0.5905\\
+%\textbf{VGG+LSTM} & \textbf{Adam}  & \textbf{0.7913}\\ 
+%\bottomrule
+%\end{tabular}
+%\end{minipage}
+%\end{table}
+
+%\begin{figure}[htb]
+%    \hspace{-0.5cm}
+%    \includegraphics[width={0.5\textwidth}]{EMNLP 2022/images/3-layer_cnn.pdf}
+%    \caption{3-Layer CNN classification model. \wu{remvoe it.}}
+%    \label{fig:3layercnn}
+%\end{figure}
+
+\section{Supervised Scientific Figure Classification}
+Based on the \scifigp\ dataset, we train supervised classifiers. The dataset was split into a training and a  test set (8:2 ratio). Three baseline models were investigated. Model~1 is a 3-Layer CNN, trained with a categorical cross-entropy loss function and the Adam optimizer. The model contains three typical convolutional layers, each followed by a max-pooling and a drop-out layer, and three fully-connected layers. The dimensions are reduced from $32\times32$ to $16\times16$ to $8\times8$. The last fully connected layer classifies the encoded vector into 19 classes. 
+%Figure~\ref{fig:3layercnn} shows the model architecture. 
+This classifier achieves an accuracy of 59\%. 
+
+Model~2 was trained based on the VGG16 architecture ,except that the last three fully-connected layers in the original network were replaced by a long short-term memory layer, followed by dense layers for classification. This model achieved an accuracy of $\sim79\%$, 20\% higher than Model~1. 
+
+Model~3 was the Vision Transformer (ViT) \cite{dosovitskiy2020image}, in which a figure was split into fixed-size patches. Each patch was then linearly embedded, supplemented by position embeddings. The resulting sequence of vectors was fed to a standard Transformer encoder.  The ViT model achieved the best performance, with 83\% accuracy. 
+
+%\begin{figure}[htb]
+%    \centering
+%    \includegraphics[width={0.50\textwidth}]{EMNLP 2022/images/vgg16.pdf}
+%    \caption{VGG16 classification model}
+%    \label{fig:vgg16}
+%\end{figure}
+
+\section{Conclusion}
+Based on the ACL Anthology papers, we designed a pipeline and used it to build a corpus of automatically labeled scientific figures with associated metadata and context information. This corpus, named \scifig, consists of $\approx250$k objects, of which about 42\% are figures and about 58\% are tables. We also built \scifigp, a subset of \scifig, consisting of 1671 scientific figures with 19 manually verified labels. Our dataset includes figures extracted from real-world data and contains more classes than existing datasets, e.g., DeepFigures and FigureQA. 
+%To our best knowledge, this is the largest annotated non-synthetic scientific figure dataset dedicated for scientific figure classification and captioning tasks. 
+%Based on \scifigp, we investigated baseline methods to classify scientific figures using deep neural networks. The VGG16-LSTM model achieved an average accuracy of $\sim79\%$. 
+
+One limitation of our pipeline is that it used VGG16 pre-trained on ImageNet. In the future, we will improve  figure representation by retraining more sophisticated models, e.g., CoCa, \cite{yu2022coca}, on scientific figures. Another limitation was that determining the number of clusters required visual inspection. We will consider density-based methods  %,e.g.,\cite{ye2017aldc},%
+to fully automate the clustering module. 
+
+% Entries for the entire Anthology, followed by custom entries
+\bibliographystyle{unsrt}  
+\bibliography{references}
+
+%Bibliography
+% \bibliographystyle{unsrt}  
+% \bibliography{references}  
+
+
+\end{document}

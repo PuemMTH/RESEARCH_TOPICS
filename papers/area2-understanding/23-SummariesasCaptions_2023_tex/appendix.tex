@@ -1,0 +1,217 @@
+
+
+\section{Token Overlap Study}
+\label{sec:token-overlap-study} 
+This is the additional study we conducted to support \Cref{sec:motivating-analysis}.
+We computed n-gram precision scores (BLEU-4) for mentions and captions
+extracted from different settings.
+For mentions, we included 
+{\em (i)} First Mention, the sentence that first mentions the figure in the paper;
+{\em (ii)} Random Mention, a randomly selected sentence among all mentions;
+and 
+{\em (iii)} Random Sentence, a randomly selected sentence from the paper.
+We also included one or two following sentences, as the surrounding context may contain relevant information for the figure. 
+For captions, we examined: 
+{\em (i)} First Caption, the first sentence of the caption; 
+and {\em (ii)} Whole Caption, all the sentences in the caption. 
+The results are shown in \Cref{tab:analysis_caption-mention}. 
+The extremely low BLEU-4 score for the Random Sentence baseline (First: 0.01, Whole: 0.01) indicates 
+that a randomly selected sentence has very limited information related to the caption.
+In contrast, the results for First Mention (First: 9.39, Whole: 10.54) and Random Mention (First: 9.15, Whole: 10.28) show 
+the presence of significantly more information relevant to the caption.
+All scores in First Mention are slightly better than the corresponding ones in Random Mention, 
+suggesting that writers tend to give more detail when they first introduce the figure.
+% We also think people would tend to describe more information about the figure that covered in the caption based on the results. \cy{What does this mean?}
+
+% \kenneth{TODO CY: Since this is now a motivating analysis, the first thing to say is that RDM does not work, and Mention is apparently much stronger.}
+
+% We conduct another analysis of word overlap. Results shown in \Cref{tab:analysis_ocr-caption-mention}. \ed{put in appendix} 
+
+
+
+% \input{tables/text-matching-table}
+
+
+\section{Data Preprocessing Details}
+\label{sec:appendix-data-preprocessing}
+We describe the detailed data preprocessing steps here as supplementary materials for \Cref{sec:data}.
+
+\paragraph{Dataset Resplit.}
+% \paragraph{Dataset Resplit.}
+% \kenneth{We only find mentions for 80\% of images. I moved this to Limitations, which gives us some more space.}
+\oldDataset was originally created for vision-to-lan\-guage tasks, and
+we needed new train/val/test splits for our work. %as 
+As figures do not overlap, different figures in the same paper can be assigned to different data splits in \oldDataset.
+However, papers' texts overlap more easily and can be problematic for text-summarizing tasks. 
+We resplit \oldDataset to make sure no paper had figures from different data splits, 
+and we excluded figures without any identified Mentions. 
+As a result, the [train/val/test] sets used in this work had [86,825/10,833/10,763] figures 
+sourced from [48,603/6,055/6,053] papers, respectively.\footnote{The Paragraph+OCR-Better model, which used captions with more than 30 tokens, was trained on only 27,224 samples.}
+%\kenneth{TODO CY: Is this correct? Update the numbers.} \cy{This is correct.}
+
+\paragraph{OCR.}
+The OCR texts were extracted from all figures using EasyOCR~\cite{easyocr}.
+The output from EasyOCR included the OCR texts along with their bounding boxes.
+In order to incorporate the OCR texts into our models, we concatenated them with the sequence of coordinates obtained by traversing the bounding boxes from left to right and then from top to bottom.
+
+\paragraph{Representative.}
+It is worth noting that we manually verified 399 figures (the set used in \Cref{sec:analysis}) and found that 81.2\% (324/399) was published at academic conferences, and 51.9\% (207/399) were at ACL Anthology, IEEE, or ACM, suggesting that the data is representative.
+
+\input{tables/length-configuration}
+
+\input{tables/token-overlap-table}
+
+\section{Training and Decoding Details}
+\label{sec:appendix-model-training-details}
+We describe the model training details and the decoding configuration used in \Cref{sec:training-setup}.
+
+\paragraph{Training Details for Text Summarization Models.}
+We fine-tuned Pegasus\footnote{We used \texttt{google/pegasus-arxiv}.} for the text-summarization task using HuggingFace's implementation~\cite{wolf-etal-2020-transformers}. 
+% In our experiments, a total of six different settings were utilized: 
+% (1) Mention, (2) Men- tion+OCR, (3) Paragraph, (4) Paragraph+OCR, (5) Paragraph+OCR-Better, and (6) OCR. 
+All the models shared the same training hyper-parameters except maximum text length, 
+as the data varies in all the examined settings. 
+The maximum source length and target length were set to 
+(\textit{i}) fully cover at least 95\% of text without truncation and 
+(\textit{ii}) be able to fit into the machine. 
+We show the length configuration in \Cref{tab:length-setting}. 
+Other hyper-parameters used for training were 
+batch size = 32, learning rate = 5e-5 with a linear decay scheduler, and number of training epochs = 200. 
+We evaluated the model every five epochs, and the one with the highest ROUGE-2 score was kept for testing~\cite{liu-liu-2021-simcls,zhong-etal-2020-extractive,xu-etal-2020-discourse}. 
+All models were trained with an NVIDIA A100 GPU. Each model took one to three days to train.
+
+% Batch size:32 / Source Length:different / Target Length: 100 / Train for 200 epochs / Validate every 5 epochs / The model with best ROUGR-2 score is keep.
+
+
+
+\paragraph{Training Details for Vision-to-Language Models.}
+Two vision-to-language models were fine-tuned using HuggingFace:
+(\textit{i}) a sequence-to-sequence model using BEiT\footnote{We used \texttt{microsoft/beit-large-patch16-384}.} and GPT-2\footnote{We used \texttt{gpt2-large}.}
+and (\textit{ii}) TrOCR.\footnote{We used \texttt{microsoft/trocr-large-printed}.}  
+The hyperparameters used for training were maximum target length = 100, 
+learning rate = 2e-5 with a linear warmup (one epoch), and linear decay scheduler. 
+Batch sizes were 32 and 64, respectively.
+The models were trained using AdamW~\cite{loshchilov2018decoupled}, with weight decay = 1e-4 for 100 epochs. 
+We evaluated the model every epoch and kept the one with the highest ROUGE-2 score~\cite{liu-liu-2021-simcls,zhong-etal-2020-extractive,xu-etal-2020-discourse}. 
+The model was trained with an NVIDIA A100 GPU for two days.
+
+\paragraph{Decoding.}
+For all generation models, captions were decoded using the beam sampling strategy, 
+with beam size = 5, temperature = 0.8, top-k = 100, repetition penalty = 3.0, 
+minimal length = 10, and maximum length = 100. 
+
+
+
+
+\section{Interfaces\label{sec:app-interface}}
+% \Cref{fig:ui-compare} shows the interface the human judges used to rank the captions (see Section~\ref{sec:human-eval}).
+
+\Cref{fig:ui-compare} shows the interface the human judges used to rank the captions (see Section~\ref{sec:human-eval}).
+The paper's title (without linking to the paper's URL) and abstract are shown. 
+The human judges can drag the captions (each displayed with the figure) on the left pane and drop them to the right pane to rank them.
+The initial display order of the captions is randomized on the interface.
+We did not display the paper's PDF or link to the paper's URL to prevent human judges from biasing toward the author-written captions.
+
+\Cref{fig:ui-rating} shows the interface we used to rate the usefulness of captions (see Section~\ref{sec:quality-annotation}.)
+The title (with a hyperlink to the paper's URL), abstract, and the PDF file of the paper were shown, alongside the target figure's image/caption and all the questions.
+We displayed the paper's PDF to help raters make more informed decisions on the caption quality.
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[height=.95\textheight, frame]{figures/ui-compare.png}
+    \caption{The interface the human judges used to rank the captions (see Section~\ref{sec:human-eval}).}
+    \label{fig:ui-compare}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[height=.95\textheight, frame]{figures/ui-rating.png}
+    \caption{The interface we used to rate the usefulness of captions (see Section~\ref{sec:quality-annotation}).}
+    \label{fig:ui-rating}
+\end{figure*}
+
+
+
+\section{Additional Experimental Results\label{sec:additional-results}}
+In this section, we show all the additional experimental results mentioned in the experiment and analysis.
+
+\paragraph{Normalization Scores.}
+\Cref{fig:length-performance-rouge1,fig:length-performance-rougel,fig:length-performance-wms,fig:length-performance-bertscore} shows the relationship between generation text length and performance (ROUGE-1, ROUGE-L, MoverScore, and BERTScore). The random lines indicate that the text length and the performance are not independent, suggesting that normalization over text length is needed.
+%
+\Cref{tab:random-scores} shows the corresponding random scores for each of the metrics used in \Cref{tab:result-summarization}.
+
+\paragraph{Examples.}
+\Cref{fig:good-bad-example} shows two samples of generation output. The information generated by Pegasus$_{P+O+B}$ could be helpful (A), but it could also introduce factual errors (B).
+
+\paragraph{Performance in Different Quality Beams.}
+\Cref{fig:quality-beam-rouge-rest} shows the ROUGE-1 and ROUGE-L changes in beams of different quality. 
+We can see findings similar to \Cref{sec:auto-eval-quality-beam} where among different generation models, only the one trained with data quality control (\ie, Pegasus$_{P+O+B}$) performed better in the helpful beam, generating captions more similar to helpful captions. 
+
+
+
+\begin{figure*}[t]
+    \centering
+    % \includegraphics[width=0.99\linewidth]{figures/good-bad-example-figure.png}
+    \includegraphics[width=0.99\linewidth]{figures/good-bad-example-figure-all-model.png}
+    \vspace{-2mm}
+    \caption{Example output from text-summarization models. The top three rows were included in the human evaluation. Three human judges ranked the three captions for each figure (from 1 to 3 where lower is better). (A) Pegasus$_{P+O+B}$ was preferred, as it provided more details about the figure. [Image/caption source:~\cite{jiang2019dialogact2vec}] (B) Pegasus$_{P+O+B}$ generated a bad caption by introducing many obvious factual errors. [Image/caption source:~\cite{wang2019theme}]}
+    \vspace{-2mm}
+    \label{fig:good-bad-example}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.48\linewidth]{figures/length-performance-rouge1-fmeasure.png}
+    \includegraphics[width=0.48\linewidth]{figures/length-performance-rouge1-fmeasure-normalized.png}
+    \vspace{-3mm}
+    \caption{The relationship between average text length and ROUGE-1. When the generated text is shorter than 50 tokens, longer texts generally result in a higher ROUGE-1 score.} 
+    \label{fig:length-performance-rouge1}
+    % \vspace{-3mm}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.48\linewidth]{figures/length-performance-rougeL-fmeasure.png}
+    \includegraphics[width=0.48\linewidth]{figures/length-performance-rougeL-fmeasure-normalized.png}
+    \vspace{-3mm}
+    \caption{The relationship between average text length and ROUGE-L. When the generated text is shorter than 50 tokens, longer texts generally result in a higher ROUGE-L score.} 
+    \label{fig:length-performance-rougel}
+    % \vspace{-3mm}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.48\linewidth]{figures/length-performance-wms.png}
+    \includegraphics[width=0.48\linewidth]{figures/length-performance-wms-normalized.png}
+    \vspace{-3mm}
+    \caption{The relationship between average text length and MoverScore. When the generated text is shorter than 30 tokens, longer texts generally result in a higher MoverScore score.} 
+    \label{fig:length-performance-wms}
+    % \vspace{-3mm}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.48\linewidth]{figures/length-performance-bert_score-f1.png}
+    \includegraphics[width=0.48\linewidth]{figures/length-performance-bert_score-f1-normalized.png}
+    \vspace{-3mm}
+    \caption{The relationship between average text length and BERTScore. When the generated text is shorter than 30 tokens, longer texts generally result in a higher BERTScore score.} 
+    \label{fig:length-performance-bertscore}
+    % \vspace{-3mm}
+\end{figure*}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.75\linewidth]{figures/Quality-Beam-Group-Normalized-ROUGE-1.png} \\
+    % \includegraphics[width=0.99\linewidth]{figures/Quality-Beam-Group-Normalized-ROUGE-2.png}
+    \vspace{5mm}
+    \includegraphics[width=0.75\linewidth]{figures/Quality-Beam-Group-Normalized-ROUGE-L.png} \\
+    % \includegraphics[width=0.99\linewidth]{figures/Quality-Beam-Group-Normalized-MoverScore.png}
+    \vspace{5mm}
+    \includegraphics[width=0.75\linewidth]{figures/Quality-Beam-Group-Normalized-BERTScore.png}
+    % \vspace{-3mm}
+    \caption{Normalized ROUGE-1, ROUGE-L, and BERTScore for beams of different quality. Most of the generative models (Pegasus, BEiT+GPT2, and TrOCR) performed better in the unhelpful beam, suggesting that they may be better at generating bad captions. Only the model trained with \textbf{better} captions (Pegasus$_{P+O+B}$) learned to generate good captions by showing a much better score in the helpful beam. Note that though Pegasus$_{O}$ also performs better in the helpful beam, the difference is subtle.}
+    % \vspace{-2mm}
+    \label{fig:quality-beam-rouge-rest}
+\end{figure*}
+
+\input{tables/result-random-score}

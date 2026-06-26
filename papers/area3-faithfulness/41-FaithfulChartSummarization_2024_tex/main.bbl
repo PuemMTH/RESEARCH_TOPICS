@@ -1,0 +1,188 @@
+\begin{thebibliography}{37}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Anderson et~al.(2016)Anderson, Fernando, Johnson, and Gould}]{spice}
+Peter Anderson, Basura Fernando, Mark Johnson, and Stephen Gould. 2016.
+\newblock Spice: Semantic propositional image caption evaluation.
+\newblock In \emph{Computer Vision -- ECCV 2016}, pages 382--398, Cham. Springer International Publishing.
+
+\bibitem[{Andrejczuk et~al.(2022)Andrejczuk, Eisenschlos, Piccinno, Krichene, and Altun}]{andrejczuk-etal-2022-table}
+Ewa Andrejczuk, Julian Eisenschlos, Francesco Piccinno, Syrine Krichene, and Yasemin Altun. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.findings-emnlp.503} {Table-to-text generation and pre-training with {T}ab{T}5}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2022}, pages 6758--6766, Abu Dhabi, United Arab Emirates. Association for Computational Linguistics.
+
+\bibitem[{Anil et~al.(2023)Anil, Dai, Firat, Johnson, Lepikhin, Passos, Shakeri, Taropa, Bailey, Chen et~al.}]{anil2023palm}
+Rohan Anil, Andrew~M Dai, Orhan Firat, Melvin Johnson, Dmitry Lepikhin, Alexandre Passos, Siamak Shakeri, Emanuel Taropa, Paige Bailey, Zhifeng Chen, et~al. 2023.
+\newblock \href {https://arxiv.org/abs/2305.10403} {Palm 2 technical report}.
+\newblock \emph{arXiv preprint arXiv:2305.10403}.
+
+\bibitem[{Benji~Andrews(2023)}]{benetech-making-graphs-accessible}
+Ron Ellis Ryan~Holbrook Benji~Andrews, Hema~Natarajan. 2023.
+\newblock \href {https://kaggle.com/competitions/benetech-making-graphs-accessible} {Benetech - making graphs accessible}.
+
+\bibitem[{Chen et~al.(2020)Chen, Wang, Chen, Zhang, Wang, Li, Zhou, and Wang}]{chen2019tabfact}
+Wenhu Chen, Hongmin Wang, Jianshu Chen, Yunkai Zhang, Hong Wang, Shiyang Li, Xiyou Zhou, and William~Yang Wang. 2020.
+\newblock \href {https://openreview.net/forum?id=rkeJRhNYDH} {Tabfact: A large-scale dataset for table-based fact verification}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Chen et~al.(2023)Chen, Wang, Changpinyo, Piergiovanni, Padlewski, Salz, Goodman, Grycner, Mustafa, Beyer, Kolesnikov, Puigcerver, Ding, Rong, Akbari, Mishra, Xue, Thapliyal, Bradbury, Kuo, Seyedhosseini, Jia, Ayan, Ruiz, Steiner, Angelova, Zhai, Houlsby, and Soricut}]{chen2023pali}
+Xi~Chen, Xiao Wang, Soravit Changpinyo, AJ~Piergiovanni, Piotr Padlewski, Daniel Salz, Sebastian Goodman, Adam Grycner, Basil Mustafa, Lucas Beyer, Alexander Kolesnikov, Joan Puigcerver, Nan Ding, Keran Rong, Hassan Akbari, Gaurav Mishra, Linting Xue, Ashish~V Thapliyal, James Bradbury, Weicheng Kuo, Mojtaba Seyedhosseini, Chao Jia, Burcu~Karagol Ayan, Carlos~Riquelme Ruiz, Andreas~Peter Steiner, Anelia Angelova, Xiaohua Zhai, Neil Houlsby, and Radu Soricut. 2023.
+\newblock \href {https://openreview.net/forum?id=mWVoBz4W0u} {Pa{LI}: A jointly-scaled multilingual language-image model}.
+\newblock In \emph{The Eleventh International Conference on Learning Representations}.
+
+\bibitem[{Choi et~al.(2019)Choi, Jung, Park, Choo, and Elmqvist}]{choi2019visualizing}
+Jinho Choi, Sanghun Jung, Deok~Gun Park, Jaegul Choo, and Niklas Elmqvist. 2019.
+\newblock \href {https://doi.org/10.1111/cgf.13686} {{Visualizing for the Non-Visual: Enabling the Visually Impaired to Use Visualization}}.
+\newblock \emph{Computer Graphics Forum}.
+
+\bibitem[{Clark and Divvala(2016)}]{clark2016ieee}
+Christopher Clark and Santosh Divvala. 2016.
+\newblock \href {https://doi.org/10.1145/2910896.2910904} {Pdffigures 2.0: Mining figures from research papers}.
+\newblock In \emph{Proceedings of the 16th ACM/IEEE-CS on Joint Conference on Digital Libraries}, JCDL '16, page 143–152, New York, NY, USA. Association for Computing Machinery.
+
+\bibitem[{Dhingra et~al.(2019)Dhingra, Faruqui, Parikh, Chang, Das, and Cohen}]{dhingra-etal-2019-handling}
+Bhuwan Dhingra, Manaal Faruqui, Ankur Parikh, Ming-Wei Chang, Dipanjan Das, and William Cohen. 2019.
+\newblock \href {https://doi.org/10.18653/v1/P19-1483} {Handling divergent reference texts when evaluating table-to-text generation}.
+\newblock In \emph{Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics}, pages 4884--4895, Florence, Italy. Association for Computational Linguistics.
+
+\bibitem[{Eisenschlos et~al.(2020)Eisenschlos, Krichene, and M{\"u}ller}]{eisenschlos-etal-2020-understanding}
+Julian Eisenschlos, Syrine Krichene, and Thomas M{\"u}ller. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.findings-emnlp.27} {Understanding tables with intermediate pre-training}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2020}, pages 281--296, Online. Association for Computational Linguistics.
+
+\bibitem[{Fabbri et~al.(2022)Fabbri, Wu, Liu, and Xiong}]{fabbri-etal-2022-qafacteval}
+Alexander Fabbri, Chien-Sheng Wu, Wenhao Liu, and Caiming Xiong. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.naacl-main.187} {{QAF}act{E}val: Improved {QA}-based factual consistency evaluation for summarization}.
+\newblock In \emph{Proceedings of the 2022 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies}, pages 2587--2601, Seattle, United States. Association for Computational Linguistics.
+
+\bibitem[{Gehrmann et~al.(2022)Gehrmann, Ruder, Nikolaev, Botha, Chavinda, Parikh, and Rivera}]{gehrmann2022tata}
+Sebastian Gehrmann, Sebastian Ruder, Vitaly Nikolaev, Jan~A Botha, Michael Chavinda, Ankur Parikh, and Clara Rivera. 2022.
+\newblock \href {https://arxiv.org/abs/2211.00142} {Tata: A multilingual table-to-text dataset for african languages}.
+\newblock \emph{arXiv preprint arXiv:2211.00142}.
+
+\bibitem[{Horawalavithana et~al.(2023)Horawalavithana, Munikoti, Stewart, and Kvinge}]{horawalavithana2023scitune}
+Sameera Horawalavithana, Sai Munikoti, Ian Stewart, and Henry Kvinge. 2023.
+\newblock \href {https://arxiv.org/abs/2307.01139} {Scitune: Aligning large language models with scientific multimodal instructions}.
+\newblock \emph{arXiv preprint arXiv:2307.01139}.
+
+\bibitem[{Hsu et~al.(2021)Hsu, Giles, and Huang}]{hsu-etal-2021-scicap-generating}
+Ting-Yao Hsu, C~Lee Giles, and Ting-Hao Huang. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.findings-emnlp.277} {{S}ci{C}ap: Generating captions for scientific figures}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EMNLP 2021}, pages 3258--3264, Punta Cana, Dominican Republic. Association for Computational Linguistics.
+
+\bibitem[{Huang et~al.(2020)Huang, Cui, Yang, Bao, Wang, Xie, and Zhang}]{huang-etal-2020-achieved}
+Dandan Huang, Leyang Cui, Sen Yang, Guangsheng Bao, Kun Wang, Jun Xie, and Yue Zhang. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.emnlp-main.33} {What have we achieved on text summarization?}
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP)}, pages 446--469, Online. Association for Computational Linguistics.
+
+\bibitem[{Kantharaj et~al.(2022)Kantharaj, Leong, Lin, Masry, Thakkar, Hoque, and Joty}]{kantharaj-etal-2022-chart}
+Shankar Kantharaj, Rixie~Tiffany Leong, Xiang Lin, Ahmed Masry, Megh Thakkar, Enamul Hoque, and Shafiq Joty. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.acl-long.277} {Chart-to-text: A large-scale benchmark for chart summarization}.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 4005--4023, Dublin, Ireland. Association for Computational Linguistics.
+
+\bibitem[{Krishna et~al.(2023)Krishna, Bransom, Kuehl, Iyyer, Dasigi, Cohan, and Lo}]{krishna-etal-2023-longeval}
+Kalpesh Krishna, Erin Bransom, Bailey Kuehl, Mohit Iyyer, Pradeep Dasigi, Arman Cohan, and Kyle Lo. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.eacl-main.121} {{L}ong{E}val: Guidelines for human evaluation of faithfulness in long-form summarization}.
+\newblock In \emph{Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics}, pages 1650--1669, Dubrovnik, Croatia. Association for Computational Linguistics.
+
+\bibitem[{Landis and Koch(1977)}]{landis1977measurement}
+J~Richard Landis and Gary~G Koch. 1977.
+\newblock The measurement of observer agreement for categorical data.
+\newblock \emph{biometrics}, pages 159--174.
+
+\bibitem[{Liu et~al.(2023{\natexlab{a}})Liu, Eisenschlos, Piccinno, Krichene, Pang, Lee, Joshi, Chen, Collier, and Altun}]{liu-etal-2023-deplot}
+Fangyu Liu, Julian Eisenschlos, Francesco Piccinno, Syrine Krichene, Chenxi Pang, Kenton Lee, Mandar Joshi, Wenhu Chen, Nigel Collier, and Yasemin Altun. 2023{\natexlab{a}}.
+\newblock \href {https://doi.org/10.18653/v1/2023.findings-acl.660} {{D}e{P}lot: One-shot visual language reasoning by plot-to-table translation}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: ACL 2023}, pages 10381--10399, Toronto, Canada. Association for Computational Linguistics.
+
+\bibitem[{Liu et~al.(2023{\natexlab{b}})Liu, Piccinno, Krichene, Pang, Lee, Joshi, Altun, Collier, and Eisenschlos}]{liu-etal-2023-matcha}
+Fangyu Liu, Francesco Piccinno, Syrine Krichene, Chenxi Pang, Kenton Lee, Mandar Joshi, Yasemin Altun, Nigel Collier, and Julian Eisenschlos. 2023{\natexlab{b}}.
+\newblock \href {https://doi.org/10.18653/v1/2023.acl-long.714} {{M}at{C}ha: Enhancing visual language pretraining with math reasoning and chart derendering}.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 12756--12770, Toronto, Canada. Association for Computational Linguistics.
+
+\bibitem[{Liu et~al.(2022)Liu, Chen, Guo, Ziyadi, Lin, Chen, and Lou}]{liu2022tapex}
+Qian Liu, Bei Chen, Jiaqi Guo, Morteza Ziyadi, Zeqi Lin, Weizhu Chen, and Jian-Guang Lou. 2022.
+\newblock \href {https://openreview.net/forum?id=O50443AsCP} {{TAPEX}: Table pre-training via learning a neural {SQL} executor}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Luo et~al.(2021)Luo, Li, Wang, and Lin}]{luo2021chartocr}
+Junyu Luo, Zekun Li, Jinpeng Wang, and Chin-Yew Lin. 2021.
+\newblock \href {https://www.microsoft.com/en-us/research/publication/chartocr-data-extraction-from-charts-images-via-a-deep-hybrid-framework/} {{ChartOCR}: Data extraction from charts images via a deep hybrid framework}.
+\newblock In \emph{2021 IEEE Winter Conference on Applications of Computer Vision (WACV)}. The Computer Vision Foundation.
+
+\bibitem[{Masry et~al.(2022)Masry, Do, Tan, Joty, and Hoque}]{masry-etal-2022-chartqa}
+Ahmed Masry, Xuan~Long Do, Jia~Qing Tan, Shafiq Joty, and Enamul Hoque. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.findings-acl.177} {{C}hart{QA}: A benchmark for question answering about charts with visual and logical reasoning}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: ACL 2022}, pages 2263--2279, Dublin, Ireland. Association for Computational Linguistics.
+
+\bibitem[{Maynez et~al.(2023)Maynez, Agrawal, and Gehrmann}]{maynez-etal-2023-benchmarking}
+Joshua Maynez, Priyanka Agrawal, and Sebastian Gehrmann. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.acl-long.511} {Benchmarking large language model capabilities for conditional generation}.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pages 9194--9213, Toronto, Canada. Association for Computational Linguistics.
+
+\bibitem[{Obeid and Hoque(2020)}]{obeid-hoque-2020-chart}
+Jason Obeid and Enamul Hoque. 2020.
+\newblock \href {https://aclanthology.org/2020.inlg-1.20} {Chart-to-text: Generating natural language descriptions for charts by adapting the transformer model}.
+\newblock In \emph{Proceedings of the 13th International Conference on Natural Language Generation}, pages 138--147, Dublin, Ireland. Association for Computational Linguistics.
+
+\bibitem[{Opitz and Frank(2021)}]{opitz-frank-2021-towards}
+Juri Opitz and Anette Frank. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.eacl-main.129} {Towards a decomposable metric for explainable evaluation of text generation from {AMR}}.
+\newblock In \emph{Proceedings of the 16th Conference of the European Chapter of the Association for Computational Linguistics: Main Volume}, pages 1504--1518, Online. Association for Computational Linguistics.
+
+\bibitem[{Papineni et~al.(2002)Papineni, Roukos, Ward, and Zhu}]{papineni-etal-2002-bleu}
+Kishore Papineni, Salim Roukos, Todd Ward, and Wei-Jing Zhu. 2002.
+\newblock \href {https://doi.org/10.3115/1073083.1073135} {{B}leu: a method for automatic evaluation of machine translation}.
+\newblock In \emph{Proceedings of the 40th Annual Meeting of the Association for Computational Linguistics}, pages 311--318, Philadelphia, Pennsylvania, USA. Association for Computational Linguistics.
+
+\bibitem[{Pu et~al.(2021)Pu, Chung, Parikh, Gehrmann, and Sellam}]{pu-etal-2021-learning}
+Amy Pu, Hyung~Won Chung, Ankur Parikh, Sebastian Gehrmann, and Thibault Sellam. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.emnlp-main.58} {Learning compact metrics for {MT}}.
+\newblock In \emph{Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing}, pages 751--762, Online and Punta Cana, Dominican Republic. Association for Computational Linguistics.
+
+\bibitem[{Raffel et~al.(2020)Raffel, Shazeer, Roberts, Lee, Narang, Matena, Zhou, Li, and Liu}]{raffel2020exploring}
+Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, and Peter~J Liu. 2020.
+\newblock Exploring the limits of transfer learning with a unified text-to-text transformer.
+\newblock \emph{The Journal of Machine Learning Research}, 21(1):5485--5551.
+
+\bibitem[{Scialom et~al.(2021)Scialom, Dray, Lamprier, Piwowarski, Staiano, Wang, and Gallinari}]{scialom-etal-2021-questeval}
+Thomas Scialom, Paul-Alexis Dray, Sylvain Lamprier, Benjamin Piwowarski, Jacopo Staiano, Alex Wang, and Patrick Gallinari. 2021.
+\newblock \href {https://doi.org/10.18653/v1/2021.emnlp-main.529} {{Q}uest{E}val: Summarization asks for fact-based evaluation}.
+\newblock In \emph{Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing}, pages 6594--6604, Online and Punta Cana, Dominican Republic. Association for Computational Linguistics.
+
+\bibitem[{Scialom et~al.(2019)Scialom, Lamprier, Piwowarski, and Staiano}]{scialom-etal-2019-answers}
+Thomas Scialom, Sylvain Lamprier, Benjamin Piwowarski, and Jacopo Staiano. 2019.
+\newblock \href {https://doi.org/10.18653/v1/D19-1320} {Answers unite! unsupervised metrics for reinforced summarization models}.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)}, pages 3246--3256, Hong Kong, China. Association for Computational Linguistics.
+
+\bibitem[{Sellam et~al.(2020)Sellam, Das, and Parikh}]{sellam-etal-2020-bleurt}
+Thibault Sellam, Dipanjan Das, and Ankur Parikh. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.704} {{BLEURT}: Learning robust metrics for text generation}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics}, pages 7881--7892, Online. Association for Computational Linguistics.
+
+\bibitem[{Siegel et~al.(2016)Siegel, Horvitz, Levin, Divvala, and Farhadi}]{siegel2016figureseer}
+Noah Siegel, Zachary Horvitz, Roie Levin, Santosh Divvala, and Ali Farhadi. 2016.
+\newblock \href {https://link.springer.com/chapter/10.1007/978-3-319-46478-7_41} {Figureseer: Parsing result-figures in research papers}.
+\newblock In \emph{Computer Vision -- ECCV 2016}, pages 664--680. Springer.
+
+\bibitem[{Steen et~al.(2023)Steen, Opitz, Frank, and Markert}]{steen-etal-2023-little}
+Julius Steen, Juri Opitz, Anette Frank, and Katja Markert. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.acl-short.79} {With a little push, {NLI} models can robustly and efficiently predict faithfulness}.
+\newblock In \emph{Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)}, pages 914--924, Toronto, Canada. Association for Computational Linguistics.
+
+\bibitem[{Suresh et~al.(2023)Suresh, Mukherjee, and Rogers}]{suresh2023semantic}
+Siddharth Suresh, Kushin Mukherjee, and Timothy~T. Rogers. 2023.
+\newblock \href {https://openreview.net/forum?id=_1z2Bqte5L} {Semantic feature verification in {FLAN}-t5}.
+\newblock \emph{ICLR 2023 TinyPapers}.
+
+\bibitem[{Wei et~al.(2022)Wei, Wang, Schuurmans, Bosma, Xia, Chi, Le, Zhou et~al.}]{wei2022chain}
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed~Chi, Quoc~V Le, Denny Zhou, et~al. 2022.
+\newblock \href {https://proceedings.neurips.cc/paper_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract-Conference.html} {Chain-of-thought prompting elicits reasoning in large language models}.
+\newblock \emph{Advances in Neural Information Processing Systems}, 35:24824--24837.
+
+\bibitem[{Zhu et~al.(2021)Zhu, Ran, Lee, Li, and Choo}]{zhu-etal-2021-autochart}
+Jiawen Zhu, Jinye Ran, Roy Ka-Wei Lee, Zhi Li, and Kenny Choo. 2021.
+\newblock \href {https://aclanthology.org/2021.ranlp-1.183} {{A}uto{C}hart: A dataset for chart-to-text generation task}.
+\newblock In \emph{Proceedings of the International Conference on Recent Advances in Natural Language Processing (RANLP 2021)}, pages 1636--1644, Held Online. INCOMA Ltd.
+
+\end{thebibliography}

@@ -1,0 +1,401 @@
+\begin{thebibliography}{53}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Wik(2021)}]{Wikidata}
+ 2021.
+\newblock \href {https://www.wikidata.org/wiki/Wikidata:Main_Page} {Wikidata
+  knowledge base}.
+
+\bibitem[{Agrawal et~al.(2019)Agrawal, Desai, Wang, Chen, Jain, Johnson, Batra,
+  Parikh, Lee, and Anderson}]{agrawal2019nocaps}
+Harsh Agrawal, Karan Desai, Yufei Wang, Xinlei Chen, Rishabh Jain, Mark
+  Johnson, Dhruv Batra, Devi Parikh, Stefan Lee, and Peter Anderson. 2019.
+\newblock nocaps: novel object captioning at scale.
+\newblock In \emph{Proceedings of the IEEE International Conference on Computer
+  Vision}, pages 8948--8957.
+
+\bibitem[{Baek et~al.(2019{\natexlab{a}})Baek, Kim, Lee, Park, Han, Yun, Oh,
+  and Lee}]{craftrecognition}
+Jeonghun Baek, Geewook Kim, Junyeop Lee, Sungrae Park, Dongyoon Han, Sangdoo
+  Yun, Seong~Joon Oh, and Hwalsuk Lee. 2019{\natexlab{a}}.
+\newblock What is wrong with scene text recognition model comparisons? dataset
+  and model analysis.
+\newblock In \emph{International Conference on Computer Vision (ICCV)}.
+
+\bibitem[{Baek et~al.(2019{\natexlab{b}})Baek, Lee, Han, Yun, and
+  Lee}]{craftdetection}
+Youngmin Baek, Bado Lee, Dongyoon Han, Sangdoo Yun, and Hwalsuk Lee.
+  2019{\natexlab{b}}.
+\newblock Character region awareness for text detection.
+\newblock In \emph{Proceedings of the IEEE Conference on Computer Vision and
+  Pattern Recognition}, pages 9365--9374.
+
+\bibitem[{Barzilay and Lapata(2005)}]{barzilay-lapata-2005-collective}
+Regina Barzilay and Mirella Lapata. 2005.
+\newblock \href {https://www.aclweb.org/anthology/H05-1042} {Collective content
+  selection for concept-to-text generation}.
+\newblock In \emph{Proceedings of Human Language Technology Conference and
+  Conference on Empirical Methods in Natural Language Processing}, pages
+  331--338, Vancouver, British Columbia, Canada. Association for Computational
+  Linguistics.
+
+\bibitem[{Carberry et~al.(2006)Carberry, Elzer, and
+  Demir}]{carberry2006information}
+Sandra Carberry, Stephanie Elzer, and Seniz Demir. 2006.
+\newblock Information graphics: an untapped resource for digital libraries.
+\newblock In \emph{Proceedings of the 29th annual international ACM SIGIR
+  conference on Research and development in information retrieval}, pages
+  581--588.
+
+\bibitem[{Chen et~al.(2019)Chen, Zhang, Koh, Kim, Cohen, Yu, Rossi, and
+  Bunescu}]{DBLP:journals/corr/abs-1906-02850}
+Charles Chen, Ruiyi Zhang, Eunyee Koh, Sungchul Kim, Scott Cohen, Tong Yu,
+  Ryan~A. Rossi, and Razvan~C. Bunescu. 2019.
+\newblock \href {http://arxiv.org/abs/1906.02850} {Figure captioning with
+  reasoning and sequence-level training}.
+\newblock \emph{CoRR}, abs/1906.02850.
+
+\bibitem[{Chen et~al.(2020{\natexlab{a}})Chen, Chen, Su, Chen, and
+  Wang}]{chen2020logical}
+Wenhu Chen, Jianshu Chen, Yu~Su, Zhiyu Chen, and William~Yang Wang.
+  2020{\natexlab{a}}.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.708} {Logical
+  natural language generation from open-domain tables}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 7929--7942, Online. Association for
+  Computational Linguistics.
+
+\bibitem[{Chen et~al.(2015)Chen, Fang, Lin, Vedantam, Gupta, Dollar, and
+  Zitnick}]{chen2015microsoft}
+Xinlei Chen, Hao Fang, Tsung-Yi Lin, Ramakrishna Vedantam, Saurabh Gupta, Piotr
+  Dollar, and C.~Lawrence Zitnick. 2015.
+\newblock \href {http://arxiv.org/abs/1504.00325} {Microsoft coco captions:
+  Data collection and evaluation server}.
+
+\bibitem[{Chen et~al.(2020{\natexlab{b}})Chen, Chen, Zha, Zhou, Zhang,
+  Sundaresan, and Wang}]{chen-etal-2020-logic2text}
+Zhiyu Chen, Wenhu Chen, Hanwen Zha, Xiyou Zhou, Yunkai Zhang, Sairam
+  Sundaresan, and William~Yang Wang. 2020{\natexlab{b}}.
+\newblock \href {https://doi.org/10.18653/v1/2020.findings-emnlp.190}
+  {{L}ogic2{T}ext: High-fidelity natural language generation from logical
+  forms}.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2020}, pages 2096--2111, Online. Association for Computational
+  Linguistics.
+
+\bibitem[{Choi et~al.(2019)Choi, Jung, Park, Choo, and
+  Elmqvist}]{Choi2019VisualizingFT}
+J.~Choi, Sanghun Jung, Deok~Gun Park, J.~Choo, and N.~Elmqvist. 2019.
+\newblock Visualizing for the non‐visual: Enabling the visually impaired to
+  use visualization.
+\newblock \emph{Computer Graphics Forum}, 38.
+
+\bibitem[{Cui et~al.(2019)Cui, Badam, Yal{\c{c}}in, and
+  Elmqvist}]{cui2019datasite}
+Zhe Cui, Sriram~Karthik Badam, M~Adil Yal{\c{c}}in, and Niklas Elmqvist. 2019.
+\newblock Datasite: Proactive visual data exploration with computation of
+  insight-based recommendations.
+\newblock \emph{Information Visualization}, 18(2):251--267.
+
+\bibitem[{Demir et~al.(2012)Demir, Carberry, and
+  McCoy}]{demir-etal-2012-summarizing}
+Seniz Demir, Sandra Carberry, and Kathleen~F. McCoy. 2012.
+\newblock \href {https://doi.org/10.1162/COLI_a_00091} {Summarizing information
+  graphics textually}.
+\newblock \emph{Computational Linguistics}, 38(3):527--574.
+
+\bibitem[{Deng et~al.(2009)Deng, Dong, Socher, Li, Li, and Fei-Fei}]{5206848}
+Jia Deng, Wei Dong, Richard Socher, Li-Jia Li, Kai Li, and Li~Fei-Fei. 2009.
+\newblock \href {https://doi.org/10.1109/CVPR.2009.5206848} {Imagenet: A
+  large-scale hierarchical image database}.
+\newblock In \emph{2009 IEEE Conference on Computer Vision and Pattern
+  Recognition}, pages 248--255.
+
+\bibitem[{Devlin et~al.(2019)Devlin, Chang, Lee, and
+  Toutanova}]{devlin-etal-2019-bert}
+Jacob Devlin, Ming-Wei Chang, Kenton Lee, and Kristina Toutanova. 2019.
+\newblock \href {https://doi.org/10.18653/v1/N19-1423} {{BERT}: Pre-training of
+  deep bidirectional transformers for language understanding}.
+\newblock In \emph{Proceedings of the 2019 Conference of the North {A}merican
+  Chapter of the Association for Computational Linguistics: Human Language
+  Technologies, Volume 1 (Long and Short Papers)}, pages 4171--4186,
+  Minneapolis, Minnesota. Association for Computational Linguistics.
+
+\bibitem[{Fasciano and Lapalme(1996)}]{fasciano1996postgraphe}
+Massimo Fasciano and Guy Lapalme. 1996.
+\newblock Postgraphe: a system for the generation of statistical graphics and
+  text.
+\newblock In \emph{Eighth International Natural Language Generation Workshop}.
+
+\bibitem[{Ferres et~al.(2013)Ferres, Lindgaard, Sumegi, and
+  Tsuji}]{Ferres-accessibility-2013}
+Leo Ferres, Gitte Lindgaard, Livia Sumegi, and Bruce Tsuji. 2013.
+\newblock \href {https://doi.org/10.1145/2533682.2533683} {Evaluating a tool
+  for improving accessibility to charts and graphs}.
+\newblock \emph{ACM Trans. Comput.-Hum. Interact.}, 20(5).
+
+\bibitem[{Gong et~al.(2019)Gong, Crego, and
+  Senellart}]{gong-etal-2019-enhanced}
+Li~Gong, Josep Crego, and Jean Senellart. 2019.
+\newblock \href {https://doi.org/10.18653/v1/D19-5615} {Enhanced transformer
+  model for data-to-text generation}.
+\newblock In \emph{Proceedings of the 3rd Workshop on Neural Generation and
+  Translation}, pages 148--156, Hong Kong. Association for Computational
+  Linguistics.
+
+\bibitem[{Green et~al.(2004)Green, Carenini, Kerpedjiev, Mattis, Moore, and
+  Roth}]{green2004autobrief}
+Nancy~L Green, Giuseppe Carenini, Stephan Kerpedjiev, Joe Mattis, Johanna~D
+  Moore, and Steven~F Roth. 2004.
+\newblock Autobrief: an experimental system for the automatic generation of
+  briefings in integrated text and information graphics.
+\newblock \emph{International Journal of Human-Computer Studies}, 61(1):32--70.
+
+\bibitem[{He et~al.(2016)He, Zhang, Ren, and Sun}]{he2016deep}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016.
+\newblock Deep residual learning for image recognition.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 770--778.
+
+\bibitem[{Hochreiter and Schmidhuber(1997)}]{10.1162/neco.1997.9.8.1735}
+Sepp Hochreiter and J\"{u}rgen Schmidhuber. 1997.
+\newblock \href {https://doi.org/10.1162/neco.1997.9.8.1735} {Long short-term
+  memory}.
+\newblock \emph{Neural Comput.}, 9(8):1735–1780.
+
+\bibitem[{Hsu et~al.(2021)Hsu, Giles, and Huang}]{hsu2021scicap}
+Ting-Yao~E. Hsu, C.~Lee Giles, and Ting-Hao~K. Huang. 2021.
+\newblock Scicap: Generating captions for scientific figures.
+\newblock In \emph{Findings of 2021 Conference on Empirical Methods in Natural
+  Language Processing (EMNLP 2021 Findings)}.
+
+\bibitem[{Kim et~al.(2021)Kim, Setlur, and Agrawala}]{kim2021towards}
+Dae~Hyun Kim, Vidya Setlur, and Maneesh Agrawala. 2021.
+\newblock Towards understanding how readers integrate charts and captions: A
+  case study with line charts.
+\newblock In \emph{Proceedings of the CHI Conference on Human Factors in
+  Computing Systems}, pages 1--11.
+
+\bibitem[{Lebret et~al.(2016)Lebret, Grangier, and
+  Auli}]{lebret-etal-2016-neural}
+R{\'e}mi Lebret, David Grangier, and Michael Auli. 2016.
+\newblock \href {https://doi.org/10.18653/v1/D16-1128} {Neural text generation
+  from structured data with application to the biography domain}.
+\newblock In \emph{Proceedings of the 2016 Conference on Empirical Methods in
+  Natural Language Processing}, pages 1203--1213, Austin, Texas. Association
+  for Computational Linguistics.
+
+\bibitem[{Lewis et~al.(2020)Lewis, Liu, Goyal, Ghazvininejad, Mohamed, Levy,
+  Stoyanov, and Zettlemoyer}]{lewis-etal-2020-bart}
+Mike Lewis, Yinhan Liu, Naman Goyal, Marjan Ghazvininejad, Abdelrahman Mohamed,
+  Omer Levy, Veselin Stoyanov, and Luke Zettlemoyer. 2020.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.703} {{BART}:
+  Denoising sequence-to-sequence pre-training for natural language generation,
+  translation, and comprehension}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 7871--7880, Online. Association for
+  Computational Linguistics.
+
+\bibitem[{Li et~al.(2013)Li, Stagitis, Carberry, and McCoy}]{li2013towards}
+Zhuo Li, Matthew Stagitis, Sandra Carberry, and Kathleen~F McCoy. 2013.
+\newblock Towards retrieving relevant information graphics.
+\newblock In \emph{Proceedings of the 36th international ACM SIGIR conference
+  on Research and development in information retrieval}, pages 789--792.
+
+\bibitem[{Lundgard and Satyanarayan(2022)}]{accessibile-viz}
+Alan Lundgard and Arvind Satyanarayan. 2022.
+\newblock \href {http://vis.csail.mit.edu/pubs/vis-text-model} {{Accessible
+  Visualization via Natural Language Descriptions: A Four-Level Model of
+  Semantic Content}}.
+\newblock \emph{IEEE Trans. Visualization \& Comp. Graphics (Proc. IEEE VIS)}.
+
+\bibitem[{Luo et~al.(2021)Luo, Li, Wang, and Lin}]{ChartOCR}
+Junyu Luo, Zekun Li, Jinpeng Wang, and Chin-Yew Lin. 2021.
+\newblock Chartocr: Data extraction from charts images via a deep hybrid
+  framework.
+\newblock \emph{2021 IEEE Winter Conference on Applications of Computer Vision
+  (WACV)}, pages 1916--1924.
+
+\bibitem[{Mei et~al.(2016)Mei, UChicago, Bansal, and Walter}]{mei2016talk}
+Hongyuan Mei, TTI UChicago, Mohit Bansal, and Matthew~R Walter. 2016.
+\newblock What to talk about and how? selective generation using lstms with
+  coarse-to-fine alignment.
+\newblock In \emph{Proceedings of NAACL-HLT}, pages 720--730.
+
+\bibitem[{Mittal et~al.(1998)Mittal, Moore, Carenini, and
+  Roth}]{mittal-etal-1998-describing}
+Vibhu~O. Mittal, Johanna~D. Moore, Giuseppe Carenini, and Steven Roth. 1998.
+\newblock \href {https://www.aclweb.org/anthology/J98-3004} {Describing complex
+  charts in natural language: A caption generation system}.
+\newblock \emph{Computational Linguistics}, 24(3):431--467.
+
+\bibitem[{Obeid and Hoque(2020)}]{obeid}
+Jason Obeid and Enamul Hoque. 2020.
+\newblock \href {https://www.aclweb.org/anthology/2020.inlg-1.20}
+  {Chart-to-text: Generating natural language descriptions for charts by
+  adapting the transformer model}.
+\newblock In \emph{Proceedings of the 13th International Conference on Natural
+  Language Generation}, pages 138--147. Association for Computational
+  Linguistics.
+
+\bibitem[{Parikh et~al.(2020)Parikh, Wang, Gehrmann, Faruqui, Dhingra, Yang,
+  and Das}]{parikh2020totto}
+Ankur Parikh, Xuezhi Wang, Sebastian Gehrmann, Manaal Faruqui, Bhuwan Dhingra,
+  Diyi Yang, and Dipanjan Das. 2020.
+\newblock Totto: A controlled table-to-text generation dataset.
+\newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in
+  Natural Language Processing (EMNLP)}, pages 1173--1186.
+
+\bibitem[{Post(2018)}]{post-2018-call}
+Matt Post. 2018.
+\newblock \href {https://www.aclweb.org/anthology/W18-6319} {A call for clarity
+  in reporting {BLEU} scores}.
+\newblock In \emph{Proceedings of the Third Conference on Machine Translation:
+  Research Papers}, pages 186--191, Belgium, Brussels. Association for
+  Computational Linguistics.
+
+\bibitem[{Pérez-Echeverría et~al.(2018)Pérez-Echeverría, Postigo, and
+  Marín}]{perez}
+Mª del~Puy Pérez-Echeverría, Yolanda Postigo, and Cristina Marín. 2018.
+\newblock \href {https://doi.org/10.1080/03323315.2018.1440248} {Understanding
+  of graphs in social science undergraduate students: selection and
+  interpretation of graphs}.
+\newblock \emph{Irish Educational Studies}, 37(1):89--111.
+
+\bibitem[{Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, and
+  Sutskever}]{radford2019language}
+Alec Radford, Jeff Wu, Rewon Child, David Luan, Dario Amodei, and Ilya
+  Sutskever. 2019.
+\newblock Language models are unsupervised multitask learners.
+\newblock \emph{Open-AI Blog}.
+
+\bibitem[{Raffel et~al.(2020)Raffel, Shazeer, Roberts, Lee, Narang, Matena,
+  Zhou, Li, and Liu}]{Raffel2020t5}
+Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael
+  Matena, Yanqi Zhou, Wei Li, and Peter~J. Liu. 2020.
+\newblock \href {http://jmlr.org/papers/v21/20-074.html} {Exploring the limits
+  of transfer learning with a unified text-to-text transformer}.
+\newblock \emph{Journal of Machine Learning Research}, 21(140):1--67.
+
+\bibitem[{Reiter(2007)}]{reiter2007architecture}
+Ehud Reiter. 2007.
+\newblock An architecture for data-to-text systems.
+\newblock In \emph{Proceedings of the Eleventh European Workshop on Natural
+  Language Generation}, pages 97--104. Association for Computational
+  Linguistics.
+
+\bibitem[{Reiter et~al.(2005)Reiter, Sripada, Hunter, Yu, and
+  Davy}]{reiter2005choosing}
+Ehud Reiter, Somayajulu Sripada, Jim Hunter, Jin Yu, and Ian Davy. 2005.
+\newblock Choosing words in computer-generated weather forecasts.
+\newblock \emph{Artificial Intelligence}, 167(1-2):137--169.
+
+\bibitem[{Sellam et~al.(2020)Sellam, Das, and Parikh}]{sellam2020bleurt}
+Thibault Sellam, Dipanjan Das, and Ankur~P Parikh. 2020.
+\newblock Bleurt: Learning robust metrics for text generation.
+\newblock \emph{arXiv preprint arXiv:2004.04696}.
+
+\bibitem[{Sidorov et~al.(2020)Sidorov, Hu, Rohrbach, and
+  Singh}]{sidorov2020textcaps}
+Oleksii Sidorov, Ronghang Hu, Marcus Rohrbach, and Amanpreet Singh. 2020.
+\newblock \href {http://arxiv.org/abs/2003.12462} {Textcaps: a dataset for
+  image captioning with reading comprehension}.
+
+\bibitem[{Spreafico and Carenini(2020)}]{Andrea-carenini}
+Andrea Spreafico and Giuseppe Carenini. 2020.
+\newblock \href {https://doi.org/10.1145/3399715.3399829} {Neural data-driven
+  captioning of time-series line charts}.
+\newblock In \emph{Proceedings of the International Conference on Advanced
+  Visual Interfaces}, AVI '20, New York, NY, USA. Association for Computing
+  Machinery.
+
+\bibitem[{Srinivasan et~al.(2018)Srinivasan, Drucker, Endert, and
+  Stasko}]{srinivasan2018augmenting}
+Arjun Srinivasan, Steven~M Drucker, Alex Endert, and John Stasko. 2018.
+\newblock Augmenting visualizations with interactive data facts to facilitate
+  interpretation and communication.
+\newblock \emph{IEEE transactions on visualization and computer graphics},
+  25(1):672--681.
+
+\bibitem[{Su et~al.(2021)Su, Vandyke, Wang, Fang, and Collier}]{su2021plangen}
+Yixuan Su, David Vandyke, Sihui Wang, Yimai Fang, and Nigel Collier. 2021.
+\newblock Plan-then-generate: Controlled data-to-text generation via planning.
+\newblock In \emph{Findings of the Association for Computational Linguistics:
+  EMNLP 2021}. Association for Computational Linguistics.
+
+\bibitem[{Tan and Bansal(2019)}]{lxmert}
+Hao Tan and Mohit Bansal. 2019.
+\newblock Lxmert: Learning cross-modality encoder representations from
+  transformers.
+\newblock In \emph{Proceedings of the 2019 Conference on Empirical Methods in
+  Natural Language Processing}.
+
+\bibitem[{Touvron et~al.(2021)Touvron, Cord, Douze, Massa, Sablayrolles, and
+  Jegou}]{pmlr-v139-touvron21a}
+Hugo Touvron, Matthieu Cord, Matthijs Douze, Francisco Massa, Alexandre
+  Sablayrolles, and Herve Jegou. 2021.
+\newblock Training data-efficient image transformers \& distillation through
+  attention.
+\newblock In \emph{Proceedings of the 38th International Conference on Machine
+  Learning}, volume 139 of \emph{Proceedings of Machine Learning Research},
+  pages 10347--10357. PMLR.
+
+\bibitem[{Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}]{Vaswani2017attn}
+Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones,
+  Aidan~N Gomez, \L~ukasz Kaiser, and Illia Polosukhin. 2017.
+\newblock \href
+  {https://proceedings.neurips.cc/paper/2017/file/3f5ee243547dee91fbd053c1c4a845aa-Paper.pdf}
+  {Attention is all you need}.
+\newblock In \emph{Advances in Neural Information Processing Systems},
+  volume~30. Curran Associates, Inc.
+
+\bibitem[{Vedantam et~al.(2015)Vedantam, Lawrence~Zitnick, and
+  Parikh}]{vedantam2015cider}
+Ramakrishna Vedantam, C~Lawrence~Zitnick, and Devi Parikh. 2015.
+\newblock Cider: Consensus-based image description evaluation.
+\newblock In \emph{Proceedings of the IEEE conference on computer vision and
+  pattern recognition}, pages 4566--4575.
+
+\bibitem[{Whitaker and Jacobbe(2017)}]{whitaker}
+Douglas Whitaker and Tim Jacobbe. 2017.
+\newblock \href {https://doi.org/10.1080/10691898.2017.1321974} {Students'
+  understanding of bar graphs and histograms: Results from the locus
+  assessments}.
+\newblock \emph{Journal of Statistics Education}, 25(2):90--102.
+
+\bibitem[{Wiseman et~al.(2017)Wiseman, Shieber, and
+  Rush}]{wiseman2017challenges}
+Sam Wiseman, Stuart~M Shieber, and Alexander~M Rush. 2017.
+\newblock Challenges in data-to-document generation.
+\newblock \emph{arXiv preprint arXiv:1707.08052}.
+
+\bibitem[{Xu et~al.(2015)Xu, Ba, Kiros, Cho, Courville, Salakhutdinov, Zemel,
+  and Bengio}]{Xu2015show}
+Kelvin Xu, Jimmy Ba, Ryan Kiros, Kyunghyun Cho, Aaron Courville, Ruslan
+  Salakhutdinov, Richard Zemel, and Yoshua Bengio. 2015.
+\newblock Show, attend and tell: Neural image caption generation with visual
+  attention.
+\newblock \emph{arXiv preprint arXiv:1502.03044}.
+
+\bibitem[{Yang et~al.(2017)Yang, Blunsom, Dyer, and Ling}]{yang2017reference}
+Zichao Yang, Phil Blunsom, Chris Dyer, and Wang Ling. 2017.
+\newblock Reference-aware language models.
+\newblock In \emph{Proceedings of the 2017 Conference on Empirical Methods in
+  Natural Language Processing}, pages 1850--1859.
+
+\bibitem[{Zbontar et~al.(2021)Zbontar, Jing, Misra, LeCun, and
+  Deny}]{zbontar2021barlow}
+Jure Zbontar, Li~Jing, Ishan Misra, Yann LeCun, and St{\'e}phane Deny. 2021.
+\newblock Barlow twins: Self-supervised learning via redundancy reduction.
+\newblock \emph{arXiv preprint arXiv:2103.03230}.
+
+\bibitem[{Zhang et~al.(2021)Zhang, Li, Hu, Yang, Zhang, Wang, Choi, and
+  Gao}]{zhang2021vinvl}
+Pengchuan Zhang, Xiujun Li, Xiaowei Hu, Jianwei Yang, Lei Zhang, Lijuan Wang,
+  Yejin Choi, and Jianfeng Gao. 2021.
+\newblock Vinvl: Making visual representations matter in vision-language
+  models.
+\newblock \emph{CVPR 2021}.
+
+\end{thebibliography}

@@ -1,0 +1,191 @@
+ 
+
+%In this section, we discuss prior works that
+%(\textit{i}) generate captions for figures and charts,
+%(\textit{ii}) use text-summarization tools for more than simple summarization,
+%and (\textit{iii}) use language generation to support web applications.
+
+%\kenneth{WE NEED A LOT MORE WWW citations!!!}
+
+%\kenneth{My sense is that KDD likes to see a coherent narrative to overview the background. Might need to rewrite this section.}
+%\cy{I still see several papers (KDD 22') writing related works this way though?}
+
+%\paragraph{Generating Captions for Figures.}
+%Figure-captioning work mainly falls into two categories: generating captions through the image of the figure or the data chart upon which the figure is based on.
+Prior figure captioning works can be broadly categorized into two approaches:
+caption generation {\em (i)} based on the image of the figure or {\em (ii)} based on the data chart underlying the figure.
+
+Earlier image-based approaches focused on automated image understanding, which involved parsing images to extract the figure's key attributes and converting parsed data into captions, \eg, using predefined templates~\cite{kahou2017figureqa,kafle2018dvqa,Methani_2020_WACV,qian2021generating,siegel2016figureseer}.
+Recently, with the advance of deep learning, more works are adopting an end-to-end paradigm, generating captions straight from the neural representations of images~\cite{9973197,ImageCLEFmedConceptOverview2021,hsu-etal-2021-scicap-generating,10.1145/3341162.3345601,kanthara2022chart,chen2019figure}.
+Our work contrasts with prior studies by focusing on text to generate captions instead of visuals. 
+To the best of our knowledge, no existing figure-caption datasets explicitly contain the figures' accompanying documents~\cite{ImageCLEFmedConceptOverview2021,hsu-etal-2021-scicap-generating,10.1145/3341162.3345601}, as this task has generally been approached as a vision task.
+Most recently, a knowledge-augmented image captioning method that uses both image and text data was introduced~\cite{scicap-plus}, suggesting the potential of using text from documents.
+
+Some approaches generate captions using the underlying tabular data of a figure rather than the figure's image. 
+Earlier approaches often employed rule-based techniques~\cite{corio1999generation, demir2008generating, fasciano1996postgraphe, mittal1998describing}, while newer ones favor learning-based methods~\cite{barzilay-lapata-2005-collective,wiseman-etal-2017-challenges,moraes2014generating, zhu2021autochart, kanthara2022chart,obeid-hoque-2020-chart,reiter2005choosing,parikh-etal-2020-totto,chen-etal-2020-logical,gong-etal-2019-enhanced,su-etal-2021-plan-generate,chen-etal-2020-logic2text}. 
+Despite these approaches' ability to utilize tabular and meta data, they necessitate access to the figure's raw data. 
+Contrarily, our work uses the rich textual information in scientific documents to generate captions.
+
+
+
+
+\begin{comment}
+\kenneth{This is too short. Need some citations to support connections between caption v.s. web.}
+\paragraph{Language Generation for the Web.}
+\kenneth{Say something about how NLG or summarization tasks is relevant to the Web.}
+\cy{these are all prior WWW papers. we can probably add some more in other venues}
+Language generation has been widely used to support a variety of web applications.
+In ecommerce platforms, people have used language generation models to automatically produce product descriptions~\cite{10.1145/3485447.3512018,10.1145/3308558.3313407,10.1145/3184558.3186345,shao2021controllable}, generate personalized answers based on user preferences~\cite{deng2022toward}, 
+summarize messy online reviews~\cite{10.1145/3178876.3186069}, 
+extract desired information in community-based Q\&A sets~\cite{hsu-2022-sum-qa},
+and quickly respond to negative reviews~\cite{10.1145/3308558.3313581}.
+In other contexts, language generation models were used to summarize lengthy and complex content into short and concise texts: \eg, generating titles for news articles~\cite{10.1145/3366423.3380247},
+drawing conclusions based on for meeting conversations~\cite{10.1145/3308558.3313619},
+captioning web tables and reports~\cite{hancock2019generating},
+extracting relevant key information from cited web articles~\cite{10.1145/3184558.3186951},
+and summarizing online search results~\cite{10.1145/3366423.3380206}.
+This paper focuses on captioning scientific figures to help people quickly understand what the figures want to convey.
+\end{comment}
+
+%\kenneth{How do these work motivate our work?}
+
+
+% \kenneth{Well it's fair to cite Edward's NEW EMNLP paper here haha since it's about summarizing Amazon QAs}
+
+
+%------------------------------------------------------------------------------
+% Before editor's editing
+\begin{comment}
+
+
+
+\bigskip
+
+In the image-based approach, deep-learning models have been effective in parsing figure attributes~\cite{siegel2016figureseer}.
+Recent captioning models encode figures image~\cite{chen2019figure} or with metadata~\cite{qian2021generating} and decode them into captions. 
+To the best of our knowledge, no existing figure-caption datasets explicitly contain the figures' accompanying documents~\cite{ImageCLEFmedConceptOverview2021,hsu-etal-2021-scicap-generating,10.1145/3341162.3345601} because prior work treated this problem as a vision-to-language~\cite{9973197,ImageCLEFmedConceptOverview2021,hsu-etal-2021-scicap-generating,qian2021generating,10.1145/3341162.3345601,kanthara2022chart} or image-understanding task~\cite{kahou2017figureqa,kafle2018dvqa,Methani_2020_WACV}. 
+%\kenneth{TODO Kenneth: Move the rebuttal texts here, saying some datasets do not even have the article available.}\cy{done}%
+
+
+
+
+
+
+%\kenneth{We can say more here? Or point to Introduction.}
+The Introduction section (Section~\ref{sec:introduction}) provides an extensive overview of previous research in this field.
+These models primarily focused on the visual aspect, while our work aimed to use textual information to produce captions.
+Most recently, Yang {\em et al.} presented a knowledge-augmented 
+image captioning 
+approach that %to generate captions for scientific figures, 
+utilizes both visual and textual information~\cite{scicap-plus}.
+The effectiveness of their approach suggests that leveraging textual information from documents is a promising direction.
+
+In the latter camp of approach, both rule-based techniques~\cite{corio1999generation, demir2008generating, fasciano1996postgraphe, mittal1998describing} and data-driven approaches~\cite{barzilay-lapata-2005-collective,wiseman-etal-2017-challenges,moraes2014generating, zhu2021autochart, kanthara2022chart,obeid-hoque-2020-chart,reiter2005choosing,parikh-etal-2020-totto,chen-etal-2020-logical,gong-etal-2019-enhanced,su-etal-2021-plan-generate,chen-etal-2020-logic2text} have been applied to generate captions from tabular data.
+These methods can take into account data, meta data, and user intent to generate captions, but the requirement of tabular data prohibited much usage of pixel figures in scientific articles.
+%but they require tabular data, limiting their use to pixel figures found in scientific articles.
+Our work, however, leverages the rich textual information in articles to produce captions,
+%improve figure-captioning results, 
+overcoming the limitations of prior methods.
+
+
+
+
+
+\paragraph{Summarizing Text for Purposes Beyond Summary.} 
+In this work, text summarization is utilized as a means to improve performance on other tasks, specifically figure captioning.
+This approach has been explored in prior studies, such as using text summarization for detecting transportation events in social media posts~\cite{fu2015steds}, hierarchical text summarization for information seeking on mobile devices~\cite{otterbacher2006news}, and generating video paragraph captions~\cite{liu2021video}.
+Similar to our work, these prior explorations applied existing text summarization techniques in novel ways, often bringing new insights into an applied domain.
+
+
+\kenneth{KENNTH IS EDITING HERE}
+
+\paragraph{Summarizing Text for Purposes Beyond Summary.} 
+While there is a need for text summaries, 
+our work used text summarization as a medium to improve other tasks (\ie, figure captioning). 
+Similar work has consisted of extracting features (\ie, TF-IDF, latent representations, and text clusters) 
+from text documents and then applying the features to tasks beyond text summarization, 
+like social-media event detection~\cite{fu2015steds}, information-seeking about stories~\cite{otterbacher2006news}, video captioning~\cite{liu2021video}, 
+stock-price prediction~\cite{tianfang2021exploring}, 
+and legal-cases summarization~\cite{pandya2019automatic}. 
+Note that \citet{liu2021video}'s work produced video captions by summarizing automatically generated captions.  
+This study, instead, summarized author-written paragraphs for figure captioning.
+% continued that work with a focus on figure captioning.
+
+For the latter camp, where the inputs are tabular data, rule-based techniques~\cite{corio1999generation, demir2008generating, fasciano1996postgraphe, mittal1998describing} and data-driven approaches~\cite{barzilay-lapata-2005-collective,wiseman-etal-2017-challenges,moraes2014generating, zhu2021autochart, kanthara2022chart,obeid-hoque-2020-chart,reiter2005choosing,parikh-etal-2020-totto,chen-etal-2020-logical,gong-etal-2019-enhanced,su-etal-2021-plan-generate,chen-etal-2020-logic2text} could be used to generate descriptions.
+\kenneth{We will need to add more recent citations to it I guess. A lot of chart2text papers exist.}
+These approaches could incorporate data, user intent, and text to generate captions, but the requirement for tabular data prohibited much usage of pixel figures in scientific articles.
+Our work identified paragraphs in the articles to improve figure-captioning results.
+
+\kenneth{How do these work motivate our work?}
+
+
+For the former camp, where the inputs are pixel images, deep learning models have shown great promise in parsing the charts' attributes~\cite{siegel2016figureseer}. 
+%
+Recent figure-captioning models applied these architectures to either encode the figures directly~\cite{chen2019figure} or encode images with metadata~\cite{qian2021generating} and then decode it with captions.
+%
+They mainly focused on the visual aspect of processing, 
+while our work attempted to improve captions based on textual information beyond visuals. 
+%: the paragraphs referencing the charts. 
+
+Figure-captioning work mainly falls into two categories: 
+generating captions through (1) pixel figures or (2) data figures. 
+\cy{Is it okay to say ``data figures'' or should we still use ``data charts''}
+\kenneth{data figure is very strange. I'd just say caption generation has two categories, one based on data chart, and one based on figure.}
+For pixel figures, where the inputs are pixel images, 
+deep learning models have shown great promise in parsing the charts attributes~\cite{siegel2016figureseer}. 
+%
+Recent figure-captioning models applied these architectures to encode the figures directly~\cite{chen2019figure} or encode images with metadata~\cite{qian2021generating} and then decode it with captions. 
+%
+They mainly focused on the visual aspect of processing, 
+while our work attempted to improve captions based on textual information beyond charts: 
+the paragraphs referencing the charts. 
+%
+For data figures, rule-based techniques could be used to generate descriptions by focusing on tabular data~\cite{corio1999generation, demir2008generating, fasciano1996postgraphe, mittal1998describing, moraes2014generating, zhu2021autochart, kanthara2022chart}. 
+These rules could incorporate data, intent, and text to generate captions, 
+but the requirement for tabular data prohibited much usage of pixel figures in scientific articles. 
+Our work identified paragraphs in the articles to improve figure-captioning results.
+
+
+\paragraph{Generating Captions for Figures and Charts}
+%\kenneth{TODO Ed: Cite some papers we did not include in the SciCap paper.}
+%\ed{}
+Figure captioning work mainly falls into two categories: generating captions through (1) pixel charts or (2) data charts. For pixel charts where the inputs are pixel images, deep learning models have shown great promises in parsing the charts' attributes~\cite{siegel2016figureseer}, and current figure captioning models applied these architectures to encode the figures directly~\cite{chen2019figure} or images with metadata~\cite{qian2021generating} then decode with captions.
+They mainly focused on the vision aspect of the processing, while our work attempts to improve the captions based on textual information beyond the charts (\ie, the paragraphs referencing the charts).
+On the other hand, given the statistical data behind the charts, rule-based techniques could be used to generate descriptions focusing on the tabular data~\cite{corio1999generation, demir2008generating, fasciano1996postgraphe, mittal1998describing, moraes2014generating, zhu2021autochart, kanthara2022chart}.
+These rules could incorporate data, intents, and texts to generate captions, but the requirement of tabular data prohibited much usage of pixel figures in scientific articles. Our work identifies paragraphs in the articles to improve the figure captioning results.
+
+\paragraph{Summarizing Texts For Purposes Beyond Summary.}
+%\kenneth{TODO CY: Find some papers that use summarization technologies to generate outputs that are NOT used as summary?}
+While there was much work for text summarization with the end goal of generating text summaries, our work belongs to text summarization as a medium to improve other tasks (\ie, figure captioning).
+The workflow consisted of extracting features (\ie, TF-IDF, latent representations, and text clusters) from text documents and then applying the features to tasks besides text summaries like social-media event detection~\cite{fu2015steds}, video captioning~\cite{liu2021video}, stock-price prediction~\cite{tianfang2021exploring}, and legal-cases summarization~\cite{pandya2019automatic}. 
+Our work lies on the same belief that text summaries improve task performances with the focus on figure captioning.
+
+
+
+
+Abstractive Snippet Generation
+
+% Related previous WWW papers
+E-Commerce / Product
+- AmpSum: Adaptive Multiple-Product Summarization towards Improving Recommendation Captions ~\cite{10.1145/3485447.3512018}
+- Automatic Generation of Pattern-controlled Product Description in E-commerce~\cite{10.1145/3308558.3313407}
+- PersuAIDE ! An Adaptive Persuasive Text Generation System for Fashion Domain~\cite{10.1145/3184558.3186345}
+- Controllable and Diverse Text Generation in E-commerce~\cite{shao2021controllable}
+
+Review
+- Review Response Generation in E-Commerce Platforms with External Product Information~\cite{10.1145/3308558.3313581}
+- A Sparse Topic Model for Extracting Aspect-Specific Summaries from Online Reviews~\cite{10.1145/3178876.3186069}
+
+News
+- Generating Representative Headlines for News Stories~\cite{10.1145/3366423.3380247}
+- Quiz-Style Question Generation for News Stories~\cite{lelkes2021quiz}
+
+Other type of web data
+- Generating Titles for Web Tables~\cite{hancock2019generating}
+- Abstractive Meeting Summarization via Hierarchical Adaptive Segmental Network Learning~\cite{10.1145/3308558.3313619}
+- Contextual Web Summarization: A Supervised Ranking Approach~\cite{10.1145/3184558.3186951}
+
+Summarizing web searching result
+Abstractive Snippet Generation~\cite{10.1145/3366423.3380206}
+
+\end{comment}

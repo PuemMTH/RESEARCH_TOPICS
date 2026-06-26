@@ -1,0 +1,154 @@
+%\kenneth{Kenneth TODO: Separate data from method}
+
+Figure~\ref{fig:overview} overviews the proposed pipeline. 
+%The system extracts all Mentions (or Paragraphs) associated with a target figure from the document and summarizes them to generate a caption.
+%This section outlines the steps in the pipeline, covering their task definition, the nature of the data, and the proposed solution.
+This section describes each step of the pipeline.
+%, including the task definition, the nature of the problem, and our solution.
+%Our proposed system framework is %designed to be 
+%generalizable for multiple types of documents, such as news articles and Wikipedia articles. This section assumes that scholarly articles are the primary genre for processing purposes.
+
+\subsection{Extracting Mentions and Paragraphs\label{sec:extract-mention}}
+The system first extracts Mentions and their associated Paragraphs (as defined in Section~\ref{sec:problem-statement}.)
+%, \ie, identifies sentences that mention the target figure and isolates them and their paragraphs. 
+In this paper, we used Grobid~\cite{grobid}, a publicly-available tool for converting PDF files into structured XML documents, to extract plain text from the paragraphs (including the \texttt{<p>} tags) in each paper.
+This plain text was then segmented into sentences using BlingFire~\cite{blingfire}.
+%Similar to that of S2ORC~\cite{lo2020s2orc}
+We developed regular expressions to identify sentences mentioning specific figures. 
+%which were developed and tested iteratively on the data.
+For instance, sentences such as ``As shown in Figure 6, ...'' were first identified and then linked to Figure 6. 
+To assess the performance of these regular expressions, we conducted a manual evaluation of 300 samples from our experimental dataset.
+The results showed a high level of precision (99.58\%) and recall (94.44\%).
+
+%\ed{Through these methods, we are able to identify figures not mentioned in the corpus, figures are table instead. We also manually check 300 samples from our experimental dataset, the precision and recall are 99.58\% and 94.44\% separately which is highly reliable.}
+
+%\kenneth{TODO TY: Did you do any form of evaluation? Even a simple one should be mentioned.}
+
+%\kenneth{TODO TY: Cite some papers that extract mentions of things, i.e., disease names, wikify (entity-linking), etc. If have space, we need to explain that extracting name entities is slightly different than extracting references.}
+
+%\sukim{I'm not sure if this subsection is necessary since we're using existing tools to extract mentions and don't provide any solutions (or evaluations as Ken commented above) to resolve the challenges mentioned in this subsection. Probably, the second paragraph is enough as an implementation detail.}
+
+
+\subsection{Generating Captions Using Text Summarization Models}
+As shown in Figure~\ref{fig:overview}, our system then automatically summarizes all the extracted Mentions (or Paragraphs) into a figure caption.
+In this work, we used PEGASUS, an abstractive summarization model~\cite{zhang2020pegasus}, and fine-tuned it on our dataset.
+Five Pegasus models, Pegasus$_{M}$, Pegasus$_{P}$, Pegasus$_{O}$, Pegasus$_{M+O}$, and Pegasus$_{P+O}$, were trained utilizing five distinct input combinations, including
+\textbf{
+{\em (i)} Mention, 
+{\em (ii)} Paragraph, 
+{\em (iii)} OCR output of the target figure image, 
+{\em (iv)} Mention+OCR, and 
+{\em (v)} Paragraph+OCR.}
+Pegasus$_{P+O}$ encompasses the most of relevant information in the document and thus is expected to yield the optimal summary.
+%\sukim{There are two models (reuse and pegasus) and five settings (or inputs), not five models. This needs to be clearly described and notations should be consistent.}
+%\kenneth{Did we address this?}
+
+Additionally, we built Pegasus$_{P+O+B}$, a specialized version of the model designed to be trained on a subset of higher-quality captions, \textbf{{\em (vi)} Paragraph+OCR-Better}.
+%Due to the lack of reliable methods to automatically determine the quality of human-written captions, we used a heuristic from prior literature that suggests longer captions can improve readers' comprehension~\cite{hartley2003single,gelman2002let}. 
+Given the absence of reliable automated ways to assess the quality of captions, we followed a guideline from previous studies indicating that longer captions enhance reader comprehension~\cite{hartley2003single,gelman2002let}.
+%As a result, 
+We trained the model using captions with 30 or more tokens.
+The average caption length was 26.8 tokens, so we set 30 tokens as the threshold.
+The training was performed using Paragraph+OCR inputs.
+
+
+%\kenneth{The cutting on 30 tokens need to be better justified.}
+
+%In this work, we utilized real-world figures and captions rather than synthetic data, which presented several practical challenges. 
+%The following presents two major challenges specific to the real-world figure captioning task.
+
+%During our experiments and model development, we identified two main challenges in generating captions for scientific figures in real-world scenarios.
+%These challenges will be discussed in the following sections, and our detailed analysis results can be found in Section~\ref{sec:analysis}.
+
+We identified two major challenges in generating captions for scientific figures in real-world scenarios.
+We discuss these challenges in the following subsections, with an in-depth analysis in Section~\ref{sec:analysis}.
+
+%\kenneth{A few words on why we use OCR?}
+
+%Two challenges of the task:
+%\begin{itemize}
+\subsubsection{Challenge 1: Addressing Unreliable Quality of Real-World Data}
+%Unfortunately, 
+Low-quality captions often occur in scholarly articles.
+Our analysis (see \Cref{sec:analysis-challenge-1}) showed that 50\% of line charts' author-written captions in arXiv {\tt cs.CL} papers were deemed unhelpful by domain experts.
+The impact of this unreliable data quality is that developers could train and test captioning models with unhelpful captions.
+The lack of automatic methods for evaluating caption quality makes it hard to identify suitable training examples and eliminate poor ones.
+%In this work,
+To address this issue, 
+%of suboptimal training data, 
+we included Pegasus$_{P+O+B}$ that was trained on longer captions, which is suggested by literature to be more helpful to readers~\cite{hartley2003single,gelman2002let}.
+To account for low-quality test data, we conducted both human and automatic evaluations.
+The data quality of figure captions was analyzed and is presented in \Cref{sec:quality-annotation}.
+
+
+\subsubsection{Challenge 2: Defining a Clear Standard for ``Good'' Figure Captions}
+%\end{itemize}
+The deeper issue is the lack of a set of well-defined and actionable criteria for determining the usefulness of a figure caption.
+%While readers can assess the effectiveness of a caption when viewing it in an article, there is no clear standard for what constitutes a ``good'' caption.
+%Although there are guidelines for writing good captions for scientific figures (\eg, ``The caption explains how to read the figure and provides additional precision for what cannot be graphically represented''~\cite{10.1371/journal.pcbi.1003833}; ``The caption that accompanies a figure is an important entity... and [should] not require the reader to search through the accompanying article text for the necessary information''~\cite{doi:10.1021/acsenergylett.9b00253}), such suggestions are not concrete enough for people to model %``good'' captions 
+%through algorithms.
+%While guidelines exist for crafting effective scientific figure captions~\cite{10.1371/journal.pcbi.1003833,doi:10.1021/acsenergylett.9b00253}, it is often unclear how to model them algorithmically.
+%they're often too vague to be algorithmically modeled.
+Although there are guidelines for writing effective scientific figure captions~\cite{10.1371/journal.pcbi.1003833,doi:10.1021/acsenergylett.9b00253}, their translation into algorithmic models can be challenging.
+From a modeling standpoint, the lack of a clear goal presents a challenge, as it is uncertain what to optimize for once fluency has been achieved.
+%\kenneth{Cite things to say yes there are guidelines, they're just... not actionable to algorithms?} \cy{done}
+In this paper, we focus on demonstrating the feasibility of generating captions via text summarization.
+Although we did not incorporate specialized goals in the model, we examine the criteria for a ``good'' caption in Section~\ref{sec:quality-annotation}.
+
+
+
+% HuggingFace~\cite{wolf-etal-2020-transformers}'s implementation of Pegasus\footnote{\texttt{google/pegasus-arxiv} was used.} was used for fine-tuning. 
+% The model was trained for 200 epochs where evaluation was run every five epochs, and the one with the highest ROUGE-2 score was kept.
+
+
+
+% \paragraph{Baseline: Text-to-text generation. (?)}
+% \cy{What does this mean?}
+% \cy{Does this mean the Mention-to-Caption case?}
+
+
+
+
+%------------- dead kitten ---------------
+\begin{comment}
+
+% \paragraph{Baseline: Reuse mention and paragraph.}
+\subsection{Baseline: Reuse mention and paragraph}
+% \kenneth{TODO CY}
+The \textbf{Reuse} baselines simply output the input text as the prediction. 
+For example, Reuse-Mention outputs the first mention as the summary, 
+Reuse-Window[0, 1] outputs the first mention and the following one sentence as the summary, 
+and Reuse-Paragraph outputs the whole paragraph as the summary.
+
+\kenneth{We need to cite some more papers to justify this baseline. (1) Semantic Frame Forcast paper and (2) maybe this \cite{6205758}}
+
+\newpage
+
+%We describe the 
+Three different categories of models were used in this work: 
+(\textit{i}) text summarization, (\textit{ii}) reuse, and (\textit{iii}) vision-to-language generation. 
+% The model-training details are described in \Cref{sec:appendix-model-training}.
+
+
+
+%-------------- old draft -----------------
+
+% \paragraph{Text Summarization.}
+\subsection{Text Summarization}
+We used the Pegasus text-summarization model~\cite{zhang2020pegasus}, fine-tuned on our dataset. 
+Five models were trained using five different inputs, 
+including Mention, Paragraph, OCR, Mention+OCR, and Paragraph+OCR. 
+Paragraph+OCR covered all the relevant information in this paper and thus should provide the best summary. 
+One special variation of the model, Paragraph+OCR-Better, was intended to be trained with better-quality captions. 
+We selected sample captions longer than 30 tokens to be \textbf{better-quality} samples (27,224 samples remaining) 
+because caption length is positively correlated to caption quality (see \Cref{sec:quality-annotation}).\kenneth{Any justification for picking 30?} 
+Prior work also argued that increasing caption length could increase readers' comprehension~\cite{hartley2003single,gelman2002let}.
+This model was then trained with Paragraph+OCR inputs on only the better-quality subset.
+
+For this work, we used Grobid~\cite{grobid}, a publicly available tool that parses PDF files into structured XML documents, 
+to extract the plain text of all the paragraphs (including the \texttt{<p>} tags) in each paper. 
+Next, we used BlingFire~\cite{blingfire} to segment each sentence. 
+The authors of this paper developed a set of regular expressions to identify the sentences that mention specific figures. 
+For example, the sentence ``As shown in Figure 6, ...'' would be identified and linked to Figure 6. 
+
+\end{comment}

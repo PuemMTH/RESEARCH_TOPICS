@@ -1,0 +1,27 @@
+\section*{Limitations}
+
+In the following, we outline the limitations of our work to ensure transparency and inspire future research.
+First, the chart domains we experimented with is limited to a few popular websites (e.g. Statista and Pew). This is due to the fact that existing academic chart-to-summary datasets only cover limited domains. However, to comprehensively evaluate the effectiveness of \metric{} and \pipeline{}, it is desirable to also evaluate our approaches in other chart domains such as infographics and scientific/financial charts.
+Second, the \metric{} depends on a deplotter (image-to-text) model, specifically DePlot~\cite{liu-etal-2023-deplot}. DePlot has been trained on similar domains as the chart-to-summary datasets used in this work (e.g. Statista), and its performance may not generalize to other domains. The SciCap dataset evaluated in \Cref{tab:nlg-llm_results} provides some evidence of generalization. 
+In future work, we plan to build out-of-domain evaluations to understand the impact of the deplotter's robustness better.
+Third, we focused mostly on English chart summary in this work. We plan to also expand multilingual chart summary in future works and expanding our evaluation on the TaTa dataset \citep{gehrmann2022tata} as a test bed.
+
+Another potential limitation is the use of \metric{} to evaluate \pipeline{}, although it is important to note that in order to mitigate the possibility for bias, we have cross checked with a variety of evaluation metrics and conducted ablation studies to analyze the individual components of our proposed solution. 
+\pipeline{} has proven to also provide significant benefits when employing standard reference-based metrics. 
+Comprehensive human studies have corroborated the usefulness of our results and we can confidently say that the improvement is consistent across the board.
+
+We would also like to highlight the underlying risk of blindly trusting models to summarize content from an image accurately. Special care should be taken to verify outputs in accuracy-sensitive applications.
+
+Despite its limitations, our work serves as an initial step in constructing reliable chart summarization evaluations and models. We hope future research can greatly benefit from this starting point.
+
+\section*{Acknowledgments}
+We would like to thank Massimo Nicosia,
+Srini Narayanan, 
+Yasemin Altun,
+Averi Nowak,
+Chenxi Pang,
+Jonas Pfeiffer,
+Mubashara Akhtar,
+Parag Jain,
+and the anonymous reviewers for their time, constructive feedback, useful
+comments and suggestions about this work.

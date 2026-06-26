@@ -1,0 +1,20 @@
+\begin{table}[t]
+    \centering \small
+    
+    \begin{tabular}{lrr}
+    \toprule
+    \multicolumn{1}{c}{\multirow{2}{*}{\textbf{Setting}}} & \multicolumn{2}{c}{\textbf{Maximum Length}} \\ \cmidrule{2-3}
+    & \textbf{Source} & \textbf{Target} \\ \midrule
+    \textbf{Mention}        & 128 & 100 \\
+    \textbf{Mention+OCR}    & 256 & 100 \\ 
+    \textbf{Paragraph}      & 512 & 100 \\
+    \textbf{Paragraph+OCR}  & 640 & 100 \\
+    \textbf{Paragraph+OCR-Better} & 640 & 140 \\
+    \textbf{OCR}            & 128 & 100 \\
+    \bottomrule
+    \end{tabular}
+    \vspace{-2mm}
+    \caption{Maximum length configuration for the text summarization models.}
+    \label{tab:length-setting}
+    \vspace{-2mm}
+\end{table}

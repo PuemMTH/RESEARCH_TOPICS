@@ -1,0 +1,30 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{multirow}
+\begin{table}[]
+\centering \small
+\begin{tabular}{@{}l@{}c@{\kern2pt}c@{\kern2pt}c@{\kern2pt}c@{\kern2pt}c@{}}
+\toprule
+ \multirow{2}{*}{\textbf{n = 90}} & \multirow{2}{*}{\makecell{\textbf{\#Maj.} \\ \textbf{Votes}$\downarrow$}} & \multirow{2}{*}{\makecell{\textbf{Avg.} \\ \textbf{Votes}$\downarrow$}} & \multicolumn{3}{c}{\textbf{T-Test over Avg. Votes}} \\ \cmidrule{4-6}
+ &  &  & \textbf{Peg}$_{P+O}$ & \textbf{Peg}$_{P+O+B}$ & \textbf{Caption} \\ \midrule
+\textbf{TrOCR} & 41 & 5.99 & \textless .001*** & .006** & .001** \\
+\textbf{Peg}$_{P+O}$ & 20 & 4.54 & - & .253 & .973 \\
+\textbf{Peg}$_{P+O+B}$ & 24 & 4.93 & - & - & .318 \\
+\textbf{Caption} & 19 & 4.53 & - & - & - \\
+\bottomrule
+\end{tabular}
+\caption{The result of the pilot Mturk study. When tied, all captions with the highest votes were counted as the worst for \#Majority votes. TrOCR is significantly worse than other approaches when rated by crowd workers.}
+\label{tab:mturk-eval}
+\vspace{-3mm}
+\end{table}
+
+
+
+
+\begin{comment}
+& \multirow{2}{*}{\textbf{\#Majority Vote}$\downarrow$} & \multirow{2}{*}{\textbf{Avg. \#Vote}$\downarrow$} & \multicolumn{3}{c}{\textbf{T-Test over Avg. \# Vote}} \\ \cmidrule{4-6}
+ &  &  & \textbf{Pegasus}$_{P+O}$ & \textbf{Pegasus}$_{P+O+B}$ & \textbf{Caption} \\ \midrule
+
+& \textbf{\#Majority} & \textbf{Avg.} & \multicolumn{3}{c}{\textbf{T-Test over Avg. \#Vote}} \\ \cmidrule{4-6}
+ & \textbf{Vote}$\downarrow$ & \textbf{\#Vote}$\downarrow$ & \textbf{Pegasus}$_{P+O}$ & \textbf{Pegasus}$_{P+O+B}$ & \textbf{Caption} \\ \midrule
+
+\end{comment}

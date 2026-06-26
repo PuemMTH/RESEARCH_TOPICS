@@ -1,0 +1,124 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+% \usepackage[normalem]{ulem}
+% \useunder{\uline}{\ul}{}
+\begin{table*}[]
+\centering \small
+\addtolength{\tabcolsep}{-1.0mm}
+\begin{tabular}{@{}llccccccccccc@{}}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Feature}} & \multirow{2}{*}{\textbf{Length}} & \multicolumn{2}{c}{\textbf{Rouge-1 (F1)}} & \multicolumn{2}{c}{\textbf{Rouge-2 (F1)}} & \multicolumn{2}{c}{\textbf{Rouge-L (F1)}} & \multicolumn{2}{c}{\textbf{MoverScore}} & \multicolumn{2}{c}{\textbf{BERTScore}} \\ \cmidrule(l){4-13}
+ &  &  & \textbf{Score} & \textbf{Norm} & \textbf{Score} & \textbf{Norm} & \textbf{Score} & \textbf{Norm} & \textbf{Score} & \textbf{Norm} & \textbf{Score} & \textbf{Norm} \\ \midrule
+\multirow{6}{*}{\textbf{Reuse}} & \textbf{M} & 33.2 & .291 & 1.346 & .139 & 1.790 & .239 & 1.401 & .535 & 1.023 & .628 & 1.064 \\
+ & \textbf{P} & 238.3 & .171 & 1.042 & .089 & 1.006 & .134 & 1.030 & .503 & 1.004 & .567 & 1.008 \\
+ & \textbf{W{[}0, 1{]}} & 50.3 & .281 & 1.216 & .132 & 1.509 & .224 & 1.273 & .529 & 1.016 & .620 & 1.048 \\
+ & \textbf{W{[}0, 2{]}} & 68.0 & .259 & 1.129 & .123 & 1.341 & .205 & 1.186 & .524 & 1.013 & .611 & 1.034 \\
+ & \textbf{W{[}1, 1{]}} & 67.8 & .266 & 1.156 & .124 & 1.346 & .204 & 1.183 & .524 & 1.012 & .613 & 1.037 \\
+ & \textbf{W{[}2, 2{]}} & 98.7 & .235 & 1.082 & .112 & 1.179 & .180 & 1.105 & .517 & 1.007 & .600 & 1.020 \\ \midrule
+\multirow{6}{*}{\textbf{Pegasus}} & \textbf{M} & 12.2 & .321 & 1.898 & .153 & 2.907 & .283 & 1.971 & .553 & 1.065 & .654 & 1.158 \\
+ & \textbf{M+O} & 12.8 & .331 & 1.909 & .161 & 2.945 & .292 & 1.993 & .556 & 1.071 & .661 & 1.166 \\
+ & \textbf{P} & 14.0 & {\ul .374} & {\ul 2.067} & {\ul .205} & {\ul 3.507} & {\ul .334} & {\ul 2.201} & {\ul .570} & {\ul 1.095} & {\ul .682} & {\ul 1.196} \\
+ & \textbf{P+O} & 14.0 & \textbf{.381} & \textbf{2.106} & \textbf{.212} & \textbf{3.635} & \textbf{.340} & \textbf{2.242} & \textbf{.571} & \textbf{1.097} & \textbf{.685} & \textbf{1.202} \\
+ & \textbf{P+O+B} & 38.3 & .321 & 1.452 & .154 & 1.916 & .265 & 1.537 & .546 & 1.044 & .639 & 1.082 \\
+ & \textbf{O} & 12.1 & .133 & 0.789 & .026 & 0.495 & .119 & 0.828 & .518 & 0.998 & .561 & 0.993 \\ \midrule
+\textbf{TrOCR} & \multirow{2}{*}{\textbf{Figure}} & 10.0 & .220 & 1.464 & .073 & 1.653 & .195 & 1.502 & .534 & 1.033 & .610 & 1.096 \\
+\textbf{BEiT+GPT2} &  & 15.8 & .164 & 0.864 & .042 & 0.666 & .144 & 0.917 & .529 & 1.013 & .592 & 1.031 \\
+\bottomrule
+\end{tabular}
+\addtolength{\tabcolsep}{+1.0mm}
+\caption{Task Performance with the \textbf{best} and {\ul second-best} results highlighted. Pegasus$_{P+O}$, the text-summarization model with all available information (Paragraph+OCR), performed the best in all four metrics. Pegasus$_{P+O+B}$, the model trained with better captions, however, got lower scores.}
+\label{tab:result-summarization}
+\vspace{-3mm}
+\end{table*}
+
+
+\begin{comment}
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+% \usepackage{multirow}
+\begin{table*}[]
+\centering \small
+
+\addtolength{\tabcolsep}{-1.2mm}
+
+\begin{tabular}{@{}l@{\kern3pt}l@{\kern5pt}rrrrrrrrrrrrr@{}}
+\toprule
+\multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Feature}} & \multicolumn{1}{c}{\multirow{2}{*}{\textbf{Length}}} & \multicolumn{3}{c}{\textbf{ROUGE-1 (F1)}} & \multicolumn{3}{c}{\textbf{ROUGE-2 (F1)}} & \multicolumn{3}{c}{\textbf{ROUGE-L (F1)}} & \multicolumn{3}{c}{\textbf{MoverScore}} \\ \cmidrule(l){4-15} 
+ &  & \multicolumn{1}{c}{} & \multicolumn{1}{c}{\textbf{Score}} & \multicolumn{1}{c}{\textbf{Rand}} & \multicolumn{1}{c}{\textbf{Norm}} & \multicolumn{1}{c}{\textbf{Score}} & \multicolumn{1}{c}{\textbf{Rand}} & \multicolumn{1}{c}{\textbf{Norm}} & \multicolumn{1}{c}{\textbf{Score}} & \multicolumn{1}{c}{\textbf{Rand}} & \multicolumn{1}{c}{\textbf{Norm}} & \multicolumn{1}{c}{\textbf{Score}} & \multicolumn{1}{c}{\textbf{Rand}} & \multicolumn{1}{c}{\textbf{Norm}} \\ \midrule
+\multirow{6}{*}{\textbf{Reuse}} & \textbf{M} & 33.2 & .291 & .216 & 1.346 & .139 & .077 & 1.790 & .239 & .171 & 1.401 & .535 & .524 & 1.023 \\
+ & \textbf{P} & 238.3 & .171 & .164 & 1.042 & .089 & .088 & 1.006 & .134 & .130 & 1.030 & .503 & .501 & 1.004 \\
+ & \textbf{W{[}0, 1{]}} & 50.3 & .281 & .231 & 1.216 & .132 & .087 & 1.509 & .224 & .176 & 1.273 & .529 & .520 & 1.016 \\
+ & \textbf{W{[}0, 2{]}} & 68.0 & .259 & .230 & 1.129 & .123 & .092 & 1.341 & .205 & .173 & 1.186 & .524 & .518 & 1.013 \\
+ & \textbf{W{[}1, 1{]}} & 67.8 & .266 & .230 & 1.156 & .124 & .092 & 1.346 & .204 & .173 & 1.183 & .524 & .518 & 1.012 \\
+ & \textbf{W{[}2, 2{]}} & 98.7 & .235 & .217 & 1.082 & .112 & .095 & 1.179 & .180 & .162 & 1.105 & .517 & .513 & 1.007 \\ \midrule
+\multirow{6}{*}{\textbf{Pegasus}} & \textbf{M} & 12.2 & .321 & .169 & 1.898 & .153 & .053 & 2.907 & .283 & .144 & 1.971 & .553 & .519 & 1.065 \\
+\textbf{} & \textbf{M+O} & 12.8 & .331 & .173 & 1.909 & .161 & .055 & 2.945 & .292 & .147 & 1.993 & .556 & .520 & 1.071 \\
+\textbf{} & \textbf{P} & 14.0 & .374 & .181 & 2.067 & .205 & .058 & 3.507 & .334 & .152 & 2.201 & .570 & .521 & 1.095 \\
+\textbf{} & \textbf{P+O} & 14.0 & \textbf{.381} & .181 & \textbf{2.106} & \textbf{.212} & .058 & \textbf{3.635} & \textbf{.340} & .152 & \textbf{2.242} & \textbf{.571} & .521 & \textbf{1.097} \\
+\textbf{} & \textbf{P+O+B} & 38.3 & .321 & .221 & 1.452 & .154 & .080 & 1.916 & .265 & .172 & 1.537 & .546 & .523 & 1.044 \\
+\textbf{} & \textbf{O} & 12.1 & .133 & .168 & 0.789 & .026 & .052 & 0.495 & .119 & .143 & 0.828 & .518 & .519 & 0.998 \\ \midrule
+\textbf{TrOCR} & \multirow{2}{*}{\textbf{Figure}} & 10.0 & .220 & .150 & 1.464 & .073 & .044 & 1.653 & .195 & .130 & 1.502 & .534 & .517 & 1.033 \\
+\textbf{BEiT+GPT2} &  & 15.8 & .164 & .190 & 0.864 & .042 & .062 & 0.666 & .144 & .158 & 0.917 & .529 & .522 & 1.013 \\ \bottomrule
+\end{tabular}
+
+\addtolength{\tabcolsep}{+1.2mm}
+
+\caption{Task Performance. Pegasus$_{P+O}$, the text-summarization model with all available information (Paragraph+OCR), performed the best in all four metrics. Pegasus$_{P+O+B}$, the model trained with better captions, however, got lower scores.}
+\label{tab:result-summarization}
+\vspace{-2mm}
+
+\end{table*}
+
+\end{comment}
+
+
+\begin{comment}
+
+
+\begin{table*}[t]
+    \centering
+    %\small
+    % \addtolength{\tabcolsep}{-0.02cm}
+    
+    \caption{Task Performance. The text-summarization model (Pegasus) with all available information (Paragraph+OCR) performed the best in all three metrics. The model with the same setting that was trained with better captions, however, got lower scores. \cy{Should we add ROUGE-L?}}
+    \vspace{-2mm}
+    \label{tab:result-summarization}
+    \begin{tabular}{llrrrrrrrrrrr}
+    \toprule 
+    % \hline
+    \multirow{2}{*}{\textbf{Model}} & \multirow{2}{*}{\textbf{Feature}} & \multicolumn{1}{c}{\multirow{2}{*}{\textbf{Length}}} & \multicolumn{3}{c}{\textbf{ROUGE-1 (F1)} $\uparrow$ }  & \multicolumn{3}{c}{\textbf{ROUGE-2 (F1)} $\uparrow$ } & \multicolumn{3}{c}{\textbf{MoverScore} $\uparrow$} \\
+    % \cline{4-12}
+    \cmidrule{4-12}
+     & &  & \multicolumn{1}{c}{\textbf{Score}} & \multicolumn{1}{c}{\textbf{Rand}} & \multicolumn{1}{c}{\textbf{Norm}} & \multicolumn{1}{c}{\textbf{Score}} & \multicolumn{1}{c}{\textbf{Rand}} & \multicolumn{1}{c}{\textbf{Norm}} & \multicolumn{1}{c}{\textbf{Score}} & \multicolumn{1}{c}{\textbf{Rand}} & \multicolumn{1}{c}{\textbf{Norm}} \\ 
+     \midrule
+    %  \hline
+\multirow{6}{*}{\textbf{Reuse}} & \textbf{Mention}      & 33.2  & .2912 & .2164 & 1.346 & .1387 & .0775 & 1.790 & .5354 & .5236 & 1.023 \\ 
+& \textbf{Paragraph}                        & 238.3 & .1706 & .1638 & 1.042 & .0887 & .0882 & 1.006 & .5030 & .5009 & 1.004 \\ 
+& \textbf{Window [0, 1]}                    & 50.3  & .2808 & .2309 & 1.216 & .1318 & .0874 & 1.509 & .5290 & .5205 & 1.016 \\ 
+& \textbf{Window [0, 2]}                    & 68.0  & .2595 & .2298 & 1.129 & .1231 & .0918 & 1.341 & .5242 & .5175 & 1.013 \\ 
+& \textbf{Window [1, 1]}                    & 67.8  & .2657 & .2298 & 1.156 & .1236 & .0918 & 1.346 & .5237 & .5176 & 1.012 \\ 
+& \textbf{Window [2, 2]}                    & 98.7  & .2349 & .2171 & 1.082 & .1116 & .0947 & 1.179 & .5170 & .5132 & 1.007 \\ 
+
+\midrule
+
+\multirow{6}{*}{\textbf{Pegasus}} & \textbf{Mention}             & 12.2  & .3207 & .1690 & 1.898 & .1533 & .0528 & 2.907 & .5528 & .5191 & 1.065 \\ 
+& \textbf{Mention+OCR}         & 12.8  & .3310 & .1733 & 1.909 & .1613 & .0548 & 2.945 & .5563 & .5196 & 1.071 \\ 
+& \textbf{Paragraph}           & 14.0  & .3745 & .1812 & 2.067 & .2047 & .0584 & 3.507 & .5700 & .5206 & 1.095 \\ 
+& \textbf{Paragraph+OCR}       & 14.0  & \textbf{.3811} & .1810 & \textbf{2.106} & \textbf{.2118} & .0583 & \textbf{3.635} & \textbf{.5712} & .5205 & \textbf{1.097} \\ 
+& \textbf{Paragraph+OCR-Better} & 38.3  & .3205 & .2207 & 1.452 & .1541 & .0804 & 1.916 & .5455 & .5227 & 1.044 \\ 
+& \textbf{OCR}                 & 12.1  & .1328 & .1682 & 0.789 & .0259 & .0524 & 0.495 & .5178 & .5190 & 0.998 \\ 
+
+\midrule
+
+\textbf{BEiT+GPT2} & \multirow{2}{*}{\textbf{Figure}} & 15.8 & .1642 & .1901 & 0.864 & .0415 & .0624 & 0.666 & .5287 & .5217 & 1.013 \\
+\textbf{TrOCR} &  & 10.0 & .2196 & .1500 & 1.464 & .0735 & .0444 & 1.653 & .5341 & .5168 & 1.033 \\ 
+
+\bottomrule
+    \end{tabular}
+    %\vspace{-2mm}
+    % \addtolength{\tabcolsep}{0.02cm}
+    % \vspace{-.5pc}
+    
+\end{table*}
+\end{comment}

@@ -1,0 +1,45 @@
+\section{Experimental Setup}
+\label{sec:experiment_setup}
+
+We assess our methods on diverse datasets to prove their broad applicability.
+
+\subsection{Datasets}
+\paragraph{Chart-to-Text~\cite{kantharaj-etal-2022-chart}} 
+is a large-scale benchmark for chart summarization including bar, line, area, scatter and pie charts, composed of two data sources: \emph{Statista} (35k examples) and \emph{Pew Research} (9k).\footnote{\href{https://statista.com}{statista.com} and \href{https://pewresearch.org}{pewresearch.org}}
+
+\paragraph{SciCap~\cite{hsu-etal-2021-scicap-generating}} is a large-scale benchmark for figure-captioning. It is extracted from science arXiv papers published between 2010 and 2020 and contains more than 2 million figures. We use 3 subsets of SciCap: \emph{First Sentence collection} (133k), \emph{Single-sentence Caption} (94k data points), and \emph{Caption with No More than 100 Words} (131k).
+
+
+
+
+\paragraph{TabFact~\cite{chen2019tabfact}} is a large-scale dataset for table-based fact verification. It contains $16$k Wikipedia tables as evidence for $118$k human-annotated statements. This dataset allows us to study fact verification with semi-structured inputs. We use it to evaluate the entailment accuracy of \metric.
+
+All our models are developed on the dev sets of the mentioned benchmarks and performances are reported on their test sets. We include more detailed descriptions and processing details of the benchmarks in \Cref{app:datasets}.
+
+\subsection{Setups for evaluation \& comparison}
+
+\paragraph{Evaluating \metric.} We evaluate the quality of \metric by comparing the model output entailment to human annotated examples randomly extracted from the Chart-To-Text (Statista). We also evaluate the metric's correlation with human judgments on summary level. We compare \metric to reference-based metrics, including BLEU~\cite{papineni-etal-2002-bleu}, PARENT~\cite{dhingra-etal-2019-handling} that takes the table into account to compute n-gram similarity and as well as BLEURT-20~\cite{sellam-etal-2020-bleurt, pu-etal-2021-learning}, a learned metric.
+
+\paragraph{Evaluating \pipeline.} We report a wide range of metrics' scores across the three benchmarks. We compare \pipeline applied on different base models, as well as  state-of-the-art baselines in the literature which do not rely on \pipeline where applicable. 
+The SOTA baselines include PaLI \citep{chen2023pali} and MATCHA \citep{liu-etal-2023-matcha} MATCHA on Chart-To-Text; M4C-Captioner \citep{horawalavithana2023scitune} on SciCap. We additionally train and evaluate PaLI \citep{chen2023pali} ourselves to report more comprehensive results across different benchmarks and metrics. 
+All metrics are reported on the sentence level except for the correlation study.
+
+
+
+\subsection{Our models}
+\label{subsec:models}
+
+\paragraph{Plot-to-table model.} As described, our approach relies on a plot-to-table translation model. For all our models, we make use of DePlot~\cite{liu-etal-2023-deplot}, a \sota model for extracting table contents from chart images (i.e. chart de-rendering).\footnote{More details about DePlot can be found in \Cref{app:Deplot}.} The de-rendered table is passed to a generative text-to-text model for further processing.
+
+\paragraph{Generative models.}
+We use two models for summary generation with the de-derendered table from last step as input.
+We adapt a FLAN-T5~\cite{suresh2023semantic} base model with table embeddings to enhance table structure understanding, following the scheme of TabT5~\cite{andrejczuk-etal-2022-table}.  We fine-tune this model for each datasets for 220k training steps with a batch size of 128. We denote this setup as DePlot+FLAN-T5 (see \Cref{app:flan_t5}). 
+The second approach is PALM-2 (L)~\cite{anil2023palm} with in-context learning. The full prompt is described in \Cref{app:LLM-prompting}. %
+We experiment with other models including end-to-end models in \Cref{app:Evaluation_of_the_summary_repair_pipeline}.
+
+
+\paragraph{\metric{}} is used for the \pipeline{} pipeline and as an additional metric in our experiments.
+We experiment with different model sizes and families for \metric{}'s entailment component. 
+When not specified, \metric{} uses DePlot and PaLM-2 (L) with Chain-of-thought~\citep{wei2022chain} for the entailment model (shown in \Cref{fig:CHATS-CRITIC}).
+The full prompt is reported in \Cref{app:prompting}.
+

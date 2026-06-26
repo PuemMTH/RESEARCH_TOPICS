@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<title>[2308.03349] SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs</title><meta content="In this work, we present SciGraphQA, a synthetic multi-turn question-answer dataset related to academic graphs. SciGraphQA is 13
+times larger than ChartVQA, the previously largest chart-visual question-answering datase&hellip;" property="og:description">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="summary" name="twitter:card">
+<meta content="SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs" name="twitter:title">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" name="twitter:image:src">
+<meta content="ar5iv logo" name="twitter:image:alt">
+<meta content="SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs" property="og:title">
+<meta content="ar5iv" property="og:site_name">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" property="og:image">
+<meta content="article" property="og:type">
+<meta content="https://ar5iv.labs.arxiv.org/html/2308.03349" property="og:url">
+<link href="https://ar5iv.labs.arxiv.org/html/2308.03349" rel="canonical" target="_blank">
+<!--Generated on Wed Feb 28 13:43:06 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<script>
+  function detectColorScheme(){
+    var theme="light";
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if(current_theme){
+      if(current_theme == "dark"){
+        theme = "dark";
+      } }
+    else if(!window.matchMedia) { return false; }
+    else if(window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      theme = "dark"; }
+    if (theme=="dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light"); } }
+
+  detectColorScheme();
+
+  function toggleColorScheme(){
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if (current_theme) {
+      if (current_theme == "light") {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+      else {
+        localStorage.setItem("ar5iv_theme", "light"); } }
+    else {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+    detectColorScheme(); }
+</script>
+<link href="/assets/ar5iv-fonts.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv-site.0.2.2.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">
+Shengzhi Li 
+<br class="ltx_break">alex.shengzhi@gmail.com 
+<br class="ltx_break"><span class="ltx_ERROR undefined" id="id1.1.id1">\And</span>Nima Tajbakhsh 
+<br class="ltx_break">n.tajbakhsh63@gmail.com 
+<br class="ltx_break">
+</span></span>
+</div>
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+<p class="ltx_p" id="id2.id1">In this work, we present SciGraphQA, a synthetic multi-turn question-answer dataset related to academic graphs. SciGraphQA is 13
+times larger than ChartVQA, the previously largest chart-visual question-answering dataset. It is also
+the largest open-sourced chart VQA dataset with non-synthetic charts. To build our dataset, we selected 290,000 Computer Science or Machine Learning ArXiv papers published between 2010 and 2020, and then used Palm-2 to generate 295K samples of open-vocabulary multi-turn question-answering dialogues about the graphs. As context, we provided the text-only Palm-2 with paper title, abstract, paragraph mentioning the graph, and rich text contextual data from the graph itself, obtaining dialogues with an average 2.23 question-answer turns for each graph. We asked GPT-4 to assess the matching quality of our question-answer turns given the paper&rsquo;s context, obtaining an average rating of 8.7/10 on our 3K test set.</p>
+<p class="ltx_p" id="id3.id2">We evaluated the 0-shot capability of the most popular MLLM models such as LLaVa, mPLUGowl, BLIP-2, and openFlamingo&rsquo;s on our dataset, finding LLaVA-13B being the most performant with a CIDEr score of 0.08. We further enriched the question prompts for LLAVA by including the serialized data tables extracted from the graphs using the DePlot model, boosting LLaVA&rsquo;s 0-shot CIDEr to 0.15. To verify the validity of our dataset, we also fine-tuned LLaVa using our dataset, reaching a substantially higher CIDEr score of 0.26. We anticipate further accuracy improvement by including segmentation mask tokens and leveraging larger LLM backbones coupled with emergent prompting techniques. Our code and data are open-sourced at <span class="ltx_ref ltx_ref_self">Github</span> and <span class="ltx_ref ltx_ref_self">HuggingFace dataset</span>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="p1">
+<p class="ltx_p" id="p1.1"><em class="ltx_emph ltx_font_bold ltx_font_italic" id="p1.1.1">Keywords</em>&ensp;VQA, Multi-modal large language model, Scientific Graph Question-answering Benchmark</p>
+</div>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2>
+<div class="ltx_para ltx_noindent" id="S1.p1">
+<p class="ltx_p" id="S1.p1.1">Scientific literature is a rich repository, teeming with detailed graphs, diagrams, and figures that convey intricate data narratives. The task of comprehending, describing, and interpreting these graphs requires significant time and effort from students, data science practitioners, and researchers. Unlike natural images, which are interpreted based on objects, their relative positions, and interactions, scientific graphs carry distinct semantic meanings, illustrated through abstract components such as trend lines and color-coded legends. Typically, readers interpret these graphs in the context of the paper&rsquo;s abstract and pertinent paragraphs. In a live presentation scenario, the author would initiate the context, engaging the audience in a multi-turn, question-answering dialogue.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S1.p2">
+<p class="ltx_p" id="S1.p2.1">Inspired by this interactive process, we have developed SciGraphQA, a comprehensive, multi-turn question-answering dataset derived from scientific literature and graphs. Leveraging a commercial large-language model, we have generated question-answering dialogues, providing it with the figure caption, paper title, abstract, and the initial paragraph referencing the figure. Our objective with this dataset is to establish a scientific question-answering benchmark for multi-modal large language models (MLLMs). In this paper, we evaluate the performance of current MLLMs and introduce a baseline model, SciGraphQA-baseline, which has been trained on the SciGraphQA training set.</p>
+</div>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2 </span>Related Work</h2>
+<section class="ltx_subsection" id="S2.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.1 </span>Graph Visual Answering datasets</h3>
+<figure class="ltx_table" id="S2.T1">
+<div class="ltx_inline-block ltx_transformed_outer" id="S2.T1.1" style="width:433.6pt;height:157.3pt;vertical-align:-0.7pt;"><span class="ltx_transformed_inner" style="transform:translate(-76.6pt,27.7pt) scale(0.7389,0.7389) ;">
+<p class="ltx_p" id="S2.T1.1.1"><span class="ltx_text" id="S2.T1.1.1.1">
+<span class="ltx_inline-block ltx_transformed_outer" id="S2.T1.1.1.1.1" style="width:586.8pt;height:212.9pt;vertical-align:-1.0pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1"><span class="ltx_text" id="S2.T1.1.1.1.1.1.1">
+<span class="ltx_tabular ltx_align_middle" id="S2.T1.1.1.1.1.1.1.1">
+<span class="ltx_tbody">
+<span class="ltx_tr" id="S2.T1.1.1.1.1.1.1.1.1">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.1.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.1.2.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.1.2.1.1" style="width:66.3pt;">Datasets</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.1.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.1.3.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.1.3.1.1" style="width:66.3pt;">Figure Count</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.1.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.1.4.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.1.4.1.1" style="width:66.3pt;">Data/Chart generation process</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.1.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.1.5.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.1.5.1.1" style="width:66.3pt;">Question-Answer pair count</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.1.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.1.6.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.1.6.1.1" style="width:66.3pt;">Question generation</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.1.7" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.1.7.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.1.7.1.1" style="width:66.3pt;">Answer Type</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.1.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.1.1.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.1.1.1.1" style="width:85.1pt;"><math alttext="\#" class="ltx_Math" display="inline" id="S2.T1.1.1.1.1.1.1.1.1.1.1.1.m1.1"><semantics id="S2.T1.1.1.1.1.1.1.1.1.1.1.1.m1.1a"><mi id="S2.T1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1" mathvariant="normal" xref="S2.T1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1.cmml">#</mi><annotation-xml encoding="MathML-Content" id="S2.T1.1.1.1.1.1.1.1.1.1.1.1.m1.1b"><ci id="S2.T1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1.cmml" xref="S2.T1.1.1.1.1.1.1.1.1.1.1.1.m1.1.1">#</ci></annotation-xml><annotation encoding="application/x-tex" id="S2.T1.1.1.1.1.1.1.1.1.1.1.1.m1.1c">\#</annotation></semantics></math> Plot types</span>
+</span></span></span>
+<span class="ltx_tr" id="S2.T1.1.1.1.1.1.1.1.2.1">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.2.1.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.2.1.1.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.2.1.1.1.1" style="width:66.3pt;">FigureQA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib1" title>1</a>]</cite></span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.2.1.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.2.1.2.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.2.1.2.1.1" style="width:66.3pt;">180K</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.2.1.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.2.1.3.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.2.1.3.1.1" style="width:66.3pt;">Synthetic data and charts</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.2.1.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.2.1.4.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.2.1.4.1.1" style="width:66.3pt;">2.3M</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.2.1.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.2.1.5.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.2.1.5.1.1" style="width:66.3pt;">From 15 templates</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.2.1.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.2.1.6.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.2.1.6.1.1" style="width:66.3pt;">Fixed voca.</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.2.1.7" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.2.1.7.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.2.1.7.1.1" style="width:85.1pt;">4</span>
+</span></span></span>
+<span class="ltx_tr" id="S2.T1.1.1.1.1.1.1.1.3.2">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.3.2.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.3.2.1.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.3.2.1.1.1" style="width:66.3pt;">DVQA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib2" title>2</a>]</cite></span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.3.2.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.3.2.2.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.3.2.2.1.1" style="width:66.3pt;">300K</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.3.2.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.3.2.3.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.3.2.3.1.1" style="width:66.3pt;">Synthetic data and synthetic charts</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.3.2.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.3.2.4.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.3.2.4.1.1" style="width:66.3pt;">3.4M</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.3.2.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.3.2.5.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.3.2.5.1.1" style="width:66.3pt;">From 26 templates</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.3.2.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.3.2.6.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.3.2.6.1.1" style="width:66.3pt;">Fixed vocab.</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.3.2.7" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.3.2.7.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.3.2.7.1.1" style="width:85.1pt;">1</span>
+</span></span></span>
+<span class="ltx_tr" id="S2.T1.1.1.1.1.1.1.1.4.3">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.4.3.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.4.3.1.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.4.3.1.1.1" style="width:66.3pt;">PlotQA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib3" title>3</a>]</cite></span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.4.3.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.4.3.2.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.4.3.2.1.1" style="width:66.3pt;">224K</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.4.3.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.4.3.3.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.4.3.3.1.1" style="width:66.3pt;">Real-world data and synthetic charts</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.4.3.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.4.3.4.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.4.3.4.1.1" style="width:66.3pt;">28M</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.4.3.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.4.3.5.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.4.3.5.1.1" style="width:66.3pt;">From 76 templates</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.4.3.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.4.3.6.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.4.3.6.1.1" style="width:66.3pt;">Mix of fixed and open vocabulary answers.</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.4.3.7" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.4.3.7.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.4.3.7.1.1" style="width:85.1pt;">3 
+<br class="ltx_break"></span>
+</span></span></span>
+<span class="ltx_tr" id="S2.T1.1.1.1.1.1.1.1.5.4">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.5.4.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.5.4.1.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.5.4.1.1.1" style="width:66.3pt;">ChartQA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib4" title>4</a>]</cite></span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.5.4.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.5.4.2.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.5.4.2.1.1" style="width:66.3pt;">21.9K (4.8K human and 17.1K generated)</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.5.4.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.5.4.3.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.5.4.3.1.1" style="width:66.3pt;">Real-world charts from a web crawl</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.5.4.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.5.4.4.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.5.4.4.1.1" style="width:66.3pt;">32.7K (9.6K human and 23.1k generated)</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.5.4.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.5.4.5.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.5.4.5.1.1" style="width:66.3pt;">Human/Machine generated</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.5.4.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.5.4.6.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.5.4.6.1.1" style="width:66.3pt;">Open Vocabulary</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.5.4.7" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.5.4.7.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.5.4.7.1.1" style="width:85.1pt;">Unbounded (real-world charts)</span>
+</span></span></span>
+<span class="ltx_tr" id="S2.T1.1.1.1.1.1.1.1.6.5">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.6.5.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.6.5.1.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.6.5.1.1.1" style="width:66.3pt;">SciGraphQA (ours)</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.6.5.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.6.5.2.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.6.5.2.1.1" style="width:66.3pt;">295K</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.6.5.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.6.5.3.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.6.5.3.1.1" style="width:66.3pt;">Real-world academic graphs</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.6.5.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.6.5.4.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.6.5.4.1.1" style="width:66.3pt;">657K</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.6.5.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.6.5.5.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.6.5.5.1.1" style="width:66.3pt;">Machine Generated with Palm with additional textual context</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.6.5.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.6.5.6.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.6.5.6.1.1" style="width:66.3pt;">Open Vocabulary</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_r ltx_border_t" id="S2.T1.1.1.1.1.1.1.1.6.5.7" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.1.1.1.1.1.1.1.6.5.7.1">
+<span class="ltx_p" id="S2.T1.1.1.1.1.1.1.1.6.5.7.1.1" style="width:85.1pt;">Unbounded (real-world charts)</span>
+</span></span></span>
+</span>
+</span></span></span>
+</span></span></span></p>
+</span></div>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table">Table 1: </span>Related open datasets on graph visual questioning.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p1">
+<p class="ltx_p" id="S2.SS1.p1.1">Table <a class="ltx_ref" href="#S2.T1" title="Table 1 ‣ 2.1 Graph Visual Answering datasets ‣ 2 Related Work ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">1</span></a> presented a series of open-source datasets pertinent to graph/chart visual question answering. Earlier datasets such as FigureQA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib1" title>1</a>]</cite>, DVQA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib2" title>2</a>]</cite>, and LEAF-QA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib5" title>5</a>]</cite> primarily relied on synthetic data, with template-generated questions and answers selected from a fixed vocabulary. In contrast, PlotQA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib3" title>3</a>]</cite> introduced open-vocabulary questions. Built on ground truth data tables crawled online, PlotQA programmatically generated charts, and questions answers, but the limitations stem from its synthetic nature post data crawl, restricted chart types: bar plots, line plots, and scatter plots and restricted question variety <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib3" title>3</a>]</cite></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p2">
+<p class="ltx_p" id="S2.SS1.p2.1">More recently, ChartQA capitalized on real-world, web-crawled charts to develop its visual question-answering datasets, supplemented by human annotators. In order to scale up, ChartQA&rsquo;s authors fine-tuned a T5 model to generate 2/3 of their questions and answers derived from human-written chart summaries <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib4" title>4</a>]</cite>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p3">
+<p class="ltx_p" id="S2.SS1.p3.4">The SciGraphQA dataset is a large-scale captioning dataset that utilizes over 290,000 Arxiv papers focused on Computer Science (cs) and Machine Learning (stat.ML) <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib6" title>6</a>]</cite>. PDFFigures 2.0 was used to extract figures. Out of 2.1 million figures extracted, the top categories are tables (23.6<math alttext="\%" class="ltx_Math" display="inline" id="S2.SS1.p3.1.m1.1"><semantics id="S2.SS1.p3.1.m1.1a"><mo id="S2.SS1.p3.1.m1.1.1" xref="S2.SS1.p3.1.m1.1.1.cmml">%</mo><annotation-xml encoding="MathML-Content" id="S2.SS1.p3.1.m1.1b"><csymbol cd="latexml" id="S2.SS1.p3.1.m1.1.1.cmml" xref="S2.SS1.p3.1.m1.1.1">percent</csymbol></annotation-xml><annotation encoding="application/x-tex" id="S2.SS1.p3.1.m1.1c">\%</annotation></semantics></math>), graphs (19.2<math alttext="\%" class="ltx_Math" display="inline" id="S2.SS1.p3.2.m2.1"><semantics id="S2.SS1.p3.2.m2.1a"><mo id="S2.SS1.p3.2.m2.1.1" xref="S2.SS1.p3.2.m2.1.1.cmml">%</mo><annotation-xml encoding="MathML-Content" id="S2.SS1.p3.2.m2.1b"><csymbol cd="latexml" id="S2.SS1.p3.2.m2.1.1.cmml" xref="S2.SS1.p3.2.m2.1.1">percent</csymbol></annotation-xml><annotation encoding="application/x-tex" id="S2.SS1.p3.2.m2.1c">\%</annotation></semantics></math>), and flowcharts (8.5<math alttext="\%" class="ltx_Math" display="inline" id="S2.SS1.p3.3.m3.1"><semantics id="S2.SS1.p3.3.m3.1a"><mo id="S2.SS1.p3.3.m3.1.1" xref="S2.SS1.p3.3.m3.1.1.cmml">%</mo><annotation-xml encoding="MathML-Content" id="S2.SS1.p3.3.m3.1b"><csymbol cd="latexml" id="S2.SS1.p3.3.m3.1.1.cmml" xref="S2.SS1.p3.3.m3.1.1">percent</csymbol></annotation-xml><annotation encoding="application/x-tex" id="S2.SS1.p3.3.m3.1c">\%</annotation></semantics></math>). Graphs were chosen as the focus for caption prediction. Despite limited success in predicting captions based on images (BLEU-4 <math alttext="\sim" class="ltx_Math" display="inline" id="S2.SS1.p3.4.m4.1"><semantics id="S2.SS1.p3.4.m4.1a"><mo id="S2.SS1.p3.4.m4.1.1" xref="S2.SS1.p3.4.m4.1.1.cmml">&sim;</mo><annotation-xml encoding="MathML-Content" id="S2.SS1.p3.4.m4.1b"><csymbol cd="latexml" id="S2.SS1.p3.4.m4.1.1.cmml" xref="S2.SS1.p3.4.m4.1.1">similar-to</csymbol></annotation-xml><annotation encoding="application/x-tex" id="S2.SS1.p3.4.m4.1c">\sim</annotation></semantics></math> 0.02), SciGraphQA provided valuable insights by demonstrating that text normalization did not enhance model performance. Its successor, SciGraphQA+, added more context to image captioning by incorporating the first paragraph that referenced the figure and OCR-extracted text, yielding an increase in BLEU-4 (0.064).</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p4">
+<p class="ltx_p" id="S2.SS1.p4.1">The SciGraphQA/SciGraphQA+ dataset, however, has inherent limitations when framing the problem as a caption prediction task. The ground truth captions may not always be helpful or explicit enough. One-third of captions in SciGraphQA are single-sentence, many of which are incomplete sentences (e.g., "Vary the number of objects") or consist solely of single/multiple nouns (e.g., &rsquo;IIPS&rsquo;, &rsquo;Average Travel Time&rsquo;). For a user&rsquo;s perspective, such as a scientific writer, automatic captioning might not reduce writing time, especially if the system requires the writer to supply context, as in the case with SciGraphQA+. If a full-bodied description is necessary for caption generation to work, we posit that users would prefer to write a short caption themselves.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p5">
+<p class="ltx_p" id="S2.SS1.p5.1">We believed a dialog experience without needing lengthy textual input offers a more natural flow of user experience. The human user would only need to upload an image, which could range from a Tableau screenshot by a business analyst, a matplotlib plot from a data scientist, or a multi-colored diagram from a color-blind individual seeking to understand what a red line represents. The human user can guide the conversation by providing feedback or additional context. The questions could be conceptual, graphical or complex reasoning-related.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p6">
+<p class="ltx_p" id="S2.SS1.p6.1">With this in mind, we introduced the SciGraphQA dataset with multi-turn question-answer conversations on scientific graphs. The questions and corresponding answers were generated from Palm-2, using SciGraphQA figures, captions, context, and paper metadata. SciGraphQA distinguishes itself from previous datasets by using real-world academic graphs rather than synthetic data or charts. The questions and answers inherently support open vocabulary. By leveraging SciGraphQA and Palm2, we significantly scaled up the ChartQA-style real-world Chart-vqa dataset to 295K question-answer pairs from 21.9 (13X) number of samples as shown in Table <a class="ltx_ref" href="#S2.T1" title="Table 1 ‣ 2.1 Graph Visual Answering datasets ‣ 2 Related Work ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">1</span></a>.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S2.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.2 </span>Chart VQA expert systems</h3>
+<div class="ltx_para ltx_noindent" id="S2.SS2.p1">
+<p class="ltx_p" id="S2.SS2.p1.1">Previously, when datasets only contained fixed-vocabulary questions and answers, the standard approach was to construct classification-based VQA models such as STL-CQA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib7" title>7</a>]</cite>, LEAF-Net <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib5" title>5</a>]</cite>, DQVQ-baseline <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib2" title>2</a>]</cite>, and VisionTAPAS <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib4" title>4</a>]</cite>. These encoder-only models encoded image features and textual questions separately, combining them later using attention blocks <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib5" title>5</a>]</cite>; <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib7" title>7</a>]</cite> <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib2" title>2</a>]</cite>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS2.p2">
+<p class="ltx_p" id="S2.SS2.p2.1">DePlot/Matcha is a lineage of image-encoder-text-decoder models distinct from the aforementioned encoder-only architectures. These models are trained to &rsquo;derender&rsquo; the chart, meaning they extract text and datapoints needed to render the chart. They are based on the Pix2Struct model, which was pre-trained on website visual understanding (from screenshot to HTML code) <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib8" title>8</a>]</cite>. Matcha fine-tuned Pix2Struct on various datasets, such as Github IPython notebooks for [chart &gt; code], a mix of PlotQA, web-crawled data, and Wikipedia tables for [chart &gt; table], and math reasoning datasets for [image &gt; answer] <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib9" title>9</a>]</cite>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS2.p3">
+<p class="ltx_p" id="S2.SS2.p3.1">DePlot, in turn, was further fine-tuned on [chart &gt; table] datasets, including ChartQA, to specialize in converting charts into linearized tables with titles, legends, and interpolated data point values <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib10" title>10</a>]</cite>. The output of Deplot is a text string data table that can be fed into such large autoregressive decoders as GPT-3 or Palm. The combination of Deplot and LLM is currently a state-of-the-art benchmark-tuned model for the ChartQA and PlotQA datasets, surpassing VisionTAPAS with OCR input without the need for an external OCR system <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib9" title>9</a>]</cite> <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib10" title>10</a>]</cite>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS2.p4">
+<p class="ltx_p" id="S2.SS2.p4.1">We proposed to leverage Deplot as an external model to enhance the MLLMs&rsquo; capabilities with regards to charts. Even the most powerful large multi-modal models cannot match expert OCR models by a significant margin <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib11" title>11</a>]</cite>. Zero-shot text recognition results range from 37-61% compared to the supervised SOTA of 85%. This deficiency is particularly detrimental to science graphs, where text is key to understanding them. Deplot not only offers OCR capabilities but also can interpolate data point values. This choice to leverage an external system is similar to previous pipelines that incorporated external OCR systems into their input, such as Layout-LM <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib12" title>12</a>]</cite> and ChartBert <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib13" title>13</a>]</cite>.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S2.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.3 </span>Multi-modal large language models (MLLM)</h3>
+<div class="ltx_para ltx_noindent" id="S2.SS3.p1">
+<p class="ltx_p" id="S2.SS3.p1.1">In the domain of natural image understanding and multi-modal generative models, there has been rapid development of vision-language foundational models. These models are similar to the Deplot model discussed in the previous section, as they are image-encoder-text-decoder models. However, the primary distinction lies in the use of pre-trained image encoders, such as CLIP, coupled with a pre-trained large language model backbone, which is typically frozen or partially frozen during training. To bridge the two modalities, MLLMs are trained with &rsquo;adapters&rsquo; that translate image patch embeddings into token embeddings that can be understood by a large language model <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib14" title>14</a>]</cite>. Notably, these models were trained on natural images rather than text-heavy charts and figures.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS3.p2">
+<p class="ltx_p" id="S2.SS3.p2.1">The BLIP-2 model employed a Querying Transformer (Q-Former) to bridge the modality gap between vision and language models. By employing learnable query vectors, BLIP-2 is capable of extracting visual representations that are relatable to the language model, <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib15" title>15</a>]</cite>.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS3.p3">
+<p class="ltx_p" id="S2.SS3.p3.1">DeepMind&rsquo;s Flamingo as well as its open-source equivalent OpenFlamingo, designed gated cross-attention-dense layers within frozen pre-trained LLMs and perceiver resampler to support fixed-sized input with variable in-context learning examples. By sourcing keys and values from visual features and queries from language inputs, it efficiently conditions LLMs on visual input. This structure is highly efficient for in-context learnings <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib16" title>16</a>]</cite>, <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib17" title>17</a>]</cite>).</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS3.p4">
+<p class="ltx_p" id="S2.SS3.p4.1">LLaVA employed self-instruction with GPT-4 to generate a high-quality multi-modal language-image instruction-following dataset. After training a projection layer with image-text pairs from the CC3M dataset as a feature alignment stage, the language model and projection layer were jointly trained for instruction-tuning. This enabled LLaVA to perform various visual understanding and reasoning tasks <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib9" title>9</a>]</cite>. LLaVA used a frozen CLIP Vit-L/14 model.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS3.p5">
+<p class="ltx_p" id="S2.SS3.p5.1">mPLUG-Owl followed a two-stage training process similar to LLaVA, with the disinction of unfrozeing the visual encoder during the first stage and the use of fixed learnable tokens to summarize visual information via cross-attention with image patch features to connect image and text modalities rather an a linear projector. <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib18" title>18</a>]</cite>. The first-stage training was done on a significantly larger data mixture that includes LAION-400M <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib19" title>19</a>]</cite>, COYO-700M <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib20" title>20</a>]</cite>, Conceptual Captions <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib21" title>21</a>]</cite>, and MSCOCO <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib22" title>22</a>]</cite>. The second-stage instruction dataset includes Vicuna&rsquo;s sharegpt <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib23" title>23</a>]</cite> and LLaVA (multi-modal) <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib9" title>9</a>]</cite></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS3.p6">
+<p class="ltx_p" id="S2.SS3.p6.1">In this study, we proposed to evaluate the abilities of the MLLMs on our SciGraphQA datasets. We performed zero-shot evaluations to assess their performance in this out-of-distribution domain of scientific graphs. Furthermore, we fine-tuned a baseline MLLM using the SciGraphQA training set.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3 </span>Methodology</h2>
+<section class="ltx_subsection" id="S3.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.1 </span>Dataset Construction</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p1">
+<p class="ltx_p" id="S3.SS1.p1.1">We expanded the SciCap+ dataset to create the SciGraphQA dataset by generating multi-turn conversations centered around the understanding and elaboration of the content presented in academic graphs. This was achieved by collecting comprehensive textual context related to the graph, which includes the title, abstract, original captions, the first paragraphs mentioning the figure, and OCR text. The SciCap+ dataset is an image-caption dataset derived from scientific figures and captions; it includes additional text derived from the Google OCR API and the paragraphs referenced in the paper <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib24" title>24</a>]</cite>. As shown in figure <a class="ltx_ref" href="#S3.F1" title="Figure 1 ‣ 3.1 Dataset Construction ‣ 3 Methodology ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">1</span></a>, we combined figures, captions, paragraphs, and text-from-OCR from the SciCap+ dataset with the corresponding paper titles and abstracts, and subsequently prompted the PALM2 Chat API to generate multi-turn conversations. We provided this API with two in-context examples generated by GPT-4, as seen in the Appendix <a class="ltx_ref" href="#S8" title="8 Appendix ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">8</span></a>. In the prompt, we specified that the conversation should focus primarily on the graph, rather than the broader context. For example, we posed questions such as, "Considering the graph structure, can you elaborate on how the lines, axes, and legend provide a comprehensive perspective of the interplay between source variance and mean target risk?" After a filtering process, we were able to curate 295K high-quality, multi-turn data entries.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p2">
+<p class="ltx_p" id="S3.SS1.p2.1">As depicted in Figure <a class="ltx_ref" href="#S3.F3" title="Figure 3 ‣ 3.1 Dataset Construction ‣ 3 Methodology ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">3</span></a>, our approach diverged from LLaVA&rsquo;s methodology of using a fixed set of questions to prompt GPT-4 <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib9" title>9</a>]</cite>. We observed a greater diversity in our question set, owing to their generation process conditioned on text context. Some questions were broad, inquiring about textual aspects (e.g., "What are the limitations of this graph?") or components of the composition (e.g., "What does this axis signify?"). On the other hand, several questions delved into specific concepts, mirroring natural conversations by incorporating follow-up queries based on the previous question-answer exchange. This approach seeks to capture the dynamics of organic dialogue, introducing a layer of complexity not present in the fixed-question methodology.</p>
+</div>
+<figure class="ltx_figure" id="S3.F1"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="638" id="S3.F1.g1" src="../../assets/papers/30-SciGraphQA_2023/scigraph.png" width="648">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>Illustration of multi-turn dialogue generation process. For higher quality dialogues, we use comprehensive textual context together with in-context learning when prompting Palm-2.</figcaption>
+</figure>
+<figure class="ltx_figure" id="S3.F2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="212" id="S3.F2.g1" src="../../assets/papers/30-SciGraphQA_2023/histogram.png" width="601">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 2: </span>(left) distribution of the number of question-answer turns in our SciGraphQA dataset. (right) distribution of GPT-4 ratings (0&ndash;10) when GPT-4 was used as a judge to measure the matching of questions and answers from a 3k subset of the the SciGraphQA dataset.</figcaption>
+</figure>
+<figure class="ltx_figure" id="S3.F3"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_portrait" height="842" id="S3.F3.g1" src="../../assets/papers/30-SciGraphQA_2023/example_hd.png" width="648">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 3: </span>Examples from our SciGraphQA dataset where questions and answers are both generated using a commercial LLM rather than being selected from a fixed, limited template pool. Note how the questions are specific to the graphs and often have a conversational nature, asking to elaborate on a concept mentioned in previous answer. For brevity, some answers are truncated, denoted by &ldquo;&hellip;&ldquo; at the end.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p3">
+<p class="ltx_p" id="S3.SS1.p3.1">Our initial Palm-2 output contained 350K samples. Manual inspection showed that a portion of the questions are not graph-related but follow-up on a textual context in previous answers. We would like to focus on graph-related questions to evaluate the graph-understanding capability of multi-modal large language models. Hence we developed a heuristic rule to filter out questions that do not contain any keywords in the following list: [&rsquo;graph&rsquo;, &rsquo;diagram&rsquo;, &rsquo;figure&rsquo;, &rsquo;chart&rsquo;, &rsquo;axis&rsquo;, &rsquo;plot&rsquo;, &rsquo;table&rsquo;, &rsquo;image&rsquo;, &rsquo;visual&rsquo;, &rsquo;illustrat&rsquo;]. Admittedly, in naturally occurring conversations around scientific graphs, humans ask follow-up questions on abstract concepts as well. We will release the unfiltered question-answers in addition to filtered question-answers.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p4">
+<p class="ltx_p" id="S3.SS1.p4.2">After filtering out low-quality QA turns, we curated 295K multi-turn data with 59.1 Million tokens, counted using a byte-wise BPE tokenizer. The average turn is 2.23 while there are 111K samples with 3 or more turns, and we plotted the number of question-answer turns in figure <a class="ltx_ref" href="#S3.F2" title="Figure 2 ‣ 3.1 Dataset Construction ‣ 3 Methodology ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">2</span></a>. On average, we have 143 characters in questions and 775 characters in answers, or 39 tokens in questions and 164 tokens in answers. The token per sample is 199<math alttext="\pm" class="ltx_Math" display="inline" id="S3.SS1.p4.1.m1.1"><semantics id="S3.SS1.p4.1.m1.1a"><mo id="S3.SS1.p4.1.m1.1.1" xref="S3.SS1.p4.1.m1.1.1.cmml">&plusmn;</mo><annotation-xml encoding="MathML-Content" id="S3.SS1.p4.1.m1.1b"><csymbol cd="latexml" id="S3.SS1.p4.1.m1.1.1.cmml" xref="S3.SS1.p4.1.m1.1.1">plus-or-minus</csymbol></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p4.1.m1.1c">\pm</annotation></semantics></math>98 (mean <math alttext="\pm" class="ltx_Math" display="inline" id="S3.SS1.p4.2.m2.1"><semantics id="S3.SS1.p4.2.m2.1a"><mo id="S3.SS1.p4.2.m2.1.1" xref="S3.SS1.p4.2.m2.1.1.cmml">&plusmn;</mo><annotation-xml encoding="MathML-Content" id="S3.SS1.p4.2.m2.1b"><csymbol cd="latexml" id="S3.SS1.p4.2.m2.1.1.cmml" xref="S3.SS1.p4.2.m2.1.1">plus-or-minus</csymbol></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p4.2.m2.1c">\pm</annotation></semantics></math> std). The statistics are similar to LLaVA whose instruction tuning dataset has 109 million tokens with an average of 276 tokens per sample.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS1.p5">
+<p class="ltx_p" id="S3.SS1.p5.1">To check the quality of our question-answer matching, we used GPT-4 to rate the responses in the full 3K test set using GPT-4. GPT-4 was prompted with the textual context (paragraph, caption, abstract), question, and reference answer and asked to rate the quality and helpfulness of the reference answer to the given questions. As shown in the figure <a class="ltx_ref" href="#S3.F2" title="Figure 2 ‣ 3.1 Dataset Construction ‣ 3 Methodology ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">2</span></a>, we observed that the distribution is heavily skewed towards 10, with 86% of the answers being rated 8.5/10 or higher. On the low end, there are 6.4% of ratings of 7/10 or lower, reflecting imperfections in our question-answering generation process. There are 1.2% of ratings <math alttext="\leq" class="ltx_Math" display="inline" id="S3.SS1.p5.1.m1.1"><semantics id="S3.SS1.p5.1.m1.1a"><mo id="S3.SS1.p5.1.m1.1.1" xref="S3.SS1.p5.1.m1.1.1.cmml">&le;</mo><annotation-xml encoding="MathML-Content" id="S3.SS1.p5.1.m1.1b"><leq id="S3.SS1.p5.1.m1.1.1.cmml" xref="S3.SS1.p5.1.m1.1.1"></leq></annotation-xml><annotation encoding="application/x-tex" id="S3.SS1.p5.1.m1.1c">\leq</annotation></semantics></math> 1/10, meaning the answer does not address the question. We concluded that overall, the GPT-4 rating assessment confirmed the validity of our question-answer generation and filtering process, with the majority of answers accurately answering the question.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.2 </span>Zero-shot evaluation</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS2.p1">
+<p class="ltx_p" id="S3.SS2.p1.1">We were interested in examining the capabilities of existing Multimodal Large Language Models (MLLMs), originally trained with natural images typically sourced from the CoCo or LAION datasets <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib14" title>14</a>]</cite>, in comprehending and answering questions related to scientific graphs. We used the checkpoints of the candidate models in a zero-shot evaluation setting where they received only the image and question. The test set consisted of 3K pairs of images, questions, and answers from SciGraphQA. We calculated NLP metrics, including BLEU-4, CIDEr, and ROUGE, between the predicted answers and the ground truth for the test set.</p>
+</div>
+<figure class="ltx_figure" id="S3.F4"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="170" id="S3.F4.g1" src="../../assets/papers/30-SciGraphQA_2023/image5.png" width="540">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 4: </span>Illustration of how the DePlot model extracts the data table from a figure followed by serializing the table into a string. &lt;0x0A&gt; is a newline token in hexadecimal format. Note how the data table contains the interpolated values along the x-axis and y-axis for both legends. We used the DePlot&rsquo;s output string as a prompt augmentation technique in our work.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S3.SS2.p2">
+<p class="ltx_p" id="S3.SS2.p2.1">Inspired by DePlot<cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib10" title>10</a>]</cite>, We further augmented the question prompts by prepending them with the data tables extracted from the graphs using the DePlot model, which interpolates the axis legends and numerical values from the given image, as shown in Figure <a class="ltx_ref" href="#S3.F4" title="Figure 4 ‣ 3.2 Zero-shot evaluation ‣ 3 Methodology ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">4</span></a>. The authors of DePlot showed that GPT 3.5, when prompted with only the tabular data, was able to respond to questions related to a given chart, <span class="ltx_text ltx_font_bold" id="S3.SS2.p2.1.1">underscoring the effectiveness of the tabular data in enhancing the zero-shot capability of LLMs.</span></p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.3 </span>Fine-tuning</h3>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p1">
+<p class="ltx_p" id="S3.SS3.p1.1">We further validate our dataset by fine tuning LLaVA-13B, which demonstrated the highest accuracy among the models in the 0-shot evaluation setting. For this purpose, we utilized the LLaVA-13B checkpoint, released after feature alignment and multi-modal instruction fine-tuning <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib9" title>9</a>]</cite>. We evaluated the fine-tuned models using the 0-shot evaluation method introduced in the previous section.
+We conducted a two-step fine-tuning process for LLaVA-13B on the SciGraphQA dataset. First, we fine-tuned it for 1 epoch on the full dataset, which consisted of 295K samples. Next, we performed fine-tuning on a 30K subset of SciGraphQA, where the question prompts were augmented with the data tables extracted using DePlot from the graphs.
+</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p2">
+<p class="ltx_p" id="S3.SS3.p2.4">We used a LLaVA checkpoint with LLAMA-2-13B-chat backbone as base model for finetuning. We employeed a cosine learning rate schedule with a warmup ratio of 3% and a learning rate of <math alttext="5\times 10^{-6}" class="ltx_Math" display="inline" id="S3.SS3.p2.1.m1.1"><semantics id="S3.SS3.p2.1.m1.1a"><mrow id="S3.SS3.p2.1.m1.1.1" xref="S3.SS3.p2.1.m1.1.1.cmml"><mn id="S3.SS3.p2.1.m1.1.1.2" xref="S3.SS3.p2.1.m1.1.1.2.cmml">5</mn><mo id="S3.SS3.p2.1.m1.1.1.1" lspace="0.222em" rspace="0.222em" xref="S3.SS3.p2.1.m1.1.1.1.cmml">&times;</mo><msup id="S3.SS3.p2.1.m1.1.1.3" xref="S3.SS3.p2.1.m1.1.1.3.cmml"><mn id="S3.SS3.p2.1.m1.1.1.3.2" xref="S3.SS3.p2.1.m1.1.1.3.2.cmml">10</mn><mrow id="S3.SS3.p2.1.m1.1.1.3.3" xref="S3.SS3.p2.1.m1.1.1.3.3.cmml"><mo id="S3.SS3.p2.1.m1.1.1.3.3a" xref="S3.SS3.p2.1.m1.1.1.3.3.cmml">&minus;</mo><mn id="S3.SS3.p2.1.m1.1.1.3.3.2" xref="S3.SS3.p2.1.m1.1.1.3.3.2.cmml">6</mn></mrow></msup></mrow><annotation-xml encoding="MathML-Content" id="S3.SS3.p2.1.m1.1b"><apply id="S3.SS3.p2.1.m1.1.1.cmml" xref="S3.SS3.p2.1.m1.1.1"><times id="S3.SS3.p2.1.m1.1.1.1.cmml" xref="S3.SS3.p2.1.m1.1.1.1"></times><cn id="S3.SS3.p2.1.m1.1.1.2.cmml" type="integer" xref="S3.SS3.p2.1.m1.1.1.2">5</cn><apply id="S3.SS3.p2.1.m1.1.1.3.cmml" xref="S3.SS3.p2.1.m1.1.1.3"><csymbol cd="ambiguous" id="S3.SS3.p2.1.m1.1.1.3.1.cmml" xref="S3.SS3.p2.1.m1.1.1.3">superscript</csymbol><cn id="S3.SS3.p2.1.m1.1.1.3.2.cmml" type="integer" xref="S3.SS3.p2.1.m1.1.1.3.2">10</cn><apply id="S3.SS3.p2.1.m1.1.1.3.3.cmml" xref="S3.SS3.p2.1.m1.1.1.3.3"><minus id="S3.SS3.p2.1.m1.1.1.3.3.1.cmml" xref="S3.SS3.p2.1.m1.1.1.3.3"></minus><cn id="S3.SS3.p2.1.m1.1.1.3.3.2.cmml" type="integer" xref="S3.SS3.p2.1.m1.1.1.3.3.2">6</cn></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.SS3.p2.1.m1.1c">5\times 10^{-6}</annotation></semantics></math>. This learning rate was deliberately lower than the original <math alttext="2\times 10^{-5}" class="ltx_Math" display="inline" id="S3.SS3.p2.2.m2.1"><semantics id="S3.SS3.p2.2.m2.1a"><mrow id="S3.SS3.p2.2.m2.1.1" xref="S3.SS3.p2.2.m2.1.1.cmml"><mn id="S3.SS3.p2.2.m2.1.1.2" xref="S3.SS3.p2.2.m2.1.1.2.cmml">2</mn><mo id="S3.SS3.p2.2.m2.1.1.1" lspace="0.222em" rspace="0.222em" xref="S3.SS3.p2.2.m2.1.1.1.cmml">&times;</mo><msup id="S3.SS3.p2.2.m2.1.1.3" xref="S3.SS3.p2.2.m2.1.1.3.cmml"><mn id="S3.SS3.p2.2.m2.1.1.3.2" xref="S3.SS3.p2.2.m2.1.1.3.2.cmml">10</mn><mrow id="S3.SS3.p2.2.m2.1.1.3.3" xref="S3.SS3.p2.2.m2.1.1.3.3.cmml"><mo id="S3.SS3.p2.2.m2.1.1.3.3a" xref="S3.SS3.p2.2.m2.1.1.3.3.cmml">&minus;</mo><mn id="S3.SS3.p2.2.m2.1.1.3.3.2" xref="S3.SS3.p2.2.m2.1.1.3.3.2.cmml">5</mn></mrow></msup></mrow><annotation-xml encoding="MathML-Content" id="S3.SS3.p2.2.m2.1b"><apply id="S3.SS3.p2.2.m2.1.1.cmml" xref="S3.SS3.p2.2.m2.1.1"><times id="S3.SS3.p2.2.m2.1.1.1.cmml" xref="S3.SS3.p2.2.m2.1.1.1"></times><cn id="S3.SS3.p2.2.m2.1.1.2.cmml" type="integer" xref="S3.SS3.p2.2.m2.1.1.2">2</cn><apply id="S3.SS3.p2.2.m2.1.1.3.cmml" xref="S3.SS3.p2.2.m2.1.1.3"><csymbol cd="ambiguous" id="S3.SS3.p2.2.m2.1.1.3.1.cmml" xref="S3.SS3.p2.2.m2.1.1.3">superscript</csymbol><cn id="S3.SS3.p2.2.m2.1.1.3.2.cmml" type="integer" xref="S3.SS3.p2.2.m2.1.1.3.2">10</cn><apply id="S3.SS3.p2.2.m2.1.1.3.3.cmml" xref="S3.SS3.p2.2.m2.1.1.3.3"><minus id="S3.SS3.p2.2.m2.1.1.3.3.1.cmml" xref="S3.SS3.p2.2.m2.1.1.3.3"></minus><cn id="S3.SS3.p2.2.m2.1.1.3.3.2.cmml" type="integer" xref="S3.SS3.p2.2.m2.1.1.3.3.2">5</cn></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.SS3.p2.2.m2.1c">2\times 10^{-5}</annotation></semantics></math> used for the instruction tuning of LLaVA and also lower than the learning rate of <math alttext="3\times 10^{-4}" class="ltx_Math" display="inline" id="S3.SS3.p2.3.m3.1"><semantics id="S3.SS3.p2.3.m3.1a"><mrow id="S3.SS3.p2.3.m3.1.1" xref="S3.SS3.p2.3.m3.1.1.cmml"><mn id="S3.SS3.p2.3.m3.1.1.2" xref="S3.SS3.p2.3.m3.1.1.2.cmml">3</mn><mo id="S3.SS3.p2.3.m3.1.1.1" lspace="0.222em" rspace="0.222em" xref="S3.SS3.p2.3.m3.1.1.1.cmml">&times;</mo><msup id="S3.SS3.p2.3.m3.1.1.3" xref="S3.SS3.p2.3.m3.1.1.3.cmml"><mn id="S3.SS3.p2.3.m3.1.1.3.2" xref="S3.SS3.p2.3.m3.1.1.3.2.cmml">10</mn><mrow id="S3.SS3.p2.3.m3.1.1.3.3" xref="S3.SS3.p2.3.m3.1.1.3.3.cmml"><mo id="S3.SS3.p2.3.m3.1.1.3.3a" xref="S3.SS3.p2.3.m3.1.1.3.3.cmml">&minus;</mo><mn id="S3.SS3.p2.3.m3.1.1.3.3.2" xref="S3.SS3.p2.3.m3.1.1.3.3.2.cmml">4</mn></mrow></msup></mrow><annotation-xml encoding="MathML-Content" id="S3.SS3.p2.3.m3.1b"><apply id="S3.SS3.p2.3.m3.1.1.cmml" xref="S3.SS3.p2.3.m3.1.1"><times id="S3.SS3.p2.3.m3.1.1.1.cmml" xref="S3.SS3.p2.3.m3.1.1.1"></times><cn id="S3.SS3.p2.3.m3.1.1.2.cmml" type="integer" xref="S3.SS3.p2.3.m3.1.1.2">3</cn><apply id="S3.SS3.p2.3.m3.1.1.3.cmml" xref="S3.SS3.p2.3.m3.1.1.3"><csymbol cd="ambiguous" id="S3.SS3.p2.3.m3.1.1.3.1.cmml" xref="S3.SS3.p2.3.m3.1.1.3">superscript</csymbol><cn id="S3.SS3.p2.3.m3.1.1.3.2.cmml" type="integer" xref="S3.SS3.p2.3.m3.1.1.3.2">10</cn><apply id="S3.SS3.p2.3.m3.1.1.3.3.cmml" xref="S3.SS3.p2.3.m3.1.1.3.3"><minus id="S3.SS3.p2.3.m3.1.1.3.3.1.cmml" xref="S3.SS3.p2.3.m3.1.1.3.3"></minus><cn id="S3.SS3.p2.3.m3.1.1.3.3.2.cmml" type="integer" xref="S3.SS3.p2.3.m3.1.1.3.3.2">4</cn></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.SS3.p2.3.m3.1c">3\times 10^{-4}</annotation></semantics></math> used for LLAMA-2-13B <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib9" title>9</a>]</cite>, <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib25" title>25</a>]</cite>. We made this decision based on early experiments, which indicated that end-to-end fine-tuning with higher learning rates, like <math alttext="2\times 10^{-5}" class="ltx_Math" display="inline" id="S3.SS3.p2.4.m4.1"><semantics id="S3.SS3.p2.4.m4.1a"><mrow id="S3.SS3.p2.4.m4.1.1" xref="S3.SS3.p2.4.m4.1.1.cmml"><mn id="S3.SS3.p2.4.m4.1.1.2" xref="S3.SS3.p2.4.m4.1.1.2.cmml">2</mn><mo id="S3.SS3.p2.4.m4.1.1.1" lspace="0.222em" rspace="0.222em" xref="S3.SS3.p2.4.m4.1.1.1.cmml">&times;</mo><msup id="S3.SS3.p2.4.m4.1.1.3" xref="S3.SS3.p2.4.m4.1.1.3.cmml"><mn id="S3.SS3.p2.4.m4.1.1.3.2" xref="S3.SS3.p2.4.m4.1.1.3.2.cmml">10</mn><mrow id="S3.SS3.p2.4.m4.1.1.3.3" xref="S3.SS3.p2.4.m4.1.1.3.3.cmml"><mo id="S3.SS3.p2.4.m4.1.1.3.3a" xref="S3.SS3.p2.4.m4.1.1.3.3.cmml">&minus;</mo><mn id="S3.SS3.p2.4.m4.1.1.3.3.2" xref="S3.SS3.p2.4.m4.1.1.3.3.2.cmml">5</mn></mrow></msup></mrow><annotation-xml encoding="MathML-Content" id="S3.SS3.p2.4.m4.1b"><apply id="S3.SS3.p2.4.m4.1.1.cmml" xref="S3.SS3.p2.4.m4.1.1"><times id="S3.SS3.p2.4.m4.1.1.1.cmml" xref="S3.SS3.p2.4.m4.1.1.1"></times><cn id="S3.SS3.p2.4.m4.1.1.2.cmml" type="integer" xref="S3.SS3.p2.4.m4.1.1.2">2</cn><apply id="S3.SS3.p2.4.m4.1.1.3.cmml" xref="S3.SS3.p2.4.m4.1.1.3"><csymbol cd="ambiguous" id="S3.SS3.p2.4.m4.1.1.3.1.cmml" xref="S3.SS3.p2.4.m4.1.1.3">superscript</csymbol><cn id="S3.SS3.p2.4.m4.1.1.3.2.cmml" type="integer" xref="S3.SS3.p2.4.m4.1.1.3.2">10</cn><apply id="S3.SS3.p2.4.m4.1.1.3.3.cmml" xref="S3.SS3.p2.4.m4.1.1.3.3"><minus id="S3.SS3.p2.4.m4.1.1.3.3.1.cmml" xref="S3.SS3.p2.4.m4.1.1.3.3"></minus><cn id="S3.SS3.p2.4.m4.1.1.3.3.2.cmml" type="integer" xref="S3.SS3.p2.4.m4.1.1.3.3.2">5</cn></apply></apply></apply></annotation-xml><annotation encoding="application/x-tex" id="S3.SS3.p2.4.m4.1c">2\times 10^{-5}</annotation></semantics></math>, resulted in degraded performance. Thus, it underscored the significance of using an appropriate learning rate for successful fine-tuning.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS3.p3">
+<p class="ltx_p" id="S3.SS3.p3.1">We utilized LoRa to enable us to train small-scale adapters on the LLaMa-2-chat-13B backbone <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib25" title>25</a>]</cite>. We used a LoRa rank of 64 and a LoRa dropout rate of 0.05. Together with DeepSpeed Zero-2 distributed training, this setup allowed us to train with 4 A100-80Gb GPUs on Azure with a per-device batch size of 16 and a gradient accumulation step of 2, resulting in a effective global batch size of 128.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span>Results</h2>
+<figure class="ltx_table" id="S4.T2">
+<div class="ltx_inline-block ltx_transformed_outer" id="S4.T2.1" style="width:433.6pt;height:158pt;vertical-align:-0.8pt;"><span class="ltx_transformed_inner" style="transform:translate(-62.7pt,22.7pt) scale(0.77572,0.77572) ;">
+<p class="ltx_p" id="S4.T2.1.1"><span class="ltx_text" id="S4.T2.1.1.1">
+<span class="ltx_inline-block ltx_transformed_outer" id="S4.T2.1.1.1.1" style="width:559.0pt;height:203.6pt;vertical-align:-1.0pt;"><span class="ltx_transformed_inner" style="transform:translate(0.0pt,0.0pt) scale(1,1) ;">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1"><span class="ltx_text" id="S4.T2.1.1.1.1.1.1">
+<span class="ltx_tabular ltx_align_middle" id="S4.T2.1.1.1.1.1.1.1">
+<span class="ltx_tbody">
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.1.1">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.1.1.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.1.1.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.1.1.1.1.1" style="width:117.5pt;">Model Name</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.1.1.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.1.1.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.1.1.2.1.1" style="width:70.6pt;">Finetuned on SciGraphQA?</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.1.1.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.1.1.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.1.1.3.1.1" style="width:70.6pt;">Prompt Augmented with extracted data-table</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.1.1.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.1.1.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.1.1.4.1.1" style="width:70.6pt;">CIDEr</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.1.1.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.1.1.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.1.1.5.1.1" style="width:70.6pt;">BLEU(4)</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.1.1.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.1.1.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.1.1.6.1.1" style="width:70.6pt;">ROUGE</span>
+</span></span></span>
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.2.2">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.2.2.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.2.2.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.2.2.1.1.1" style="width:117.5pt;">BLIP2-2.7B</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.2.2.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.2.2.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.2.2.2.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.2.2.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.2.2.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.2.2.3.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.2.2.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.2.2.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.2.2.4.1.1" style="width:70.6pt;">0.007</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.2.2.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.2.2.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.2.2.5.1.1" style="width:70.6pt;">0.003</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.2.2.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.2.2.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.2.2.6.1.1" style="width:70.6pt;">0.1</span>
+</span></span></span>
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.3.3">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.3.3.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.3.3.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.3.3.1.1.1" style="width:117.5pt;">DePlot+mPLUG-owl-7B</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.3.3.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.3.3.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.3.3.2.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.3.3.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.3.3.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.3.3.3.1.1" style="width:70.6pt;">Yes</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.3.3.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.3.3.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.3.3.4.1.1" style="width:70.6pt;">0.037</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.3.3.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.3.3.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.3.3.5.1.1" style="width:70.6pt;">0.058</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.3.3.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.3.3.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.3.3.6.1.1" style="width:70.6pt;">0.22</span>
+</span></span></span>
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.4.4">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.4.4.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.4.4.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.4.4.1.1.1" style="width:117.5pt;">mPLUG-owl-7B</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.4.4.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.4.4.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.4.4.2.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.4.4.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.4.4.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.4.4.3.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.4.4.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.4.4.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.4.4.4.1.1" style="width:70.6pt;">0.04</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.4.4.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.4.4.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.4.4.5.1.1" style="width:70.6pt;">0.062</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.4.4.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.4.4.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.4.4.6.1.1" style="width:70.6pt;">0.22</span>
+</span></span></span>
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.5.5">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.5.5.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.5.5.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.5.5.1.1.1" style="width:117.5pt;">LLaVa-7B</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.5.5.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.5.5.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.5.5.2.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.5.5.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.5.5.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.5.5.3.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.5.5.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.5.5.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.5.5.4.1.1" style="width:70.6pt;">0.048</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.5.5.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.5.5.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.5.5.5.1.1" style="width:70.6pt;">0.07</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.5.5.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.5.5.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.5.5.6.1.1" style="width:70.6pt;">0.18</span>
+</span></span></span>
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.6.6">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.6.6.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.6.6.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.6.6.1.1.1" style="width:117.5pt;">LLaVa-13B</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.6.6.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.6.6.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.6.6.2.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.6.6.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.6.6.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.6.6.3.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.6.6.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.6.6.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.6.6.4.1.1" style="width:70.6pt;">0.08</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.6.6.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.6.6.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.6.6.5.1.1" style="width:70.6pt;">0.07</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.6.6.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.6.6.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.6.6.6.1.1" style="width:70.6pt;">0.23</span>
+</span></span></span>
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.7.7">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.7.7.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.7.7.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.7.7.1.1.1" style="width:117.5pt;">OpenFlamingo v2-7B</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.7.7.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.7.7.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.7.7.2.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.7.7.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.7.7.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.7.7.3.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.7.7.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.7.7.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.7.7.4.1.1" style="width:70.6pt;">0.12</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.7.7.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.7.7.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.7.7.5.1.1" style="width:70.6pt;">0.081</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.7.7.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.7.7.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.7.7.6.1.1" style="width:70.6pt;">0.22</span>
+</span></span></span>
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.8.8">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.8.8.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.8.8.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.8.8.1.1.1" style="width:117.5pt;">DePlot+GPT-3</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.8.8.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.8.8.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.8.8.2.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.8.8.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.8.8.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.8.8.3.1.1" style="width:70.6pt;">Yes</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.8.8.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.8.8.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.8.8.4.1.1" style="width:70.6pt;">0.13</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.8.8.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.8.8.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.8.8.5.1.1" style="width:70.6pt;">0.098</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.8.8.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.8.8.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.8.8.6.1.1" style="width:70.6pt;">0.226</span>
+</span></span></span>
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.9.9">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.9.9.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.9.9.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.9.9.1.1.1" style="width:117.5pt;">DePlot+LLaVa-13B</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.9.9.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.9.9.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.9.9.2.1.1" style="width:70.6pt;">No</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.9.9.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.9.9.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.9.9.3.1.1" style="width:70.6pt;">Yes</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.9.9.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.9.9.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.9.9.4.1.1" style="width:70.6pt;">0.153</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.9.9.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.9.9.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.9.9.5.1.1" style="width:70.6pt;">0.106</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.9.9.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.9.9.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.9.9.6.1.1" style="width:70.6pt;">0.273</span>
+</span></span></span>
+<span class="ltx_tr" id="S4.T2.1.1.1.1.1.1.1.10.10">
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.10.10.1" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.10.10.1.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.10.10.1.1.1" style="width:117.5pt;">DePlot+SciGrahQA-baseline</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.10.10.2" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.10.10.2.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.10.10.2.1.1" style="width:70.6pt;">Yes</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.10.10.3" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.10.10.3.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.10.10.3.1.1" style="width:70.6pt;">Yes</span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.10.10.4" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.10.10.4.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.10.10.4.1.1" style="width:70.6pt;"><span class="ltx_text ltx_font_bold" id="S4.T2.1.1.1.1.1.1.1.10.10.4.1.1.1">0.268</span></span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.10.10.5" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.10.10.5.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.10.10.5.1.1" style="width:70.6pt;"><span class="ltx_text ltx_font_bold" id="S4.T2.1.1.1.1.1.1.1.10.10.5.1.1.1">0.123</span></span>
+</span></span>
+<span class="ltx_td ltx_align_justify ltx_align_top ltx_border_b ltx_border_l ltx_border_r ltx_border_t" id="S4.T2.1.1.1.1.1.1.1.10.10.6" style="padding-top:1.5pt;padding-bottom:1.5pt;">
+<span class="ltx_inline-block ltx_align_top" id="S4.T2.1.1.1.1.1.1.1.10.10.6.1">
+<span class="ltx_p" id="S4.T2.1.1.1.1.1.1.1.10.10.6.1.1" style="width:70.6pt;"><span class="ltx_text ltx_font_bold" id="S4.T2.1.1.1.1.1.1.1.10.10.6.1.1.1">0.31</span></span>
+</span></span></span>
+</span>
+</span></span></span>
+</span></span></span></p>
+</span></div>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table">Table 2: </span>Evaluation of large multi-modal models using CIDEr, BLEU-4, and ROUGE metrics on the 3K test set of our SciGraphQA dataset. The term "DePlot + Model" denotes prompt-augmentation using DePlot-extracted data tables. The SciGraphQA-baseline is a LLaVA-13B model fine-tuned on SciGraphQA&rsquo;s training set.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S4.p1">
+<p class="ltx_p" id="S4.p1.1">We evaluated the performance of multiple models on our dataset in zero-shot and fine-tuning settings. We set aside a test set of 3K samples and computed NLP metrics including BLEU-4, ROUGE, and CIDEr. As seen in Table&nbsp;<a class="ltx_ref" href="#S4.T2" title="Table 2 ‣ 4 Results ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">2</span></a>, performance of large multi-modal models increased proportionally to the size of their Language-to-Language Model (LLM) backbones. For instance, BLIP2, with its comparatively smaller 2.7B backbone, showed the least accuracy among the models studied. Conversely, LLaVA-13B, equipped with a significantly larger backbone, demonstrate superior performance.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p2">
+<p class="ltx_p" id="S4.p2.1">Interestingly, within the 7B range, distinct performances emerged from models like OpenFlamingo (Moasic-7B), LLaVA-7B (Vicuna-7B), and mPLUG-owl (Llama-7B). This disparity in performance could be tied back to their unique multi-modal adapter designs&mdash;ranging from linear projectors to a combination of perceived resamplers and cross attention&mdash;and the nature of their respective training datasets. The findings point towards a nuanced understanding that simply scaling up model sizes might not be a one-size-fits-all solution, with the design of adapters and choice of training data playing an equally important role.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p3">
+<p class="ltx_p" id="S4.p3.1">Despite trailing other 7B MLLMs models, OpenFlamingo&rsquo;s underperformance can be attributed to its unique optimization for in-context learning through a retrieval-based in-context example selection (RICE) scheme, as noted by <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib26" title>26</a>]</cite>. This approach retrieves images similar to the query image based on image encodings, and subsequently incorporates top-N (image, text) examples into the prompt, as described in <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib16" title>16</a>]</cite>. However, within the constraints of our research, we were unable to replicate this specific methodology. Instead, we augmented the prompts by randomly selecting 3, 6, and 9 examples from the training dataset as in-context examples. Preliminary evaluations of our randomly selected few-shot prompting, however, did not reveal any significant performance improvement over 0-shot evaluation, suggesting the critical role the retrieval-based approach might play in enhancing OpenFlamingo&rsquo;s performance.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p4">
+<p class="ltx_p" id="S4.p4.1">We further prompted LLaVa-13B and mPlug-owl-7B by augmenting the questions prompts with the data tables extracted by the DePlot model (see Section&nbsp;<a class="ltx_ref" href="#S2.SS2" title="2.2 Chart VQA expert systems ‣ 2 Related Work ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">2.2</span></a>). LLaVa-13B received a considerable performance boost compared to mPLug-owl-7B, indicating that a sufficiently large LLM backbone may better utilize the data-table strings. In another experiment, we prompted GPT-3.5 with the same augmented questions prompts (denoted as DePlot + GPT-3.5 in the Table&nbsp;<a class="ltx_ref" href="#S4.T2" title="Table 2 ‣ 4 Results ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">2</span></a>) and observed GPT-3.5 beats the majority of the baselines except LLaVA-13B. This finding highlights the importance of an expert chart-to-table augmentation technique.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S4.p5">
+<p class="ltx_p" id="S4.p5.1">Lastly, we present the how the best performing model, LLaVa-13B, improve after being fine-tuned with the SciGraphQA dataset. We refer to this fine-tuned model as SciGrahQA-baseline, and as seen in Table&nbsp;<a class="ltx_ref" href="#S4.T2" title="Table 2 ‣ 4 Results ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">2</span></a>, outperforms the same model without fine-tuning (CIDEr score of 0.268 vs 0.153). As shown in the experiments on effect of training set size in the following section, this baseline model may be constrained by the number of trainable parameters and the linear projector between image tokens and language tokens in the LLaVA architecture. Within the scope of this paper, we did not perform model architecture search or hyperparameter tuning.</p>
+</div>
+<figure class="ltx_figure" id="S4.F5"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="248" id="S4.F5.g1" src="../../assets/papers/30-SciGraphQA_2023/image4.png" width="343">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 5: </span>Impact of the dataset size and training with prompt augmentation on fine-tuning performance. For the latter, we constructed 30K DePlot-enhanced SciGraphQA samples. The LLaVA-13B checkpoint was used as the base model in our fine-tuning experiments.</figcaption>
+</figure>
+<div class="ltx_para ltx_noindent" id="S4.p6">
+<p class="ltx_p" id="S4.p6.1">We also studied how the size of the training set affects the fine-tuning performance. We found a positive correlation between the dataset size and model performance, with the most significant improvement seen when using the first 50% of the dataset, although training on the full dataset also provided benefits. The lesser performance gain from 50% to 100% of the dataset may be attributed to the utilization of the LoRa in the LLM backbone, rather than full fine-tuning as done in <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib9" title>9</a>]</cite>. We found that during the pre-training of the LLaVA-style linear projector, the loss plateaued early, suggesting further enhancements could be achieved by increasing trainable parameters in LoRa or using a more powerful multi-modal adapter. Furthermore, as indicated in Section&nbsp;<a class="ltx_ref" href="#S3.SS3" title="3.3 Fine-tuning ‣ 3 Methodology ‣ SciGraphQA: A Large-Scale Synthetic Multi-Turn Question-Answering Dataset for Scientific Graphs"><span class="ltx_text ltx_ref_tag">3.3</span></a>, we further fine-tuned the model with a 30K subset of the dataset augmented with the data tables. As shown in Figure&nbsp;<span class="ltx_ref ltx_missing_label ltx_ref_self">LABEL:tab:abiliation_experiment_performance_different_setup</span>, fine-tuning with this additional subset consistently enhanced the CIDEr score across the board.</p>
+</div>
+</section>
+<section class="ltx_section" id="S5">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5 </span>Discussion</h2>
+<div class="ltx_para ltx_noindent" id="S5.p1">
+<p class="ltx_p" id="S5.p1.1">We introduced SciGraphQA, a dataset of 300K multi-turn question-answering dialogues derived from actual academic publications. This dataset is distinguished by its focus on scientific graphs, its large size (13 times larger than ChartQA), and the comprehensive textual context provided for each dialogue (including the paper&rsquo;s title, abstract, and the paragraph containing the graph). The quality of the responses in SciGraphQA was verified by an impressive 8.7/10 GPT-4 average rating on a test set. We believe that this dataset will be a valuable resource for the development of multimodal large language models.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p2">
+<p class="ltx_p" id="S5.p2.1">From a modeling perspective, we employed a fixed CLIP/ViT vision encoder for our 0-shot evaluations and fine-tuning results, with mPLUG-owl being the only exception. CLIP had been extensively pre-trained on a massive dataset of web-sourced images, so enabling the encoder to adapt during training could have potentially improved the integration of visual elements into the LLM input domain, especially for graphs. For example, spatial awareness may be necessary to identify specific legends, trends, or labels in order to answer compositional questions like "where do the blue and green lines intersect?". However, as CLIP was trained to align visual embeddings with captions, its spatial awareness abilities may be limited. We hypothesize that segmentation-based approaches, such as employing the Segment-Anything Model <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib27" title>27</a>]</cite>, to extract masks and project them into the LLM token embedding space, could further improve the visual-question-answering capability of MLLMs.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p3">
+<p class="ltx_p" id="S5.p3.1">In this study, we confined our evaluations to conventional NLP metrics, which only take into account pairs of ground truth reference answers and model-generated predictions. However, GPT-4 could be harnessed as an evaluation tool due to its capability in evaluating the model&rsquo;s predicted answers based on the entire text context in conjunction with the posed questions. In our experimentation with GPT-4, however, we encountered three notable challenges.
+First, inconsistent results were observed when asking for a rating directly and when soliciting "step-by-step" thinking in the Chain-of-thought prompting style. Second, limited resources constrained us to run only 100 visual question-answering prompts for GPT-4 evaluations (for context, the authors of LLaVa used only 30 samples for their quantitative evaluation <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="#bib.bib9" title>9</a>]</cite>. This hindered conclusive comparisons between the models.
+Third, the non-deterministic property of GPT-4 evaluation could render subsequent work on SciGraphQA incomparable with our published results. Therefore, we reported only the CIDEr, ROUGE, and BLEU-4 scores, which are freely accessible, open, and reproducible. We would like to stress that further exploration of GPT-4 as an evaluation tool is a worthwhile endeavor and could potentially be integrated as a reward model for reinforcement learning.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S5.p4">
+<p class="ltx_p" id="S5.p4.1">Adapting MLLMs to handle out-of-distribution data, particularly in scientific graph question-answering is a significant challenge given the costly and complex nature of fine-tuning large foundation models, their sensitivity to hyperparameters and input data quality, and more importantly the risk of catastrophic forgetting. We explored the use of LoRA to mitigate the fine-tuning cost and further used prompt augmentation to alleviate the remaining issues.</p>
+</div>
+</section>
+<section class="ltx_section" id="S6">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6 </span>Conclusion</h2>
+<div class="ltx_para ltx_noindent" id="S6.p1">
+<p class="ltx_p" id="S6.p1.1">We introduced SciGraphQA, a novel large-scale dataset for multi-turn question answering on scientific graphs. With 295K samples derived from over 290,000 academic papers, SciGraphQA represents the largest open-sourced dataset in this domain with real-world, non-synthetic graphs and with open-ended conversations not bound by fixed templates of questions or vocabulary. The multi-turn dialogues of SciGraphQA were generated by prompting a commercial LLM using comprehensive textual context including titles, abstracts, captions, and pertinent paragraphs. This extensive context enables dialogues that capture the nuanced process of explaining complex graphs, unlike most existing VQA datasets focused on simple facts or graph composition questions. Looking ahead, SciGraphQA provides a valuable resource for pre-training and instruction tuning of MLLMs to handle real-world scientific graphs. By releasing SciGraphQA as an open dataset, we aim to spur progress on this frontier.</p>
+</div>
+</section>
+<section class="ltx_section" id="S7">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">7 </span>References</h2>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+<ul class="ltx_biblist">
+<li class="ltx_bibitem" id="bib.bib1">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kahou et&nbsp;al. [2017]</span>
+<span class="ltx_bibblock">
+Samira&nbsp;Ebrahimi Kahou, Vincent Michalski, Adam Atkinson, &Aacute;kos
+K&aacute;d&aacute;r, Adam Trischler, and Yoshua Bengio.
+
+</span>
+<span class="ltx_bibblock">Figureqa: An annotated figure dataset for visual reasoning.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib1.1.1">arXiv preprint arXiv:1710.07300</em>, 2017.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib2">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kafle et&nbsp;al. [2018]</span>
+<span class="ltx_bibblock">
+Kushal Kafle, Brian Price, Scott Cohen, and Christopher Kanan.
+
+</span>
+<span class="ltx_bibblock">Dvqa: Understanding data visualizations via question answering.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib2.1.1">Proceedings of the IEEE conference on computer vision and
+pattern recognition</em>, pages 5648&ndash;5656, 2018.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib3">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Methani et&nbsp;al. [2020]</span>
+<span class="ltx_bibblock">
+Nitesh Methani, Pritha Ganguly, Mitesh&nbsp;M Khapra, and Pratyush Kumar.
+
+</span>
+<span class="ltx_bibblock">Plotqa: Reasoning over scientific plots.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib3.1.1">Proceedings of the IEEE/CVF Winter Conference on
+Applications of Computer Vision</em>, pages 1527&ndash;1536, 2020.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib4">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Masry et&nbsp;al. [2022]</span>
+<span class="ltx_bibblock">
+Ahmed Masry, Do&nbsp;Xuan Long, Jia&nbsp;Qing Tan, Shafiq Joty, and Enamul Hoque.
+
+</span>
+<span class="ltx_bibblock">Chartqa: A benchmark for question answering about charts with visual
+and logical reasoning.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib4.1.1">arXiv preprint arXiv:2203.10244</em>, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib5">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chaudhry et&nbsp;al. [2020]</span>
+<span class="ltx_bibblock">
+Ritwick Chaudhry, Sumit Shekhar, Utkarsh Gupta, Pranav Maneriker, Prann Bansal,
+and Ajay Joshi.
+
+</span>
+<span class="ltx_bibblock">Leaf-qa: Locate, encode & attend for figure question answering.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib5.1.1">Proceedings of the IEEE/CVF Winter Conference on
+Applications of Computer Vision</em>, pages 3512&ndash;3521, 2020.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib6">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Hsu et&nbsp;al. [2021]</span>
+<span class="ltx_bibblock">
+Ting-Yao Hsu, C&nbsp;Lee Giles, and Ting-Hao&rsquo;Kenneth&rsquo; Huang.
+
+</span>
+<span class="ltx_bibblock">Scicap: Generating captions for scientific figures.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib6.1.1">arXiv preprint arXiv:2110.11624</em>, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib7">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">H and S [2020]</span>
+<span class="ltx_bibblock">
+Singh H and Shekhar S.
+
+</span>
+<span class="ltx_bibblock">Stl-cqa: Structure-based transformers with localization and encoding
+for chart question answering.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib7.1.1">Proceedings of the 2020 Conference on Empirical Methods in
+Natural Language Processing</em>, pages 3275&ndash;3284, 2020.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib8">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lee et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Kenton Lee, Mandar Joshi, Iulia&nbsp;Raluca Turc, Hexiang Hu, Fangyu Liu,
+Julian&nbsp;Martin Eisenschlos, Urvashi Khandelwal, Peter Shaw, Ming-Wei Chang,
+and Kristina Toutanova.
+
+</span>
+<span class="ltx_bibblock">Pix2struct: Screenshot parsing as pretraining for visual language
+understanding.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib8.1.1">International Conference on Machine Learning</em>, pages
+18893&ndash;18912. PMLR, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib9">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Liu et&nbsp;al. [2022a]</span>
+<span class="ltx_bibblock">
+Fangyu Liu, Francesco Piccinno, Syrine Krichene, Chenxi Pang, Kenton Lee,
+Mandar Joshi, Yasemin Altun, Nigel Collier, and Julian&nbsp;Martin Eisenschlos.
+
+</span>
+<span class="ltx_bibblock">Matcha: Enhancing visual language pretraining with math reasoning and
+chart derendering.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib9.1.1">arXiv preprint arXiv:2212.09662</em>, 2022a.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib10">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Liu et&nbsp;al. [2022b]</span>
+<span class="ltx_bibblock">
+Fangyu Liu, Julian&nbsp;Martin Eisenschlos, Francesco Piccinno, Syrine Krichene,
+Chenxi Pang, Kenton Lee, Mandar Joshi, Wenhu Chen, Nigel Collier, and Yasemin
+Altun.
+
+</span>
+<span class="ltx_bibblock">Deplot: One-shot visual language reasoning by plot-to-table
+translation.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib10.1.1">arXiv preprint arXiv:2212.10505</em>, 2022b.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib11">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Liu et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Yuliang Liu, Zhang Li, Hongliang Li, Wenwen Yu, Mingxin Huang, Dezhi Peng,
+Mingyu Liu, Mingrui Chen, Chunyuan Li, Lianwen Jin, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">On the hidden mystery of ocr in large multimodal models.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib11.1.1">arXiv preprint arXiv:2305.07895</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib12">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Y et&nbsp;al. [2020]</span>
+<span class="ltx_bibblock">
+Xu&nbsp;Y, Li&nbsp;M, Cui L, Huang S, Wei F, and Zhou M.
+
+</span>
+<span class="ltx_bibblock">Layoutlm: Pre-training of text and layout for document image
+understanding.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib12.1.1">Proceedings of the 26th ACM SIGKDD International Conference on
+Knowledge Discovery <math alttext="\&" class="ltx_Math" display="inline" id="bib.bib12.1.1.m1.1"><semantics id="bib.bib12.1.1.m1.1a"><mo id="bib.bib12.1.1.m1.1.1" xref="bib.bib12.1.1.m1.1.1.cmml">&</mo><annotation-xml encoding="MathML-Content" id="bib.bib12.1.1.m1.1b"><and id="bib.bib12.1.1.m1.1.1.cmml" xref="bib.bib12.1.1.m1.1.1"></and></annotation-xml><annotation encoding="application/x-tex" id="bib.bib12.1.1.m1.1c">\&</annotation></semantics></math> Data Mining</em>, pages 1192&ndash;1200, 2020.
+
+</span>
+<span class="ltx_bibblock">doi:<a class="ltx_ref ltx_href" href="https://doi.org/10.1145/3394486.3403172" target="_blank" title>10.1145/3394486.3403172</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib13">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Akhtar et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Mubashara Akhtar, Oana Cocarascu, and Elena Simperl.
+
+</span>
+<span class="ltx_bibblock">Reading and reasoning over chart images for evidence-based automated
+fact-checking.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib13.1.1">arXiv preprint arXiv:2301.11843</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib14">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Yin et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Shukang Yin, Chaoyou Fu, Sirui Zhao, Ke&nbsp;Li, Xing Sun, Tong Xu, and Enhong Chen.
+
+</span>
+<span class="ltx_bibblock">A survey on multimodal large language models.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib14.1.1">arXiv preprint arXiv:2306.13549</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib15">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Li et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Junnan Li, Dongxu Li, Silvio Savarese, and Steven Hoi.
+
+</span>
+<span class="ltx_bibblock">Blip-2: Bootstrapping language-image pre-training with frozen image
+encoders and large language models.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib15.1.1">arXiv preprint arXiv:2301.12597</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib16">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Alayrac et&nbsp;al. [2022]</span>
+<span class="ltx_bibblock">
+Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr,
+Yana Hasson, Karel Lenc, Arthur Mensch, Katherine Millican, Malcolm Reynolds,
+et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Flamingo: a visual language model for few-shot learning.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib16.1.1">Advances in Neural Information Processing Systems</em>,
+35:23716&ndash;23736, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib17">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Awadalla et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Anas Awadalla, Irena Gao, Joshua Gardner, Jack Hessel, Yusuf Hanafy, Wanrong
+Zhu, Kalyani Marathe, Yonatan Bitton, Samir Gadre, Jenia Jitsev, Simon
+Kornblith, Pang&nbsp;Wei Koh, Gabriel Ilharco, Mitchell Wortsman, and Ludwig
+Schmidt.
+
+</span>
+<span class="ltx_bibblock">Openflamingo, mar 2023.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://doi.org/10.5281/zenodo.7733589" target="_blank" title>https://doi.org/10.5281/zenodo.7733589</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib18">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Ye et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Qinghao Ye, Haiyang Xu, Guohai Xu, Jiabo Ye, Ming Yan, Yiyang Zhou, Junyang
+Wang, Anwen Hu, Pengcheng Shi, Yaya Shi, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">mplug-owl: Modularization empowers large language models with
+multimodality.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib18.1.1">arXiv preprint arXiv:2304.14178</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib19">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Schuhmann et&nbsp;al. [2021]</span>
+<span class="ltx_bibblock">
+Christoph Schuhmann, Richard Vencu, Romain Beaumont, Robert Kaczmarczyk,
+Clayton Mullis, Aarush Katta, Theo Coombes, Jenia Jitsev, and Aran
+Komatsuzaki.
+
+</span>
+<span class="ltx_bibblock">Laion-400m: Open dataset of clip-filtered 400 million image-text
+pairs.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib19.1.1">arXiv preprint arXiv:2111.02114</em>, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib20">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Byeon et&nbsp;al. [2022]</span>
+<span class="ltx_bibblock">
+Minwoo Byeon, Beomhee Park, Haecheon Kim, Sungjun Lee, Woonhyuk Baek, and
+Saehoon Kim.
+
+</span>
+<span class="ltx_bibblock">Coyo-700m: Image-text pair dataset, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib21">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Sharma et&nbsp;al. [2018]</span>
+<span class="ltx_bibblock">
+Piyush Sharma, Nan Ding, Sebastian Goodman, and Radu Soricut.
+
+</span>
+<span class="ltx_bibblock">Conceptual captions: A cleaned, hypernymed, image alt-text dataset
+for automatic image captioning.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib21.1.1">Proceedings of the 56th Annual Meeting of the Association
+for Computational Linguistics (Volume 1: Long Papers)</em>, pages 2556&ndash;2565,
+2018.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib22">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lin et&nbsp;al. [2014]</span>
+<span class="ltx_bibblock">
+Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva
+Ramanan, Piotr Doll&aacute;r, and C&nbsp;Lawrence Zitnick.
+
+</span>
+<span class="ltx_bibblock">Microsoft coco: Common objects in context.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib22.1.1">Computer Vision&ndash;ECCV 2014: 13th European Conference,
+Zurich, Switzerland, September 6-12, 2014, Proceedings, Part V 13</em>, pages
+740&ndash;755. Springer, 2014.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib23">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chiang et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Wei-Lin Chiang, Zhuohan Li, Zi&nbsp;Lin, Ying Sheng, Zhanghao Wu, Hao Zhang, Lianmin
+Zheng, Siyuan Zhuang, Yonghao Zhuang, Joseph&nbsp;E. Gonzalez, Ion Stoica, and
+Eric&nbsp;P. Xing.
+
+</span>
+<span class="ltx_bibblock">Vicuna: An open-source chatbot impressing gpt-4 with 90%* chatgpt
+quality, March 2023.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://lmsys.org/blog/2023-03-30-vicuna/" target="_blank" title>https://lmsys.org/blog/2023-03-30-vicuna/</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib24">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Yang et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Zhishen Yang, Raj Dabre, Hideki Tanaka, and Naoaki Okazaki.
+
+</span>
+<span class="ltx_bibblock">Scicap+: A knowledge augmented dataset to study the challenges of
+scientific figure captioning.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib24.1.1">arXiv preprint arXiv:2306.03491</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib25">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Touvron et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Hugo Touvron, Louis Martin, Kevin Stone, Peter Albert, Amjad Almahairi, Yasmine
+Babaei, Nikolay Bashlykov, Soumya Batra, Prajjwal Bhargava, Shruti Bhosale,
+et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Llama 2: Open foundation and fine-tuned chat models.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib25.1.1">arXiv preprint arXiv:2307.09288</em>, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib26">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Yang et&nbsp;al. [2022]</span>
+<span class="ltx_bibblock">
+Zhengyuan Yang, Zhe Gan, Jianfeng Wang, Xiaowei Hu, Yumao Lu, Zicheng Liu, and
+Lijuan Wang.
+
+</span>
+<span class="ltx_bibblock">An empirical study of gpt-3 for few-shot knowledge-based vqa.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic" id="bib.bib26.1.1">Proceedings of the AAAI Conference on Artificial
+Intelligence</em>, pages 3081&ndash;3089, 2022.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib27">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kirillov et&nbsp;al. [2023]</span>
+<span class="ltx_bibblock">
+Alexander Kirillov, Eric Mintun, Nikhila Ravi, Hanzi Mao, Chloe Rolland, Laura
+Gustafson, Tete Xiao, Spencer Whitehead, Alexander&nbsp;C Berg, Wan-Yen Lo, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Segment anything.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib27.1.1">arXiv preprint arXiv:2304.02643</em>, 2023.
+
+</span>
+</li>
+</ul>
+</section>
+<section class="ltx_section" id="S8">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">8 </span>Appendix</h2>
+<div class="ltx_para ltx_noindent" id="S8.p1">
+<p class="ltx_p" id="S8.p1.1"><span class="ltx_text ltx_font_bold" id="S8.p1.1.1">Palm-2-chat prompt</span></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p2">
+<p class="ltx_p" id="S8.p2.1">You are an AI visual assistant that can analyze a graph in a scientific paper. You are provided with the OCR-extracted text, the caption of the figure, and the first paragraph that mentioned the figure.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p3">
+<p class="ltx_p" id="S8.p3.1">Your task is to use information from all these provided sources to create a plausible question about the graph, and then provide a detailed answer.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p4">
+<p class="ltx_p" id="S8.p4.1">You should aim to ask complex questions that go beyond a simple description of the graph. The answer to such questions should require understanding the graph data, and then reasoning based on background knowledge or interpretation. You should aim to provide guides and scholarly perspectives based on the graph&rsquo;s data and context.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p5">
+<p class="ltx_p" id="S8.p5.1">Avoid directly revealing specific details in the question. Make the question challenging in a way that the user needs to first reason about the graph data and the context they have derived from the accompanying paper.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p6">
+<p class="ltx_p" id="S8.p6.1">Instead of referring to specific labels or points in the graph while asking a question or giving an answer, explain the graph using natural language. Include details like data trends, prominent points, and relationships between different data sets visualized in the graph.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p7">
+<p class="ltx_p" id="S8.p7.1">When using the information from the OCR-extracted text, caption and first paragraph to explain the graph, avoid stating that these are your sources. Always answer as if you are directly interpreting the graph according to your AI comprehension, understanding and reasoning. Regarding the format of the given input: the following context described the image: "from": "human", "value": contains OCR extracted text listed, and &rsquo;Figure (integer) caption of the image&rsquo;."from: gpt value: contains the first paragraph in the text that mentioned the figure.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p8">
+<p class="ltx_p" id="S8.p8.1">Examples:</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p9">
+<p class="ltx_p" id="S8.p9.1">Example 1:</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p10">
+<p class="ltx_p" id="S8.p10.1">User: The following context described the image: "from": "human", "value": contains OCR extracted text listed, and &rsquo;Figure (integer) caption of the image&rsquo;."from: gpt value: contains the first paragraph in the text that mentioned the figure.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p11">
+<p class="ltx_p" id="S8.p11.1">Assistant: Question: How does the percentage of groups that have successfully acquired a timetable change along with fluctuations in the group size, and based on the graph, which areas are more likely to have successful timetable allocation?</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p12">
+<p class="ltx_p" id="S8.p12.1">Answer: The graph presents a relationship between group size and the success rate in acquiring a timetable. It highlights a trend where as group size increases, the likelihood of acquiring a timetable seems to diminish. This is the overall pattern across all the regions, including Scotland, Central UK, and South and Central UK.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p13">
+<p class="ltx_p" id="S8.p13.1">Example 2:</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p14">
+<p class="ltx_p" id="S8.p14.1">User:</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p15">
+<p class="ltx_p" id="S8.p15.25">The following context described the image: "from": "human", "value": "OCR extracted text list, separated by &rsquo;, &rsquo; : SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.1.m1.1"><semantics id="S8.p15.1.m1.1a"><mo id="S8.p15.1.m1.1.1" xref="S8.p15.1.m1.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.1.m1.1b"><eq id="S8.p15.1.m1.1.1.cmml" xref="S8.p15.1.m1.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.1.m1.1c">=</annotation></semantics></math> 20DB0.5INR (dB)(a)SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.2.m2.1"><semantics id="S8.p15.2.m2.1a"><mo id="S8.p15.2.m2.1.1" xref="S8.p15.2.m2.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.2.m2.1b"><eq id="S8.p15.2.m2.1.1.cmml" xref="S8.p15.2.m2.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.2.m2.1c">=</annotation></semantics></math> 40dB1050IN&Rcaron; (dB)(b)SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.3.m3.1"><semantics id="S8.p15.3.m3.1a"><mo id="S8.p15.3.m3.1.1" xref="S8.p15.3.m3.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.3.m3.1b"><eq id="S8.p15.3.m3.1.1.cmml" xref="S8.p15.3.m3.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.3.m3.1c">=</annotation></semantics></math> 40dB1.50.5INR (dB)(c)gap (bits/sec/Hz)gap (bits/sec/Hz)gap (bits/sec/Hz)<math alttext="\%" class="ltx_Math" display="inline" id="S8.p15.4.m4.1"><semantics id="S8.p15.4.m4.1a"><mo id="S8.p15.4.m4.1.1" xref="S8.p15.4.m4.1.1.cmml">%</mo><annotation-xml encoding="MathML-Content" id="S8.p15.4.m4.1b"><csymbol cd="latexml" id="S8.p15.4.m4.1.1.cmml" xref="S8.p15.4.m4.1.1">percent</csymbol></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.4.m4.1c">\%</annotation></semantics></math>24, SNR, <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.5.m5.1"><semantics id="S8.p15.5.m5.1a"><mo id="S8.p15.5.m5.1.1" xref="S8.p15.5.m5.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.5.m5.1b"><eq id="S8.p15.5.m5.1.1.cmml" xref="S8.p15.5.m5.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.5.m5.1c">=</annotation></semantics></math>, 20DB, 0.5, INR, (dB), (a), SNR, <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.6.m6.1"><semantics id="S8.p15.6.m6.1a"><mo id="S8.p15.6.m6.1.1" xref="S8.p15.6.m6.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.6.m6.1b"><eq id="S8.p15.6.m6.1.1.cmml" xref="S8.p15.6.m6.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.6.m6.1c">=</annotation></semantics></math>, 40dB, 10, 50, IN&Rcaron;, (dB), (b), SNR, <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.7.m7.1"><semantics id="S8.p15.7.m7.1a"><mo id="S8.p15.7.m7.1.1" xref="S8.p15.7.m7.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.7.m7.1b"><eq id="S8.p15.7.m7.1.1.cmml" xref="S8.p15.7.m7.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.7.m7.1c">=</annotation></semantics></math>, 40dB, 1.5, 0.5, INR, (dB), (c), gap, (bits/sec/Hz), gap, (bits/sec/Hz), gap, (bits/sec/Hz), <math alttext="\%" class="ltx_Math" display="inline" id="S8.p15.8.m8.1"><semantics id="S8.p15.8.m8.1a"><mo id="S8.p15.8.m8.1.1" xref="S8.p15.8.m8.1.1.cmml">%</mo><annotation-xml encoding="MathML-Content" id="S8.p15.8.m8.1b"><csymbol cd="latexml" id="S8.p15.8.m8.1.1.cmml" xref="S8.p15.8.m8.1.1">percent</csymbol></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.8.m8.1c">\%</annotation></semantics></math>24 Fig. 7. Numerical analysis: gap between achievable scheme and the outerbounds in Corollary 1 at (a) SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.9.m9.1"><semantics id="S8.p15.9.m9.1a"><mo id="S8.p15.9.m9.1.1" xref="S8.p15.9.m9.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.9.m9.1b"><eq id="S8.p15.9.m9.1.1.cmml" xref="S8.p15.9.m9.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.9.m9.1c">=</annotation></semantics></math> 20dB, (b) SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.10.m10.1"><semantics id="S8.p15.10.m10.1a"><mo id="S8.p15.10.m10.1.1" xref="S8.p15.10.m10.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.10.m10.1b"><eq id="S8.p15.10.m10.1.1.cmml" xref="S8.p15.10.m10.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.10.m10.1c">=</annotation></semantics></math> 40dB, and (c) SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.11.m11.1"><semantics id="S8.p15.11.m11.1a"><mo id="S8.p15.11.m11.1.1" xref="S8.p15.11.m11.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.11.m11.1b"><eq id="S8.p15.11.m11.1.1.cmml" xref="S8.p15.11.m11.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.11.m11.1c">=</annotation></semantics></math> 60dB for CFB <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.12.m12.1"><semantics id="S8.p15.12.m12.1a"><mo id="S8.p15.12.m12.1.1" xref="S8.p15.12.m12.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.12.m12.1b"><eq id="S8.p15.12.m12.1.1.cmml" xref="S8.p15.12.m12.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.12.m12.1c">=</annotation></semantics></math> 10 bits.&lt;image&gt; Give an elaborate explanation of the image you see" <math alttext="\}" class="ltx_Math" display="inline" id="S8.p15.13.m13.1"><semantics id="S8.p15.13.m13.1a"><mo id="S8.p15.13.m13.1.1" stretchy="false" xref="S8.p15.13.m13.1.1.cmml">}</mo><annotation-xml encoding="MathML-Content" id="S8.p15.13.m13.1b"><ci id="S8.p15.13.m13.1.1.cmml" xref="S8.p15.13.m13.1.1">}</ci></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.13.m13.1c">\}</annotation></semantics></math>, <math alttext="\{" class="ltx_Math" display="inline" id="S8.p15.14.m14.1"><semantics id="S8.p15.14.m14.1a"><mo id="S8.p15.14.m14.1.1" stretchy="false" xref="S8.p15.14.m14.1.1.cmml">{</mo><annotation-xml encoding="MathML-Content" id="S8.p15.14.m14.1b"><ci id="S8.p15.14.m14.1.1.cmml" xref="S8.p15.14.m14.1.1">{</ci></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.14.m14.1c">\{</annotation></semantics></math> "from": "gpt", "value": "(i) k : k <math alttext="\in" class="ltx_Math" display="inline" id="S8.p15.15.m15.1"><semantics id="S8.p15.15.m15.1a"><mo id="S8.p15.15.m15.1.1" xref="S8.p15.15.m15.1.1.cmml">&isin;</mo><annotation-xml encoding="MathML-Content" id="S8.p15.15.m15.1b"><in id="S8.p15.15.m15.1.1.cmml" xref="S8.p15.15.m15.1.1"></in></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.15.m15.1c">\in</annotation></semantics></math> <math alttext="\{" class="ltx_Math" display="inline" id="S8.p15.16.m16.1"><semantics id="S8.p15.16.m16.1a"><mo id="S8.p15.16.m16.1.1" stretchy="false" xref="S8.p15.16.m16.1.1.cmml">{</mo><annotation-xml encoding="MathML-Content" id="S8.p15.16.m16.1b"><ci id="S8.p15.16.m16.1.1.cmml" xref="S8.p15.16.m16.1.1">{</ci></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.16.m16.1c">\{</annotation></semantics></math>1, 2<math alttext="\}" class="ltx_Math" display="inline" id="S8.p15.17.m17.1"><semantics id="S8.p15.17.m17.1a"><mo id="S8.p15.17.m17.1.1" stretchy="false" xref="S8.p15.17.m17.1.1.cmml">}</mo><annotation-xml encoding="MathML-Content" id="S8.p15.17.m17.1b"><ci id="S8.p15.17.m17.1.1.cmml" xref="S8.p15.17.m17.1.1">}</ci></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.17.m17.1c">\}</annotation></semantics></math>, i <math alttext="\in" class="ltx_Math" display="inline" id="S8.p15.18.m18.1"><semantics id="S8.p15.18.m18.1a"><mo id="S8.p15.18.m18.1.1" xref="S8.p15.18.m18.1.1.cmml">&isin;</mo><annotation-xml encoding="MathML-Content" id="S8.p15.18.m18.1b"><in id="S8.p15.18.m18.1.1.cmml" xref="S8.p15.18.m18.1.1"></in></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.18.m18.1c">\in</annotation></semantics></math> <math alttext="\{" class="ltx_Math" display="inline" id="S8.p15.19.m19.1"><semantics id="S8.p15.19.m19.1a"><mo id="S8.p15.19.m19.1.1" stretchy="false" xref="S8.p15.19.m19.1.1.cmml">{</mo><annotation-xml encoding="MathML-Content" id="S8.p15.19.m19.1b"><ci id="S8.p15.19.m19.1.1.cmml" xref="S8.p15.19.m19.1.1">{</ci></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.19.m19.1c">\{</annotation></semantics></math>1, 2, 3, 4<math alttext="\}" class="ltx_Math" display="inline" id="S8.p15.20.m20.1"><semantics id="S8.p15.20.m20.1a"><mo id="S8.p15.20.m20.1.1" stretchy="false" xref="S8.p15.20.m20.1.1.cmml">}</mo><annotation-xml encoding="MathML-Content" id="S8.p15.20.m20.1b"><ci id="S8.p15.20.m20.1.1.cmml" xref="S8.p15.20.m20.1.1">}</ci></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.20.m20.1c">\}</annotation></semantics></math>). In general, one can solve an optimization problem to find the optimal choice of power level assignments that maximizes the achievable sum-rate. We have performed numerical analysis for this optimization problem. Figure 7 shows the gap between our proposed achievable scheme and the outer-bounds in Corollary 1 at (a) SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.21.m21.1"><semantics id="S8.p15.21.m21.1a"><mo id="S8.p15.21.m21.1.1" xref="S8.p15.21.m21.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.21.m21.1b"><eq id="S8.p15.21.m21.1.1.cmml" xref="S8.p15.21.m21.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.21.m21.1c">=</annotation></semantics></math> 20dB, (b) SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.22.m22.1"><semantics id="S8.p15.22.m22.1a"><mo id="S8.p15.22.m22.1.1" xref="S8.p15.22.m22.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.22.m22.1b"><eq id="S8.p15.22.m22.1.1.cmml" xref="S8.p15.22.m22.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.22.m22.1c">=</annotation></semantics></math> 40dB, and (c) SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.23.m23.1"><semantics id="S8.p15.23.m23.1a"><mo id="S8.p15.23.m23.1.1" xref="S8.p15.23.m23.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.23.m23.1b"><eq id="S8.p15.23.m23.1.1.cmml" xref="S8.p15.23.m23.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.23.m23.1c">=</annotation></semantics></math> 60dB, for CFB <math alttext="=" class="ltx_Math" display="inline" id="S8.p15.24.m24.1"><semantics id="S8.p15.24.m24.1a"><mo id="S8.p15.24.m24.1.1" xref="S8.p15.24.m24.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p15.24.m24.1b"><eq id="S8.p15.24.m24.1.1.cmml" xref="S8.p15.24.m24.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.24.m24.1c">=</annotation></semantics></math> 10 bits. In fact through our numerical analysis, we can see that the gap is at most 4, 5, and 5.5 bits/sec/Hz for the given values of SNR, respectively. Note that sharp points in Figure 7 are due to the change of achievability scheme for different values of INR as described before." <math alttext="\}" class="ltx_Math" display="inline" id="S8.p15.25.m25.1"><semantics id="S8.p15.25.m25.1a"><mo id="S8.p15.25.m25.1.1" stretchy="false" xref="S8.p15.25.m25.1.1.cmml">}</mo><annotation-xml encoding="MathML-Content" id="S8.p15.25.m25.1b"><ci id="S8.p15.25.m25.1.1.cmml" xref="S8.p15.25.m25.1.1">}</ci></annotation-xml><annotation encoding="application/x-tex" id="S8.p15.25.m25.1c">\}</annotation></semantics></math></p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p16">
+<p class="ltx_p" id="S8.p16.1">Answer:</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p17">
+<p class="ltx_p" id="S8.p17.1">Question: What is the relationship between the gap between the achievable scheme and the outer-bounds in Corollary 1, and the SNR and INR values?</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p18">
+<p class="ltx_p" id="S8.p18.4">Answer: The graph shows the gap between the achievable scheme and the outer-bounds in Corollary 1 at (a) SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p18.1.m1.1"><semantics id="S8.p18.1.m1.1a"><mo id="S8.p18.1.m1.1.1" xref="S8.p18.1.m1.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p18.1.m1.1b"><eq id="S8.p18.1.m1.1.1.cmml" xref="S8.p18.1.m1.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p18.1.m1.1c">=</annotation></semantics></math> 20dB, (b) SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p18.2.m2.1"><semantics id="S8.p18.2.m2.1a"><mo id="S8.p18.2.m2.1.1" xref="S8.p18.2.m2.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p18.2.m2.1b"><eq id="S8.p18.2.m2.1.1.cmml" xref="S8.p18.2.m2.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p18.2.m2.1c">=</annotation></semantics></math> 40dB, and (c) SNR <math alttext="=" class="ltx_Math" display="inline" id="S8.p18.3.m3.1"><semantics id="S8.p18.3.m3.1a"><mo id="S8.p18.3.m3.1.1" xref="S8.p18.3.m3.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p18.3.m3.1b"><eq id="S8.p18.3.m3.1.1.cmml" xref="S8.p18.3.m3.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p18.3.m3.1c">=</annotation></semantics></math> 60dB, for CFB <math alttext="=" class="ltx_Math" display="inline" id="S8.p18.4.m4.1"><semantics id="S8.p18.4.m4.1a"><mo id="S8.p18.4.m4.1.1" xref="S8.p18.4.m4.1.1.cmml">=</mo><annotation-xml encoding="MathML-Content" id="S8.p18.4.m4.1b"><eq id="S8.p18.4.m4.1.1.cmml" xref="S8.p18.4.m4.1.1"></eq></annotation-xml><annotation encoding="application/x-tex" id="S8.p18.4.m4.1c">=</annotation></semantics></math> 10 bits. The gap is at most 4, 5, and 5.5 bits/sec/Hz for the given values of SNR, respectively. The sharp points in the graph are due to the change of achievability scheme for different values of INR.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p19">
+<p class="ltx_p" id="S8.p19.1">Example 3:</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S8.p20">
+<p class="ltx_p" id="S8.p20.1">User [insert prompt regarding current image]
+"""</p>
+<div class="ltx_pagination ltx_role_newpage"></div>
+</div>
+</section>
+</article>
+</div>
+<div class="ar5iv-footer"><a class="ar5iv-nav-button ar5iv-nav-button-prev" href="/html/2308.03348">◄</a>
+<a class="ar5iv-home-button" href="/"><img alt="ar5iv homepage" height="40" src="/assets/ar5iv.png"></a>
+<a class="ar5iv-text-button" href="/feeling_lucky">Feeling<br>lucky?</a>
+<a aria-hidden="true" href="/land_of_honey_and_milk" rel="nofollow" tabindex="-1"></a>
+<a class="ar5iv-text-button ar5iv-severity-error" href="/log/2308.03349">Conversion<br>report</a>
+<a class="ar5iv-text-button" href="https://github.com/dginev/ar5iv/issues/new?template=improve-article--arxiv-id-.md&title=Improve+article+2308.03349" target="_blank">Report<br>an issue</a>
+<a class="ar5iv-text-button arxiv-ui-theme" href="https://arxiv.org/abs/2308.03349">View&nbsp;original<br>on&nbsp;arXiv</a><a class="ar5iv-nav-button ar5iv-nav-button-next" href="/html/2308.03350">►</a>
+</div><footer class="ltx_page_footer">
+<a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle ar5iv color scheme"><span class="color-scheme-icon"></span></a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/license" target="_blank">Copyright</a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/policies/privacy_policy" target="_blank">Privacy Policy</a>
+<div class="ltx_page_logo">Generated  on Wed Feb 28 13:43:06 2024 by <a class="ltx_LaTeXML_logo" href="http://dlmf.nist.gov/LaTeXML/" target="_blank"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img alt="Mascot Sammy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg=="></a>
+</div></footer>
+</div>
+<script>
+      var canMathML = typeof(MathMLElement) == "function";
+      if (!canMathML) {
+        var body = document.querySelector("body");
+        body.firstElementChild.setAttribute('style', 'opacity: 0;');
+        var loading = document.createElement("div");
+        loading.setAttribute("id", "mathjax-loading-spinner");
+        var message = document.createElement("div");
+        message.setAttribute("id", "mathjax-loading-message");
+        message.innerText = "Typesetting Equations...";
+        body.prepend(loading);
+        body.prepend(message);
+
+        var el = document.createElement("script");
+        el.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+        document.querySelector("head").appendChild(el);
+
+        window.MathJax = {
+          startup: {
+            pageReady: () => {
+              return MathJax.startup.defaultPageReady().then(() => {
+                body.removeChild(loading);
+                body.removeChild(message);
+                body.firstElementChild.removeAttribute('style');
+              }); } } };
+      }
+    </script>
+<script>
+    // Auxiliary function, building the preview feature when
+    // an inline citation is clicked
+    function clicked_cite(e) {
+      e.preventDefault();
+      let cite = this.closest('.ltx_cite');
+      let next = cite.nextSibling;
+      if (next && next.nodeType == Node.ELEMENT_NODE && next.getAttribute('class') == "ar5iv-bibitem-preview") {
+        next.remove();
+        return; }
+      // Before adding a preview modal,
+      // cleanup older previews, in case they're still open
+      document.querySelectorAll('span.ar5iv-bibitem-preview').forEach(function(node) {
+        node.remove();
+      })
+
+      // Create the preview
+      preview = document.createElement('span');
+      preview.setAttribute('class','ar5iv-bibitem-preview');
+      let target = document.getElementById(this.getAttribute('href').slice(1));
+      target.childNodes.forEach(function (child) {
+        preview.append(child.cloneNode(true));
+      });
+      let close_x = document.createElement('button');
+      close_x.setAttribute("aria-label","Close modal for bibliography item preview");
+      close_x.textContent = "×";
+      close_x.setAttribute('class', 'ar5iv-button-close-preview');
+      close_x.setAttribute('onclick','this.parentNode.remove()');
+      preview.append(close_x);
+      preview.querySelectorAll('.ltx_tag_bibitem').forEach(function(node) {
+        node.remove();
+      });
+      cite.parentNode.insertBefore(preview, cite.nextSibling);
+      return;
+    }
+    // Global Document initialization:
+    // - assign the preview feature to all inline citation links
+    document.querySelectorAll(".ltx_cite .ltx_ref").forEach(function (link) {
+      link.addEventListener("click", clicked_cite);
+    });
+    </script>
+</body>
+</html>

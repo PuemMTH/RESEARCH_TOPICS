@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<title>[2209.13718] A Dataset of Alt Texts from HCI Publications</title><meta content="Figures in scientific publications contain important information and results, and alt text is needed for blind and low vision readers to engage with their content. We conduct a study to characterize the semantic conten&hellip;" property="og:description">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="summary" name="twitter:card">
+<meta content="A Dataset of Alt Texts from HCI Publications" name="twitter:title">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" name="twitter:image:src">
+<meta content="ar5iv logo" name="twitter:image:alt">
+<meta content="A Dataset of Alt Texts from HCI Publications" property="og:title">
+<meta content="ar5iv" property="og:site_name">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" property="og:image">
+<meta content="article" property="og:type">
+<meta content="https://ar5iv.labs.arxiv.org/html/2209.13718" property="og:url">
+<link href="https://ar5iv.labs.arxiv.org/html/2209.13718" rel="canonical" target="_blank">
+<!--Generated on Thu Mar 14 00:16:32 2024 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<meta content="accessibility,  scientific documents,  alt text,  dataset" lang="en" name="keywords">
+<script>
+  function detectColorScheme(){
+    var theme="light";
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if(current_theme){
+      if(current_theme == "dark"){
+        theme = "dark";
+      } }
+    else if(!window.matchMedia) { return false; }
+    else if(window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      theme = "dark"; }
+    if (theme=="dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light"); } }
+
+  detectColorScheme();
+
+  function toggleColorScheme(){
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if (current_theme) {
+      if (current_theme == "light") {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+      else {
+        localStorage.setItem("ar5iv_theme", "light"); } }
+    else {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+    detectColorScheme(); }
+</script>
+<link href="/assets/ar5iv-fonts.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv-site.0.2.2.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line ltx_leqno">
+<h1 class="ltx_title ltx_title_document">A Dataset of Alt Texts from HCI Publications</h1>
+<div class="ltx_subtitle">Analyses and Uses Towards Producing More Descriptive Alt Texts of Data Visualizations in Scientific Papers
+</div>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Sanjana Chintalapati
+</span><span class="ltx_author_notes">
+<span class="ltx_contact ltx_role_email"><a href="mailto:sanjanac@cs.washington.edu">sanjanac@cs.washington.edu</a>
+</span>
+<span class="ltx_contact ltx_role_orcid"><a class="ltx_ref" href="https://orcid.org/" target="_blank" title="ORCID identifier"></a></span>
+<span class="ltx_contact ltx_role_affiliation"><span class="ltx_text ltx_affiliation_institution" id="id1.1.id1">University of Washington</span><span class="ltx_text ltx_affiliation_city" id="id2.2.id2">Seattle</span><span class="ltx_text ltx_affiliation_state" id="id3.3.id3">WA</span><span class="ltx_text ltx_affiliation_postcode" id="id4.4.id4">98103</span><span class="ltx_text ltx_affiliation_country" id="id5.5.id5">USA</span>
+</span></span></span>
+<span class="ltx_author_before">,&nbsp;</span><span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Jonathan Bragg
+</span><span class="ltx_author_notes">
+<span class="ltx_contact ltx_role_email"><a href="mailto:jbragg@allenai.org">jbragg@allenai.org</a>
+</span>
+<span class="ltx_contact ltx_role_orcid"><a class="ltx_ref" href="https://orcid.org/" target="_blank" title="ORCID identifier"></a></span>
+<span class="ltx_contact ltx_role_affiliation"><span class="ltx_text ltx_affiliation_institution" id="id6.1.id1">Allen Institute for AI</span><span class="ltx_text ltx_affiliation_city" id="id7.2.id2">Seattle</span><span class="ltx_text ltx_affiliation_state" id="id8.3.id3">WA</span><span class="ltx_text ltx_affiliation_postcode" id="id9.4.id4">98103</span><span class="ltx_text ltx_affiliation_country" id="id10.5.id5">USA</span>
+</span></span></span>
+<span class="ltx_author_before">&nbsp;and&nbsp;</span><span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Lucy Lu Wang
+</span><span class="ltx_author_notes">
+<span class="ltx_contact ltx_role_email"><a href="mailto:lucylw@uw.edu">lucylw@uw.edu</a>
+</span>
+<span class="ltx_contact ltx_role_orcid"><a class="ltx_ref" href="https://orcid.org/0000-0001-8752-6635" target="_blank" title="ORCID identifier">0000-0001-8752-6635</a></span>
+<span class="ltx_contact ltx_role_affiliation"><span class="ltx_text ltx_affiliation_institution" id="id11.1.id1">University of Washington; 
+<br class="ltx_break">Allen Institute for AI</span><span class="ltx_text ltx_affiliation_city" id="id12.2.id2">Seattle</span><span class="ltx_text ltx_affiliation_state" id="id13.3.id3">WA</span><span class="ltx_text ltx_affiliation_postcode" id="id14.4.id4">98103</span><span class="ltx_text ltx_affiliation_country" id="id15.5.id5">USA</span>
+</span></span></span>
+</div>
+<div class="ltx_dates">(2022)</div>
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract.</h6>
+<p class="ltx_p" id="id16.id1">Figures in scientific publications contain important information and results, and alt text is needed for blind and low vision readers to engage with their content. We conduct a study to characterize the semantic content of alt text in HCI publications based on a framework introduced by <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite>. Our study focuses on alt text for graphs, charts, and plots extracted from HCI and accessibility publications; we focus on these communities due to the lack of alt text in papers published outside of these disciplines. We find that the capacity of author-written alt text to fulfill blind and low vision user needs is mixed; for example, only <span class="ltx_text" id="id16.id1.1" style="color:#000000;">50%</span> of alt texts in our sample contain information about extrema or outliers, and only <span class="ltx_text" id="id16.id1.2" style="color:#000000;">31%</span> contain information about major trends or comparisons conveyed by the graph. We release our collected dataset of author-written alt text, and outline possible ways that it can be used to develop tools and models to assist future authors in writing better alt text. Based on our findings, we also discuss recommendations that can be acted upon by publishers and authors to encourage inclusion of more types of semantic content in alt text.</p>
+</div>
+<div class="ltx_keywords">accessibility, scientific documents, alt text, dataset
+</div>
+<span class="ltx_note ltx_note_frontmatter ltx_role_journalyear" id="id1"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_type">journalyear: </span>2022</span></span></span><span class="ltx_note ltx_note_frontmatter ltx_role_copyright" id="id2"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_type">copyright: </span>rightsretained</span></span></span><span class="ltx_note ltx_note_frontmatter ltx_role_conference" id="id3"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_type">conference: </span>The 24th International ACM SIGACCESS Conference on Computers and Accessibility; October 23&ndash;26, 2022; Athens, Greece</span></span></span><span class="ltx_note ltx_note_frontmatter ltx_role_booktitle" id="id4"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_type">booktitle: </span>The 24th International ACM SIGACCESS Conference on Computers and Accessibility (ASSETS &rsquo;22), October 23&ndash;26, 2022, Athens, Greece</span></span></span><span class="ltx_note ltx_note_frontmatter ltx_role_doi" id="id5"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_type">doi: </span>10.1145/3517428.3544796</span></span></span><span class="ltx_note ltx_note_frontmatter ltx_role_isbn" id="id6"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_type">isbn: </span>978-1-4503-9258-7/22/10</span></span></span><span class="ltx_note ltx_note_frontmatter ltx_role_ccs" id="id7"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">&dagger;</sup><span class="ltx_note_type">ccs: </span>Human-centered computing&nbsp;Empirical studies in accessibility</span></span></span>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1. </span>Introduction</h2>
+<div class="ltx_para" id="S1.p1">
+<p class="ltx_p" id="S1.p1.1">Alternative text (or &ldquo;alt text&rdquo;)
+describes the content of a visual graphic or image to those who cannot see them. As such, alt text is an important component of accessible design.
+Most scientific documents use graphics to communicate information alongside text; scientific documents can be especially difficult to make accessible to BLV readers <cite class="ltx_cite ltx_citemacro_citep">(Bigham et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib6" title>2016</a>)</cite>, with a large majority of these paper PDFs lacking usable alt text <cite class="ltx_cite ltx_citemacro_citep">(Wang et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib48" title>2021</a>)</cite>. <cite class="ltx_cite ltx_citemacro_citet">Mack
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib32" title>2021</a>)</cite> conducted a study of BLV users and what they need from alt text, and found that graphs and charts are of special importance to these users, as they can be especially important for conveying results. This, coupled with the finding that the vast majority of scientific figures lack alt text altogether, suggests that even if the rest of the text in a scientific paper were accessible to a BLV reader, that a significant portion of the informational content of these works (figures) remain inaccessible, which can negatively impact reader experience.</p>
+</div>
+<div class="ltx_para" id="S1.p2">
+<p class="ltx_p" id="S1.p2.1">Though there have been progress and attempts in automatically generating alt text descriptions of images on web and social media platforms <cite class="ltx_cite ltx_citemacro_citep">(Wu
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib49" title>2017</a>; Morris
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib36" title>2018</a>; Gleason et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib18" title>2020</a>)</cite>, these methods do not apply as well to scientific images. From a machine learning perspective, much of the advancement in image recognition and scene understanding in recent years have derived from training neural models on large-scale labeled image datasets (such as ImageNet <cite class="ltx_cite ltx_citemacro_citep">(Russakovsky
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib43" title>2015</a>)</cite> and Google Open Images <cite class="ltx_cite ltx_citemacro_citep">(Kuznetsova et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib26" title>2020</a>)</cite>), datasets that are primarily composed of natural images, which represent only a small proportion of the types of images found in scientific publications. Figures from scientific papers run the gamut of image types, including but not limited to natural images, medical images, diagrams, schematics, a wide array of graphs and charts, as well as combinations of these types, e.g., a medical image annotated with a histogram. Correspondingly, many established image understanding models cannot be directly or easily adapted for the scientific domain. Hybrid crowdsourcing solutions that integrate human experience with machine functionality may offer useful alternative solutions <cite class="ltx_cite ltx_citemacro_citep">(Gleason et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib18" title>2020</a>; Salisbury
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib44" title>2017</a>; Gurari et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib20" title>2018</a>; Qian
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib40" title>2020</a>)</cite>. For example, <cite class="ltx_cite ltx_citemacro_citet">Qian
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib40" title>2020</a>)</cite> advocate for a hybrid approach to image captioning where machines generate caption units and humans perform stitching. To support these solutions for scientific alt text, we need to better understand the current status of alt text content, and develop tools that can support authors in writing more useful descriptions of scientific figures.</p>
+</div>
+<div class="ltx_para" id="S1.p3">
+<p class="ltx_p" id="S1.p3.1">Several prior studies have attempted to quantify the availability of alt text in scientific documents <cite class="ltx_cite ltx_citemacro_citep">(Brady
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib8" title>2015</a>; Lazar et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib27" title>2017</a>; Wang et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib48" title>2021</a>)</cite>, though none have investigated the content of author-written alt texts and whether they convey adequate information about figures to blind and low vision (BLV) readers.
+In this work, we extract and analyze the content of author-written alt text from papers published by the accessibility and HCI communities, and provide recommendations toward encouraging the inclusion of more types of descriptive information in alt text that may be useful to BLV readers. By extracting realistic author-written alt text, we also provide a useful data resource that can be used to support authors in writing better alt text and study how image understanding models and crowd-authoring techniques can be adapted to more effectively produce figure alt text in the scientific domain.</p>
+</div>
+<div class="ltx_para" id="S1.p4">
+<p class="ltx_p" id="S1.p4.1">We process and extract author-written alt text from over 25K publications in the domains of accessibility and HCI, identifying nearly 3.4K pieces of valid alt text from 899 papers. To assess the type of information contained in these alt texts, we use the framework introduced by <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite>, which accounts for four different levels of semantic content that may be conveyed by graphical data visualizations. We assess the semantic content present in the alt text corresponding to figures of graphs, charts, and plots (data visualizations), images that are prevalent in scientific papers, and for which the alt text content can be suitably represented using the levels introduced in the <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite> framework.
+We find that though most alt text contain basic information about the graph type, axes labels, and what is plotted, far fewer contain information beyond this.
+For example, only <span class="ltx_text" id="S1.p4.1.1" style="color:#000000;">50%</span> of alt text in our sample discuss extrema or outliers in the data, and only <span class="ltx_text" id="S1.p4.1.2" style="color:#000000;">31%</span> discuss trends or comparisons. The lack of this type of semantic content in alt text can make it difficult for a BLV user to understand these kinds of images in the way they desire, as found by <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite>.</p>
+</div>
+<div class="ltx_para" id="S1.p5">
+<p class="ltx_p" id="S1.p5.1">Our contributions in this work can therefore be summarized as:</p>
+<ul class="ltx_itemize" id="S1.I1">
+<li class="ltx_item" id="S1.I1.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S1.I1.i1.p1">
+<p class="ltx_p" id="S1.I1.i1.p1.1">An assessment of the semantic information conveyed by author-written alt text of graph and chart figures extracted from papers published in venues representing work in accessibility, HCI, and related areas. We found that levels of covered content are inadequate, even at accessibility and HCI conferences, which have alt text requirements and writing guidelines.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I1.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S1.I1.i2.p1">
+<p class="ltx_p" id="S1.I1.i2.p1.1">A dataset of <span class="ltx_text" id="S1.I1.i2.p1.1.1" style="color:#000000;">3386</span> author-written alt text from HCI publications, of which <span class="ltx_text" id="S1.I1.i2.p1.1.2" style="color:#000000;">547</span> have been annotated with semantic levels.<span class="ltx_note ltx_role_footnote" id="footnote1"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup><span class="ltx_tag ltx_tag_note">1</span>The dataset and annotations are available at <a class="ltx_ref ltx_href" href="https://github.com/allenai/hci-alt-texts" target="_blank" title>https://github.com/allenai/hci-alt-texts</a>.</span></span></span> The methods used to construct this dataset can be extended to study trends in scientific figure alt text more broadly,
+and our dataset can be used develop tools and models to support alt text authoring. For example, we experiment with training a classifier that identifies semantic levels in text, which could be used to provide feedback to authors as they are writing alt text. We discuss and explore additional opportunities in Section&nbsp;<a class="ltx_ref" href="#S5" title="5. Dataset uses ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">5</span></a>.</p>
+</div>
+</li>
+</ul>
+</div>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2. </span>Related Work</h2>
+<div class="ltx_para" id="S2.p1">
+<p class="ltx_p" id="S2.p1.1">We briefly discuss related work on how to write useful scientific alt text (Section <a class="ltx_ref" href="#S2.SS1" title="2.1. Guidelines for writing scientific alt text ‣ 2. Related Work ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">2.1</span></a>), resources and methods for scientific figure understanding (Section <a class="ltx_ref" href="#S2.SS3" title="2.3. Automated methods for scientific figure understanding ‣ 2. Related Work ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">2.3</span></a>), resources and methods for automatic alt text generation (Section <a class="ltx_ref" href="#S2.SS4" title="2.4. Automated methods for alt text generation ‣ 2. Related Work ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">2.4</span></a>), and other methods for improving figure accessibility (Section <a class="ltx_ref" href="#S2.SS5" title="2.5. Other methods for improving figure accessibility ‣ 2. Related Work ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">2.5</span></a>).</p>
+</div>
+<figure class="ltx_table" id="S2.T1">
+<table class="ltx_tabular ltx_align_middle" id="S2.T1.2">
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S2.T1.2.1.1">
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_tt" id="S2.T1.2.1.1.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.1.1.1.1">
+<span class="ltx_p" id="S2.T1.2.1.1.1.1.1" style="width:108.1pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.2.1.1.1.1.1.1">Dataset</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_tt" id="S2.T1.2.1.1.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.1.1.2.1">
+<span class="ltx_p" id="S2.T1.2.1.1.2.1.1" style="width:71.1pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.2.1.1.2.1.1.1">Domain</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_tt" id="S2.T1.2.1.1.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.1.1.3.1">
+<span class="ltx_p" id="S2.T1.2.1.1.3.1.1" style="width:62.6pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.2.1.1.3.1.1.1">Realistic/ Synthetic</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_tt" id="S2.T1.2.1.1.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.1.1.4.1">
+<span class="ltx_p" id="S2.T1.2.1.1.4.1.1" style="width:76.8pt;"><span class="ltx_text ltx_font_bold" id="S2.T1.2.1.1.4.1.1.1">Task</span></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left ltx_border_tt" id="S2.T1.2.1.1.5"><span class="ltx_text ltx_font_bold" id="S2.T1.2.1.1.5.1">Size of dataset</span></td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.2.2.2">
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.2.2.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.2.2.1.1">
+<span class="ltx_p" id="S2.T1.2.2.2.1.1.1" style="width:108.1pt;">FigureSEER <cite class="ltx_cite ltx_align_left ltx_citemacro_citep">(Siegel et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib46" title>2016</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.2.2.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.2.2.2.1">
+<span class="ltx_p" id="S2.T1.2.2.2.2.1.1" style="width:71.1pt;">Scientific figures</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.2.2.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.2.2.3.1">
+<span class="ltx_p" id="S2.T1.2.2.2.3.1.1" style="width:62.6pt;">Realistic</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.2.2.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.2.2.4.1">
+<span class="ltx_p" id="S2.T1.2.2.2.4.1.1" style="width:76.8pt;">Image classification (6 classes)</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left ltx_border_t" id="S2.T1.2.2.2.5">60K figures</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.2.3.3">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.3.3.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.3.3.1.1">
+<span class="ltx_p" id="S2.T1.2.3.3.1.1.1" style="width:108.1pt;">DocFigure <cite class="ltx_cite ltx_align_left ltx_citemacro_citep">(Jobin
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib22" title>2019</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.3.3.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.3.3.2.1">
+<span class="ltx_p" id="S2.T1.2.3.3.2.1.1" style="width:71.1pt;">Scientific figures</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.3.3.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.3.3.3.1">
+<span class="ltx_p" id="S2.T1.2.3.3.3.1.1" style="width:62.6pt;">Realistic</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.3.3.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.3.3.4.1">
+<span class="ltx_p" id="S2.T1.2.3.3.4.1.1" style="width:76.8pt;">Image classification (28 classes)</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left" id="S2.T1.2.3.3.5">33K images</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.2.4.4">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.4.4.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.4.4.1.1">
+<span class="ltx_p" id="S2.T1.2.4.4.1.1.1" style="width:108.1pt;">SlideImages <cite class="ltx_cite ltx_align_left ltx_citemacro_citep">(Morris
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib35" title>2020</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.4.4.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.4.4.2.1">
+<span class="ltx_p" id="S2.T1.2.4.4.2.1.1" style="width:71.1pt;">Educational illustrations</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.4.4.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.4.4.3.1">
+<span class="ltx_p" id="S2.T1.2.4.4.3.1.1" style="width:62.6pt;">Realistic</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.4.4.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.4.4.4.1">
+<span class="ltx_p" id="S2.T1.2.4.4.4.1.1" style="width:76.8pt;">Image classification (8 classes)</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left" id="S2.T1.2.4.4.5">3K images</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.2.5.5">
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.5.5.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.5.5.1.1">
+<span class="ltx_p" id="S2.T1.2.5.5.1.1.1" style="width:108.1pt;">FigureQA <cite class="ltx_cite ltx_align_left ltx_citemacro_citep">(Kahou et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib25" title>2018</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.5.5.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.5.5.2.1">
+<span class="ltx_p" id="S2.T1.2.5.5.2.1.1" style="width:71.1pt;">Scientific graphs and charts</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.5.5.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.5.5.3.1">
+<span class="ltx_p" id="S2.T1.2.5.5.3.1.1" style="width:62.6pt;">Synthetic</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.5.5.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.5.5.4.1">
+<span class="ltx_p" id="S2.T1.2.5.5.4.1.1" style="width:76.8pt;">VQA</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left ltx_border_t" id="S2.T1.2.5.5.5">100K images</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.2.6.6">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.6.6.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.6.6.1.1">
+<span class="ltx_p" id="S2.T1.2.6.6.1.1.1" style="width:108.1pt;">DVQA <cite class="ltx_cite ltx_align_left ltx_citemacro_citep">(Kafle
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib24" title>2018</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.6.6.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.6.6.2.1">
+<span class="ltx_p" id="S2.T1.2.6.6.2.1.1" style="width:71.1pt;">Bar charts</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.6.6.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.6.6.3.1">
+<span class="ltx_p" id="S2.T1.2.6.6.3.1.1" style="width:62.6pt;">Synthetic</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.6.6.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.6.6.4.1">
+<span class="ltx_p" id="S2.T1.2.6.6.4.1.1" style="width:76.8pt;">VQA</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left" id="S2.T1.2.6.6.5">300K images</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.2.7.7">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.7.7.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.7.7.1.1">
+<span class="ltx_p" id="S2.T1.2.7.7.1.1.1" style="width:108.1pt;">PlotQA <cite class="ltx_cite ltx_align_left ltx_citemacro_citep">(Methani
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib33" title>2020</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.7.7.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.7.7.2.1">
+<span class="ltx_p" id="S2.T1.2.7.7.2.1.1" style="width:71.1pt;">Plots</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.7.7.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.7.7.3.1">
+<span class="ltx_p" id="S2.T1.2.7.7.3.1.1" style="width:62.6pt;">Synthetic plots; Realistic data</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.7.7.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.7.7.4.1">
+<span class="ltx_p" id="S2.T1.2.7.7.4.1.1" style="width:76.8pt;">VQA</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left" id="S2.T1.2.7.7.5">224K images</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.2.8.8">
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.8.8.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.8.8.1.1">
+<span class="ltx_p" id="S2.T1.2.8.8.1.1.1" style="width:108.1pt;">SciCap <cite class="ltx_cite ltx_align_left ltx_citemacro_citep">(Hsu
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib21" title>2021</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.8.8.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.8.8.2.1">
+<span class="ltx_p" id="S2.T1.2.8.8.2.1.1" style="width:71.1pt;">Scientific figures</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.8.8.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.8.8.3.1">
+<span class="ltx_p" id="S2.T1.2.8.8.3.1.1" style="width:62.6pt;">Realistic</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S2.T1.2.8.8.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.8.8.4.1">
+<span class="ltx_p" id="S2.T1.2.8.8.4.1.1" style="width:76.8pt;">Image captioning</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left ltx_border_t" id="S2.T1.2.8.8.5">416K figures</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.2.9.9">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.9.9.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.9.9.1.1">
+<span class="ltx_p" id="S2.T1.2.9.9.1.1.1" style="width:108.1pt;">ImageClefMed Caption <cite class="ltx_cite ltx_align_left ltx_citemacro_citep">(Nicolson
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib39" title>2021</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.9.9.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.9.9.2.1">
+<span class="ltx_p" id="S2.T1.2.9.9.2.1.1" style="width:71.1pt;">Medical images</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.9.9.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.9.9.3.1">
+<span class="ltx_p" id="S2.T1.2.9.9.3.1.1" style="width:62.6pt;">Realistic</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S2.T1.2.9.9.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.9.9.4.1">
+<span class="ltx_p" id="S2.T1.2.9.9.4.1.1" style="width:76.8pt;">Image captioning</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left" id="S2.T1.2.9.9.5">5K images</td>
+</tr>
+<tr class="ltx_tr" id="S2.T1.2.10.10">
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_bb ltx_border_t" id="S2.T1.2.10.10.1">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.10.10.1.1">
+<span class="ltx_p" id="S2.T1.2.10.10.1.1.1" style="width:108.1pt;">FigCAP <cite class="ltx_cite ltx_align_left ltx_citemacro_citep">(Chen et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib11" title>2019a</a>, <a class="ltx_ref" href="#bib.bib12" title>b</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_bb ltx_border_t" id="S2.T1.2.10.10.2">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.10.10.2.1">
+<span class="ltx_p" id="S2.T1.2.10.10.2.1.1" style="width:71.1pt;">Bar charts, pie charts, line plots</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_bb ltx_border_t" id="S2.T1.2.10.10.3">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.10.10.3.1">
+<span class="ltx_p" id="S2.T1.2.10.10.3.1.1" style="width:62.6pt;">Synthetic</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_bb ltx_border_t" id="S2.T1.2.10.10.4">
+<span class="ltx_inline-block ltx_align_top" id="S2.T1.2.10.10.4.1">
+<span class="ltx_p" id="S2.T1.2.10.10.4.1.1" style="width:76.8pt;">alt text generation</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left ltx_border_bb ltx_border_t" id="S2.T1.2.10.10.5">110K figures</td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="S2.T1.3.1.1" style="font-size:90%;">Table 1</span>. </span><span class="ltx_text" id="S2.T1.4.2" style="font-size:90%;">Datasets for scientific figure understanding</span></figcaption>
+</figure>
+<section class="ltx_subsection" id="S2.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.1. </span>Guidelines for writing scientific alt text</h3>
+<div class="ltx_para" id="S2.SS1.p1">
+<p class="ltx_p" id="S2.SS1.p1.1">The Web Content Accessibility Guidelines (WCAG) <cite class="ltx_cite ltx_citemacro_citep">(Chisholm
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib14" title>2001</a>; Caldwell et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib10" title>2008</a>)</cite> contain guidance on when alt text should be provided and the suggested content for the alt text. The National Center for Accessible Media (NCAM) has published guidelines including high-level recommendations for writing alt text for graphs, suggesting that a complete description should include text describing (i) the layout of the graph, (ii) the location of variables on the graph, and (iii) for static graphs, the overall trends presented, and for dynamic graphs, summary information such as the range of the axes.<span class="ltx_note ltx_role_footnote" id="footnote2"><sup class="ltx_note_mark">2</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">2</sup><span class="ltx_tag ltx_tag_note">2</span><a class="ltx_ref ltx_href" href="https://www.wgbh.org/foundation/ncam/guidelines/accessible-digital-media-guidelines" target="_blank" title>https://www.wgbh.org/foundation/ncam/guidelines/accessible-digital-media-guidelines</a></span></span></span> The Benetech Diagram Center also provides image description guidelines with the goal of making it easier, cheaper, and faster to create and use accessible digital images.<span class="ltx_note ltx_role_footnote" id="footnote3"><sup class="ltx_note_mark">3</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">3</sup><span class="ltx_tag ltx_tag_note">3</span><a class="ltx_ref ltx_href" href="http://diagramcenter.org/making-images-accessible.html" target="_blank" title>http://diagramcenter.org/making-images-accessible.html</a></span></span></span> The referenced documentation includes
+both general best practices concerning aspects such as style and language that apply to every type of image, along with specific considerations for bar graphs, pie graphs, line graphs, and scatter plots such as listing the numbers in a pie graph from smallest to largest, and focusing on the change of concentration in scatter plots. Several academic publishers have also provided research-based guidelines for improving the accessibility of digital media. For example, the Association for Computing Machinary (ACM) strongly encourages authors to provide alt text for images and charts, and includes instructions for authors such as not duplicating the caption text and providing keywords.<span class="ltx_note ltx_role_footnote" id="footnote4"><sup class="ltx_note_mark">4</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">4</sup><span class="ltx_tag ltx_tag_note">4</span><a class="ltx_ref ltx_href" href="https://authors.acm.org/proceedings/production-information/describing-figures" target="_blank" title>https://authors.acm.org/proceedings/production-information/describing-figures</a></span></span></span></p>
+</div>
+<div class="ltx_para" id="S2.SS1.p2">
+<p class="ltx_p" id="S2.SS1.p2.1"><cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite> introduced a four-level conceptual model describing the semantic content of information that should be present in alt text descriptions of scientific data visualizations. Level 1 includes construction details such as the type of figure (e.g., bar plot or line plot), and labels of the axes. Level 2 includes statistics about the figure data, such as extremes and correlations. Level 3 includes larger takeaways, such as trends and patterns in the data. Level 4 includes domain-specific insights and societal context for the figure data. The authors conducted studies including BLV users, and found that these users gained the most information from textual descriptions conveying information from semantic levels 1&ndash;3 <cite class="ltx_cite ltx_citemacro_citep">(Lundgard and
+Satyanarayan, <a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite>. This finding corresponds to the recommendations of alt text content made by the NCAM. Though this framework is not a guideline document <em class="ltx_emph ltx_font_italic" id="S2.SS1.p2.1.1">per se</em>, we adopt it for this study in order to evaluate the quality of author-written alt text for graphs and charts found in scientific publications. It has been validated through studies with BLV participants, and we are unaware of alternative frameworks.</p>
+</div>
+<div class="ltx_para" id="S2.SS1.p3">
+<p class="ltx_p" id="S2.SS1.p3.1">Towards alt text preferences, <cite class="ltx_cite ltx_citemacro_citet">Bennett et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib5" title>2021</a>)</cite>
+conducted a study on best practices for describing race, gender, and disability status in alt text, and found that people in photographs preferred to be described with the language that they use to talk about themselves, and that descriptions of concrete visual details were more appropriate than language around identities. Though this does not apply directly to scientific figures, alt text written by someone other than the authors of a paper may want to consider how the authors intended for the figure to be understood as well as the language used by the authors in the rest of the publication.
+After reviewing BLV people&rsquo;s experiences with digital image types such as news articles and employment websites, <cite class="ltx_cite ltx_citemacro_citet">Stangl
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib47" title>2020</a>)</cite> found that a one-size-fits-all approach for image descriptions is not ideal. Similarly, through interviews with screen reader users, <cite class="ltx_cite ltx_citemacro_citet">Mack
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib32" title>2021</a>)</cite> found that different BLV users had varying preferences about the level of detail that they found to be most helpful in alt text, although most users concluded that both brevity and the availability of detailed information were desirable traits. Such findings should be kept in mind when authoring effective alt text.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S2.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.2. </span>Interfaces for authoring alt text</h3>
+<div class="ltx_para" id="S2.SS2.p1">
+<p class="ltx_p" id="S2.SS2.p1.1"><cite class="ltx_cite ltx_citemacro_citet">Morash
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib34" title>2015</a>)</cite> developed interfaces to guide novice web workers in writing descriptions of scientific images. The authors queried workers for information about select image attributes based on the NCAM guidelines, on attributes such as image type, title, and units shown. They found that the templated query method was preferred by the workers and produced better image descriptions.</p>
+</div>
+<div class="ltx_para" id="S2.SS2.p2">
+<p class="ltx_p" id="S2.SS2.p2.1"><cite class="ltx_cite ltx_citemacro_citet">Mack
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib32" title>2021</a>)</cite> built a prototype interface for authoring alt text, and measured the quality of alt text on a four-point scale based on three interface variations: the current PowerPoint interface; a free-form interface, where suggestions were presented as a bulleted list; and a template interface, where each prompt was listed separately and included a text box to respond to that prompt. Participants who use screen readers were asked to rank the quality of alt text written under the PowerPoint, free-form, and template interfaces, they found that, in general, the free-form interface encouraged authors to write alt text that is more closely aligned with the preferences of screen reader users.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S2.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.3. </span>Automated methods for scientific figure understanding</h3>
+<div class="ltx_para" id="S2.SS3.p1">
+<p class="ltx_p" id="S2.SS3.p1.1">Scientific figure understanding tasks such as figure classification, visual question-answering (VQA), or image captioning have received significant attention from the AI community in recent years <cite class="ltx_cite ltx_citemacro_citep">(Siegel et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib46" title>2016</a>; Jobin
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib22" title>2019</a>; Morris
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib35" title>2020</a>; Kahou et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib25" title>2018</a>; Kafle
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib24" title>2018</a>; Methani
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib33" title>2020</a>; Levy
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib28" title>2021</a>; Chen et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib11" title>2019a</a>, <a class="ltx_ref" href="#bib.bib12" title>b</a>; Hsu
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib21" title>2021</a>; Nicolson
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib39" title>2021</a>; Qian et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib41" title>2021</a>)</cite>. In Table&nbsp;<a class="ltx_ref" href="#S2.T1" title="Table 1 ‣ 2. Related Work ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">1</span></a>, we describe a number of datasets that have been introduced to train models and evaluate their performance on these tasks.</p>
+</div>
+<div class="ltx_para" id="S2.SS3.p2">
+<p class="ltx_p" id="S2.SS3.p2.1">Datasets introduced for scientific image classification include FigureSeer <cite class="ltx_cite ltx_citemacro_citep">(Siegel et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib46" title>2016</a>)</cite>, DocFigure <cite class="ltx_cite ltx_citemacro_citep">(Jobin
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib22" title>2019</a>)</cite>, and SlideImages <cite class="ltx_cite ltx_citemacro_citep">(Morris
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib35" title>2020</a>)</cite>. All three datasets include realistic images extracted from scientific papers, along with labels to classes such as graph, medical image, or natural image. These datasets have been used to train models that can detect figure type, which is an essential piece of information that should be available in alt text. However, figure type is only one of many pieces of information that BLV users may need to understand the content of an image, and therefore these datasets are of limited use in the alt text generation setting.</p>
+</div>
+<div class="ltx_para" id="S2.SS3.p3">
+<p class="ltx_p" id="S2.SS3.p3.2">Towards more detailed figure understanding, datasets such as FigureQA <cite class="ltx_cite ltx_citemacro_citep">(Kahou et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib25" title>2018</a>)</cite>, DVQA <cite class="ltx_cite ltx_citemacro_citep">(Kafle
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib24" title>2018</a>)</cite>, and PlotQA <cite class="ltx_cite ltx_citemacro_citep">(Methani
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib33" title>2020</a>)</cite> have been introduced. These datasets are made up of synthetically generated graphs and charts, along with associated questions and answers about the graph contents. For example, questions may be related to the graph title, axes, the <math alttext="x" class="ltx_Math" display="inline" id="S2.SS3.p3.1.m1.1"><semantics id="S2.SS3.p3.1.m1.1a"><mi id="S2.SS3.p3.1.m1.1.1" xref="S2.SS3.p3.1.m1.1.1.cmml">x</mi><annotation-xml encoding="MathML-Content" id="S2.SS3.p3.1.m1.1b"><ci id="S2.SS3.p3.1.m1.1.1.cmml" xref="S2.SS3.p3.1.m1.1.1">𝑥</ci></annotation-xml><annotation encoding="application/x-tex" id="S2.SS3.p3.1.m1.1c">x</annotation></semantics></math> and <math alttext="y" class="ltx_Math" display="inline" id="S2.SS3.p3.2.m2.1"><semantics id="S2.SS3.p3.2.m2.1a"><mi id="S2.SS3.p3.2.m2.1.1" xref="S2.SS3.p3.2.m2.1.1.cmml">y</mi><annotation-xml encoding="MathML-Content" id="S2.SS3.p3.2.m2.1b"><ci id="S2.SS3.p3.2.m2.1.1.cmml" xref="S2.SS3.p3.2.m2.1.1">𝑦</ci></annotation-xml><annotation encoding="application/x-tex" id="S2.SS3.p3.2.m2.1c">y</annotation></semantics></math>-axes values associated with specific data series, or the names of each data series. In PlotQA <cite class="ltx_cite ltx_citemacro_citep">(Kafle
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib24" title>2018</a>)</cite>, many questions also go beyond the structure of the plot and may require data retrieval or additional reasoning (e.g. What is the average difference between two data series?) Models trained on these datasets have shown improving performance <cite class="ltx_cite ltx_citemacro_citep">(Kahou et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib25" title>2018</a>; Levy
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib28" title>2021</a>)</cite>, though because the plots in these datasets are generated synthetically, they may not transfer well to graphs found in actual scientific publications, which are significantly more noisy, diverse, and variable than those found in these datasets. Also, though figure understanding through VQA is related to the task of producing alt text, the task of VQA itself does not produce a coherent textual description of the figure, which is the desired outcome for alt text. The FigCAP project <cite class="ltx_cite ltx_citemacro_citep">(Chen et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib11" title>2019a</a>, <a class="ltx_ref" href="#bib.bib12" title>b</a>)</cite> attempts to bridge this divide by deriving figure descriptive text from the questions and answers of the FigureQA <cite class="ltx_cite ltx_citemacro_citep">(Kahou et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib25" title>2018</a>)</cite> dataset; though FigCAP refers to itself as a figure captioning dataset, the &ldquo;captions&rdquo; they provide are more similar to the notion of alt text, including descriptions about the figure structure, axes labels, data values, etc.</p>
+</div>
+<div class="ltx_para" id="S2.SS3.p4">
+<p class="ltx_p" id="S2.SS3.p4.1">Recent work has aimed to automatically generate captions for both natural images <cite class="ltx_cite ltx_citemacro_citep">(Chen et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib13" title>2015</a>; Sharma
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib45" title>2018</a>)</cite> and figures <cite class="ltx_cite ltx_citemacro_citep">(Hsu
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib21" title>2021</a>; Nicolson
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib39" title>2021</a>)</cite>; however, caption generation and alt text generation are not the same task, and could be said to have differing goals. Captions are intended to be consumed by all readers, and contain information that complements the content of the image; while alt text is meant to explain the informational content of the image for users who cannot see it. SciCap <cite class="ltx_cite ltx_citemacro_citep">(Hsu
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib21" title>2021</a>)</cite> introduces a large dataset of graph figures and captions derived from arXiv; captions are those originally written by authors, and are post-processed to remove tokens corresponding to numbers and equations. The ImageClefMed Captioning task released a relatively much smaller dataset focused on captioning of medical images derived from scientific publications <cite class="ltx_cite ltx_citemacro_citep">(Nicolson
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib39" title>2021</a>)</cite>.</p>
+</div>
+<div class="ltx_para" id="S2.SS3.p5">
+<p class="ltx_p" id="S2.SS3.p5.1">As far as we know, there are no datasets available for studying scientific figure alt text generation with realistic, author-written alt text. Though FigCAP <cite class="ltx_cite ltx_citemacro_citep">(Chen et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib11" title>2019a</a>, <a class="ltx_ref" href="#bib.bib12" title>b</a>)</cite> and FigJAM <cite class="ltx_cite ltx_citemacro_citep">(Qian et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib41" title>2021</a>)</cite> explore text generation in the alt text setting, the images and target texts used are synthetic (derived from FigureQA <cite class="ltx_cite ltx_citemacro_citep">(Kahou et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib25" title>2018</a>)</cite>) and not representative of the analogous task in a realistic setting.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S2.SS4">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.4. </span>Automated methods for alt text generation</h3>
+<div class="ltx_para" id="S2.SS4.p1">
+<p class="ltx_p" id="S2.SS4.p1.1">Office 365 generates alt text for any image or figure pasted into Microsoft PowerPoint.<span class="ltx_note ltx_role_footnote" id="footnote5"><sup class="ltx_note_mark">5</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">5</sup><span class="ltx_tag ltx_tag_note">5</span><a class="ltx_ref ltx_href" href="https://www.microsoft.com/en-us/microsoft-365/powerpoint" target="_blank" title>https://www.microsoft.com/en-us/microsoft-365/powerpoint</a></span></span></span> Though easy to use, the feature shows limited performance on scientific figures, usually only describing the type of the figure. For example, for the figures in Table&nbsp;<a class="ltx_ref" href="#S3.T2" title="Table 2 ‣ 3.1. Sampling papers and extracting author-written alt text ‣ 3. Methods ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">2</span></a>, the corresponding alt texts generated by Office 365 are, respectively: &ldquo;Chart, bar chart,&rdquo; &ldquo;Chart, line chart,&rdquo; and &ldquo;Chart.&rdquo; Though Office 365 usually identifies the correct type of chart, no other information about the figure content is generated, and the resulting alt text is of limited use to the reader.</p>
+</div>
+<div class="ltx_para" id="S2.SS4.p2">
+<p class="ltx_p" id="S2.SS4.p2.1"><cite class="ltx_cite ltx_citemacro_citet">Qian et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib41" title>2021</a>)</cite> created synthetic datasets for figure alt text generation by adapting the FigureQA <cite class="ltx_cite ltx_citemacro_citep">(Kahou et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib25" title>2018</a>)</cite> and DVQA <cite class="ltx_cite ltx_citemacro_citep">(Kafle
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib24" title>2018</a>)</cite> datasets for figure VQA. Figures in both datasets are synthetic (not from scientific papers), and alt text units are derived from the data and information used to construct each figure. The authors then trained the FigJAM model, which generates alt text descriptions based on the multimodal inputs of the raw figure image and figure metadata <cite class="ltx_cite ltx_citemacro_citep">(Qian et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib41" title>2021</a>)</cite>. Though performance on synthetic data was shown to be good, the model may not generalize to realistic figures found in scientific papers, which exhibit significantly more variability than those evaluated by <cite class="ltx_cite ltx_citemacro_citet">Qian et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib41" title>2021</a>)</cite>.<span class="ltx_note ltx_role_footnote" id="footnote6"><sup class="ltx_note_mark">6</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">6</sup><span class="ltx_tag ltx_tag_note">6</span>The authors do not release their dataset or pretrained models, so we are unable to perform a comparative analysis on realistic figures derived from scientific papers.</span></span></span></p>
+</div>
+<div class="ltx_para" id="S2.SS4.p3">
+<p class="ltx_p" id="S2.SS4.p3.1">Researchers have developed tools for generating alt text information for images on non-scientific social platforms.
+Gleason et al. <cite class="ltx_cite ltx_citemacro_citep">(Gleason et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib18" title>2020</a>)</cite> addressed the accessibility barrier on Twitter by creating a browser extension which adds alt text to Twitter using six methods, such as reverse image searching and automatic image captioning. However, this project focused on Twitter images, which differ from realistic scientific figures. Additionally, Wu et al. <cite class="ltx_cite ltx_citemacro_citep">(Wu
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib49" title>2017</a>)</cite> deployed an automatic alt text system to identify faces, objects, and themes for photos on Facebook in order to make them more accessible to screen reader users. The domain of natural images on social media again significantly differs from our domain of scientific graphs and charts.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S2.SS5">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.5. </span>Other methods for improving figure accessibility</h3>
+<div class="ltx_para" id="S2.SS5.p1">
+<p class="ltx_p" id="S2.SS5.p1.1">Researchers have also developed alternatives to alt text for improving figure accessibility. ChartSense <cite class="ltx_cite ltx_citemacro_citep">(Jung et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib23" title>2017</a>)</cite> and PlotDigitizer<span class="ltx_note ltx_role_footnote" id="footnote7"><sup class="ltx_note_mark">7</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">7</sup><span class="ltx_tag ltx_tag_note">7</span><a class="ltx_ref ltx_href" href="http://plotdigitizer.sourceforge.net/" target="_blank" title>http://plotdigitizer.sourceforge.net/</a></span></span></span> are chart data extraction methods which convert chart images into structured data tables. However, charts of the same type are too diverse in style to apply a single extraction algorithm, algorithms have trouble interpreting overlapped visual entities, and there is no text-region detection algorithm for chart images with sufficient accuracy <cite class="ltx_cite ltx_citemacro_citep">(Jung et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib23" title>2017</a>)</cite>. Auditory graphs, tactile graphs, and various multimedia approaches have also been introduced to improve the accessibility of graphs and charts <cite class="ltx_cite ltx_citemacro_citep">(Engel and Weber, <a class="ltx_ref" href="#bib.bib16" title>2017</a>; Nazemi and Murray, <a class="ltx_ref" href="#bib.bib37" title>2013</a>)</cite>.</p>
+</div>
+<div class="ltx_para" id="S2.SS5.p2">
+<p class="ltx_p" id="S2.SS5.p2.1">Crowdsourcing, in which a group of non-experts completes a task that is currently infeasible to accomplish via automated methods, has also been used to good effect for making images more accessible. <cite class="ltx_cite ltx_citemacro_citet">Salisbury
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib44" title>2017</a>)</cite> explored a novel approach in which crowdworkers were paired together to create image descriptions. Crowdworkers were asked questions to extract desired details about an image such as the location of the image and what emotions the image evoked. Platforms such as VizWiz <cite class="ltx_cite ltx_citemacro_citep">(Bigham et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib7" title>2010</a>)</cite> or Be My Eyes<span class="ltx_note ltx_role_footnote" id="footnote8"><sup class="ltx_note_mark">8</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">8</sup><span class="ltx_tag ltx_tag_note">8</span><a class="ltx_ref ltx_href" href="https://www.bemyeyes.com/" target="_blank" title>https://www.bemyeyes.com/</a></span></span></span> connect BLV users to sighted crowdworkers and volunteers via an app for assistance with questions and daily tasks. Building upon the successes of the VizWiz Grand Challenge <cite class="ltx_cite ltx_citemacro_citep">(Gurari et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib20" title>2018</a>)</cite>, a similar solution could be created to connect BLV researchers with volunteers that can provide suitable descriptions or answers to questions about scientific figures. <cite class="ltx_cite ltx_citemacro_citet">Mack
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib32" title>2021</a>)</cite> built user interfaces for both authoring alt text and providing feedback on automatic alt text, which could be theoretically connected to a crowdsourcing platform and adapted to collect alt text for scientific figures based on user demand.</p>
+</div>
+<div class="ltx_para" id="S2.SS5.p3">
+<p class="ltx_p" id="S2.SS5.p3.1">Lastly, researchers have developed methods for surfacing alt text that do not involve manual effort from humans or automated alt text generation. <cite class="ltx_cite ltx_citemacro_citet">Guinness
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib19" title>2018</a>)</cite> found that many images appear in several places across the web, and used this insight to develop Caption Crawler. This system uses reverse image search to find alt text from similar images available on the web and surfaces these alternate descriptions to the user. This method works quite well in the domain of natural images, where many similar images of places or things can be found on the open internet.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3. </span>Methods</h2>
+<div class="ltx_para" id="S3.p1">
+<p class="ltx_p" id="S3.p1.1">We extract and analyze the presence and content of alt text for graphs, charts, and plots in scientific papers. These figures are typically used to visualize data and results, are of special importance to BLV readers <cite class="ltx_cite ltx_citemacro_citep">(Mack
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib32" title>2021</a>)</cite>, and are the types of images for which <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite> have defined semantic levels. The <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite> framework describes four levels of semantic content, organized by increasing complexity:</p>
+</div>
+<div class="ltx_para" id="S3.p2">
+<ul class="ltx_itemize" id="S3.I1">
+<li class="ltx_item" id="S3.I1.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I1.i1.p1">
+<p class="ltx_p" id="S3.I1.i1.p1.1">Level 1: enumerating visualization construction details (e.g., type, marks, and encodings)</p>
+</div>
+</li>
+<li class="ltx_item" id="S3.I1.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I1.i2.p1">
+<p class="ltx_p" id="S3.I1.i2.p1.1">Level 2: identifying statistical concepts and relations (e.g., extremes and correlations)</p>
+</div>
+</li>
+<li class="ltx_item" id="S3.I1.i3" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I1.i3.p1">
+<p class="ltx_p" id="S3.I1.i3.p1.1">Level 3: characterizing perceptual and cognitive phenomena (e.g., trends and patterns)</p>
+</div>
+</li>
+<li class="ltx_item" id="S3.I1.i4" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I1.i4.p1">
+<p class="ltx_p" id="S3.I1.i4.p1.1">Level 4: articulating domain-specific insights or societal context.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.p3">
+<p class="ltx_p" id="S3.p3.1"><cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite> found that levels 1&ndash;3 were reported most useful by blind and low vision readers. Level 4, which incorporates significantly more subjective information, was found to be less essential to understanding; in fact, a majority of blind readers in their study (63%, n=19) believed that figure alt text should not contain level 4 content.</p>
+</div>
+<section class="ltx_subsection" id="S3.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.1. </span>Sampling papers and extracting author-written alt text</h3>
+<div class="ltx_para" id="S3.SS1.p1">
+<p class="ltx_p" id="S3.SS1.p1.1">Our goal is to construct a dataset of author-written alt text by automatically sampling and extracting alt text from papers. We start with the set of papers from two conferences: ACM CHI Conference on Human Factors in Computing Systems (CHI) and ACM SIGACCESS Conference on Computers and Accessibility (ASSETS) published in the years 2010-2020. We identify these papers using the ACM&rsquo;s reported DOIs, and link these to PDFs in the Semantic Scholar corpus <cite class="ltx_cite ltx_citemacro_citep">(Ammar et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib2" title>2018</a>)</cite>. This yields 5218 PDFs. We then iteratively extend our paper sample to include all papers written by authors who have published in CHI and/or ASSETS. We prioritize authors based on the frequency of their publications in CHI and ASSETS, and retrieve these authors&rsquo; other publications using the Semantic Scholar API.<span class="ltx_note ltx_role_footnote" id="footnote9"><sup class="ltx_note_mark">9</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">9</sup><span class="ltx_tag ltx_tag_note">9</span><a class="ltx_ref ltx_href" href="https://api.semanticscholar.org/" target="_blank" title>https://api.semanticscholar.org/</a></span></span></span> From these queries, we assemble a further sample of 20000 paper PDFs to process and extract alt text.</p>
+</div>
+<div class="ltx_para" id="S3.SS1.p2">
+<p class="ltx_p" id="S3.SS1.p2.1">CHI and ASSETS are premiere conferences on human-computer interaction and accessible computing, and both conferences have a history of soliciting accessible paper submissions<span class="ltx_note ltx_role_footnote" id="footnote10"><sup class="ltx_note_mark">10</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">10</sup><span class="ltx_tag ltx_tag_note">10</span>CHI directs authors to the SIGCHI guidelines for an accessible submission: <a class="ltx_ref ltx_href" href="https://sigchi.org/conferences/author-resources/accessibility-guide/" target="_blank" title>https://sigchi.org/conferences/author-resources/accessibility-guide/</a> and ASSETS provides these instructions: <a class="ltx_ref ltx_href" href="https://assets21.sigaccess.org/creating_accessible_pdfs.html" target="_blank" title>https://assets21.sigaccess.org/creating_accessible_pdfs.html</a></span></span></span> and requiring authors to provide alt text for figures. We therefore expect a much higher percentage of papers published at these venues to contain valid alt text.
+Similarly, our rationale for sampling additional papers published at other venues by authors who have published at CHI and ASSETS is based on our hypothesis that such authors are more likely to write alt text in general, even if another publishing venue may not require alt text for submission. Initially, we intended to extract alt text from a stratified random sample of papers representing all fields of study, but a pilot attempt showed that random sampling would yield virtually no alt text. We arrived at this conclusion after processing a stratified sample of 5000 PDFs from 2010 to 2020 and extracting only a single piece of descriptive alt text. Given the time and expense of processing PDFs to extract alt text at scale, we decided that the stratified random sample strategy was untenable.</p>
+</div>
+<div class="ltx_para" id="S3.SS1.p3">
+<p class="ltx_p" id="S3.SS1.p3.1">For each paper in our sample, we followed a three step process to extract alt text.
+First, we processed the PDF using Adobe Acrobat Pro<span class="ltx_note ltx_role_footnote" id="footnote11"><sup class="ltx_note_mark">11</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">11</sup><span class="ltx_tag ltx_tag_note">11</span><a class="ltx_ref ltx_href" href="https://www.adobe.com/acrobat/acrobat-pro.html" target="_blank" title>https://www.adobe.com/acrobat/acrobat-pro.html</a></span></span></span> to convert the PDF to HTML using the Adobe Acrobat Pro Action Wizard. We used Adobe Acrobat Pro rather than an alternate programmatic approach because we were unable to identify a PDF processing library capable of extracting alt text.<span class="ltx_note ltx_role_footnote" id="footnote12"><sup class="ltx_note_mark">12</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">12</sup><span class="ltx_tag ltx_tag_note">12</span>We experiment with several other widely available PDF libraries and conversion tools, including PDFTOHTML (<a class="ltx_ref ltx_href" href="http://pdftohtml.sourceforge.net/" target="_blank" title>http://pdftohtml.sourceforge.net/</a>), PDFMiner (<a class="ltx_ref ltx_href" href="https://github.com/euske/pdfminer" target="_blank" title>https://github.com/euske/pdfminer</a>), pdf2xml (<a class="ltx_ref ltx_href" href="https://sourceforge.net/projects/pdf2xml/" target="_blank" title>https://sourceforge.net/projects/pdf2xml/</a>) etc., and found that none of these tools allowed access to the embedded alt text. Scaling in Adobe Acrobat Pro was the only working solution we were able to identify.</span></span></span> Second, we extracted alt text from the converted HTML document. Third, we filtered the extracted alt text according to a set of heuristics. Our pilot attempts at extracting alt text revealed that most of the extracted alt text consisted of uninformative short descriptions like &ldquo;Image&rdquo; or file paths like &ldquo;C:\\path_to\figure1.jpeg,&rdquo; so we defined a set of filtering criteria to remove these.
+We also filtered out alt text shorter than 80 characters since many shorter alt text fall under the category of uninformative short descriptions. To determine this 80-character threshold, we analyzed a sample of 100 extracted alt text to find a limit that maximizes recall without sacrificing precision. We refer to the alt text that pass these filtering criteria as &ldquo;valid alt text.&rdquo;</p>
+</div>
+<div class="ltx_para" id="S3.SS1.p4">
+<p class="ltx_p" id="S3.SS1.p4.1">For all valid alt texts, we identify those that are likely to correspond to graphs, charts, and plots. We iteratively defined another set of heuristics: a list of words and phrases that correspond to graphs and charts (e.g., &ldquo;graph&rdquo;, &ldquo;chart&rdquo;, &ldquo;error bar&rdquo;; the full list of terms are provided in Appendix&nbsp;<a class="ltx_ref" href="#A1" title="Appendix A Heuristics for identifying graphs and charts ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">A</span></a>). For each figure, we search for token matches in the alt text and image caption against this list of terms, and retain only figures and alt text matching at least one term. The alt text of the matching figures are then annotated with the <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite> semantic levels.</p>
+</div>
+<figure class="ltx_table" id="S3.T2">
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="S3.T2.3">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="S3.T2.3.4.1">
+<th class="ltx_td ltx_align_justify ltx_align_top ltx_th ltx_th_column ltx_border_tt" id="S3.T2.3.4.1.1">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.4.1.1.1">
+<span class="ltx_p" id="S3.T2.3.4.1.1.1.1" style="width:170.7pt;">Figure & Source</span>
+</span>
+</th>
+<th class="ltx_td ltx_align_justify ltx_align_top ltx_th ltx_th_column ltx_border_tt" id="S3.T2.3.4.1.2">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.4.1.2.1">
+<span class="ltx_p" id="S3.T2.3.4.1.2.1.1" style="width:270.3pt;">Author-written alt text with annotations</span>
+</span>
+</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S3.T2.1.1">
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S3.T2.1.1.1">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.1.1.1.1">
+<span class="ltx_p" id="S3.T2.1.1.1.1.1" style="width:170.7pt;"><span class="ltx_text" id="S3.T2.1.1.1.1.1.1" style="position:relative; bottom:0.0pt;"><img alt="[Uncaptioned image]" class="ltx_graphics ltx_img_square" height="174" id="S3.T2.1.1.1.1.1.1.g1" src="../../assets/papers/20-DatasetAltTexts_2022/Sample-Figure-3.jpg" width="197"></span></span>
+<span class="ltx_p ltx_align_center" id="S3.T2.1.1.1.1.2">Figure 4 reproduced from <cite class="ltx_cite ltx_citemacro_citet">Bragg
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib9" title>2018</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S3.T2.1.1.2">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.1.1.2.1">
+<span class="ltx_p" id="S3.T2.1.1.2.1.1" style="width:270.3pt;">&ldquo;Figure 4: Materials participants reported wanting to read in ASL text <span class="ltx_text ltx_align_left" id="S3.T2.1.1.2.1.1.1" style="color:#0000FF;">(L1)</span>. This figure presents a bar chart, with separate bars for DHH (light blue) and hearing (dark blue) populations <span class="ltx_text ltx_align_left" id="S3.T2.1.1.2.1.1.2" style="color:#0000FF;">(L1)</span>. Y-axis is % participants, ranging from 0-70 <span class="ltx_text ltx_align_left" id="S3.T2.1.1.2.1.1.3" style="color:#0000FF;">(L1)</span>. X-axis is Material Desired in ASL Text <span class="ltx_text ltx_align_left" id="S3.T2.1.1.2.1.1.4" style="color:#0000FF;">(L1)</span>. sorted by DHH popularity (most popular first): Website content, Printed content, Email, Texts/SMS, Video captions, Other, None <span class="ltx_text ltx_align_left" id="S3.T2.1.1.2.1.1.5" style="color:#0000FF;">(L1)</span>.&rdquo;</span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S3.T2.3.5.1">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S3.T2.3.5.1.1">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.5.1.1.1">
+<span class="ltx_p" id="S3.T2.3.5.1.1.1.1" style="width:170.7pt;"></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S3.T2.3.5.1.2">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.5.1.2.1">
+<span class="ltx_p" id="S3.T2.3.5.1.2.1.1" style="width:270.3pt;"></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S3.T2.2.2">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S3.T2.2.2.1">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.2.2.1.1">
+<span class="ltx_p" id="S3.T2.2.2.1.1.1" style="width:170.7pt;"><span class="ltx_text" id="S3.T2.2.2.1.1.1.1" style="position:relative; bottom:0.0pt;"><img alt="[Uncaptioned image]" class="ltx_graphics ltx_img_landscape" height="113" id="S3.T2.2.2.1.1.1.1.g1" src="../../assets/papers/20-DatasetAltTexts_2022/Sample-Figure-4.jpg" width="224"></span></span>
+<span class="ltx_p ltx_align_center" id="S3.T2.2.2.1.1.2">Figure 4 reproduced from <cite class="ltx_cite ltx_citemacro_citet">Baker et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib3" title>2014</a>)</cite></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S3.T2.2.2.2">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.2.2.2.1">
+<span class="ltx_p" id="S3.T2.2.2.2.1.1" style="width:270.3pt;">&ldquo;A line chart showing the average time it took participants on all tasks <span class="ltx_text ltx_align_left" id="S3.T2.2.2.2.1.1.1" style="color:#0000FF;">(L1)</span>. The y-axis of the chart is time in seconds (ranges from 0 to 60), the x-axis of the chart is session number (ranges from 1 to 6) <span class="ltx_text ltx_align_left" id="S3.T2.2.2.2.1.1.2" style="color:#0000FF;">(L1)</span>. There is a line for the three modes: Silent, Verbal and Finger Pointing <span class="ltx_text ltx_align_left" id="S3.T2.2.2.2.1.1.3" style="color:#0000FF;">(L1)</span>. They all appear to be going down, but there is a big spike in the Verbal mode line at session 4 <span class="ltx_text ltx_align_left" id="S3.T2.2.2.2.1.1.4" style="color:#0000FF;">(L3)</span>. In general, the Finger Pointing mode is the highest (takes the most time), the Silent mode is next and the Verbal takes the least amount of time, although in the fourth and sixth sessions, the Verbal line is above the Silent one <span class="ltx_text ltx_align_left" id="S3.T2.2.2.2.1.1.5" style="color:#0000FF;">(L3)</span>. There is a dot corresponding to the Braille mode at Session 6, it is between the Verbal and Silent modes <span class="ltx_text ltx_align_left" id="S3.T2.2.2.2.1.1.6" style="color:#0000FF;">(L1)</span>.&rdquo;</span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S3.T2.3.6.2">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S3.T2.3.6.2.1">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.6.2.1.1">
+<span class="ltx_p" id="S3.T2.3.6.2.1.1.1" style="width:170.7pt;"></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S3.T2.3.6.2.2">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.6.2.2.1">
+<span class="ltx_p" id="S3.T2.3.6.2.2.1.1" style="width:270.3pt;"></span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S3.T2.3.3">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S3.T2.3.3.1">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.3.1.1">
+<span class="ltx_p" id="S3.T2.3.3.1.1.1" style="width:170.7pt;"><span class="ltx_text" id="S3.T2.3.3.1.1.1.1" style="position:relative; bottom:0.0pt;"><img alt="[Uncaptioned image]" class="ltx_graphics ltx_img_landscape" height="103" id="S3.T2.3.3.1.1.1.1.g1" src="../../assets/papers/20-DatasetAltTexts_2022/Sample-Figure-6.jpg" width="224"></span></span>
+<span class="ltx_p ltx_align_center" id="S3.T2.3.3.1.1.2">(Figure 7 reproduced from <cite class="ltx_cite ltx_citemacro_citet">Reinecke
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib42" title>2016</a>)</cite>)</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S3.T2.3.3.2">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.3.2.1">
+<span class="ltx_p" id="S3.T2.3.3.2.1.1" style="width:270.3pt;">&ldquo;Plot of mean proportion of image pixels differentiable (independent) for 0% - 100% of the population (dependent) for websites and infographics <span class="ltx_text ltx_align_left" id="S3.T2.3.3.2.1.1.1" style="color:#0000FF;">(L1)</span>. Increasing from 0% of the population, both plots start at 100% differentiable and gradually fall to 80% differentiable at 75% of the population <span class="ltx_text ltx_align_left" id="S3.T2.3.3.2.1.1.2" style="color:#0000FF;">(L2, L3)</span>. Plots begin to diverge here as they both fall off more quickly until a discontinuity plateau is reached at 88% of the population (websites = 60% differentiable, infographics = 50% differentiable) <span class="ltx_text ltx_align_left" id="S3.T2.3.3.2.1.1.3" style="color:#0000FF;">(L2, L3)</span>. Plateau gradually declines to 99% of population (websites = 55% differentiable, infographics = 45% differentiable), and then both plots fall to 0% differentiable for 100% of the population <span class="ltx_text ltx_align_left" id="S3.T2.3.3.2.1.1.4" style="color:#0000FF;">(L2, L3)</span>.&rdquo;</span>
+</span>
+</td>
+</tr>
+<tr class="ltx_tr" id="S3.T2.3.7.3">
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_bb" id="S3.T2.3.7.3.1">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.7.3.1.1">
+<span class="ltx_p" id="S3.T2.3.7.3.1.1.1" style="width:170.7pt;"></span>
+</span>
+</td>
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_bb" id="S3.T2.3.7.3.2">
+<span class="ltx_inline-block ltx_align_top" id="S3.T2.3.7.3.2.1">
+<span class="ltx_p" id="S3.T2.3.7.3.2.1.1" style="width:270.3pt;"></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="S3.T2.6.1.1" style="font-size:90%;">Table 2</span>. </span><span class="ltx_text" id="S3.T2.7.2" style="font-size:90%;">Example figures and author-written alt text with annotated semantic levels added to the end of each sentence, with the prefix L, in parentheses and colored <span class="ltx_text" id="S3.T2.7.2.1" style="color:#0000FF;">(blue)</span>.</span></figcaption>
+</figure>
+</section>
+<section class="ltx_subsection" id="S3.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.2. </span>Annotation of alt text semantic levels</h3>
+<div class="ltx_para" id="S3.SS2.p1">
+<p class="ltx_p" id="S3.SS2.p1.1">To study what types of content are present in author-written alt text, we ask annotators to assess the semantic content levels present in each sentence of each piece of alt text. We split alt text into sentences using the scispaCy NLP library <cite class="ltx_cite ltx_citemacro_citep">(Neumann
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib38" title>2019</a>)</cite>. Annotators are shown these sentences along with the corresponding figure caption and a link to view the figure.</p>
+</div>
+<div class="ltx_para" id="S3.SS2.p2">
+<p class="ltx_p" id="S3.SS2.p2.1">Six label options were provided for each sentence:</p>
+</div>
+<div class="ltx_para" id="S3.SS2.p3">
+<ul class="ltx_itemize" id="S3.I2">
+<li class="ltx_item" id="S3.I2.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I2.i1.p1">
+<p class="ltx_p" id="S3.I2.i1.p1.1">Level 1: Figure logistics</p>
+</div>
+</li>
+<li class="ltx_item" id="S3.I2.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I2.i2.p1">
+<p class="ltx_p" id="S3.I2.i2.p1.1">Level 2: Statistical properties and comparisons</p>
+</div>
+</li>
+<li class="ltx_item" id="S3.I2.i3" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I2.i3.p1">
+<p class="ltx_p" id="S3.I2.i3.p1.1">Level 3: Complex trends and patterns in data</p>
+</div>
+</li>
+<li class="ltx_item" id="S3.I2.i4" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I2.i4.p1">
+<p class="ltx_p" id="S3.I2.i4.p1.1">Level 4: Domain-specific insights or societal concepts to help explain Level 3 trends</p>
+</div>
+</li>
+<li class="ltx_item" id="S3.I2.i5" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I2.i5.p1">
+<p class="ltx_p" id="S3.I2.i5.p1.1">This alt text contains no levels of content</p>
+</div>
+</li>
+<li class="ltx_item" id="S3.I2.i6" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S3.I2.i6.p1">
+<p class="ltx_p" id="S3.I2.i6.p1.1">This image is not a graph or chart</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="ltx_para ltx_noindent" id="S3.SS2.p4">
+<p class="ltx_p" id="S3.SS2.p4.1">If a figure is not a graph or chart, the annotator is instructed to select the last option. Otherwise, up to three semantic levels could be selected for each sentence. These label options were adapted from the level descriptions given by <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite> and shortened and simplified to make them easier for annotators to understand. Annotators were given an additional instruction document that provides more detail on each of the label options, along with examples of sentences corresponding to each label option.</p>
+</div>
+<div class="ltx_para" id="S3.SS2.p5">
+<p class="ltx_p" id="S3.SS2.p5.1">The annotators were instructed to exhaustively label each sentence with all of the levels it contains. We recruited two annotators through the UpWork platform.<span class="ltx_note ltx_role_footnote" id="footnote13"><sup class="ltx_note_mark">13</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">13</sup><span class="ltx_tag ltx_tag_note">13</span><a class="ltx_ref ltx_href" href="https://www.upwork.com/" target="_blank" title>https://www.upwork.com/</a></span></span></span> The annotators had undergraduate-level education in math, statistics, and materials science, and had previous experience reading graphs, plots, and other scientific figures. The alt text retained after the filtering steps described in the previous section were split into sets of 100 alt texts each for annotation. Two individuals annotated an initial sample of 100 alt texts (298 sentences) to refine the task and ensure high annotator agreement. The inter-annotator agreement computed over this sample was 87.6%, with <math alttext="\alpha" class="ltx_Math" display="inline" id="S3.SS2.p5.1.m1.1"><semantics id="S3.SS2.p5.1.m1.1a"><mi id="S3.SS2.p5.1.m1.1.1" xref="S3.SS2.p5.1.m1.1.1.cmml">&alpha;</mi><annotation-xml encoding="MathML-Content" id="S3.SS2.p5.1.m1.1b"><ci id="S3.SS2.p5.1.m1.1.1.cmml" xref="S3.SS2.p5.1.m1.1.1">𝛼</ci></annotation-xml><annotation encoding="application/x-tex" id="S3.SS2.p5.1.m1.1c">\alpha</annotation></semantics></math> = 0.80, indicating very good agreement. We further clarified the instructions following a discussion of disagreements. Given the high agreement level, a single annotator annotated the remaining alt text. For the final analysis, the first annotator&rsquo;s annotations are used for the sample that was doubly annotated. Examples of extracted alt text and the corresponding annotated semantic levels are provided in Table&nbsp;<a class="ltx_ref" href="#S3.T2" title="Table 2 ‣ 3.1. Sampling papers and extracting author-written alt text ‣ 3. Methods ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">2</span></a>.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4. </span>Results</h2>
+<div class="ltx_para" id="S4.p1">
+<p class="ltx_p" id="S4.p1.1">We analyze the semantic content of the extracted alt text, and attempt to answer the following research questions:</p>
+</div>
+<div class="ltx_para" id="S4.p2">
+<ul class="ltx_itemize" id="S4.I1">
+<li class="ltx_item" id="S4.I1.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S4.I1.i1.p1">
+<p class="ltx_p" id="S4.I1.i1.p1.1"><span class="ltx_text ltx_font_bold" id="S4.I1.i1.p1.1.1">RQ1: What is the distribution of semantic content in author-written alt text?</span></p>
+</div>
+<div class="ltx_para" id="S4.I1.i1.p2">
+<p class="ltx_p" id="S4.I1.i1.p2.1">We want to determine the proportion of alt text containing level 1, 2, 3, and 4 content. Of these, what proportion contains levels 1&ndash;3 content, which satisfies most BLV user needs? Correspondingly, which semantic levels are most often missing?</p>
+</div>
+</li>
+<li class="ltx_item" id="S4.I1.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S4.I1.i2.p1">
+<p class="ltx_p" id="S4.I1.i2.p1.1"><span class="ltx_text ltx_font_bold" id="S4.I1.i2.p1.1.1">RQ2: How does the distribution of semantic content in alt text change over time?</span> We want to determine whether the presence of levels 1-3 semantic content is increasing over time, and by how much. We expect that with improvements in alt text awareness and workflows over time, that the amount of content available in alt text should correspondingly increase.</p>
+</div>
+</li>
+<li class="ltx_item" id="S4.I1.i3" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S4.I1.i3.p1">
+<p class="ltx_p" id="S4.I1.i3.p1.1"><span class="ltx_text ltx_font_bold" id="S4.I1.i3.p1.1.1">RQ3: How does length of alt text correlate with semantic levels?</span></p>
+</div>
+<div class="ltx_para" id="S4.I1.i3.p2">
+<p class="ltx_p" id="S4.I1.i3.p2.1"><cite class="ltx_cite ltx_citemacro_citet">Mack
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib32" title>2021</a>)</cite> find that there is tension between detail and brevity in alt text. The ideal alt text may vary based on user needs, but should balance length and completeness of semantic content. We determine the relationship between length and presence of semantic levels using our data.</p>
+</div>
+</li>
+</ul>
+</div>
+<section class="ltx_subsection" id="S4.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.1. </span>Descriptive statistics</h3>
+<div class="ltx_para" id="S4.SS1.p1">
+<p class="ltx_p" id="S4.SS1.p1.1">We process <span class="ltx_text" id="S4.SS1.p1.1.1" style="color:#000000;">25218</span> total paper PDFs to extract alt text. Of these, <span class="ltx_text" id="S4.SS1.p1.1.2" style="color:#000000;">19500</span> (<span class="ltx_text" id="S4.SS1.p1.1.3" style="color:#000000;">77.3%</span>) are successfully converted to HTML by Adobe Acrobat Pro. Only <span class="ltx_text" id="S4.SS1.p1.1.4" style="color:#000000;">897</span> (<span class="ltx_text" id="S4.SS1.p1.1.5" style="color:#000000;">4.6%</span>) of these converted documents contain at least one piece of valid alt text. Around 2048 pieces of alt text corresponded to file paths and 2545 alt texts did not meet our length criteria, and were filtered out; all other alt texts that were filtered out did not have any content besides &ldquo;image.&rdquo; After this filtering, the <span class="ltx_text" id="S4.SS1.p1.1.6" style="color:#000000;">897</span> papers contain <span class="ltx_text" id="S4.SS1.p1.1.7" style="color:#000000;">3386</span> valid author-written alt texts. Using our keyword heuristics, we determine that <span class="ltx_text" id="S4.SS1.p1.1.8" style="color:#000000;">1085</span> of these alt texts are likely to correspond to graphs or charts. Based on a cursory examination, the alt texts that were filtered out using these keyword heuristics consist primarily of natural images and diagrams.</p>
+</div>
+<div class="ltx_para" id="S4.SS1.p2">
+<p class="ltx_p" id="S4.SS1.p2.1">We ask annotators to assess the semantic levels present in each sentence of the remaining <span class="ltx_text" id="S4.SS1.p2.1.1" style="color:#000000;">1085</span> alt text. Of these, <span class="ltx_text" id="S4.SS1.p2.1.2" style="color:#000000;">547</span> figure alt texts (consisting of <span class="ltx_text" id="S4.SS1.p2.1.3" style="color:#000000;">2127</span> sentences) are labeled as belonging to graphs, charts, and plots by our annotators, indicating that our keyword heuristics have approximately 50% precision. Alt texts of figures corresponding to these data visualizations are further annotated for semantic content. Several examples of author-written alt text and semantic level annotations are given in Table&nbsp;<a class="ltx_ref" href="#S3.T2" title="Table 2 ‣ 3.1. Sampling papers and extracting author-written alt text ‣ 3. Methods ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">2</span></a>. In Table&nbsp;<a class="ltx_ref" href="#S4.T3" title="Table 3 ‣ 4.1. Descriptive statistics ‣ 4. Results ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">3</span></a>, we provide the numbers of PDFs processed and alt text retained after each filtering step.</p>
+</div>
+<div class="ltx_para" id="S4.SS1.p3">
+<p class="ltx_p" id="S4.SS1.p3.1">Figure&nbsp;<a class="ltx_ref" href="#S4.F1" title="Figure 1 ‣ 4.1. Descriptive statistics ‣ 4. Results ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">1</span></a> shows the proportion of PDFs in our sample that contain any valid alt text, and how this proportion changes in our sample over the last decade. There is a slight increase in alt text coverage in 2014; this is the same year that CHI specified that alt text is required in submissions. We also observe that the proportion of papers with valid alt text has improved over time, especially in the past few years, although the overall proportion is still quite low (below 15%). We note that Figure&nbsp;<a class="ltx_ref" href="#S4.F1" title="Figure 1 ‣ 4.1. Descriptive statistics ‣ 4. Results ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">1</span></a> does not indicate the actual proportions of papers from these years that have valid alt text (we do not process the version of record for all papers in our sample due to the difficulty in ascertaining these versions and copyright challenges in obtaining them; we also cannot guarantee that the pipeline we use succeeds in extracting alt text for all of the papers we process). Rather, the figure describes our success rate in creating this dataset, and provides some sense of the trend towards more valid alt text in recent years.</p>
+</div>
+<figure class="ltx_table" id="S4.T3">
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="S4.T3.2">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="S4.T3.2.1.1">
+<th class="ltx_td ltx_align_justify ltx_align_top ltx_th ltx_th_column ltx_border_tt" id="S4.T3.2.1.1.1">
+<span class="ltx_inline-block ltx_align_top" id="S4.T3.2.1.1.1.1">
+<span class="ltx_p" id="S4.T3.2.1.1.1.1.1" style="width:176.4pt;">Processing step</span>
+</span>
+</th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" id="S4.T3.2.1.1.2">Count</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S4.T3.2.2.1">
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_t" id="S4.T3.2.2.1.1">
+<span class="ltx_inline-block ltx_align_top" id="S4.T3.2.2.1.1.1">
+<span class="ltx_p" id="S4.T3.2.2.1.1.1.1" style="width:176.4pt;">Total PDFs processed</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left ltx_border_t" id="S4.T3.2.2.1.2"><span class="ltx_text" id="S4.T3.2.2.1.2.1" style="color:#000000;">25218</span></td>
+</tr>
+<tr class="ltx_tr" id="S4.T3.2.3.2">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S4.T3.2.3.2.1">
+<span class="ltx_inline-block ltx_align_top" id="S4.T3.2.3.2.1.1">
+<span class="ltx_p" id="S4.T3.2.3.2.1.1.1" style="width:176.4pt;">PDFs successfully converted to HTML</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left" id="S4.T3.2.3.2.2">
+<span class="ltx_text" id="S4.T3.2.3.2.2.1" style="color:#000000;">19500</span> (<span class="ltx_text" id="S4.T3.2.3.2.2.2" style="color:#000000;">77.3%</span>)</td>
+</tr>
+<tr class="ltx_tr" id="S4.T3.2.4.3">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S4.T3.2.4.3.1">
+<span class="ltx_inline-block ltx_align_top" id="S4.T3.2.4.3.1.1">
+<span class="ltx_p" id="S4.T3.2.4.3.1.1.1" style="width:176.4pt;">Papers with at least one valid alt text</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left" id="S4.T3.2.4.3.2">
+<span class="ltx_text" id="S4.T3.2.4.3.2.1" style="color:#000000;">897</span> (<span class="ltx_text" id="S4.T3.2.4.3.2.2" style="color:#000000;">4.6%</span>)</td>
+</tr>
+<tr class="ltx_tr" id="S4.T3.2.5.4">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S4.T3.2.5.4.1">
+<span class="ltx_inline-block ltx_align_top" id="S4.T3.2.5.4.1.1">
+<span class="ltx_p" id="S4.T3.2.5.4.1.1.1" style="width:176.4pt;">Pieces of valid alt text</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left" id="S4.T3.2.5.4.2"><span class="ltx_text" id="S4.T3.2.5.4.2.1" style="color:#000000;">3386</span></td>
+</tr>
+<tr class="ltx_tr" id="S4.T3.2.6.5">
+<td class="ltx_td ltx_align_justify ltx_align_top" id="S4.T3.2.6.5.1">
+<span class="ltx_inline-block ltx_align_top" id="S4.T3.2.6.5.1.1">
+<span class="ltx_p" id="S4.T3.2.6.5.1.1.1" style="width:176.4pt;">Number of figure alt text annotated (heuristically filtered to likely be graphs or charts)</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left" id="S4.T3.2.6.5.2"><span class="ltx_text" id="S4.T3.2.6.5.2.1" style="color:#000000;">1085</span></td>
+</tr>
+<tr class="ltx_tr" id="S4.T3.2.7.6">
+<td class="ltx_td ltx_align_justify ltx_align_top ltx_border_bb" id="S4.T3.2.7.6.1">
+<span class="ltx_inline-block ltx_align_top" id="S4.T3.2.7.6.1.1">
+<span class="ltx_p" id="S4.T3.2.7.6.1.1.1" style="width:176.4pt;">Number of annotated figure alt text that correspond to graphs or charts</span>
+</span>
+</td>
+<td class="ltx_td ltx_align_left ltx_border_bb" id="S4.T3.2.7.6.2"><span class="ltx_text" id="S4.T3.2.7.6.2.1" style="color:#000000;">547</span></td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="S4.T3.3.1.1" style="font-size:90%;">Table 3</span>. </span><span class="ltx_text" id="S4.T3.4.2" style="font-size:90%;">The numbers of papers and figure alt text that remain after each filtering step.</span></figcaption>
+</figure>
+<figure class="ltx_figure" id="S4.F1">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_figure_panel ltx_img_landscape" height="147" id="S4.F1.g1" src="../../assets/papers/20-DatasetAltTexts_2022/alttext_over_time.png" width="293"></div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S4.F1.2.1.1" style="font-size:90%;">Figure 1</span>. </span><span class="ltx_text" id="S4.F1.3.2" style="font-size:90%;">The proportion of PDFs in our analyzed sample which contain valid alt text over time, with 95% confidence intervals computed through bootstrap resampling.</span></figcaption><div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_1"><span class="ltx_ERROR ltx_centering ltx_figure_panel undefined" id="S4.F1.4">\Description</span></div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1">
+<p class="ltx_p ltx_figure_panel ltx_align_center" id="S4.F1.5">This is a line chart entitled &rdquo;Proportion of analyzed PDFs with valid alt text&rdquo; that plots the proportion of PDFs with valid alt-text by year. The years are plotted on the horizontal x-axis from 2010 to 2021 with an increment of 1 year. The proportions of analyzed PDFs with valid alt-text are plotted on the vertical y-axis from 0.00 to 0.15 with an increment of 0.05. The year 2011 has the lowest proportion of valid alt text over time. The year 2021 has the highest proportion of valid alt text over time. Alt text proportion increases over time, with slight fluctuations. Years 2014 to 2016 have the most noticeable drop in alt text proportion, but that drop is only a decrease by about 1%, from 3.5% to 2.5%. The greatest increase happens from 2019 to 2021, with 2019 having a proportion of 5% and 2021 having a proportion of approximately 13%. There is also a larger than average increase from 2013 to 2014, with valid alt text proportion increasing from approximately 1% to 3.5%.</p>
+</div>
+</div>
+</figure>
+</section>
+<section class="ltx_subsection" id="S4.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.2. </span>Analysis of alt text semantic content</h3>
+<section class="ltx_subsubsection" id="S4.SS2.SSSx1">
+<h4 class="ltx_title ltx_title_subsubsection">Distribution of semantic content in alt text (RQ1)</h4>
+<figure class="ltx_figure" id="S4.F2">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_3"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_figure_panel ltx_img_landscape" height="135" id="S4.F2.g1" src="../../assets/papers/20-DatasetAltTexts_2022/max_alt_text_level.png" width="269"></div>
+<div class="ltx_flex_cell ltx_flex_size_3"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_figure_panel ltx_img_landscape" height="135" id="S4.F2.g2" src="../../assets/papers/20-DatasetAltTexts_2022/number_of_alt_text_levels.png" width="269"></div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S4.F2.2.1.1" style="font-size:90%;">Figure 2</span>. </span><span class="ltx_text" id="S4.F2.3.2" style="font-size:90%;">Distribution of the maximum level (top) and total number of levels (bottom) of semantic content found in the sample of annotated author-written alt text.</span></figcaption><div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_1"><span class="ltx_ERROR ltx_centering ltx_figure_panel undefined" id="S4.F2.4">\Description</span></div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1">
+<p class="ltx_p ltx_figure_panel ltx_align_center" id="S4.F2.5">These are two vertical bar charts entitled &rdquo;Distribution of alt-text max content level&rdquo; and &rdquo;Distribution of number of alt-text content levels.&rdquo; The &rdquo;distribution of alt-text max content level&rdquo; bar chart plots the max level by the number of alt-text with that max level. Max level is plotted on the horizontal x-axis from 0 to 5, with 0 representing no levels of content. Number of alt-text is plotted on the vertical y-axis from 0 to 200. The highest frequency max level is level 1, with 189 occurrences of alt-text. The lowest frequency max level is level 0, with 5 occurrences of alt-text, followed by level 4, with 9 occurrences of alt-text. Number of alt-texts does not increase as max level increases, since levels 1 and 2 have the largest number of alt-text, with level 3 having slightly less and level 4 having drastically less. The &rdquo;Distribution of number of alt-text content levels&rdquo; bar chart plots the number of levels by the number of alt-text in each of those categories. Number of levels is plotted on the horizontal x-axis from 0 to 4, with 0 representing no levels of content and 4 representing 4 levels of content. Number of alt-text is plotted on the vertical y-axis from 0 to 300. The highest frequency number of levels is 2 levels, with 262 corresponding pieces of alt-text. The lowest frequency number of levels is 4 levels, with 3 corresponding pieces of alt-text. The number of alt-texts corresponding to the number of levels increases then decreases, with it increasing from 0 levels to 1 level and from 1 level to 2 levels, and then decreasing from 2 levels to 3 levels and 3 levels to 4 levels.</p>
+</div>
+</div>
+</figure>
+<div class="ltx_para" id="S4.SS2.SSSx1.p1">
+<p class="ltx_p" id="S4.SS2.SSSx1.p1.1">In Figure&nbsp;<a class="ltx_ref" href="#S4.F2" title="Figure 2 ‣ Distribution of semantic content in alt text (RQ1) ‣ 4.2. Analysis of alt text semantic content ‣ 4. Results ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">2</span></a> (left), we present the maximum level of content found in each figure alt text in our sample. We observe a fairly evenly distribution between max levels 1, 2, and 3. Recall that in <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite>, BLV users found levels 1&ndash;3 content to be most useful. Although some figures in our sample have alt text with level 3 content, over two-thirds of the figure alt texts that we examined do not contain level 3 content (level 3 content describes trends and patterns). At the same time, over one-third of the figure alt texts lack both level 2 and level 3 content, meaning that there is no information on extrema and outliers in addition to trends and patterns. The lack of such content can make it more difficult for BLV users to acquire the information that they need from these graphs and charts.</p>
+</div>
+<div class="ltx_para" id="S4.SS2.SSSx1.p2">
+<p class="ltx_p" id="S4.SS2.SSSx1.p2.1">In Figure&nbsp;<a class="ltx_ref" href="#S4.F2" title="Figure 2 ‣ Distribution of semantic content in alt text (RQ1) ‣ 4.2. Analysis of alt text semantic content ‣ 4. Results ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">2</span></a> (right), we show the total number of levels of content present in all figure alt text we analyzed. We find that the vast majority of alt text in our sample only contain one or two levels. This means that though the maximum levels of content are somewhat evenly distributed between levels 1, 2, and 3, only one or two of these levels are present in most figure alt texts.</p>
+</div>
+</section>
+<section class="ltx_subsubsection" id="S4.SS2.SSSx2">
+<h4 class="ltx_title ltx_title_subsubsection">Semantic content in alt text over time (RQ2)</h4>
+<figure class="ltx_figure" id="S4.F3">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_figure_panel ltx_img_landscape" height="147" id="S4.F3.g1" src="../../assets/papers/20-DatasetAltTexts_2022/levels_over_time.png" width="293"></div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S4.F3.2.1.1" style="font-size:90%;">Figure 3</span>. </span><span class="ltx_text" id="S4.F3.3.2" style="font-size:90%;">Proportion of alt text containing text of each semantic level over time with 95% confidence intervals computed using bootstrap resampling.</span></figcaption><div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_1"><span class="ltx_ERROR ltx_centering ltx_figure_panel undefined" id="S4.F3.4">\Description</span></div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1">
+<p class="ltx_p ltx_figure_panel ltx_align_center" id="S4.F3.5">This is a multi-line chart entitled &rdquo;Semantic levels present in annotated alt-text&rdquo; that plots the proportion of alt-text that contains each level by year. The years are plotted on the horizontal x-axis from 2010 to 2021 with an increment of 1 year. The proportion of alt-text containing text of each semantic level is plotted on the vertical y-axis from 0.0 to 1.00 with increments of 0.25. Level 1 has the highest proportion over time, while level 4 has the lowest proportion over time. The proportion of levels 1 to 4 seem to fluctuate with no clear increase over time. The level 1 proportion fluctuates slightly while remaining near 1.0, with an exception from 2012 to 2013 where there is a decrease in proportion, and 2013 to 2014, where the proportion subsequently increases back to around 1.0. The level 4 proportion remains almost constant at 0.0, with slight fluctuations over time. Levels 2 and 3 show the most increase over time, with noticeable increases from 2010 to 2011, and drops from 2011 to 2021.</p>
+</div>
+</div>
+</figure>
+<div class="ltx_para" id="S4.SS2.SSSx2.p1">
+<p class="ltx_p" id="S4.SS2.SSSx2.p1.1">Figure&nbsp;<a class="ltx_ref" href="#S4.F3" title="Figure 3 ‣ Semantic content in alt text over time (RQ2) ‣ 4.2. Analysis of alt text semantic content ‣ 4. Results ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">3</span></a> shows the proportion of alt text from each year that contain text of each of the semantic levels. Though the vast majority of alt text contain level 1 information, a much lower proportion contain level 2 and 3 information. Over time, there have not been significant changes to the proportion of alt text that contains level 2 and 3 information.</p>
+</div>
+</section>
+<section class="ltx_subsubsection" id="S4.SS2.SSSx3">
+<h4 class="ltx_title ltx_title_subsubsection">Relationship between alt text length and content (RQ3)</h4>
+<figure class="ltx_figure" id="S4.F4">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_figure_panel ltx_img_square" height="275" id="S4.F4.g1" src="../../assets/papers/20-DatasetAltTexts_2022/alt_text_level_by_length.png" width="275"></div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure"><span class="ltx_text" id="S4.F4.2.1.1" style="font-size:90%;">Figure 4</span>. </span><span class="ltx_text" id="S4.F4.3.2" style="font-size:90%;">Relationship between length of alt text (character count) and the number of semantic levels of information represented. Though length correlates with the number of levels, there are many longer alt texts that do not necessarily contain more levels of semantic content.</span></figcaption><div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_1"><span class="ltx_ERROR ltx_centering ltx_figure_panel undefined" id="S4.F4.4">\Description</span></div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1">
+<p class="ltx_p ltx_figure_panel ltx_align_center" id="S4.F4.5">This is five side-by-side vertical box plots entitled &rdquo;Number of content levels vs. length of alt-text&rdquo; that plots the number of semantic levels of information by the length of alt text, represented by character count. The levels are plotted on the horizontal x-axis from 0 to 4, with 0 representing no levels of content and 4 representing 4 levels of content, and one box plot for each number of levels. The length of alt-text is plotted on the vertical y-axis from 0 to 2500, with increments of 500. On average, the median length of alt-text containing 3 or 4 levels of content is slightly higher than the median length of alt-text containing 0, 1, or 2 levels of content. However, this difference is slight. There is a correlation present between length of alt text and number of levels, but there is overlap between the box plots for 2, 3, and 4 levels of content, meaning that there are longer alt texts that do not contain more semantic content, and there are shorter alt texts that do contain more content.</p>
+</div>
+</div>
+</figure>
+<div class="ltx_para" id="S4.SS2.SSSx3.p1">
+<p class="ltx_p" id="S4.SS2.SSSx3.p1.1">In Figure&nbsp;<a class="ltx_ref" href="#S4.F4" title="Figure 4 ‣ Relationship between alt text length and content (RQ3) ‣ 4.2. Analysis of alt text semantic content ‣ 4. Results ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">4</span></a>, we show the relationship between the length of alt text and the number of levels of content that it contains. Alt text containing more levels of information tend to be longer, though alt text of comparable length can have different numbers of levels present (as indicated by the overlapping boxes across levels). This suggests that alt text does not have to be longer in order to have more levels of content. In regards to the balance between brevity and detail, authors may want to optimize for the amount of information included in alt text without resorting to writing something overly long.</p>
+</div>
+</section>
+</section>
+</section>
+<section class="ltx_section" id="S5">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5. </span>Dataset uses</h2>
+<div class="ltx_para" id="S5.p1">
+<p class="ltx_p" id="S5.p1.1">Alongside our analysis, we release our dataset of <span class="ltx_text" id="S5.p1.1.1" style="color:#000000;">3386</span> alt text collected from <span class="ltx_text" id="S5.p1.1.2" style="color:#000000;">897</span> HCI
+publications.<span class="ltx_note ltx_role_footnote" id="footnote14"><sup class="ltx_note_mark">14</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">14</sup><span class="ltx_tag ltx_tag_note">14</span>Data and analyses are available at <a class="ltx_ref ltx_href" href="https://github.com/allenai/hci-alt-texts" target="_blank" title>https://github.com/allenai/hci-alt-texts</a>.</span></span></span> Of these, the contents of <span class="ltx_text" id="S5.p1.1.3" style="color:#000000;">547</span> alt texts (<span class="ltx_text" id="S5.p1.1.4" style="color:#000000;">2127</span> sentences) are annotated with the semantic levels introduced by <cite class="ltx_cite ltx_citemacro_citep">(Lundgard and
+Satyanarayan, <a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite>. This dataset can be used to develop tools to support authors in writing better alt text, or to develop authoring tools or models for producing alt text where none are available. We discuss some of these potential applications below.</p>
+</div>
+<section class="ltx_subsection" id="S5.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.1. </span>Improving author-written alt text & supporting reading interfaces</h3>
+<div class="ltx_para" id="S5.SS1.p1">
+<p class="ltx_p" id="S5.SS1.p1.1">To improve authoring of alt text, we can develop tools to help identify potentially missing content in alt text and prompt authors to add such information during the authoring and editing process. For graphs and charts, the semantic levels serve as a proxy for content. Based on the findings by <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite>, BLV users found levels 1&ndash;3 information most beneficial, and a tool aimed to improve alt text for graphs and charts could assess alt text quality based on the presence or absence of information at these levels. In other words, we could train a classifier based on the semantic level annotations in our dataset to detect which levels are present and build a tool that prompts authors for the missing levels, similar to interfaces that have been built in the past for other tasks like providing peer feedback&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Fraser et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib17" title>2017</a>)</cite>. Such a classifier could also be used to automate trend monitoring for alt text content, enabling expanded and continually updating versions of our analysis with reduced human labor.</p>
+</div>
+<div class="ltx_para" id="S5.SS1.p2">
+<p class="ltx_p" id="S5.SS1.p2.1">To test out the viability of this theory, we train several classification models using our collected annotations. We approach this as a multi-class, multi-label classification problem. The classes are the four semantic levels, and up to four labels can be assigned to a single piece of text. The input to the model is a single sentence of alt text, and the output is a distribution of labels over the four classes. We experiment with a Random Forest classifier using <em class="ltx_emph ltx_font_italic" id="S5.SS1.p2.1.1">tf-idf</em> word representations, as well as classifiers based on BERT&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Devlin
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib15" title>2019</a>)</cite> and SciBERT&nbsp;<cite class="ltx_cite ltx_citemacro_citep">(Beltagy
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib4" title>2019</a>)</cite>. We use 5-fold cross-validation to train and evaluate all models. The training data is split into folds preserving each alt text as a unit (<span class="ltx_text" id="S5.SS1.p2.1.2" style="color:#000000;">547</span> instances), while text and labels are provided to the model at the sentence level (<span class="ltx_text" id="S5.SS1.p2.1.3" style="color:#000000;">2127</span> sentences). We report mean accuracy and F1 over all five folds for each model in Table&nbsp;<a class="ltx_ref" href="#S5.T4" title="Table 4 ‣ 5.1. Improving author-written alt text & supporting reading interfaces ‣ 5. Dataset uses ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">4</span></a>.</p>
+</div>
+<figure class="ltx_table" id="S5.T4">
+<table class="ltx_tabular ltx_guessed_headers ltx_align_middle" id="S5.T4.2">
+<thead class="ltx_thead">
+<tr class="ltx_tr" id="S5.T4.2.1.1">
+<th class="ltx_td ltx_align_justify ltx_align_top ltx_th ltx_th_column ltx_th_row ltx_border_tt" id="S5.T4.2.1.1.1">
+<span class="ltx_inline-block ltx_align_top" id="S5.T4.2.1.1.1.1">
+<span class="ltx_p" id="S5.T4.2.1.1.1.1.1" style="width:85.4pt;">Model</span>
+</span>
+</th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt" id="S5.T4.2.1.1.2">Accuracy</th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt" id="S5.T4.2.1.1.3">Micro-F1</th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr" id="S5.T4.2.2.1">
+<th class="ltx_td ltx_align_justify ltx_align_top ltx_th ltx_th_row ltx_border_t" id="S5.T4.2.2.1.1">
+<span class="ltx_inline-block ltx_align_top" id="S5.T4.2.2.1.1.1">
+<span class="ltx_p" id="S5.T4.2.2.1.1.1.1" style="width:85.4pt;">Random Forest (<em class="ltx_emph ltx_align_left ltx_font_italic" id="S5.T4.2.2.1.1.1.1.1">tf-idf</em>)</span>
+</span>
+</th>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S5.T4.2.2.1.2">0.689 (0.021)</td>
+<td class="ltx_td ltx_align_center ltx_border_t" id="S5.T4.2.2.1.3">0.782 (0.011)</td>
+</tr>
+<tr class="ltx_tr" id="S5.T4.2.3.2">
+<th class="ltx_td ltx_align_justify ltx_align_top ltx_th ltx_th_row" id="S5.T4.2.3.2.1">
+<span class="ltx_inline-block ltx_align_top" id="S5.T4.2.3.2.1.1">
+<span class="ltx_p" id="S5.T4.2.3.2.1.1.1" style="width:85.4pt;">BERT-base</span>
+</span>
+</th>
+<td class="ltx_td ltx_align_center" id="S5.T4.2.3.2.2">0.912 (0.016)</td>
+<td class="ltx_td ltx_align_center" id="S5.T4.2.3.2.3">0.824 (0.032)</td>
+</tr>
+<tr class="ltx_tr" id="S5.T4.2.4.3">
+<th class="ltx_td ltx_align_justify ltx_align_top ltx_th ltx_th_row ltx_border_bb" id="S5.T4.2.4.3.1">
+<span class="ltx_inline-block ltx_align_top" id="S5.T4.2.4.3.1.1">
+<span class="ltx_p" id="S5.T4.2.4.3.1.1.1" style="width:85.4pt;">SciBERT-base</span>
+</span>
+</th>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S5.T4.2.4.3.2">0.910 (0.010)</td>
+<td class="ltx_td ltx_align_center ltx_border_bb" id="S5.T4.2.4.3.3">0.819 (0.021)</td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_table"><span class="ltx_text" id="S5.T4.3.1.1" style="font-size:90%;">Table 4</span>. </span><span class="ltx_text" id="S5.T4.4.2" style="font-size:90%;">Model performance averaged over five folds, shown with standard deviations in parentheses.</span></figcaption>
+</figure>
+<div class="ltx_para" id="S5.SS1.p3">
+<p class="ltx_p" id="S5.SS1.p3.1">Baseline performance of these models suggests that they are reasonably good at identifying the correct semantic levels present in an alt text sentence. Performance could be improved further through additional model tuning or data annotation. The outputs of these models can feasibly be used to provide feedback to authors who are writing alt text, to indicate when content of certain semantic levels may be lacking.</p>
+</div>
+<div class="ltx_para" id="S5.SS1.p4">
+<p class="ltx_p" id="S5.SS1.p4.1">In addition to helping to improve author-written alt text, such a classifier could be used to support improved reading experiences of existing alt text. For example, semantic level classification could enable users to make informed decisions about whether and how to read alt text by filtering for semantic levels that may be more relevant to their needs.
+<cite class="ltx_cite ltx_citemacro_citet">Morash
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib34" title>2015</a>)</cite> described similar types of personalized reading experiences, which could be enabled for alt text that has been written using standardized templates.
+We leave the implementation of these authoring and reading interfaces, as well as explorations on user interface design, to future work.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S5.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">5.2. </span>Training and evaluating NLP models for alt text generation</h3>
+<div class="ltx_para" id="S5.SS2.p1">
+<p class="ltx_p" id="S5.SS2.p1.1">Recent developments in multimodal image-language pretraining <cite class="ltx_cite ltx_citemacro_citep">(Lu
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib30" title>2019</a>; Zhou
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib50" title>2020</a>; Li
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib29" title>2019</a>)</cite> hold promise towards the eventual automatability of scientific figure alt text generation. Currently, figure alt text generation is hampered by the lack of realistic training and evaluation data. Though the size of our dataset is small and insufficient for training neural models, it may still be useful to help scale the collection of training data. Alt text from this dataset can be used to provide high-quality examples to annotators. Additionally, a classifier trained to predict alt text semantic levels such as the one introduced in Section&nbsp;<a class="ltx_ref" href="#S5.SS1" title="5.1. Improving author-written alt text & supporting reading interfaces ‣ 5. Dataset uses ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">5.1</span></a> could be used to offer feedback to annotators during the annotation process, e.g., by indicating when information of a certain content level is missing in the annotation. Instruction specific to the missing level could be provided to the annotator to elicit further description information, as in the techniques employed by <cite class="ltx_cite ltx_citemacro_citet">Morash
+et&nbsp;al<span class="ltx_text">.</span> (<a class="ltx_ref" href="#bib.bib34" title>2015</a>)</cite>. Several works propose a hybrid approach that combines machine learning model output with human writers to create better image descriptions <cite class="ltx_cite ltx_citemacro_citep">(Qian
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib40" title>2020</a>; Mack
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib32" title>2021</a>; Gurari et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib20" title>2018</a>)</cite>. Our dataset and classifiers could be used in collaboration with human writers to produce more descriptive alt text.</p>
+</div>
+<div class="ltx_para" id="S5.SS2.p2">
+<p class="ltx_p" id="S5.SS2.p2.1">The alt texts in our dataset could also serve as part of a viable evaluation corpus. Though not all alt text in the dataset contain semantic level annotations, the texts themselves are written by the original paper authors, and are therefore more likely to be faithful to the original intent and content of the paper. We release all <span class="ltx_text" id="S5.SS2.p2.1.1" style="color:#000000;">3386</span> valid alt text extracted from our sample of papers, which includes alt text in addition to the <span class="ltx_text" id="S5.SS2.p2.1.2" style="color:#000000;">547</span> alt texts belonging to data visualizations which we annotate for semantic content. These alt texts can be used to assess pieces of information that authors found important enough to include in the image description. The output of a general-purpose scientific alt text generation model can be evaluated against the information contained in the original author-written alt text associated with these figures.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S6">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">6. </span>Discussion & Conclusion</h2>
+<div class="ltx_para" id="S6.p1">
+<p class="ltx_p" id="S6.p1.1">In regards to scientific alt text, availability is still the primary issue. However, in the alt text we were able to extract from HCI publications, we observed that for papers where authors have taken the time to write alt text, the content and level of detail available in these alt text is also worth considering. What does it mean to write useful alt text? What does it mean to include enough detail such that the content of an image can be understood by a BLV user? For graphs and charts, we propose that authors leverage the framework introduced in <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite> to ensure that some basic semantic information is provided, enough such that BLV users can understand the structure of the graph, its extrema and outliers, as well as the obvious trends and comparisons that can be made. In our current analysis, we find that many author-written alt text are not yet meeting these thresholds.</p>
+</div>
+<div class="ltx_para" id="S6.p2">
+<p class="ltx_p" id="S6.p2.1">We recognize the limitations of our techniques. The alt text and figures included in our dataset make up a biased sample, containing only papers from CHI and ASSETS and from the authors publishing in these venues. They are not representative of figures in all scholarly documents. Though we would have liked to construct a more representative sample of scientific figures, the overwhelming lack of figure alt text in scholarly publications prevents us from doing so. As more authors from other disciplines begin including alt text and the barriers to adding alt text to scientific figures decreases, we hope that it will become easier to create such a dataset.</p>
+</div>
+<div class="ltx_para" id="S6.p3">
+<p class="ltx_p" id="S6.p3.1">Additionally, our analysis and annotations are limited to figures containing data visualizations (graphs, charts, and plots), which are only one of many types of images present in scientific publications. Our results on the suitability or missingness of semantic content in author-written alt text cannot generalize beyond these image types. Going beyond graphs, frameworks other than that introduced in <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite> may be needed to capture the availability and distribution of informational content. We emphasize that the lack of certain semantic levels in alt text is not equivalent to an assessment about the alt text&rsquo;s quality. Different users may want different information out of alt text, and there is no one-size-fits-all solution <cite class="ltx_cite ltx_citemacro_citep">(Mack
+et&nbsp;al<span class="ltx_text">.</span>, <a class="ltx_ref" href="#bib.bib32" title>2021</a>)</cite>. Rather, we use the framework as a proxy for content availability, which can be used to elicit different kinds of descriptive information that may be missing in an author&rsquo;s original alt text. Finally, in <cite class="ltx_cite ltx_citemacro_citet">Lundgard and
+Satyanarayan (<a class="ltx_ref" href="#bib.bib31" title>2022</a>)</cite>, the authors assessed whether the levels were useful for BLV users, but not whether all of levels 1&ndash;3 were necessary for an alt text to be considered complete. Further study is needed to determine the appropriate balance of depth of information, completeness, and brevity in relation to the usefulness of alt text.</p>
+</div>
+<div class="ltx_para" id="S6.p4">
+<p class="ltx_p" id="S6.p4.1">We propose in Section&nbsp;<a class="ltx_ref" href="#S5" title="5. Dataset uses ‣ A Dataset of Alt Texts from HCI Publications"><span class="ltx_text ltx_ref_tag">5</span></a> several uses of this dataset towards improving author and publisher workflows around writing figure alt text. A classifier trained to detect semantic levels can be used to provide feedback to authors who are writing alt text, and can be used to elicit alt text containing more levels of information. The dataset can also be used to help develop machine learning models that can generate better alt text based on the image itself. We believe that coupling machine learning models with crowdsourced image descriptions may provide a reasonable solution to problems around alt text availability, and we plan to explore such solutions in future work.</p>
+</div>
+<div class="ltx_para" id="S6.p5">
+<p class="ltx_p" id="S6.p5.1">Policy clearly matters. We faced significant challenges when attempting to extract alt text from a broad swathe of scientific publications, and had to limit ourselves ultimately to HCI publishing venues such as ASSETS and CHI. There is no doubt in our minds that the alt text we were able to extract are only there because of the efforts of the accessibility and HCI research community and the importance that members have placed on digital accessibility. Significant work remains to encourage researchers outside of these communities to participate in making their work accessible. Within the community, there are also ways that we can improve figure accessibility, by providing information that are described by BLV users as being more relevant or more important towards interpreting these images.</p>
+</div>
+<div class="ltx_acknowledgements">
+<h6 class="ltx_title ltx_title_acknowledgements">Acknowledgements.</h6>
+We thank Donal Fitzpatrick, Doug Downey, the reviewers, and members of the Semantic Scholar research team for their valuable feedback.
+We thank Bailey Kuehl and Ihsan Allah Rakha for their assistance in the annotation process.
+
+</div>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+<ul class="ltx_biblist">
+<li class="ltx_bibitem" id="bib.bib1">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">(1)</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib2">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Ammar et&nbsp;al<span class="ltx_text" id="bib.bib2.2.2.1">.</span> (2018)</span>
+<span class="ltx_bibblock">
+Waleed Ammar, Dirk
+Groeneveld, Chandra Bhagavatula, Iz
+Beltagy, Miles Crawford, Doug Downey,
+Jason Dunkelberger, Ahmed Elgohary,
+Sergey Feldman, Vu&nbsp;A. Ha,
+Rodney&nbsp;Michael Kinney, Sebastian
+Kohlmeier, Kyle Lo, Tyler&nbsp;C. Murray,
+Hsu-Han Ooi, Matthew&nbsp;E. Peters,
+Joanna&nbsp;L. Power, Sam Skjonsberg,
+Lucy&nbsp;Lu Wang, Christopher Wilhelm,
+Zheng Yuan, Madeleine van Zuylen, and
+Oren Etzioni. 2018.
+
+</span>
+<span class="ltx_bibblock">Construction of the Literature Graph in Semantic
+Scholar. In <em class="ltx_emph ltx_font_italic" id="bib.bib2.3.1">NAACL</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib3">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Baker et&nbsp;al<span class="ltx_text" id="bib.bib3.2.2.1">.</span> (2014)</span>
+<span class="ltx_bibblock">
+Catherine&nbsp;M. Baker,
+Lauren&nbsp;R. Milne, Jeffrey Scofield,
+Cynthia&nbsp;L. Bennett, and Richard&nbsp;E.
+Ladner. 2014.
+
+</span>
+<span class="ltx_bibblock">Tactile graphics with a voice: using QR codes to
+access text in tactile graphics.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib3.3.1">Proceedings of the 16th international ACM
+SIGACCESS conference on Computers & accessibility</em> (2014).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib4">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Beltagy
+et&nbsp;al<span class="ltx_text" id="bib.bib4.2.2.1">.</span> (2019)</span>
+<span class="ltx_bibblock">
+Iz Beltagy, Kyle Lo,
+and Arman Cohan. 2019.
+
+</span>
+<span class="ltx_bibblock">SciBERT: A Pretrained Language Model for Scientific
+Text. In <em class="ltx_emph ltx_font_italic" id="bib.bib4.3.1">EMNLP</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib5">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Bennett et&nbsp;al<span class="ltx_text" id="bib.bib5.2.2.1">.</span> (2021)</span>
+<span class="ltx_bibblock">
+Cynthia&nbsp;L. Bennett, Cole
+Gleason, Morgan&nbsp;Klaus Scheuerman,
+Jeffrey&nbsp;P. Bigham, Anhong Guo, and
+Alexandra To. 2021.
+
+</span>
+<span class="ltx_bibblock">&ldquo;It&rsquo;s Complicated&rdquo;: Negotiating Accessibility
+and (Mis)Representation in Image Descriptions of Race, Gender, and
+Disability. In <em class="ltx_emph ltx_font_italic" id="bib.bib5.3.1">Proceedings of the 2021 CHI
+Conference on Human Factors in Computing Systems</em> (Yokohama, Japan)
+<em class="ltx_emph ltx_font_italic" id="bib.bib5.4.2">(CHI &rsquo;21)</em>. Association for
+Computing Machinery, New York, NY, USA, Article
+375, 19&nbsp;pages.
+
+</span>
+<span class="ltx_bibblock">
+<a class="ltx_ref ltx_url ltx_font_typewriter" href="https://doi.org/10.1145/3411764.3445498" target="_blank" title>https://doi.org/10.1145/3411764.3445498</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib6">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Bigham et&nbsp;al<span class="ltx_text" id="bib.bib6.2.2.1">.</span> (2016)</span>
+<span class="ltx_bibblock">
+Jeffrey&nbsp;P. Bigham, E.
+Brady, Cole Gleason, Anhong Guo, and
+D. Shamma. 2016.
+
+</span>
+<span class="ltx_bibblock">An Uninteresting Tour Through Why Our Research
+Papers Aren&rsquo;t Accessible.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib6.3.1">Proceedings of the 2016 CHI Conference
+Extended Abstracts on Human Factors in Computing Systems</em>
+(2016).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib7">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Bigham et&nbsp;al<span class="ltx_text" id="bib.bib7.2.2.1">.</span> (2010)</span>
+<span class="ltx_bibblock">
+Jeffrey&nbsp;P. Bigham,
+Chandrika Jayant, Hanjie Ji,
+Greg Little, Andrew Miller,
+Rob Miller, Rob Miller,
+Aubrey Tatarowicz, Brandyn&nbsp;Allen White,
+Samuel White, and Tom Yeh.
+2010.
+
+</span>
+<span class="ltx_bibblock">VizWiz: nearly real-time answers to visual
+questions.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib7.3.1">Proceedings of the 23nd annual ACM symposium
+on User interface software and technology</em> (2010).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib8">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Brady
+et&nbsp;al<span class="ltx_text" id="bib.bib8.2.2.1">.</span> (2015)</span>
+<span class="ltx_bibblock">
+E. Brady, Y. Zhong, and
+Jeffrey&nbsp;P. Bigham. 2015.
+
+</span>
+<span class="ltx_bibblock">Creating accessible PDFs for conference
+proceedings.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib8.3.1">Proceedings of the 12th Web for All
+Conference</em> (2015).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib9">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Bragg
+et&nbsp;al<span class="ltx_text" id="bib.bib9.2.2.1">.</span> (2018)</span>
+<span class="ltx_bibblock">
+Danielle Bragg, Raja&nbsp;S.
+Kushalnagar, and Richard&nbsp;E. Ladner.
+2018.
+
+</span>
+<span class="ltx_bibblock">Designing an Animated Character System for American
+Sign Language.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib9.3.1">Proceedings of the 20th International ACM
+SIGACCESS Conference on Computers and Accessibility</em> (2018).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib10">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Caldwell et&nbsp;al<span class="ltx_text" id="bib.bib10.2.2.1">.</span> (2008)</span>
+<span class="ltx_bibblock">
+B. Caldwell, M. Cooper,
+Loretta&nbsp;Guarino Reid, and G.
+Vanderheiden. 2008.
+
+</span>
+<span class="ltx_bibblock">Web Content Accessibility Guidelines (WCAG) 2.0.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib11">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chen et&nbsp;al<span class="ltx_text" id="bib.bib11.2.2.1">.</span> (2019a)</span>
+<span class="ltx_bibblock">
+Chen Chen, Ruiyi Zhang,
+Sungchul Kim, Scott&nbsp;D. Cohen,
+Tong Yu, Ryan&nbsp;A. Rossi, and
+Razvan&nbsp;C. Bunescu. 2019a.
+
+</span>
+<span class="ltx_bibblock">Neural caption generation over figures.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib11.3.1">Adjunct Proceedings of the 2019 ACM
+International Joint Conference on Pervasive and Ubiquitous Computing and
+Proceedings of the 2019 ACM International Symposium on Wearable Computers</em>
+(2019).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib12">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chen et&nbsp;al<span class="ltx_text" id="bib.bib12.2.2.1">.</span> (2019b)</span>
+<span class="ltx_bibblock">
+Charles&nbsp;C. Chen, Ruiyi
+Zhang, Eunyee Koh, Sungchul Kim,
+Scott&nbsp;D. Cohen, Tong Yu,
+Razvan&nbsp;C. Bunescu, and Razvan&nbsp;C.
+Bunescu. 2019b.
+
+</span>
+<span class="ltx_bibblock">Figure Captioning with Reasoning and Sequence-Level
+Training.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib12.3.1">ArXiv</em> abs/1906.02850
+(2019).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib13">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chen et&nbsp;al<span class="ltx_text" id="bib.bib13.2.2.1">.</span> (2015)</span>
+<span class="ltx_bibblock">
+Xinlei Chen, Hao Fang,
+Tsung-Yi Lin, Ramakrishna Vedantam,
+Saurabh Gupta, Piotr Doll&aacute;r, and
+C.&nbsp;Lawrence Zitnick. 2015.
+
+</span>
+<span class="ltx_bibblock">Microsoft COCO Captions: Data Collection and
+Evaluation Server.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib13.3.1">ArXiv</em> abs/1504.00325
+(2015).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib14">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Chisholm
+et&nbsp;al<span class="ltx_text" id="bib.bib14.2.2.1">.</span> (2001)</span>
+<span class="ltx_bibblock">
+W. Chisholm, G.
+Vanderheiden, and Ian Jacobs.
+2001.
+
+</span>
+<span class="ltx_bibblock">Web content accessibility guidelines 1.0.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib14.3.1">Interactions</em> 8
+(2001), 35&ndash;54.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib15">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Devlin
+et&nbsp;al<span class="ltx_text" id="bib.bib15.2.2.1">.</span> (2019)</span>
+<span class="ltx_bibblock">
+Jacob Devlin, Ming-Wei
+Chang, Kenton Lee, and Kristina
+Toutanova. 2019.
+
+</span>
+<span class="ltx_bibblock">BERT: Pre-training of Deep Bidirectional
+Transformers for Language Understanding. In
+<em class="ltx_emph ltx_font_italic" id="bib.bib15.3.1">NAACL</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib16">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Engel and Weber (2017)</span>
+<span class="ltx_bibblock">
+Christin Engel and
+Gerhard Weber. 2017.
+
+</span>
+<span class="ltx_bibblock">Improve the Accessibility of Tactile Charts. In
+<em class="ltx_emph ltx_font_italic" id="bib.bib16.1.1">INTERACT</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib17">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Fraser et&nbsp;al<span class="ltx_text" id="bib.bib17.2.2.1">.</span> (2017)</span>
+<span class="ltx_bibblock">
+C.&nbsp;Ailie Fraser, Tricia&nbsp;J.
+Ngoon, Ariel&nbsp;S. Weingarten, Mira
+Dontcheva, and Scott Klemmer.
+2017.
+
+</span>
+<span class="ltx_bibblock">CritiqueKit: A Mixed-Initiative, Real-Time
+Interface For Improving Feedback. In <em class="ltx_emph ltx_font_italic" id="bib.bib17.3.1">Adjunct
+Publication of the 30th Annual ACM Symposium on User Interface Software and
+Technology</em> (Qu&eacute;bec City, QC, Canada) <em class="ltx_emph ltx_font_italic" id="bib.bib17.4.2">(UIST
+&rsquo;17)</em>. Association for Computing Machinery,
+New York, NY, USA, 7&ndash;9.
+
+</span>
+<span class="ltx_bibblock">
+<a class="ltx_ref ltx_url ltx_font_typewriter" href="https://doi.org/10.1145/3131785.3131791" target="_blank" title>https://doi.org/10.1145/3131785.3131791</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib18">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Gleason et&nbsp;al<span class="ltx_text" id="bib.bib18.2.2.1">.</span> (2020)</span>
+<span class="ltx_bibblock">
+Cole Gleason, Amy Pavel,
+Emma McCamey, Christina Low,
+Patrick Carrington, Kris&nbsp;M. Kitani, and
+Jeffrey&nbsp;P. Bigham. 2020.
+
+</span>
+<span class="ltx_bibblock">Twitter A11y: A Browser Extension to Make Twitter
+Images Accessible.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib18.3.1">Proceedings of the 2020 CHI Conference on
+Human Factors in Computing Systems</em> (2020).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib19">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Guinness
+et&nbsp;al<span class="ltx_text" id="bib.bib19.2.2.1">.</span> (2018)</span>
+<span class="ltx_bibblock">
+Darren Guinness, Edward
+Cutrell, and Meredith&nbsp;Ringel Morris.
+2018.
+
+</span>
+<span class="ltx_bibblock">Caption Crawler: Enabling Reusable Alternative Text
+Descriptions using Reverse Image Search.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib19.3.1">Proceedings of the 2018 CHI Conference on
+Human Factors in Computing Systems</em> (2018).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib20">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Gurari et&nbsp;al<span class="ltx_text" id="bib.bib20.2.2.1">.</span> (2018)</span>
+<span class="ltx_bibblock">
+Danna Gurari, Qing Li,
+Abigale Stangl, Anhong Guo,
+Chi Lin, Kristen Grauman,
+Jiebo Luo, and Jeffrey&nbsp;P. Bigham.
+2018.
+
+</span>
+<span class="ltx_bibblock">VizWiz Grand Challenge: Answering Visual Questions
+from Blind People.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib20.3.1">2018 IEEE/CVF Conference on Computer Vision
+and Pattern Recognition</em> (2018),
+3608&ndash;3617.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib21">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Hsu
+et&nbsp;al<span class="ltx_text" id="bib.bib21.2.2.1">.</span> (2021)</span>
+<span class="ltx_bibblock">
+Ting-Yao Hsu, C.&nbsp;Lee
+Giles, and Ting-Hao&nbsp;Kenneth Huang.
+2021.
+
+</span>
+<span class="ltx_bibblock">SciCap: Generating Captions for Scientific
+Figures. In <em class="ltx_emph ltx_font_italic" id="bib.bib21.3.1">EMNLP</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib22">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Jobin
+et&nbsp;al<span class="ltx_text" id="bib.bib22.2.2.1">.</span> (2019)</span>
+<span class="ltx_bibblock">
+K.&nbsp;V. Jobin, Ajoy Mondal,
+and C.&nbsp;V. Jawahar. 2019.
+
+</span>
+<span class="ltx_bibblock">DocFigure: A Dataset for Scientific Document Figure
+Classification.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib22.3.1">2019 International Conference on Document
+Analysis and Recognition Workshops (ICDARW)</em> 1
+(2019), 74&ndash;79.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib23">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Jung et&nbsp;al<span class="ltx_text" id="bib.bib23.2.2.1">.</span> (2017)</span>
+<span class="ltx_bibblock">
+Daekyoung Jung, Wonjae
+Kim, Hyunjoo Song, Jeongin Hwang,
+Bongshin Lee, Bo&nbsp;Hyoung Kim, and
+Jinwook Seo. 2017.
+
+</span>
+<span class="ltx_bibblock">ChartSense: Interactive Data Extraction from Chart
+Images.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib23.3.1">Proceedings of the 2017 CHI Conference on
+Human Factors in Computing Systems</em> (2017).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib24">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kafle
+et&nbsp;al<span class="ltx_text" id="bib.bib24.2.2.1">.</span> (2018)</span>
+<span class="ltx_bibblock">
+Kushal Kafle, Scott&nbsp;D.
+Cohen, Brian&nbsp;L. Price, and Christopher
+Kanan. 2018.
+
+</span>
+<span class="ltx_bibblock">DVQA: Understanding Data Visualizations via
+Question Answering.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib24.3.1">2018 IEEE/CVF Conference on Computer Vision
+and Pattern Recognition</em> (2018),
+5648&ndash;5656.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib25">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kahou et&nbsp;al<span class="ltx_text" id="bib.bib25.2.2.1">.</span> (2018)</span>
+<span class="ltx_bibblock">
+Samira&nbsp;Ebrahimi Kahou,
+Adam Atkinson, Vincent Michalski,
+&Aacute;kos K&aacute;d&aacute;r, Adam Trischler,
+and Yoshua Bengio. 2018.
+
+</span>
+<span class="ltx_bibblock">FigureQA: An Annotated Figure Dataset for Visual
+Reasoning.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib25.3.1">ArXiv</em> abs/1710.07300
+(2018).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib26">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Kuznetsova et&nbsp;al<span class="ltx_text" id="bib.bib26.2.2.1">.</span> (2020)</span>
+<span class="ltx_bibblock">
+Alina Kuznetsova, Hassan
+Rom, Neil&nbsp;Gordon Alldrin, Jasper R.&nbsp;R.
+Uijlings, Ivan Krasin, Jordi Pont-Tuset,
+Shahab Kamali, Stefan Popov,
+Matteo Malloci, Alexander Kolesnikov,
+Tom Duerig, and Vittorio Ferrari.
+2020.
+
+</span>
+<span class="ltx_bibblock">The Open Images Dataset V4.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib26.3.1">International Journal of Computer Vision</em>
+128 (2020), 1956&ndash;1981.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib27">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lazar et&nbsp;al<span class="ltx_text" id="bib.bib27.2.2.1">.</span> (2017)</span>
+<span class="ltx_bibblock">
+J. Lazar, E. Churchill,
+T. Grossman, G.&nbsp;V.&nbsp;D. Veer,
+Philippe&nbsp;A. Palanque, J. Morris, and
+Jennifer Mankoff. 2017.
+
+</span>
+<span class="ltx_bibblock">Making the field of computing more inclusive.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib27.3.1">Commun. ACM</em> 60
+(2017), 50 &ndash; 59.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib28">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Levy
+et&nbsp;al<span class="ltx_text" id="bib.bib28.2.2.1">.</span> (2021)</span>
+<span class="ltx_bibblock">
+Matan Levy, Rami Ben-Ari,
+and Dani Lischinski. 2021.
+
+</span>
+<span class="ltx_bibblock">Classification-Regression for Chart Comprehension.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib29">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Li
+et&nbsp;al<span class="ltx_text" id="bib.bib29.2.2.1">.</span> (2019)</span>
+<span class="ltx_bibblock">
+Liunian&nbsp;Harold Li, Mark
+Yatskar, Da Yin, Cho-Jui Hsieh, and
+Kai-Wei Chang. 2019.
+
+</span>
+<span class="ltx_bibblock">VisualBERT: A Simple and Performant Baseline for
+Vision and Language.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib29.3.1">ArXiv</em> abs/1908.03557
+(2019).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib30">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lu
+et&nbsp;al<span class="ltx_text" id="bib.bib30.2.2.1">.</span> (2019)</span>
+<span class="ltx_bibblock">
+Jiasen Lu, Dhruv Batra,
+Devi Parikh, and Stefan Lee.
+2019.
+
+</span>
+<span class="ltx_bibblock">ViLBERT: Pretraining Task-Agnostic Visiolinguistic
+Representations for Vision-and-Language Tasks. In
+<em class="ltx_emph ltx_font_italic" id="bib.bib30.3.1">NeurIPS</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib31">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lundgard and
+Satyanarayan (2022)</span>
+<span class="ltx_bibblock">
+Alan Lundgard and Arvind
+Satyanarayan. 2022.
+
+</span>
+<span class="ltx_bibblock">Accessible Visualization via Natural Language
+Descriptions: A Four-Level Model of Semantic Content.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib31.1.1">IEEE Transactions on Visualization and
+Computer Graphics</em> 28 (2022),
+1073&ndash;1083.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib32">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Mack
+et&nbsp;al<span class="ltx_text" id="bib.bib32.2.2.1">.</span> (2021)</span>
+<span class="ltx_bibblock">
+Kelly&nbsp;M. Mack, Edward
+Cutrell, Bongshin Lee, and
+Meredith&nbsp;Ringel Morris. 2021.
+
+</span>
+<span class="ltx_bibblock">Designing Tools for High-Quality Alt Text
+Authoring.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib32.3.1">The 23rd International ACM SIGACCESS
+Conference on Computers and Accessibility</em> (2021).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib33">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Methani
+et&nbsp;al<span class="ltx_text" id="bib.bib33.2.2.1">.</span> (2020)</span>
+<span class="ltx_bibblock">
+Nitesh Methani, Pritha
+Ganguly, Mitesh&nbsp;M. Khapra, and Pratyush
+Kumar. 2020.
+
+</span>
+<span class="ltx_bibblock">PlotQA: Reasoning over Scientific Plots.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib33.3.1">2020 IEEE Winter Conference on Applications
+of Computer Vision (WACV)</em> (2020),
+1516&ndash;1525.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib34">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Morash
+et&nbsp;al<span class="ltx_text" id="bib.bib34.2.2.1">.</span> (2015)</span>
+<span class="ltx_bibblock">
+Valerie&nbsp;S. Morash,
+Yue-Ting Siu, Joshua&nbsp;A. Miele,
+Lucia Hasty, and Steven Landau.
+2015.
+
+</span>
+<span class="ltx_bibblock">Guiding Novice Web Workers in Making Image
+Descriptions Using Templates.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib34.3.1">ACM Transactions on Accessible Computing
+(TACCESS)</em> 7 (2015), 1 &ndash;
+21.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib35">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Morris
+et&nbsp;al<span class="ltx_text" id="bib.bib35.2.2.1">.</span> (2020)</span>
+<span class="ltx_bibblock">
+David Morris, Eric
+M&uuml;ller-Budack, and Ralph Ewerth.
+2020.
+
+</span>
+<span class="ltx_bibblock">SlideImages: A Dataset for Educational Image
+Classification.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib35.3.1">Advances in Information Retrieval</em>
+12036 (2020), 289 &ndash; 296.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib36">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Morris
+et&nbsp;al<span class="ltx_text" id="bib.bib36.2.2.1">.</span> (2018)</span>
+<span class="ltx_bibblock">
+Meredith&nbsp;Ringel Morris,
+Jazette Johnson, Cynthia&nbsp;L. Bennett,
+and Edward Cutrell. 2018.
+
+</span>
+<span class="ltx_bibblock">Rich Representations of Visual Content for Screen
+Reader Users.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib36.3.1">Proceedings of the 2018 CHI Conference on
+Human Factors in Computing Systems</em> (2018).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib37">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Nazemi and Murray (2013)</span>
+<span class="ltx_bibblock">
+Azadeh Nazemi and Iain
+Murray. 2013.
+
+</span>
+<span class="ltx_bibblock">A Method to Provide Accessibility for Visual
+Components to Vision Impaired.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib38">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Neumann
+et&nbsp;al<span class="ltx_text" id="bib.bib38.2.2.1">.</span> (2019)</span>
+<span class="ltx_bibblock">
+Mark Neumann, Daniel
+King, Iz Beltagy, and Waleed Ammar.
+2019.
+
+</span>
+<span class="ltx_bibblock">ScispaCy: Fast and Robust Models for Biomedical
+Natural Language Processing.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib38.3.1">ArXiv</em> abs/1902.07669
+(2019).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib39">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Nicolson
+et&nbsp;al<span class="ltx_text" id="bib.bib39.2.2.1">.</span> (2021)</span>
+<span class="ltx_bibblock">
+Aaron Nicolson, Jason
+Dowling, and Bevan Koopman.
+2021.
+
+</span>
+<span class="ltx_bibblock">AEHRC CSIRO at ImageCLEFmed Caption 2021. In
+<em class="ltx_emph ltx_font_italic" id="bib.bib39.3.1">CLEF</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib40">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Qian
+et&nbsp;al<span class="ltx_text" id="bib.bib40.2.2.1">.</span> (2020)</span>
+<span class="ltx_bibblock">
+Xin Qian, Eunyee Koh,
+Fan Du, Sungchul Kim, and
+Joel Chan. 2020.
+
+</span>
+<span class="ltx_bibblock">A Formative Study on Designing Accurate and Natural
+Figure Captioning Systems. In <em class="ltx_emph ltx_font_italic" id="bib.bib40.3.1">Extended Abstracts
+of the 2020 CHI Conference on Human Factors in Computing Systems</em> (Honolulu,
+HI, USA) <em class="ltx_emph ltx_font_italic" id="bib.bib40.4.2">(CHI EA &rsquo;20)</em>.
+Association for Computing Machinery,
+New York, NY, USA, 1&ndash;8.
+
+</span>
+<span class="ltx_bibblock">
+<a class="ltx_ref ltx_url ltx_font_typewriter" href="https://doi.org/10.1145/3334480.3382946" target="_blank" title>https://doi.org/10.1145/3334480.3382946</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib41">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Qian et&nbsp;al<span class="ltx_text" id="bib.bib41.2.2.1">.</span> (2021)</span>
+<span class="ltx_bibblock">
+Xin Qian, Eunyee Koh,
+Fan Du, Sungchul Kim,
+Joel Chan, Ryan&nbsp;A. Rossi,
+Sana Malik, and Tak&nbsp;Yeon Lee.
+2021.
+
+</span>
+<span class="ltx_bibblock">Generating Accurate Caption Units for Figure
+Captioning.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib41.3.1">Proceedings of the Web Conference 2021</em>
+(2021).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib42">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Reinecke
+et&nbsp;al<span class="ltx_text" id="bib.bib42.2.2.1">.</span> (2016)</span>
+<span class="ltx_bibblock">
+Katharina Reinecke,
+David&nbsp;R. Flatla, and Christopher
+Brooks. 2016.
+
+</span>
+<span class="ltx_bibblock">Enabling Designers to Foresee Which Colors Users
+Cannot See.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib42.3.1">Proceedings of the 2016 CHI Conference on
+Human Factors in Computing Systems</em> (2016).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib43">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Russakovsky
+et&nbsp;al<span class="ltx_text" id="bib.bib43.2.2.1">.</span> (2015)</span>
+<span class="ltx_bibblock">
+Olga Russakovsky, Jia
+Deng, Hao Su, Jonathan Krause,
+Sanjeev Satheesh, Sean Ma,
+Zhiheng Huang, Andrej Karpathy,
+Aditya Khosla, Michael&nbsp;S. Bernstein,
+Alexander&nbsp;C. Berg, and Li Fei-Fei.
+2015.
+
+</span>
+<span class="ltx_bibblock">ImageNet Large Scale Visual Recognition Challenge.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib43.3.1">International Journal of Computer Vision</em>
+115 (2015), 211&ndash;252.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib44">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Salisbury
+et&nbsp;al<span class="ltx_text" id="bib.bib44.2.2.1">.</span> (2017)</span>
+<span class="ltx_bibblock">
+Elliot Salisbury, Ece
+Kamar, and Meredith&nbsp;Ringel Morris.
+2017.
+
+</span>
+<span class="ltx_bibblock">Toward Scalable Social Alt Text: Conversational
+Crowdsourcing as a Tool for Refining Vision-to-Language Technology for the
+Blind. In <em class="ltx_emph ltx_font_italic" id="bib.bib44.3.1">HCOMP</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib45">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Sharma
+et&nbsp;al<span class="ltx_text" id="bib.bib45.2.2.1">.</span> (2018)</span>
+<span class="ltx_bibblock">
+Piyush Sharma, Nan Ding,
+Sebastian Goodman, and Radu Soricut.
+2018.
+
+</span>
+<span class="ltx_bibblock">Conceptual Captions: A Cleaned, Hypernymed, Image
+Alt-text Dataset For Automatic Image Captioning. In
+<em class="ltx_emph ltx_font_italic" id="bib.bib45.3.1">ACL</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib46">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Siegel et&nbsp;al<span class="ltx_text" id="bib.bib46.2.2.1">.</span> (2016)</span>
+<span class="ltx_bibblock">
+Noah Siegel, Zachary
+Horvitz, Roie Levin, Santosh&nbsp;Kumar
+Divvala, and Ali Farhadi.
+2016.
+
+</span>
+<span class="ltx_bibblock">FigureSeer: Parsing Result-Figures in Research
+Papers. In <em class="ltx_emph ltx_font_italic" id="bib.bib46.3.1">ECCV</em>.
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib47">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Stangl
+et&nbsp;al<span class="ltx_text" id="bib.bib47.2.2.1">.</span> (2020)</span>
+<span class="ltx_bibblock">
+Abigale Stangl,
+Meredith&nbsp;Ringel Morris, and Danna
+Gurari. 2020.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib47.3.1">&rdquo;Person, Shoes, Tree. Is the Person Naked?&rdquo;
+What People with Vision Impairments Want in Image Descriptions</em>.
+
+</span>
+<span class="ltx_bibblock">Association for Computing Machinery,
+New York, NY, USA, 1&ndash;13.
+
+</span>
+<span class="ltx_bibblock">
+<a class="ltx_ref ltx_url ltx_font_typewriter" href="https://doi.org/10.1145/3313831.3376404" target="_blank" title>https://doi.org/10.1145/3313831.3376404</a>
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib48">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Wang et&nbsp;al<span class="ltx_text" id="bib.bib48.2.2.1">.</span> (2021)</span>
+<span class="ltx_bibblock">
+Lucy&nbsp;Lu Wang, Isabel
+Cachola, Jonathan Bragg, Evie (Yu-Yen)
+Cheng, Chelsea&nbsp;Hess Haupt, Matt Latzke,
+Bailey Kuehl, Madeleine van Zuylen,
+Linda&nbsp;M. Wagner, and Daniel&nbsp;S. Weld.
+2021.
+
+</span>
+<span class="ltx_bibblock">Improving the Accessibility of Scientific
+Documents: Current State, User Needs, and a System Solution to Enhance
+Scientific PDF Accessibility for Blind and Low Vision Users.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib48.3.1">ArXiv</em> abs/2105.00076
+(2021).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib49">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Wu
+et&nbsp;al<span class="ltx_text" id="bib.bib49.2.2.1">.</span> (2017)</span>
+<span class="ltx_bibblock">
+Shaomei Wu, Jeffrey
+Wieland, Omid Farivar, and Julie
+Schiller. 2017.
+
+</span>
+<span class="ltx_bibblock">Automatic Alt-text: Computer-generated Image
+Descriptions for Blind Users on a Social Network Service.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib49.3.1">Proceedings of the 2017 ACM Conference on
+Computer Supported Cooperative Work and Social Computing</em>
+(2017).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib50">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Zhou
+et&nbsp;al<span class="ltx_text" id="bib.bib50.2.2.1">.</span> (2020)</span>
+<span class="ltx_bibblock">
+Luowei Zhou, Hamid
+Palangi, Lei Zhang, Houdong Hu,
+Jason&nbsp;J. Corso, and Jianfeng Gao.
+2020.
+
+</span>
+<span class="ltx_bibblock">Unified Vision-Language Pre-Training for Image
+Captioning and VQA.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic" id="bib.bib50.3.1">ArXiv</em> abs/1909.11059
+(2020).
+
+</span>
+<span class="ltx_bibblock">
+</span>
+</li>
+</ul>
+</section>
+<section class="ltx_appendix" id="A1">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix A </span>Heuristics for identifying graphs and charts</h2>
+<div class="ltx_para" id="A1.p1">
+<p class="ltx_p" id="A1.p1.1">The full list of words and phrases used to identify figures corresponding to graphs and charts include:</p>
+</div>
+<div class="ltx_para" id="A1.p2">
+<ul class="ltx_itemize" id="A1.I1">
+<li class="ltx_item" id="A1.I1.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i1.p1">
+<p class="ltx_p" id="A1.I1.i1.p1.1">graph</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i2.p1">
+<p class="ltx_p" id="A1.I1.i2.p1.1">chart</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i3" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i3.p1">
+<p class="ltx_p" id="A1.I1.i3.p1.1">plot</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i4" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i4.p1">
+<p class="ltx_p" id="A1.I1.i4.p1.1">scatter plot</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i5" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i5.p1">
+<p class="ltx_p" id="A1.I1.i5.p1.1">scatter</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i6" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i6.p1">
+<p class="ltx_p" id="A1.I1.i6.p1.1">distribution</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i7" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i7.p1">
+<p class="ltx_p" id="A1.I1.i7.p1.1">data</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i8" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i8.p1">
+<p class="ltx_p" id="A1.I1.i8.p1.1">points</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i9" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i9.p1">
+<p class="ltx_p" id="A1.I1.i9.p1.1">error</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i10" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i10.p1">
+<p class="ltx_p" id="A1.I1.i10.p1.1">error bar</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i11" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i11.p1">
+<p class="ltx_p" id="A1.I1.i11.p1.1">trial</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i12" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i12.p1">
+<p class="ltx_p" id="A1.I1.i12.p1.1">trials</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i13" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i13.p1">
+<p class="ltx_p" id="A1.I1.i13.p1.1">bar plot</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i14" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i14.p1">
+<p class="ltx_p" id="A1.I1.i14.p1.1">bar</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i15" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i15.p1">
+<p class="ltx_p" id="A1.I1.i15.p1.1">venn</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i16" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i16.p1">
+<p class="ltx_p" id="A1.I1.i16.p1.1">mean</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i17" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="A1.I1.i17.p1">
+<p class="ltx_p" id="A1.I1.i17.p1.1">average</p>
+</div>
+</li>
+</ul>
+</div>
+</section>
+</article>
+</div>
+<div class="ar5iv-footer"><a class="ar5iv-nav-button ar5iv-nav-button-prev" href="/html/2209.13717">◄</a>
+<a class="ar5iv-home-button" href="/"><img alt="ar5iv homepage" height="40" src="/assets/ar5iv.png"></a>
+<a class="ar5iv-text-button" href="/feeling_lucky">Feeling<br>lucky?</a>
+<a aria-hidden="true" href="/land_of_honey_and_milk" rel="nofollow" tabindex="-1"></a>
+<a class="ar5iv-text-button ar5iv-severity-error" href="/log/2209.13718">Conversion<br>report</a>
+<a class="ar5iv-text-button" href="https://github.com/dginev/ar5iv/issues/new?template=improve-article--arxiv-id-.md&title=Improve+article+2209.13718" target="_blank">Report<br>an issue</a>
+<a class="ar5iv-text-button arxiv-ui-theme" href="https://arxiv.org/abs/2209.13718">View&nbsp;original<br>on&nbsp;arXiv</a><a class="ar5iv-nav-button ar5iv-nav-button-next" href="/html/2209.13719">►</a>
+</div><footer class="ltx_page_footer">
+<a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle ar5iv color scheme"><span class="color-scheme-icon"></span></a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/license" target="_blank">Copyright</a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/policies/privacy_policy" target="_blank">Privacy Policy</a>
+<div class="ltx_page_logo">Generated  on Thu Mar 14 00:16:32 2024 by <a class="ltx_LaTeXML_logo" href="http://dlmf.nist.gov/LaTeXML/" target="_blank"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img alt="Mascot Sammy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg=="></a>
+</div></footer>
+</div>
+<script>
+      var canMathML = typeof(MathMLElement) == "function";
+      if (!canMathML) {
+        var body = document.querySelector("body");
+        body.firstElementChild.setAttribute('style', 'opacity: 0;');
+        var loading = document.createElement("div");
+        loading.setAttribute("id", "mathjax-loading-spinner");
+        var message = document.createElement("div");
+        message.setAttribute("id", "mathjax-loading-message");
+        message.innerText = "Typesetting Equations...";
+        body.prepend(loading);
+        body.prepend(message);
+
+        var el = document.createElement("script");
+        el.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+        document.querySelector("head").appendChild(el);
+
+        window.MathJax = {
+          startup: {
+            pageReady: () => {
+              return MathJax.startup.defaultPageReady().then(() => {
+                body.removeChild(loading);
+                body.removeChild(message);
+                body.firstElementChild.removeAttribute('style');
+              }); } } };
+      }
+    </script>
+<script>
+    // Auxiliary function, building the preview feature when
+    // an inline citation is clicked
+    function clicked_cite(e) {
+      e.preventDefault();
+      let cite = this.closest('.ltx_cite');
+      let next = cite.nextSibling;
+      if (next && next.nodeType == Node.ELEMENT_NODE && next.getAttribute('class') == "ar5iv-bibitem-preview") {
+        next.remove();
+        return; }
+      // Before adding a preview modal,
+      // cleanup older previews, in case they're still open
+      document.querySelectorAll('span.ar5iv-bibitem-preview').forEach(function(node) {
+        node.remove();
+      })
+
+      // Create the preview
+      preview = document.createElement('span');
+      preview.setAttribute('class','ar5iv-bibitem-preview');
+      let target = document.getElementById(this.getAttribute('href').slice(1));
+      target.childNodes.forEach(function (child) {
+        preview.append(child.cloneNode(true));
+      });
+      let close_x = document.createElement('button');
+      close_x.setAttribute("aria-label","Close modal for bibliography item preview");
+      close_x.textContent = "×";
+      close_x.setAttribute('class', 'ar5iv-button-close-preview');
+      close_x.setAttribute('onclick','this.parentNode.remove()');
+      preview.append(close_x);
+      preview.querySelectorAll('.ltx_tag_bibitem').forEach(function(node) {
+        node.remove();
+      });
+      cite.parentNode.insertBefore(preview, cite.nextSibling);
+      return;
+    }
+    // Global Document initialization:
+    // - assign the preview feature to all inline citation links
+    document.querySelectorAll(".ltx_cite .ltx_ref").forEach(function (link) {
+      link.addEventListener("click", clicked_cite);
+    });
+    </script>
+</body>
+</html>

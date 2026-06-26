@@ -1,0 +1,122 @@
+\section{Robustness of Retrieval-Augmented Image Captioning}
+\label{sec:robust-eval}
+To evaluate the robustness of the \textsc{SmallCap} retrieval-augmented caption model \cite{ramos2023smallcap}, we conduct controlled experiments 
+ and observe its resilience to changes in (1) the order of the retrieved captions and (2) the content relevance of the retrieved captions. 
+
+
+
+
+
+ 
+ 
+
+    \begin{figure}[t]
+    \centering
+        \includegraphics[width=0.48\textwidth,trim={3mm 5mm 2mm 2mm},clip]{figs/ret_drop3.pdf}
+        \caption{CIDEr evaluation of \textsc{SmallCap} on the COCO validation set using the top-$k$, low(er)-ranked, randomly retrieved captions, against a baseline without retrieval augmentation. Performance drops by up to 50\% when using randomly retrieved captions compared to baseline, suggesting that the model is not robust.\label{fig:content-sensitivity}}
+    \end{figure}
+
+
+
+
+
+\subsection{Robustness Evaluation}
+For a given image, \textsc{SmallCap} is augmented with a sequence of $k$ retrieved captions that are combined into an input for the language model decoder: \textit{``Similar images show $cap_{1}, cap_{2}, ..., cap_{k}$. This image shows ...''}. The retrieved captions are obtained through image-to-text retrieval using CLIP embeddings~\citep{clip}, and are sorted according to their relevance, i.e., cosine similarity. From the sorted retrieved captions, we retain the most similar captions as the retrieval list. In this regard, the top-$k$
+ retrieved candidates are the first $k$ captions in the list, and the low-ranked captions are the last-$k$ captions in the list. \textsc{SmallCap} uses the top-$k$ retrieved captions in the prompt by default.
+
+\paragraph*{Context order.}
+\label{subsec:order}
+    When prompting the model to generate a caption for a given image, we can change the order of the retrieved captions by \textbf{permuting} or \textbf{reversing} them. We evaluate the effect of the order changes in two settings: one with a model trained using the top-$k$ retrieved captions (default), and another that is also trained with permuted or reversed retrieved captions.\footnote{For the model trained with default order---top four captions, we use the pretrained checkpoints from HuggingFace: \url{https://huggingface.co/Yova/SmallCap7M}, \url{https://huggingface.co/Yova/SmallCapOPT7M}} 
+
+\paragraph*{Content relevance.}
+\label{subsec:content} 
+    To evaluate how robust the model is towards noise in the retrieved captions, we are curious to see how the model performs when (1) captions are randomly retrieved, i.e. likely to be irrelevant for the given image (2) only low-ranked retrieved captions are available. Here the randomly retrieved captions are those retrieved with another image. For low-ranked captions, we take the lowest-ranked $k$ captions from the retrieval list that consists of top seven relevant captions. 
+
+\subsection{Experimental Setup} In the experiments, we set $k=4$ as it has been demonstrated as the optimal number of captions by~\citet{ramos2023smallcap}. We evaluate \textsc{SmallCap} models with both OPT-350M \cite{zhang2022opt} and GPT-2 \cite{gpt2} as the decoder models. For the image encoder, we use ResNet-50x64~\cite{he2016deep} and CLIP-ViT-B/32~\cite{clip} as the retrieval encoder. We keep the same model setting in the following sections unless stated otherwise.
+
+\paragraph*{Data and metrics}
+\label{para:order-data}
+We first evaluate the robustness of \textsc{Smallcap} on COCO validation set for \textit{in}-domain evaluation. Then we evaluate on NoCaps~\citep{agrawal2019nocaps}, which contains \textit{In, Near} and \textit{Out}-of-domain data, and serves as a challenging dataset designed to assess the generalization capabilities of models trained on COCO. For both datasets we use the validation set experimenting with different number of retrieved captions, i.e. different $k$ values. We report peformance using CIDEr score~\citep{cider}. 
+    
+\begin{table}[t]
+\centering
+\renewcommand{\arraystretch}{1.1}
+     \begin{tabular}{llrrrr}
+        \multicolumn{2}{c}{Retrieval Order} & \multicolumn{3}{c}{LM Backbone}\\
+        \midrule
+        Train & Eval & \multicolumn{1}{c}{GPT-2} & & \multicolumn{1}{c}{OPT} \\
+        \midrule
+        \multirow{3}{*}{default}
+        & default & 116.4 & & 120.3 \\
+        & permute & 116.2 & & 120.1 \\
+        & reverse & 115.8	& & 119.7 \\
+        \midrule
+        permute & permute & \textbf{117.2} & & \textbf{120.4} \\
+        reverse & reverse & 116.4 & & \textbf{120.7}	\\ 
+        \bottomrule
+        \end{tabular}
+    \caption{CIDEr evaluation on the COCO validation set with GPT-2 and OPT variants of \textsc{SmallCap} when manipulating the order of the top-k retrieved captions. } \label{tab:order-coco}
+\end{table}
+
+\subsection{Order Robust but Content Sensitive}
+
+    \paragraph{Order robust.} From the results in Table~\ref{tab:order-coco} and Table~\ref{tab:order-nocaps}, we observe that \textsc{SmallCap} is indeed robust to the order of the retrieved texts. Permuting the order of the captions during training and evaluation show $1$ CIDEr point improvement for COCO \citep{lin2014microsoft} and $2-3$ CIDEr score increase for NoCaps \citep{agrawal2019nocaps}. This indicates that if multiple captions are used for augmentation, then permuting their order helps. 
+
+    \paragraph{Content sensitive.}
+    \label{para:content-sensitive}
+    Figure~\ref{fig:content-sensitivity} shows that when using randomly retrieved captions instead of the top-$k$ most relevant captions, performance drops drastically compared to the no-retrieval baseline.\footnote{Here the top and low ranked captions are obtained from a list of top-seven captions retrieved captions ordered by their cosine similarity to the image embedding.} This implies that \textsc{smallcap} lacks resilience to noise in the retrieved captions, and the irrelevant context has the potential to mislead the model, resulting in inaccurate predictions. When prompting with low-ranked retrieved captions, while performance slightly decreases, the retrieval-augmented model still outperforms the one without retrieval.
+
+
+\begin{table}[t]
+    \resizebox{\linewidth}{!}{
+     \begin{tabular}{lllrrrrrr}
+        \multicolumn{2}{c}{Retrieval Order} & & \multicolumn{5}{c}{LM Backbone}\\
+        \midrule  
+        & & \multicolumn{3}{c}{GPT-2} & \multicolumn{3}{c}{OPT} \\
+         \cmidrule(rl){3-5} \cmidrule(rl) {6-8}
+        Train & Eval & In & Near & Out & In & Near & Out \\
+        \midrule
+         \multirow{3}{*}{default} & default& 80.1 & 79.4 &	69.6 & 91.0 & 84.4 & 76.3 \\
+           & permute & \textbf{81.6} & \textbf{79.8} & 68.5 & \textbf{92.5} & \textbf{84.5} & 75.8 \\
+           & reverse & 80.2 & 79.3 & 68.4 & \textbf{92.0} & 84.4 & \textbf{76.6}\\
+        \midrule
+        permute & permute &  \textbf{81.5} & 79.7 & \textbf{69.8} & \textbf{94.2} & 84.0 & \textbf{79.4} \\
+        reverse & reverse & \textbf{80.4} & \textbf{80.1} & 68.4
+        & \textbf{92.5} & \textbf{85.6} & 75.9\\
+        \bottomrule
+        \end{tabular}
+        }
+    \caption{Evaluation on NoCaps using CIDEr score with the GPT-2 and OPT variants of \textsc{SmallCap} when manipulating the order of the top-$k$ retrieved captions.} \label{tab:order-nocaps}
+\end{table}
+
+
+
+
+    
+        
+
+
+
+
+
+
+    
+
+    
+    
+    
+    
+    
+
+
+
+
+
+
+    
+    
+    
+
+
+
+

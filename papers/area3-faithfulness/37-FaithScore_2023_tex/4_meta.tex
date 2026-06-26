@@ -1,0 +1,284 @@
+\section{Meta-evaluate \ours\ }
+\label{sec:meta}
+
+
+
+% \begin{table}[]
+%     \centering \small
+%     \begin{tabular}{lcc}
+%     \toprule
+%     Metric & Pearson & Spearman's $\rho$ \% & Kendall's $\tau$ \% \\ \midrule
+%         BLEU-1 & & 4.6 & -10.3 \\
+%         BLEU-2 &  & 2.0 & -9.2 \\ 
+%         BLEU-3 & & -2.6 & -12.6 \\ 
+%         BLEU-4 & & -4.6 & -13.5 \\ 
+%         ROUGE-1 & &22.1 & 14.6 \\ 
+%         ROUGE-2 & &9.3 & -1.6 \\ 
+%         ROUGE-L & &14.1 & 10.3 \\ 
+%         METEOR & &0.6 & -12.5\\ 
+%         CHAIR & &-26.8 & -38.5\\ 
+%         CLIP-Score & &  -6.5 & -1.5 \\ 
+%         Ours & &34.8 & 28.5\\
+%     \bottomrule
+%     \end{tabular}
+%     \caption{Correlation between each evaluation metric and human judgment on LVLM hallucinations, measured by Spearman’s $\rho$ and Kendall’s $\tau$.
+%     }
+%     \label{tab:correlation}
+% \end{table}
+
+To verify that our automatic evaluation correlates with human judgment, 
+we conduct human evaluations in terms of hallucination. We select the test dataset from the LLaVA paper~\cite{llava}  (LLAVA-Bench) for human evaluation, which is constructed based on the MSCOCO dataset.  
+% annotate outputs of selected models: 
+This test set is a visual instruction following dataset comprising three distinct question types: detailed description, conversation, and complex question. For each type, this dataset includes 90 questions. We select answers from  LLaVA~\cite{llava} and InstructBLIP~\cite{InstructBLIP} models for evaluation. 
+
+% \todo{annotated by us, two LVLMs' generations}
+
+
+% \subsection{Annotation Process}
+\subsection{Human Evaluations of Hallucinations}
+
+For each test example, we craft an annotation process to assign the faithfulness score to models' generated answers via the subsequent steps.
+
+% \paragraph{Step 1: Sub-sentence Identification.} 
+\vspace{.5em}
+\noindent \textbf{Step 1: Sub-sentence Identification.}
+Annotators first review the given question, the corresponding answer, and the associated image. Subsequently, they evaluate each sub-sentence extracted from the answer. If a sub-sentence is an objective description of visual information, they mark it as the ``descriptive'' category; otherwise, it's categorized as ``analytical''. For the  ``analytical'' sub-sentence, annotators should skip the following steps. Otherwise, they should follow the next steps. 
+
+
+
+\begin{table}[t]
+    \centering
+    \resizebox{\columnwidth}{!}{\begin{tabular}{lccc} 
+    \toprule 
+     % \multirow{2}{c}{Verifier} & \multicolumn{2}{c}{VLMs} & \multirow{2}{c}{\textbf{Overall}}\\
+           \multirow{2}*{\bf Recognizer} & \multicolumn{2}{c}{\bf LVLM} & \multirow{2}*{\bf Overall}\\
+
+     ~&  \bf LLaVA &\bf InstructBLIP  & \\ \midrule
+
+        % \bf Verifier & \bf LLaVA &\bf InstructBLIP &\bf Overall \\ \midrule
+        ChatGPT &  89.84&  91.58 &90.74 \\
+        LLaMA-7B &  68.01& 71.39& 69.75 \\
+        LLaMA-7B (w/ context) & 72.80 & 66.76& 69.68 \\
+        \bottomrule
+        
+    \end{tabular}}
+    \caption{Comparison of recognizer LLMs' accuracy (\%) on identifying descriptive sub-sentences. 
+    % The ``Overall'' denotes the average performance value of the recognizer on answers from LLaVA and InstructBLIP. 
+    For LLaMA, we used two different prompt settings, either to input only the sub-sentence or both the sub-sentence and its context into the model (LLaMA-7B w/ context).
+    % \xd{adding more context for llama? ``LLaMA (w/ context)''}
+    }
+    \label{tab:identifier}
+    
+\end{table}
+
+
+\vspace{.5em}
+\noindent \textbf{Step 2: Atomic Fact Generation and Revision.}
+% \paragraph{} 
+In this step, human annotators are asked to decompose the descriptive sub-sentences into a sequence of atomic facts. To optimize the annotation process and reduce the time required, we pre-supply atomic facts derived from ChatGPT. Annotators then have the flexibility to use or modify these facts as needed. In particular, annotators examine each atomic fact to ensure its fidelity to the given sub-sentence. The facts that are either redundant or non-atomic are asked to be removed. Subsequently, the focus shifts to the linguistic aspect, ensuring that each atomic fact is articulated in a coherent manner and that it accurately represents the original entity or concept of the answer by revising facts manually. Additionally, any missing atomic facts from the descriptive sub-sentence are added. 
+For the process of removing and revising atomic facts, please refer to the Interface functionalities in the Appendix. \textcolor[rgb]{0,0,0}{ Errors introduced by the ChatGPT in this stage are shown in Appendix \ref{app:decompose}.}
+% Throughout this process, any discrepancies in the indexing of atomic fact are disregarded to maintain the flow of the review.
+
+\vspace{.5em}
+\noindent \textbf{Step 3: Fact Verification.}
+% \paragraph{Step 3: Fact Verification.} 
+In this step, for every individual atomic fact derived from the descriptive sub-sentence, annotators assess its consistency with the given image. If the content of atomic facts is not present or contradicts the image, it's identified as a hallucination, and accordingly marked as ``yes''. Conversely, if the element is in alignment with the image, it's validated and marked as ``no''. 
+% This systematic approach ensures a comprehensive review of each element's authenticity in relation to the visual content.
+To quantify the human evaluation of faithfulness, we employ the Likert Scale~\cite{likert1932technique}. This approach transforms human evaluations into a tangible scale, ranging from 1 (being the poorest) to 5 (being the best). The details about the annotation process are given in Section~\ref{appenlikert} of the Appendix.
+% Specifically, suppose the generated answer where a generated answer comprises $n$ atomic facts, out of which $x$ are designated as hallucinations. Both $n$ and $x$ are tallied by the annotators. The benchmark scoring guideline is outlined as follows:
+% \begin{itemize}
+%     \item Score 1: All atomic facts are hallucinations, symbolized as $x == n$;
+%     \item Score 2:  More than half of the atomic facts are hallucinations, represented as $x>n/2$;
+%     \item Score 3: Half or fewer atomic facts are hallucinations, represented as $n/3<=x<n/2$;
+%     \item Score 4: Less than one-third of the atomic facts are hallucinations, which translates to $x<n/3$;
+%     \item Score 5: All atomic facts accurately represent the visual content, meaning $x=0$.
+% \end{itemize}
+% , \ie $x == n$;  2: $x>n/2$ atomic facts are hallucinations; 3:  $n/3<=x<n/2$ atomic facts are hallucinations; 4:  $x<n/3$ atomic facts are hallucinations; 5:  all atomic facts are faithful, \ie $x=0$.
+
+% \vspace{.5em}
+
+
+% Section 4.5 shows the results. 
+
+
+
+
+
+
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=0.9\linewidth] {sec/figures/portation.pdf}
+%     \caption{Illustration of the proportions of the descriptive sub-sentences and analytical sub-sentences in the answers. ``Detailed'' and ``Complex'' denote the ``detailed description'' and ``complex question'' categories, respectively. The results are obtained from the 180 annotated samples.}
+%     \label{fig:proportion}
+%     \vspace{-2mm}
+
+% \end{figure}
+
+
+\begin{table}[t]
+    \centering
+    \resizebox{\columnwidth}{!}{
+    \begin{tabular}{lccc} 
+    \toprule 
+     % \multirow{2}{c}{Verifier} & \multicolumn{2}{c}{VLMs} & \multirow{2}{c}{\textbf{Overall}}\\
+           \multirow{2}*{\bf Verifier} & \multicolumn{2}{c}{\bf LVLM} & \multirow{2}*{\bf Overall}\\
+
+     ~&  \bf LLaVA &\bf InstructBLIP  & \\ \midrule
+        % \bf Verifier & \bf LLaVA &\bf InstructBLIP &\bf Overall \\ \midrule
+        OFA-EM &  81.07&  78.08& 79.42\\
+        OFA &  84.47& 80.71& 82.39\\
+        mPLUG&   84.95& 83.86& 84.35\\
+        % InstructBLIP &  & &\\
+        BLIP-2-flant5xl&  78.64& 77.42&77.97\\ 
+        BLIP-2-flant5xxl&  82.36& 83.20& 82.83\\
+        LLaVA&  67.25& 67.10& 67.17\\ 
+        LLaVA-1.5& 85.65& 84.49& 85.07 \\ 
+        % GPT-4V& 81.34& 82.80& 82.07 \\ 
+        \bottomrule
+    \end{tabular}
+    }
+    \caption{Comparison of the Verifier LLMs accuracy on verifying the atomic facts (the third step).}
+    % The ``Overall'' denotes the average performance value of the verifier on answers from LLaVA and InstructBLIP.}
+    \label{tab:vems}
+    \vspace{-4mm}
+\end{table}
+
+
+\subsection{Recognizer Accuracy on Descriptive Sub-sentence Identification}
+\label{sec:42}
+To obtain the performance of recognizers (e.g. LLMs) on the sub-sentence identification task, we construct a sub-sentence identification dataset based on our annotated samples. The final label for each sub-sentence is determined by the majority voting scheme. The total number of sub-sentences is $1,382$ and the average number of sub-sentences in the answer is $7.68$. 
+We select the superior ChatGPT (Proprietary) and LLaMA-7B (Public) models for this task and report their accuracy on identifying descriptive sub-sentences. The results are shown in Table~\ref{tab:identifier}. ChatGPT outperforms LLaMA-7B on sub-sentence identification. 
+For LLaMA-7B based method, when additional context beyond the sub-sentence itself is included, there is an improvement on LLaVA answers test set, but overall there is no significant improvement. 
+
+
+
+ 
+% To prove the necessity of the sentence identification step, we calculate the proportion of descriptive and analytical sub-sentences in answers to different classes of input questions (Figure~\ref{fig:proportion}). We can observe that the distribution of sub-sentences is significantly different in different category questions. For example, detailed description questions only have a small portion of analytical sub-sentences, while complex questions have the opposite. In addition, analytical sub-sentences account for nearly half of the distribution of clauses in the overall annotated dataset, illustrating the importance of identifying analytical sub-sentences and excluding them from the fact checking step.
+
+\subsection{Verifier Accuracy on Fact Verification}
+\label{43verifer}
+Another key factor of our automatic method is the reliability of the verifier visual entailment model (VEM). Hence, we also evaluate the accuracy of different VEMs on the annotated samples. Because of the atomic fact revision operation during the annotation process, there may be some differences in atomic facts labeled by different annotators. To improve reliability, we only keep these atomic facts annotated by all three annotators for VEM evaluation. The final label for each atomic fact is determined by the majority voting scheme. The total number of atomic facts derived from descriptive sub-sentences is $1,380$ and the average number of atomic facts in each descriptive sub-sentence is $2.04$. For verifier VEMs, we evaluate OFA-EM, OFA~\cite{ofa}, mPLUG~\cite{mplug}, BLIP-2-flant5xl, BLIP-2-flant5xxl~\cite{blip2}, LLaVA, LLaVA-1.5 
+% , \textcolor{black}{and GPT-4V}
+(Table~\ref{tab:vems}). More details about these models are shown in Section~\ref{devem} of the Appendix. 
+% \xd{did you mention that some of them are discriminative and some of them are prompting based}
+Among all models, LLaVA-1.5 performs best on fact verification, so we use it for estimating \ours\ in Section 5.  
+\textcolor[rgb]{0,0,0}{
+Another potential reason for employing this LVLM as a verifier is that our verification task is a discriminative task that usually generates a shorter response, and tends not to generate hallucination, which has been demonstrated in our Section 5.5 (The Influence of Answer Length on Hallucinations) and the existing work \cite{factscore,TIFA}.
+}
+
+
+
+
+
+
+
+% \subsection{Proportion of Descriptive Sub-sentences}
+% \xd{merge with 4.2}
+% To verify the effectiveness of sentence identification, we visualized the proportion of descriptive and analytical sub-sentences in answers to different classes of input questions (Figure~\ref{fig:proportion}). We can observe that the distribution of sub-sentences is significantly different in different category questions. For example, detailed description questions only have only a small portion of analytical sub-sentence, while complex questions have the opposite. In addition, analytical sub-sentences account for nearly half of the distribution of clauses in the overall annotated dataset, illustrating the importance of identifying analytical sub-sentences and excluding them from the fact-checking phase.
+
+\begin{table}[]
+    \centering \small
+     % \resizebox{\columnwidth}{!}{
+    \begin{tabular}{llll}
+    \toprule
+    \bf Metric & $r$ (\%) & $\rho$ (\%) & $\tau$ (\%) \\ \midrule
+        % BLEU-1 & -15.1& -10.3 & -7.5 \\
+        % BLEU-2 &  -12.7& -9.0 & -6.6 \\ 
+        % BLEU-3 &-7.2 & -10.6 & -7.6 \\ 
+        BLEU-4 & -1.9& -8.2 & -5.8 \\ 
+        % ROUGE-1 & -6.6&-3.0 &  -2.7\\ 
+        % ROUGE-2 & -5.7&-4.4 &  -3.4\\ 
+        ROUGE-L & -8.7&-6.2 &  -4.7\\ 
+        METEOR & -12.2&-8.5 & -6.3\\ 
+        CHAIR & 16.8&19.2 & 14.8\\ 
+        CLIP-Score &19.8 & 16.6  & 11.7 \\  
+SPICE& 20.2 &21.3 &25.4\\ 
+% GPT-4-based &-3.1&-9.5&-10.1 \\
+% GPT-4V-based & 24.5 & 24.1  & 26.3 \\ 
+\midrule
+
+        Ours & 48.2&  38.4& 47.6\\ 
+
+    \bottomrule
+    \end{tabular}
+    % }
+    \caption{Correlation between each evaluation metric and human judgment on LVLMs \textcolor[rgb]{0,0,0}{(i.e., LLaVA and InstructBLIP)}
+    hallucinations, measured by Pearson's $r$, Spearman’s $\rho$, and Kendall’s $\tau$. 
+    \textcolor[rgb]{0,0,0}{The p-value of the significant test between our result and the baseline result is less than 0.01.}
+    } 
+    \label{tab:correlation}
+\end{table}
+
+
+\subsection{Correlations with Human Evaluations}
+
+% Firstly, to ascertain the reliability of human evaluation, we computed the Fleiss’ kappa values across all annotators for the sub-sentence identification task, arriving at a value of 75.97\%. This signifies a robust consensus among the annotators. Additionally, for the definitive faithfulness score, we computed Fleiss’ kappa values involving all annotators and achieved a result of 60.0\%. This concordance among the evaluation participants suggests the human evaluation results are reliable.
+
+
+% \subsection{Experiments and Analysis}
+% \xd{using \ours for evaluating}
+
+To prove the superiority of our proposed metric \ours, we compare it with several multimodal generation evaluation metrics: 1) reference-based: BLEU-\{4\}~\cite{bleu}, Rouge-\{L\}~\cite{ROUGE}, METEOR~\cite{meteor}, CHAIR~\cite{DBLP:conf/emnlp/RohrbachHBDS18}, SPICE~\cite{DBLP:conf/eccv/AndersonFJG16} and 2) reference-free: CLIP-Score~\cite{clipscore}. 
+% \textcolor{black}{In addition, we also introduced one GPT-4-based baseline (asking GPT-4 to evaluate the faithfulness with the reference and generated response) and one GPT-4V-based baseline (asking GPT-4V to evaluate the faithfulness with the image and generated response). }
+% Firstly, to ascertain the reliability of human evaluation, we computed the Fleiss’ kappa values across all annotators for the sub-sentence identification task, arriving at a value of 75.97\%. This signifies a robust consensus among the annotators. Additionally, for the definitive faithfulness score, we computed Fleiss’ kappa values involving all annotators and achieved a result of 60.0\%. This concordance among the evaluation participants suggests the human evaluation results are reliable.
+Table~\ref{tab:correlation} delineates the correlation between various evaluation metrics and human judgment regarding LVLM faithfulness.
+% gauged using Pearson's $r$, Spearman's $\rho$, and Kendall's $\tau$.   
+% Traditional metrics that require references (\ie BLEU, ROUGE, and METEOR), have a poor correlation with human evaluation. For the open-ended question, it is hard to get a ground truth answer. For the reference answer, we use the answers provided by the LLaVA paper. This leads to a poor correlation between these metrics and human evaluation. 
+% 
+% Surprisingly, CLIP-Score shows a similar correlation with CHAIR which is specifically devised for object hallucination evaluation. This demonstrates the robustness and generalization of CLIP-Score.
+% The original CHAIR show reflects the severity of the hallucinations. The larger the value of CHAIR, the more serious the hallucination problem of the model.
+% The original CHAIR exhibits a pronounced negative correlation with human evaluation. Hence, we use the negative of CHAIR to compute the correlation. 
+% \xd{I don't understand this sentence, what is 1-CHAIR}. 
+% Compared with \ours, CHAIR achieves a sub-optimal degree of correlation.  
+% A potential reason for CHAIR's deviation from human evaluation could be rooted in its inherent design, which narrows its focus predominantly to a limited range of objects. This constrained evaluation scope may not adeptly deal with fine-grained and open-domain hallucinations, thus diminishing its validity and resonance with more comprehensive human evaluations. To justify our viewpoint, we compute the average number of objects with CHAIR for each answer and the result is 2.4, which is far less than the average number of atomic facts (\ie 11.3) found in our human evaluation.  
+% Amid the varied metrics landscape,
+% \textcolor{red}{ we add SPICE as a baseline and it achieves worse performance (\pearson =20\%; \spearman =21.\%; \kendall =25\% ). 
+% Following your advice, we add two baselines: 
+% 1) Asking GPT4/ChatGPT to evaluate the faithfulness with the reference.  (\pearson = -3\%; \spearman =-9\% ; \kendall =-10\%)
+% 2) Asking GPT-4V to evaluate the faithfulness. (\pearson = 24\%; \spearman =24\% ; \kendall =26\% )
+% The two baselines perform worse than our framework, partially because of their lack of fine-grained understanding of the response.
+% }
+\textcolor[rgb]{0,0,0}
+ {Among all metrics, our metric \ours\ achieved the best correlation with human correlation. More details and analysis about human correlation can be found in Appendix \ref{sec:human_eval} and \ref{app:cost}.}
+
+
+
+
+
+
+% \begin{table}[t]
+%     \centering
+%     \begin{tabular}{lc}
+%         \toprule
+%         \bf Model & \bf Performance \\ 
+%         \midrule
+%         Multimodal-GPT& 0.5440\\ 
+%         MiniGPT-4 & 0.6359 \\ 
+%         mPLUG-Owl& 0.8546 \\ 
+%         LLaVA& 0.8729\\ 
+%                 InstructBLIP & 0.9392\\  
+%         LLaVA-1.5& \bf 0.9425\\ 
+%         \bottomrule
+%     \end{tabular}
+%     \caption{\ours\ evaluation results of different LVLMs on the MSCOCO-Cap dataset.}
+%     \label{tab:coco1k}
+% \end{table}
+
+
+
+
+
+% This strongly suggests that the \ours metric, by encompassing a more comprehensive evaluation spectrum (\ie multiple types of hallucinations), provides a more reliable measure for VLM hallucination assessment than its counterparts. 
+% However, the limitations of metrics like CHAIR underscore the importance of designing evaluations that cater to open-domain contexts and evaluations on more category hallucination. 
+
+
+
+% \subsection{Analysis on Identification and Fact Verification}
+% ChatGPT
+% LLaMA
+
+
+% CLIP \cite{clip} 
+% OFA
+% Uniter

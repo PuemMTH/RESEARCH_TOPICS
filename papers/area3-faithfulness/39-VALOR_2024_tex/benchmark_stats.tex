@@ -1,0 +1,26 @@
+\begin{table}[t]
+\small
+\centering
+\scalebox{0.97}{
+\begin{tabular}{lccc}
+\toprule
+\textbf{Category} & \textbf{Sub-Category} & \textbf{\# Images} & \textbf{Source}\\
+\midrule
+
+Object Existence & - & 50 & GQA\\
+\midrule
+\multirow{2}{*}{Attribute} & Object & 27 & Pixel\\
+& People & 34 & Pixel\\
+\midrule
+\multirow{2}{*}{Relation} & Positional & 50 & GQA\\
+& Comparative & 50 & GQA\\
+
+\bottomrule
+\end{tabular}
+}
+\vspace{-2mm}
+\caption{In the \data~ benchmark, we categorize images into three main areas: object existence, attributes, and relations, as outlined in \Cref{sec:definition} and \Cref{sec:extraction_steps}. Attributes are further split into \textit{object} (focusing on color and count of each item not related to people) and \textit{people} (emphasizing the attire colors and the total number of individuals. For relations, we examine both \textit{positional} relations between objects and \textit{comparative} sizes. 
+}
+\label{tab:benchmark_stats}
+\vspace{-5mm}
+\end{table}

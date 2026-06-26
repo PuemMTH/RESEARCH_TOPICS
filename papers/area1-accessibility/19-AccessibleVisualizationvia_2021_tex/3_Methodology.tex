@@ -1,0 +1,105 @@
+\section{Constructing the Model: Employing the Grounded Theory Methodology}
+\label{section:3}
+
+To construct our model of semantic content we conducted a multi-stage process, following the \emph{grounded theory} methodology.
+Often employed in \ac{HCI} and the social sciences, grounded theory offers a rigorous method for making sense of a domain that lacks a dominant theory, and for constructing a new theory that accounts for diverse phenomena within that domain~\cite{olson_curiosity_2014}.
+The methodology approaches theory construction \emph{inductively}\,---\,through multiple stages of inquiry, data collection, ``coding'' (i.e., labeling and categorizing), and refinement\,---\,as well as \emph{empirically}, remaining strongly based (i.e., ``grounded'') in the data~\cite{olson_curiosity_2014}.
+To construct our model of semantic content, we proceeded in two stages.
+First, we conducted small-scale data collection and initial open coding to establish preliminary categories of semantic content.
+Second, we gathered a larger-scale corpus to iteratively refine those categories, and to verify their coverage over the space of natural language descriptions.
+
+\subsection{Initial Open Coding}
+\label{section:3.1}
+
+We began gathering preliminary data by searching for descriptions accompanying visualizations in journalistic publications (including the websites of \emph{FiveThirtyEight}, the \emph{New York Times} and the \emph{Financial Times}), but found that these professional sites usually provided no textual descriptions\,---\,neither as a caption alongside the chart, nor as alt text for screen readers.
+Indeed, often these sites were engineered so that screen readers would pass over the visualizations entirely, as if they did not appear on the page at all.
+Thus, to proceed with the grounded theory method, we conducted initial \emph{open coding} (i.e., making initial, qualitative observations about our data, in an  ``open-minded'' fashion) by studying preliminary data from two sources.
+We collected 330 natural language descriptions from over 100 students enrolled in a graduate-level data visualization class.
+As a survey-design pilot to inform future rounds of data collection~\sectionlabel{section:study1design}, these initial descriptions were collected with minimal prompting: students were instructed to simply ``describe the visualization'' without specifying what kinds of semantic content that might include.
+The described visualizations covered a variety of chart types (e.g., bar charts, line charts, scatter plots) as well as dataset domains (e.g., public health, climate change, and gender equality).
+To complement the student-authored descriptions, from this same set of visualizations, we curated a set of 20 and wrote our (the authors') own descriptions, attempting to be as richly descriptive as possible.
+Throughout, we adhered to a linguistics-inspired framing by attending to the semantic and pragmatic aspects of our writing: which content could be conveyed through the graphical sign-system alone, and which required drawing upon our individual background knowledge, experiences, and contexts.
+
+Analyzing these preliminary data, we proceeded to the next stage in the grounded theory method: forming \emph{axial codes} (i.e., open codes organized into broader abstractions, with more generalized meaning~\cite{olson_curiosity_2014}) corresponding to different content. We began to distinguish between content about a visualization’s construction (e.g., its title, encodings, legends), content about trends appearing in the visualized data (e.g., correlations, clusters, extrema), and content relevant to the visualized data but not represented in the visualization itself (e.g., explanations based on current events and domain-specific knowledge).
+From these axial codes, different \emph{categories} (i.e., groupings delineated by shared characteristics of the content) began to emerge~\cite{olson_curiosity_2014}, corresponding to a chart's encoded elements, latent statistical relations, perceptual trends, and context.
+We refined these content categories iteratively by first writing down descriptions of new visualizations (again, as richly as possible), and then attempting to categorize each sentence appearing in that description.
+If we encountered a sentence that didn't fit within any category, we either refined the specific characteristics belonging to an existing category, or we created a new category, where appropriate.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}
+\caption{Breakdown of the 50 curated visualizations, across the three dimensions: type, topic, and difficulty. (N.b., each column sums to 50.)}
+\centering
+
+\begin{tabular}{llllll}
+\hline
+\textsc{chart type} & & \textsc{topic} & & \textsc{difficulty}  & \\
+\hline
+\texttt{bar} & 18 & \texttt{academic} & 15 & \texttt{easy} & 21\\
+\texttt{line} & 21 & \texttt{business} & 18 & \texttt{medium} & 20\\
+\texttt{scatter} & 11 & \texttt{journalism} & 17 & \texttt{hard} & 9\\
+\hline
+\end{tabular}
+\label{table:curatedset}
+\vspace{-5mm}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Gathering A Corpus}
+
+The prior inductive and empirical process resulted in a set of preliminary content categories.
+To test their robustness, and to further refine them, we conducted an online survey to gather a larger-scale corpus of {582} visualization descriptions comprised of {2,147} sentences.
+
+\subsubsection{Survey Design}
+\label{section:study1design}
+
+We first curated a set of 50 visualizations drawn from the MassVis dataset~\cite{borkin_what_2013, borkin_beyond_2016}, Quartz’s Atlas visualization platform~\cite{poco_reverse-engineering_2017}, examples from the Vega-Lite gallery~\cite{satyanarayan_vega-lite_2017}, and the aforementioned journalistic publications.
+We organized these visualizations along three dimensions: the visualization \emph{type} (bar charts, line charts, and scatter plots); the \emph{topic} of the dataset domain (academic studies, business-related, or non-business data journalism); and their \emph{difficulty} based on an assessment of their visual and conceptual complexity.
+We labeled visualizations as ``easy'' if they were basic instances of their canonical type (e.g., single-line or un-grouped bar charts), as ''medium'' if they were more moderate variations on canon (e.g., contained bar groupings, overlapping scatterplot clusters, visual embellishments, or simple transforms), and as ''hard'' if they strongly diverged from canon (e.g., contained chartjunk or complex transforms such as log scales).
+To ensure robustness, two authors labeled the visualizations independently, and then resolved any disagreement through discussion.
+Table~\ref{table:curatedset} summarizes the breakdown of the 50 visualizations across these three dimensions.
+
+In the survey interface, participants were shown a single, randomly-selected visualization at a time, and prompted to describe it in complete English sentences.
+In our preliminary data collection~\sectionlabel{section:3.1}, we found that without explicit prompting participants were likely to provide only brief and minimally informative descriptions (e.g., sometimes simply repeating the chart title and axis labels).
+Thus, to mitigate against this outcome, and to elicit richer semantic content, we explicitly instructed participants to author descriptions that did not \emph{only} refer to the chart’s basic elements and encodings (e.g., it’s title, axes, colors) but to also referred to other content, trends, and insights that might be conveyed by the visualization.
+To make these instructions intelligible, we provided participants with a few pre-generated sentences enumerating the visualization's basic elements and encodings (e.g., the \begin{smaller}\hlc[Level1]{\textsf{color coded sentences}}\end{smaller} in Table~\ref{table:visualizations} A.1, B.1, C.1), and prompted them to author semantic content \emph{apart from} what was already conveyed by those sentences.
+To avoid biasing their responses, participants were \emph{not} told that they would be read by people with visual disabilities.
+This prompting ensured that the survey captured a breadth of semantic content, and not only the most readily-apparent aspects of the visualization's construction.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Visual Fingerprint Vertical
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{figures/fingerprint.pdf}
+    \vspace{-4mm}
+    \caption{
+    A visual ``fingerprint''~\cite{keim_literature_2007} of our corpus, faceted by chart type and difficulty.
+    Each row corresponds to a single chart. Each column shows a participant-authored description for that chart, color coded according to our model.
+    The first column shows the provided Level 1 prompt.
+    }
+    \label{fig:fingerprint}
+    \vspace{-3mm}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Survey Results}
+\label{section:study1results}
+
+We recruited 120 survey participants through the \emph{Prolific} platform. In an approximately 30-minute study compensated at a rate of \$10-12 per hour, we asked each participant to describe 5 visualizations (randomly selected from the set of 50), resulting in at least 10 participant-authored descriptions per visualization.
+For some visualizations, we collected between 10-15 responses, due to limitations of the survey logic for randomly selecting a visualization to show participants.
+% We piloted a shorter survey (asking participants to describe 3 visualizations instead of 6), hypothesizing that this might encourage participants to provide richer, more descriptive content. But, we found that the opposite was true: the length and quality of descriptions decreased appreciably in the 3-visualization study, as compared to the longer 6-visualization study.
+% We speculate this may be because the shorter study attracted participants primarily interested in completing quick ``click-through'' tasks.
+% Thus, the longer length of our 6-visualization survey may have acted as a ``filter'' to select for the participants willing to more-carefully author descriptions.
+In total, this survey resulted in {582} individual descriptions comprised of {2,147} natural language sentences.
+We manually cleaned each sentence to correct errors in spelling, grammar, punctuation (n.b., we did not alter the semantic content conveyed by each sentence).
+We then labeled each sentence according to the content \emph{categories} developed through our prior grounded theory process.
+As before, to ensure robustness, two authors labeled each sentence independently, and then resolved any disagreement through discussion.
+This deliberative and iterative process helped us to further distinguish and refine our categories.
+For example, we were able to more precisely draw comparisons between sentences reporting computable ``data facts''~\cite{srinivasan_augmenting_2019, wang_datashot_2020} through rigid or templatized articulation (such as \say{\emph{\texttt{[x-encoding]} is positively correlated with \texttt{[y-encoding]}}}), with sentences conveying the same semantic content through more ``natural''-sounding articulation (such as \say{\emph{for the most part, as \texttt{[x-encoding]} increases, so too does \texttt{[y-encoding]}}}).
+
+In summary, the entire grounded theory process resulted in four distinct semantic content categories, which we organize into \emph{levels} in the next section.
+A visual ``fingerprint''~\cite{keim_literature_2007} shows how semantic content is distributed across sentences in the corpus (Fig.~\ref{fig:fingerprint}).
+Level 1 (consisting of a chart's basic elements and encodings) represents 9.1\% of the sentences in the corpus.
+This is expected, since Level 1 sentences were pre-generated and provided as a prompt to our survey participants, as we previously discussed.
+The distribution of sentences across the remaining levels is as follows: Level 2 (35.1\%), Level 3 (42.9\%), and Level 4 (12.9\%).
+The fairly-balanced distribution suggests that our survey prompting successfully captured natural language sentences corresponding to a breadth of visualized content.

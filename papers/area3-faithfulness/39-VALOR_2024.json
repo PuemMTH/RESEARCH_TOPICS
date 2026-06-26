@@ -1,0 +1,45 @@
+{
+  "arxiv_id": "2404.13874",
+  "title": "VALOR-Eval : Holistic Coverage and Faithfulness Evaluation of Large Vision-Language Models",
+  "authors": [
+    "Haoyi Qiu∗Wenbo Hu∗Zi-Yi Dou   Nanyun PengUniversity of California, Los Angeles{haoyiqiu,whu,zdou,violetpeng}@cs.ucla.edu"
+  ],
+  "abstract": "Large Vision-Language Models (LVLMs) suffer from hallucination issues, wherein the models generate plausible-sounding but factually incorrect outputs, undermining their reliability . A comprehensive quantitative evaluation is necessary to identify and understand the extent of hallucinations in these models. However, existing benchmarks are often limited in scope, focusing mainly on object hallucinations. Furthermore, current evaluation methods struggle to effectively address the subtle semantic distinctions between model outputs and reference data, as well as the balance between hallucination and informativeness. To address these issues, we introduce a multi-dimensional benchmark covering objects, attributes, and relations, with challenging images selected based on associative biases. Moreover, we propose an large language model (LLM)-based two-stage evaluation framework that generalizes the popular CHAIR metric Rohrbach et al. ( 2018 ) and incorporates both faithfulness and coverage into the evaluation. Experiments on 10 established LVLMs demonstrate that our evaluation metric is more comprehensive and better correlated with humans than existing work when evaluating on our challenging human annotated benchmark dataset. Our work also highlights the critical balance between faithfulness and coverage of model outputs, and encourages future works to address hallucinations in LVLMs while keeping their outputs informative . 1 1 1 Our dataset and code can be found here: https://github.com/haoyiq114/VALOR .",
+  "year": "2024",
+  "figure_count": 6,
+  "figure_captions": [
+    {
+      "id": "S1.F1",
+      "caption": "Figure 1:Example of the hallucination in open vocabulary generation task of LVLMs. Our proposed framework can identify objects, attributes, and relations from the generated captions and provide a comprehensive evaluation of faithfulness and coverage. We highlighthallucinatedfeatures anduncoveredfeatures.",
+      "src": "/html/2404.13874/assets/x1.png"
+    },
+    {
+      "id": "S3.F2",
+      "caption": "Figure 2:Overview of our proposed benchmarkVALOR-Benchcollection procedure: (1) Image collection (Section3.1): (a)Co-occurrence statistics calculation(Section3.1.2): We employ two statistical measures to determine co-occurring features – frequencies and conditional probabilities; (b)Image extraction(section3.1.3): Next, we leverage the identified co-occurrence statistics to systematically extract images from existing datasets; (2)Human Annotations(Section3.2): Finally, we manually annotate each image within the distinct feature subsets, adhering to the definition inSection3.1.1. Here, we provide an example of how we use the co-occurrence statistics to select images forobjectsubsets and add human annotations for later evaluation.",
+      "src": ""
+    },
+    {
+      "id": "S3.F3",
+      "caption": "Figure 3:Overview ofVALOR-Evalevaluation framework: (1) Firstly, LVLMs generate captions fromVALOR-Benchbenchmark images. (2) Following this, LLMs are employed toextractpivotal features that encapsulate from the generated descriptions. (3) Subsequently, these features arealignedwith a pre-defined list of ground-truth features using LLMs, facilitating the creation of two essential outputs: a dictionary of matched features and a more extensive dictionary encompassing broader conceptual matches. (4) Finally, we calculate two key metrics:faithfulnessandcoverage. These metrics measure the LVLMs’ comprehension by evaluating how well the generated captions encapsulate the salient features of the images and the breadth of concepts they cover, respectively.",
+      "src": "/html/2404.13874/assets/x3.png"
+    },
+    {
+      "id": "A6.F4",
+      "caption": "Figure 4:Object existence evaluation example from three representative models in our benchmarkVALOR-Bench. Text in red indicating models’ hallucination",
+      "src": "/html/2404.13874/assets/x4.png"
+    },
+    {
+      "id": "A6.F5",
+      "caption": "Figure 5:Positional relation evaluation example from three representative models in our benchmarkVALOR-Bench. Text in red indicating models’ hallucination",
+      "src": "/html/2404.13874/assets/x5.png"
+    },
+    {
+      "id": "A6.F6",
+      "caption": "Figure 6:Comparative relation evaluation example from three representative models in our benchmarkVALOR-Bench. Text in red indicating models’ hallucination",
+      "src": "/html/2404.13874/assets/x6.png"
+    }
+  ],
+  "paper_number": 39,
+  "slug": "VALOR",
+  "base_name": "39-VALOR_2024"
+}

@@ -1,0 +1,80 @@
+
+\section{Introduction}
+\label{sec:intro}
+
+
+%GMAI models will be capable of carrying out a diverse set of tasks using very little or no task-specific labelled data.
+
+%Multimodal foundation models (FMs) hold immense potential to to transform  medical and biological applications \cite{moor2023foundation}, from daignostcs to prognostic and even new doicoveries
+
+
+\begin{figure*}[htbp]
+  \centering
+ % \fbox{\rule{0pt}{200pt}\rule{150pt}{0pt}} % height=100pt, width=150pt
+  \includegraphics[width=0.8\linewidth]{images/ml4h_figure_wide4.pdf}
+  \caption{
+  % (A) BIOMEDICA-6M caption token length distribution 
+  (A) Distribution of BIOMEDICA-6M caption token usage with a cutoff of 77 tokens. The blue histogram represents tokens visible to the model, while the pink histogram represents wasted tokens truncated beyond the cutoff (corresponding to 434 million tokens or 55\% of total tokens ). (B) Distribution with a cutoff of 512 tokens, showing substantially reduced token waste of 2.2\% (17M tokens). 
+  (C) Qualitative examples of BIOMEDICA-6M and BIOMEDICA-LongCAP captions, showing truncated vs. full captions, as well as our enhanced captions.}
+  \label{fig: motivation-and-example}
+\end{figure*}
+
+Multimodal foundation models hold immense potential to advance medical practice and biological science \cite{moor2023foundation}. In particular, transformer-based architectures trained on large image–text datasets have set state-of-the-art performance in tasks such as zero-shot image classification and cross-modal retrieval. Despite these advances, a key limitation remains: current multimodal embedding models (e.g., CLIP \cite{radford2021learning}) are trained using a restricted text context length---typically capped at 77 tokens---which is often insufficient to capture the rich semantics and complexity of high-throughput biomedical images \cite{zhang2024long}.  As a result, it is common practice to truncate long-form textual descriptions during training and inference, discarding valuable information. For example, as shown in Figure~\ref{fig: motivation-and-example},  at a 77 token cutoff,  more than 434 million tokens are not used when pretraining with the BIOMEDICA dataset \cite{lozano2025biomedica} (the largest biomedical image caption dataset). 
+
+Beyond architectural limitations, capturing the semantics of biomedical images through text remains a major bottleneck. Prior work has leveraged open-access scientific articles to curate large collections of image–caption pairs \cite{zhang2023biomedclip, lozano2025biomedica}; however, these captions often fail to fully convey the visual content present in an image. For instance, critical descriptive details are frequently embedded in inline references within the corresponding scientific manuscript (such as the analysis of a figure) and omitted from the corresponding image captions.
+
+
+
+\begin{figure*}[htbp]
+  \centering
+ % \fbox{\rule{0pt}{200pt}\rule{150pt}{0pt}} % height=100pt, width=150pt
+  \includegraphics[width=1.0\linewidth]{images/performance_summary.png}
+  \caption{\textit{Context-length ablation results of BMC-LongCLIP trained with 77, 154, and 512 tokens.} (Left) Average retrieval performance (Recall@K) on the PMC long-caption benchmark. (Middle) Average retrieval performance on the CXR benchmark. (Right) Average zero-shot classification accuracy across biomedical datasets. Longer context improves retrieval and classification, with the largest gains on PMC.}
+  \label{fig: performance}
+\end{figure*}
+
+
+Given these challenges, the impact of pretraining multimodal embedding models with highly descriptive image captions remains largely unexplored. In this work, we investigate the effects of pretraining  biomedical multimodal embedding models with long-captions by introducing the following contributions: 
+
+
+
+\begin{itemize}
+
+\item \textbf{BIOMEDICA-LongCAP}: We present a dataset of 1M biomedical image–caption pairs, with captions enriched through LLM-based augmentation leveraging contextual information from the corresponding source text.
+
+\item \textbf{BMC-LongCLIP}: We pretrain CLIP on BIOMEDICA and BIOMEDICA-LongCAP using context lengths of 77, 154, and 512 tokens to study how scaling text context length (thus reducing token waste) impacts model convergence and downstream zero-shot performance.
+
+\item \textbf{Multimodal Long-Text  Bench}: We introduce two novel biomedical benchmarks designed to evaluate long-text multimodal retrieval.
+
+\end{itemize}
+
+
+Our empirical findings show that (1) pretraining CLIP with longer context lengths accelerates convergence, (2) improves zero-shot classification performance on short captions, and (3) unlocks real-world long-context retrieval applications. 
+
+By extending the text encoder’s context window by 6.6×, our model reduces token waste from 55\% to 2.2\%, enabling substantially more supervision from long biomedical captions. On long-caption retrieval benchmarks, BMC-LongCLIP achieves up to 30 point absolute gains in Recall@1, while also delivering 2 point average improvements in classification accuracy. The model also converges faster than short-context baselines, demonstrating the efficiency benefits of longer context windows during training. These findings highlight long-context modeling as a promising direction for advancing biomedical vision–language models.
+
+
+% Our best model extends context length 6.6× beyond the previous state of the art while maintaining 4.8\% and up to 9.4\% average gains in zero-shot classification and in Recall@1 for long-caption image retrieval.
+
+%swe release our models and datasets to foster further advances in long-context  multi-modal learning
+
+% \noindent
+
+
+
+
+% \begin{figure}[htbp]
+% \floatconts
+%   {fig:subfigex2}
+%   {\caption{Another Example With Sub-Figures.}}
+%   {%
+%     \subfigure[A Small Circle][c]{\label{fig:circle2}%
+%       \includegraphics[width=0.1\linewidth]{images/circle}}%
+%     \qquad
+%     \subfigure[A Square][c]{\label{fig:square2}%
+%       \includegraphics[width=0.2\linewidth]{images/square}}
+%   }
+% \end{figure}
+
+
+% \section{Related Work}

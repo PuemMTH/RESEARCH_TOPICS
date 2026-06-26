@@ -1,0 +1,280 @@
+%We conducted an in-depth analysis to understand the two main challenges of the figure captioning task in real-world scenarios: 
+%{\em (i)} the unreliable quality of real-world data and 
+%{\em (ii)} the characteristics of a good figure caption.
+% (\textit{i}) what constitutes a good figure caption;
+% (\textit{ii}) how much information inside captions overlaps paragraphs;
+% and (\textit{iii}) what the missing information is.
+
+We conducted an in-depth investigation focused on two key challenges: {\em (i)} the common presence of low-quality author-written captions and {\em (ii)} the lack of clear standards for good captions.
+
+\paragraph{Quality Annotation Procedure.}
+%To assess the quality of author-written captions, 
+We manually annotated 438 captions in the Computation and Language domain (\texttt{cs.CL}) from the test set. 
+\Cref{fig:ui-rating} (see \Cref{sec:app-interface}) shows the interface we used, in which the title, abstract, 
+and PDF file of the paper were shown alongside the target figure's image, caption, and questions.
+For each caption, we asked the annotators (coauthors) to rate four aspects using a five-point Likert scale:
+
+
+%To understand what makes a good caption, we manually annotated 438 captions in the Computation and Language domain (\texttt{cs.CL}) from the test set. 
+%For each figure and caption, the interface showed a preview of the original paper. 
+%The annotators (coauthors) were required to first validate that 
+%{\em (i)} the paper contained the target figure, 
+%{\em (\textit{ii}) there were no image-extraction errors, 
+%(\textit{iii}) there were no text-extraction errors, 
+%(\textit{iv}) the figure was a line chart, 
+%and (\textit{v}) the figure was not a compound figure. 
+%Unqualified captions were excluded from the quality annotation. 
+%We then asked the annotators to rate four aspects using a five-point Likert scale:
+
+\input{tables/quality-annotation-stat}
+\vspace{-.3pc}
+
+\begin{itemize}  [leftmargin=*,itemsep=0mm] %[leftmargin=*] %[leftmargin=*,itemsep=0mm]
+    \item \textbf{Image-Text.} The caption included named entities or important words/numbers in the figure (\eg, title, legends, labels, etc.).
+    \vspace{-.3pc}
+
+    \item \textbf{Visual-Description.} The caption included some visual characteristics of the figure (\eg, color, shape, trend, etc.).
+    \vspace{-.3pc}
+
+    \item \textbf{Takeaway.} The caption explicitly stated the high-level takeaway message or the conclusion that the figure attempted to convey.
+    \vspace{-.3pc}
+
+    \item \textbf{Helpfulness.} ``The caption helped me understand the message that the figure attempted to convey''.
+\end{itemize}
+\vspace{-.3pc}
+%to rate the usefulness of captions. 
+%The title (with a hyperlink to the paper's URL), abstract, 
+%and PDF file of the paper are shown alongside the target figure's image, caption, and questions. 
+%We displayed the paper's PDF to help raters make more informed decisions on caption quality.
+%Displaying the paper's PDF helped raters make better-informed decisions about caption quality.
+%
+%After merging Strongly Agree and Agree as \texttt{[Agree]}, and Neutral, Disagree, and Strongly Disagree as \texttt{[Disagree]}, 
+%the results were calculated as shown in \Cref{tab:quality-annotation-stat}. 
+The annotated data was consolidated by grouping ``Strongly Agree'' and ``Agree'' as ``\texttt{[Agree]}'' and grouping ``Neutral'', ``Disagree'', and ``Strongly Disagree'' as ``\texttt{[Disagree]}''.
+The results of this consolidation are presented in Table~\ref{tab:quality-annotation-stat}.
+
+\begin{figure*}[t]
+    \centering
+    % \includegraphics[width=0.99\linewidth]{figures/Quality-Beam-Group-Normalized-ROUGE-1.png}
+    \includegraphics[width=0.49\linewidth]{figures/Quality-Beam-Group-Normalized-ROUGE-2.png}
+    % \includegraphics[width=0.99\linewidth]{figures/Quality-Beam-Group-Normalized-ROUGE-L.png}
+    \hfill
+    \includegraphics[width=0.49\linewidth]{figures/Quality-Beam-Group-Normalized-MoverScore.png}
+    %\vspace{-3mm}
+    \caption{Normalized ROUGE-2 and MoverScore for beams of different quality. Most of the generation models performed better in the unhelpful beam, suggesting that output may be more similar to bad captions. Only the model trained with \textbf{better} captions learned to generate good captions by showing a better score in the helpful beam.}
+    % \vspace{-2mm}
+    \label{fig:quality-beam-rouge-2}
+\end{figure*}
+
+
+\subsection{Challenge 1: Addressing Unreliable Quality of Real-World Data\label{sec:analysis-challenge-1}}
+
+
+Table~\ref{tab:quality-annotation-stat} shows that \textbf{over 50\% of the author-written captions in arXiv \texttt{cs.CL} papers were deemed unhelpful}.
+High unhelpful caption proportion %in the test set 
+may skew evaluation results, particularly for automatic evaluations that compare generated text to human-written captions.
+To address this, we evaluated models on different quality beams using the 399 annotated figure captions shown in Table~\ref{tab:quality-annotation-stat}.
+The captions were divided into the ``helpful beam'' (184 captions rated \texttt{[Agree]}) and the ``unhelpful beam'' (215 captions rated \texttt{[Disagree]}).
+
+\paragraph{Automatic Evaluation Over Beams of Different Quality.\label{sec:auto-eval-quality-beam}}
+%To validate the impact of the low-quality (unhelpful) captions, we re-conducted the automatic evaluation for the helpful and unhelpful beams.
+To validate the effect of low-quality captions, we re-performed the automatic evaluation for the helpful and unhelpful beam sets.
+\Cref{fig:quality-beam-rouge-2} shows the Normalized ROUGE-2 and MoverScore scores for each model in the helpful and unhelpful beam sets.\footnote{In addition, ROUGE-1, ROUGE-L, and BERTScore scores can be found in \Cref{fig:quality-beam-rouge-rest} in \Cref{sec:additional-results}.}
+%\Cref{fig:quality-beam-rouge-2} shows the performance changes in each beam
+%(see \Cref{fig:quality-beam-rouge-rest} for the ROUGE-1 and ROUGE-L changes in \Cref{sec:additional-results}).
+Most models performed better in the unhelpful beam, except Pegasus$_{P+O+B}$, which had better scores in the helpful beam.
+Pegasus$_{P+O+B}$ was trained on captions with more than 30 tokens.
+This result suggests that improving training data quality, such as by using only longer captions, can positively impact the model's behavior and result in a better generation of helpful captions.
+%Reuse$_{P}$ showed little variation between the two beams, whereas Reuse$_{M}$ performed better in the helpful beam, implying that people might put more effort into describing figures in the document.
+% \kenneth{I removed the reuse comparison here. See if it works.}
+
+
+\input{tables/human-eval-quality-beam.tex}
+
+\paragraph{Human Evaluation Over Beams of Different Quality.}
+%We also recalculated the results of the human evaluation on the helpful and unhelpful beams. 
+We also re-evaluated human scores for both the helpful and unhelpful beams.
+%As the experts only rated 90 figures in Section~\ref{sec:human-eval}, the helpful beam and the unhelpful beam consisted of 55 and 35 figures, respectively.
+The human evaluation in Section~\ref{sec:human-eval} only covered 90 figures, with 55 in the helpful beam and 35 in the unhelpful beam.
+\Cref{tab:human-eval-quality-beam} shows the results.
+On average,
+\textbf{Pegasus$_{P+O+B}$ (1.867) was ranked better than author-written captions (2.019) in the unhelpful beam, in which}
+%\ie, when the author-written captions were not helpful.
+%when they were not helpful. 
+%On average, human judges preferred machine-generated captions 22 out of 35 times. 
+\textbf{machine-generated captions were preferred by human judges 22 out of 35 times.}
+The results suggest that, with careful training data quality control, when author-written captions are not very helpful, machines could potentially generate better captions.
+%The results suggest that, with proper training data quality controls,
+%machines could generate better captions that summarize relevant paper contents and aid readers.
+%However, due to the cost of recruiting experts to assess system outputs, 
+%more research is needed to perform a comprehensive evaluation of machine-generated captions on a larger scale.
+
+
+
+
+
+
+
+%\section{Assessing the Helpfulness of Figure Captions in the Wild\label{sec:quality-annotation}}
+\subsection{Challenge 2: What Constitutes a Good Figure Caption?\label{sec:quality-annotation}}
+\input{sections/quality-annotation.tex}
+
+
+
+
+
+\subsection{Caption Length Distribution}
+% \cy{Not sure where this analysis should be.}
+% \kenneth{Here should be fine. It IS part of our in-depth analysis.}
+
+%\kenneth{Why did we do this study in the first place? Why do we care about how lengths distribute among captions? Say things like (edits needed, I'm writing this on a high-speed train!): While the development of this project, an underlying theme emerged: the length of a caption. Prior literature suggested that longer captions tend to be more helpful to readers, but meanwhile, paper authors often composed captions under the constraints of limited space. With the aim of making the context of caption length more explicit in order to inform future research, we conduct an analysis of the lengths of both author-written and machine-generated captions.}
+
+
+%In the development of this paper, we noticed an underlying factor: the length of a caption.
+%While longer captions are considered more helpful for readers~\cite{hartley2003single,gelman2002let},
+%authors often composed captions under the constraints of limited space.
+%In order to shed light on the impact of caption length for future studies,
+%we conducted an analysis of both author-composed and machine-generated captions.
+
+
+
+
+%During this project, we encountered a recurring factor: caption length. Even though longer captions are beneficial to readers, authors might have no choice but to write shorter captions due to space limits. To further understand this, we analyzed the lengths of both author-written and machine-generated captions.
+
+
+Throughout this work's development, the length of captions emerged as a consistent issue.
+Despite existing literature indicating the benefits of longer captions for readers~\cite{hartley2003single,gelman2002let}, space limitations often leave authors with no option but to craft shorter captions.
+%To clarify this dimension and guide future research, 
+To shed some light on this aspect and offer insight for future research, we analyzed the lengths of both author-created and machine-generated captions.
+We used Kernel Density Estimate (KDE) plots to investigate the distribution of caption lengths across different models and domains.
+As shown in \Cref{fig:length-distribution-systems}, the majority of models demonstrate a common peak at 10 tokens, while
+Pegasus$_{P+O+B}$ presents a significant deviation with a peak near 30 tokens.
+% While peaking at the same 10 tokens, Ground-Truth demonstrates a flatter distribution.
+% Also, Pegasus$_{O}$'s jagged distribution is possibly due to its low-quality and repetitive outputs.
+% Note that we omitted Pegasus$_{O}$ due to its excessively high peak density which disrupts the overall presentation.
+% Please see the Appendix for the detail.
+%
+\Cref{fig:length-distribution-score-list} presents the distribution of helpfulness scores, 
+derived from quality annotation data (see \Cref{sec:quality-annotation}).
+Captions rated with a maximum helpfulness score of 5 show a peak at 35 tokens.
+% \kenneth{generally speaking, do not use ``around'' in the formal writing. it reads too informal.}
+We can also see a clear shift in caption length with higher scores.
+%
+In \Cref{fig:length-distribution-global-category}, we dug into the top 10 category taxonomy from arXiv.
+% including areas such as computer science (\texttt{cs}), mathematics (\texttt{math}), quantitative biology (\texttt{q.bio}), and more.
+This figure suggests that a higher portion of the captions in \texttt{cs}, \texttt{math}, \texttt{stat}, and \texttt{eess} are shorter (10 tokens); while the rest of the categories (\texttt{cond-mat}, \texttt{quant-ph}, \texttt{q-bio}, \emph{etc}) 
+% have higher variations in the caption length and 
+have higher probabilities for longer captions.
+%
+% This plot shows notable differences in caption length among different domains, suggesting there might be domain-specific conventions or length requirements.
+% \kenneth{Do not just say it as a meta description, i.e., they are different. Point to one thing that is more obvious from the figure, e.g., captions in X domain is shorter/longer. Better added a few numbers to the writing.}
+%
+However, within the \texttt{cs} domain (\Cref{fig:length-distribution-cs-category}), the top 10 subcategories do not show significant differences regarding caption length distribution.
+% Focusing on the \texttt{cs} domain, we selected the top 10 subcategories and included \texttt{cs.HC}, to form \Cref{fig:length-distribution-cs-category}.
+% We found no significant differences among these subcategories regarding caption length distribution.
+% with only cs.NI has a slightly higher peak, and cs.SI and cs.HC has marginally flatter distributions.
+% \kenneth{I'd not say it's surprising haha. Just say they don't differ much.}
+% We also noticed that cs.NI (networking and internet architecture) has a slightly higher peak, while cs.SI (social and information networks) and cs.HC (human-computer interaction) have marginally flatter distributions.
+% \kenneth{Sure, but what does this mean?}
+
+
+\begin{figure*}
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/length-analysis/system-with-ocr.png}
+         \vspace{-6mm}
+         \caption{All the examined generative models.}
+         \label{fig:length-distribution-systems}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/length-analysis/score-list.png}
+         \vspace{-6mm}
+         \caption{Helpfulness scores in 5-point Likert scale.}
+         \label{fig:length-distribution-score-list}
+    \end{subfigure} \\
+    \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/length-analysis/global-category.png}
+         \vspace{-6mm}
+         \caption{Top 10 frequent arXiv categories.}
+         \label{fig:length-distribution-global-category}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{figures/length-analysis/cs-category.png}
+         \vspace{-6mm}
+         \caption{Top 10 frequent arXiv CS subcategories and cs.HC.}
+         \label{fig:length-distribution-cs-category}
+    \end{subfigure}
+    \caption{The KDE plot illustrates diverse caption length distributions among models, the relationship with helpfulness, and variations across arXiv categories. The sample numbers are included in the legend.}
+    \label{fig:length-distribution}
+    \vspace{-4mm}
+\end{figure*}
+
+
+
+
+
+
+
+
+%------------------------ dead kitten --------------------------
+
+\begin{comment}
+
+
+
+% (Punctuations/stopwords are removed)
+% - What is the missing information?
+
+
+%\subsection{Quality Annotation}
+%\cy{I feel like we should introduce this quality annotation earlier.}
+
+\kenneth{KENNETH IS EDITING HERE}
+\bigskip
+%-------------------- old draft 00000000000000000000000
+
+%\kenneth{Add our rebuttal text to the paper. We had some text about WHY we're doing this lengthy and complex human eval.}
+%\kenneth{TODO CY: Maybe (1) briefly repeat the human eval result for GS captions, and (2) move "5.4.2 Automatic Evaluation Over Beams of Different Quality" to here?}
+%\cy{What is GS caption?}\kenneth{Human-written captions.}
+
+Real-world data tends to be messy, and our analysis showed that 50\% of the author-written captions in arXiv \texttt{cs.CL} papers were deemed unhelpful (as described in \Cref{sec:quality-annotation}).
+This high proportion of unhelpful captions in the test set could impact evaluation results, 
+especially automatic evaluations that measure the similarity between generated texts and human-written captions.
+To verify this, we evaluated the models on beams of different quality using our quality annotation data 
+(\ie, the 399 annotated figure captions in \Cref{sec:quality-annotation}). 
+The 399 annotated figure captions from \texttt{cs.CL} papers were separated into 
+helpful beams (184 captions rated Strongly Agree or Agree) and 
+unhelpful beams (215 captions rated Neutral, Disagree, or Strongly Disagree).
+
+\kenneth{This opening paragaprag needs a rewrite.}
+\kenneth{The quality annotation details need to be moved here. At least the helpfulness ratings.}
+
+% \sukim{Did we use helpful/unhelpful annotations for curating the testing data or just use it as it is?}
+% \cy{No. Since we only have 400 samples now. We did a quality beam analysis here}
+
+
+
+
+The two Reuse baselines did not show a huge difference among the three different beams. 
+
+the model trained on captions with more than 30 tokens produced higher-quality captions. 
+
+
+The generation models that were trained with all available data (\ie, without any data quality control) generally performed better in the unhelpful beam, indicating that these models were better at mimicking bad captions. 
+Pegasus$_{P+O+B}$ was trained with better-quality captions and performed better in the helpful beam, meaning that its output was closer to good captions.
+
+To better understand the relation between mentions and captions, 
+we computed n-gram precision scores (BLEU-4) for various mention and caption settings. 
+First Mention denotes the first sentence of mention in the entire paper, and plus n sentence denotes the addition of the following n sentence(s). 
+Mentions may appear in multiple paragraphs, so we also select randomly in different paragraph to do further investigation. 
+Some figures would contain multiple sentences in the caption and we think the first sentence might contain more useful information, so we compare first sentence and the whole sentence of the caption as well. 
+We also compare random sentence in the paragraph that do not contain mentions. 
+Results are shown in \Cref{tab:analysis_caption-mention}. All results in the first Mention slightly perform better than the Random Mention in similar settings. It seems people tend to give more detailed information when they first mention the figures. We also think people would tend to describe more information about the figure that covered in the caption based on the results. 
+
+\end{comment}

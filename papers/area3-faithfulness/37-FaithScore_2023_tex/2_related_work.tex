@@ -1,0 +1,30 @@
+% \clearpage
+\section{Related Work}
+\paragraph{Large Vision-Language Model}
+Motivated by the success of the pretraining technique in LLMs and VFMs, the multimodal learning research community has recently shifted the research attention to LVLMs~\cite{DBLP:journals/corr/abs-2308-01390,DBLP:journals/corr/abs-2305-03726}. 
+% The mainstream advanced LVM mainly consists of three components: a text encoder, an image encoder, and a cross-modal alignment module. In particular, a text encoder is usually a language model (for example, LLAVA and Vicuna13B), and an image encoder is always a vision foundation model (such as VIT). The cross-modal alignment module is used to map the visual content into textual space and equip the text encoder with the ability to understand the visual semantics. 
+Contemporary advanced LVLMs predominantly feature three core components: a text encoder, an image encoder, and a cross-modal alignment module~\cite{DBLP:conf/emnlp/RohrbachHBDS18}. Specifically, the text encoder often takes the form of a language model, as seen in examples like LLaMA~\cite{llama} and Vicuna~\cite{vicuna}. Conversely, the image encoder is typically derived from VFMs, such as ViT~\cite{vit}. The function of the cross-modal alignment module is to bridge visual content with textual representation, enhancing the text encoder's capacity to interpret visual semantics. 
+% Compared with the text encoder and image encoder, the cross-modal alignment module usually has fewer layers and simpler units, such as linear networks. 
+To accomplish visual understanding, LVLMs typically undergo multiple training phases~\cite{MultiModal-GPT,minigpt4,llava15,llava,mPLUG-Owl,InstructBLIP}. 
+For instance, \citet{llava} first aligns the image features with the word embeddings of a pre-trained LLM during an initial pre-training stage, and subsequently fine-tunes the LVLM using specialized language-image instruction-following datasets. 
+For efficiency enhancement, LVLMs often freeze parameters of the LLM or VFM and are trained with efficient fine-tuned techniques~\cite{mPLUG-Owl,InstructBLIP}, such as LoRA~\cite{lora}.
+
+However, in spite of the considerable advancements made by LVLMs, they consistently grapple with hallucination issues. These issues markedly impact their efficacy across a range of vision-language tasks~\cite{DBLP:conf/emnlp/RohrbachHBDS18}. 
+% Consequently, devising methods to assess hallucination in VLMs remains a significant challenge.
+
+% To achieve this, VLMs usually are trained with several steps. For example, \citet{llava} align the image features with the pre-trained LLM word embedding by the first pertaining stage and then finetune the VLM with unique language-image instruction-following data. In addition, to improve efficiency, VLMs usually freeze the parameters of the LLM or Vision foundation model and is equipped with efficient fine-tuning methods, such LORA~\cite{}.
+
+% Despite the significant progress achieved by VLMs, they always suffer from hallucinations, which severely influence their performance on various vision-language tasks. Therefore, how to evaluate hallucination in VLMs push a big challenge.
+
+\paragraph{Vision-language Model Hallucinations and Evaluations}
+Though hallucination phenomenons and mitigation methods have been extensively studied in the text generation literature~\cite{ji2023survey, factscore}, it is much less investigated in vision-language models~\cite{InstructBLIP, llava,fgaif,mmss}.
+% 
+Although there are a few existing works tackling this issue, they mainly focus on the constraint problem setting such as image captioning~\cite{densecap}.
+For example, 
+\citet{DBLP:conf/emnlp/RohrbachHBDS18} propose caption hallucination assessment with image relevance (CHAIR), which is a popular metric for evaluating object hallucination in sentence-level captions. They also show that popular metrics like METEOR~\cite{meteor} and CIDEr~\cite{vedantam2015cider} do not capture this. 
+\citet{Li2023EvaluatingOH} extends CHAIR and proposes ``POPE'', a polling-based query technique for probing objects. Besides, \citet{lovenia2023negative} devised Negative Object Presence Evaluation (NOPE) to quantitatively assess object hallucination through VQA, based on ``POPE''. 
+\citet{gunjal2023detecting} further proposed to detect hallucinations in more detailed image captions and investigated utilizing a reward model for mitigating them. \citet{DBLP:journals/corr/abs-2309-04041} introduced an evaluation benchmark that contains more diverse types of questions, such as Yes-or-No and Fill-in-the-Blank. 
+
+Different from all the above, we are the first to propose a \textcolor[rgb]{0,0,0}{reference-free} metric for \textcolor[rgb]{0,0,0}{fine-grained} evaluating the answers in the \textcolor[rgb]{0,0,0}{open-ended visual question-answering setting}, where answers are of free form and can be lengthy.
+
+

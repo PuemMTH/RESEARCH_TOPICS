@@ -1,0 +1,70 @@
+\begin{thebibliography}{12}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Eslami et~al.(2023)Eslami, Meinel, and De~Melo]{eslami2023pubmedclip}
+Sedigheh Eslami, Christoph Meinel, and Gerard De~Melo.
+\newblock Pubmedclip: How much does clip benefit visual question answering in the medical domain?
+\newblock In \emph{Findings of the Association for Computational Linguistics: EACL 2023}, pages 1181--1193, 2023.
+
+\bibitem[Fang et~al.(2023)Fang, Jose, Jain, Schmidt, Toshev, and Shankar]{DFN}
+Alex Fang, Albin~Madappally Jose, Amit Jain, Ludwig Schmidt, Alexander Toshev, and Vaishaal Shankar.
+\newblock Data filtering networks, 2023.
+\newblock URL \url{https://arxiv.org/abs/2309.17425}.
+
+\bibitem[Johnson et~al.(2019)Johnson, Pollard, Berkowitz, Greenbaum, Lungren, ying Deng, Mark, Horng, and et~al.]{mimic}
+Alistair E.~W. Johnson, Tom~J. Pollard, Seth~J. Berkowitz, Nathaniel~R. Greenbaum, Matthew~P. Lungren, Chih ying Deng, Roger~G. Mark, Steven Horng, and et~al.
+\newblock {MIMIC-CXR, a de-identified publicly available database of chest radiographs with free-text reports}.
+\newblock \emph{Scientific Data}, 6\penalty0 (1):\penalty0 317, December 2019.
+\newblock \doi{10.1038/s41597-019-0322-0}.
+\newblock URL \url{https://doi.org/10.1038/s41597-019-0322-0}.
+
+\bibitem[Lozano et~al.(2025{\natexlab{a}})Lozano, Sun, Burgess, Chen, Nirschl, Gu, Lopez, Aklilu, Katzer, Chiu, Rau, Wang, Zhang, Song, Tibshirani, and Yeung-Levy]{biomedica}
+Alejandro Lozano, Min~Woo Sun, James Burgess, Liangyu Chen, Jeffrey~J Nirschl, Jeffrey Gu, Ivan Lopez, Josiah Aklilu, Austin~Wolfgang Katzer, Collin Chiu, Anita Rau, Xiaohan Wang, Yuhui Zhang, Alfred~Seunghoon Song, Robert Tibshirani, and Serena Yeung-Levy.
+\newblock Biomedica: An open biomedical image-caption archive, dataset, and vision-language models derived from scientific literature, 2025{\natexlab{a}}.
+\newblock URL \url{https://arxiv.org/abs/2501.07171}.
+
+\bibitem[Lozano et~al.(2025{\natexlab{b}})Lozano, Sun, Burgess, Chen, Nirschl, Gu, Lopez, Aklilu, Rau, Katzer, et~al.]{lozano2025biomedica}
+Alejandro Lozano, Min~Woo Sun, James Burgess, Liangyu Chen, Jeffrey~J Nirschl, Jeffrey Gu, Ivan Lopez, Josiah Aklilu, Anita Rau, Austin~Wolfgang Katzer, et~al.
+\newblock Biomedica: An open biomedical image-caption archive, dataset, and vision-language models derived from scientific literature.
+\newblock In \emph{Proceedings of the Computer Vision and Pattern Recognition Conference}, pages 19724--19735, 2025{\natexlab{b}}.
+
+\bibitem[Moor et~al.(2023)Moor, Banerjee, Abad, Krumholz, Leskovec, Topol, and Rajpurkar]{moor2023foundation}
+Michael Moor, Oishi Banerjee, Zahra Shakeri~Hossein Abad, Harlan~M Krumholz, Jure Leskovec, Eric~J Topol, and Pranav Rajpurkar.
+\newblock Foundation models for generalist medical artificial intelligence.
+\newblock \emph{Nature}, 616\penalty0 (7956):\penalty0 259--265, 2023.
+
+\bibitem[Radford et~al.(2021)Radford, Kim, Hallacy, Ramesh, Goh, Agarwal, Sastry, Askell, Mishkin, Clark, et~al.]{radford2021learning}
+Alec Radford, Jong~Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et~al.
+\newblock Learning transferable visual models from natural language supervision.
+\newblock In \emph{International conference on machine learning}, pages 8748--8763. PmLR, 2021.
+
+\bibitem[Sellergren et~al.(2025)Sellergren, Kazemzadeh, Jaroensri, Kiraly, Traverse, Kohlberger, Xu, Jamil, Hughes, Lau, et~al.]{sellergren2025medgemma}
+Andrew Sellergren, Sahar Kazemzadeh, Tiam Jaroensri, Atilla Kiraly, Madeleine Traverse, Timo Kohlberger, Shawn Xu, Fayaz Jamil, C{\'\i}an Hughes, Charles Lau, et~al.
+\newblock Medgemma technical report.
+\newblock \emph{arXiv preprint arXiv:2507.05201}, 2025.
+
+\bibitem[Sounack et~al.(2025)Sounack, Davis, Durieux, Chaffin, Pollard, Lehman, Johnson, McDermott, Naumann, and Lindvall]{bioclinicalmodernbert}
+Thomas Sounack, Joshua Davis, Brigitte Durieux, Antoine Chaffin, Tom~J. Pollard, Eric Lehman, Alistair E.~W. Johnson, Matthew McDermott, Tristan Naumann, and Charlotta Lindvall.
+\newblock Bioclinical modernbert: A state-of-the-art long-context encoder for biomedical and clinical nlp, 2025.
+\newblock URL \url{https://arxiv.org/abs/2506.10896}.
+
+\bibitem[Wang et~al.(2024)Wang, Bai, Tan, Wang, Fan, Bai, Chen, Liu, Wang, Ge, Fan, Dang, Du, Ren, Men, Liu, Zhou, Zhou, and Lin]{qwen2vl}
+Peng Wang, Shuai Bai, Sinan Tan, Shijie Wang, Zhihao Fan, Jinze Bai, Keqin Chen, Xuejing Liu, Jialin Wang, Wenbin Ge, Yang Fan, Kai Dang, Mengfei Du, Xuancheng Ren, Rui Men, Dayiheng Liu, Chang Zhou, Jingren Zhou, and Junyang Lin.
+\newblock Qwen2-vl: Enhancing vision-language model's perception of the world at any resolution, 2024.
+\newblock URL \url{https://arxiv.org/abs/2409.12191}.
+
+\bibitem[Zhang et~al.(2024)Zhang, Zhang, Dong, Zang, and Wang]{zhang2024long}
+Beichen Zhang, Pan Zhang, Xiaoyi Dong, Yuhang Zang, and Jiaqi Wang.
+\newblock Long-clip: Unlocking the long-text capability of clip.
+\newblock In \emph{European conference on computer vision}, pages 310--325. Springer, 2024.
+
+\bibitem[Zhang et~al.(2023)Zhang, Xu, Usuyama, Xu, Bagga, Tinn, Preston, Rao, Wei, Valluri, et~al.]{zhang2023biomedclip}
+Sheng Zhang, Yanbo Xu, Naoto Usuyama, Hanwen Xu, Jaspreet Bagga, Robert Tinn, Sam Preston, Rajesh Rao, Mu~Wei, Naveen Valluri, et~al.
+\newblock Biomedclip: a multimodal biomedical foundation model pretrained from fifteen million scientific image-text pairs.
+\newblock \emph{arXiv preprint arXiv:2303.00915}, 2023.
+
+\end{thebibliography}

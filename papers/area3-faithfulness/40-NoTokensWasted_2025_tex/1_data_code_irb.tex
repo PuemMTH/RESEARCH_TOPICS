@@ -1,0 +1,32 @@
+\paragraph*{Data and Code Availability}
+% This initial paragraph is \textbf{mandatory}. Briefly state what data you
+% use (including citations if appropriate) and whether and where the data are
+% available to other researchers.
+% If you are not sharing code, you must explicitly state that you are not
+% making your code available. If you are making your code available, then
+% at the time of submission for review, please include your code as
+% supplemental material or as a code repository link; in either case, your
+% code must be anonymized. If your paper is accepted, then you should
+% de-anonymize your code for the camera-ready version of the paper. \emph{If
+% you do not include this data and code availability statement for your
+% paper, or you provide code that is not anonymized at the time of
+% submission, then your paper will be desk-rejected.} Your experiments later
+% could refer to this initial data and code availability statement if it is
+% helpful (e.g., to avoid restating what data you use).
+
+
+% For CLIP model training, we use the publicly available OpenCLIP repository.\footnote{\url{https://github.com/mlfoundations/open_clip}}  We adapt OpenCLIP and add model config for BMC-longCLIP.\footnote{\url{https://github.com/minwoosun/open_clip}}
+% We train on the BIOMEDICA dataset~\cite{lozano2025biomedica}, which is openly available on Hugging Face.\footnote{\url{https://huggingface.co/datasets/BIOMEDICA}} 
+% We additionally use MIMIC-CXR~\cite{mimic} for evaluation, which is available through PhysioNet under credentialed access. Model weights will be made available on Hugging Face \footnote{\url{https://huggingface.co/BIOMEDICA/models/BMC-LongCLIP}.
+
+For CLIP training, we adapt OpenCLIP using our forked version with BMC-LongCLIP config\footnote{\url{https://github.com/minwoosun/open_clip_bmc}}. 
+We train on the BIOMEDICA dataset~\cite{lozano2025biomedica} and additionally use MIMIC-CXR~\cite{mimic} 
+for evaluation (credentialed access via PhysioNet). Model weights will be released on Hugging Face \footnote{\url{https://huggingface.co/BIOMEDICA/models/BMC-LongCLIP}}.
+
+
+
+% \paragraph*{Institutional Review Board (IRB)}
+% This research does not require IRB approval.
+
+
+

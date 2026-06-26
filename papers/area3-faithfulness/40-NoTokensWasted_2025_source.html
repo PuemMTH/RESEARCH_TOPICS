@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type">
+<title>[2510.03978] No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models</title><meta content="Embedding vision&ndash;language models (VLMs) are typically pretrained with short text windows (77 tokens), which forces the truncation of long-format captions. Yet, the distribution of biomedical captions from large-scale o&hellip;" property="og:description">
+<meta content="width=device-width, initial-scale=1" name="viewport">
+<meta content="summary" name="twitter:card">
+<meta content="No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models" name="twitter:title">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" name="twitter:image:src">
+<meta content="ar5iv logo" name="twitter:image:alt">
+<meta content="No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models" property="og:title">
+<meta content="ar5iv" property="og:site_name">
+<meta content="https://ar5iv.labs.arxiv.org/assets/ar5iv_card.png" property="og:image">
+<meta content="article" property="og:type">
+<meta content="https://ar5iv.labs.arxiv.org/html/2510.03978" property="og:url">
+<link href="https://ar5iv.labs.arxiv.org/html/2510.03978" rel="canonical" target="_blank">
+<!--Generated on Wed Nov  5 20:19:00 2025 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+<script>
+  function detectColorScheme(){
+    var theme="light";
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if(current_theme){
+      if(current_theme == "dark"){
+        theme = "dark";
+      } }
+    else if(!window.matchMedia) { return false; }
+    else if(window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      theme = "dark"; }
+    if (theme=="dark") {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", "light"); } }
+
+  detectColorScheme();
+
+  function toggleColorScheme(){
+    var current_theme = localStorage.getItem("ar5iv_theme");
+    if (current_theme) {
+      if (current_theme == "light") {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+      else {
+        localStorage.setItem("ar5iv_theme", "light"); } }
+    else {
+        localStorage.setItem("ar5iv_theme", "dark"); }
+    detectColorScheme(); }
+</script>
+<link href="/assets/ar5iv-fonts.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv.0.8.4.css" media="all" rel="stylesheet"><link href="/assets/ar5iv-site.0.2.2.css" media="all" rel="stylesheet">
+</head>
+<body>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<div class="ltx_para" id="p1">
+<span class="ltx_ERROR undefined">\theorembodyfont</span><span class="ltx_ERROR undefined">\theoremheaderfont</span><span class="ltx_ERROR undefined">\theorempostheader</span>
+<p class="ltx_p">:
+<span class="ltx_ERROR undefined">\theoremsep</span>
+<br class="ltx_break">
+</p>
+</div>
+<h1 class="ltx_title ltx_title_document">No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname"><span class="ltx_ERROR undefined">\Name</span>Min Woo Sun<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1&lowast;</span></sup><span class="ltx_ERROR undefined">\Email</span>minwoos@stanford.edu
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>Alejandro Lozano<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1&lowast;</span></sup> <span class="ltx_ERROR undefined">\Email</span>lozanoe@stanford.edu 
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>Javier Gamazo Tejero<sup class="ltx_sup">2</sup> <span class="ltx_ERROR undefined">\Email</span>javierg@nvidia.com
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>Vishwesh Nath<sup class="ltx_sup">2</sup> <span class="ltx_ERROR undefined">\Email</span>vnath@nvidia.com
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>Xiao Xiao Sun<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1</span></sup> <span class="ltx_ERROR undefined">\Email</span>xxsun@stanford.edu
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>James Burgess<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1</span></sup> <span class="ltx_ERROR undefined">\Email</span>jmhb@stanford.edu
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>Yuhui Zhang<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1</span></sup> <span class="ltx_ERROR undefined">\Email</span>yuhuiz@stanford.edu
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>Kun Yuan<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1</span></sup> <span class="ltx_ERROR undefined">\Email</span>kun@unistra.fr
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>Robert Tibshirani<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1</span></sup> <span class="ltx_ERROR undefined">\Email</span>tibs@stanford.edu
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>Sean Huver<sup class="ltx_sup">2</sup> <span class="ltx_ERROR undefined">\Email</span>shuver@nvidia.com
+<br class="ltx_break"><span class="ltx_ERROR undefined">\Name</span>Serena Yeung-Levy<sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1</span></sup> <span class="ltx_ERROR undefined">\Email</span>syyeung@stanford.edu
+<br class="ltx_break"><span class="ltx_ERROR undefined">\addr</span><sup class="ltx_sup"><span class="ltx_text ltx_font_italic">&lowast;</span></sup>Equal contribution 
+<br class="ltx_break"><span class="ltx_ERROR undefined">\addr</span><sup class="ltx_sup"><span class="ltx_text ltx_font_italic">1</span></sup>Stanford University
+</span></span>
+<span class="ltx_author_before">&emsp;&emsp;</span><span class="ltx_creator ltx_role_author">
+<span class="ltx_personname"> USA 
+<br class="ltx_break"><span class="ltx_ERROR undefined">\addr</span><sup class="ltx_sup"><span class="ltx_text ltx_font_italic">2</span></sup>NVIDIA
+</span></span>
+<span class="ltx_author_before">&emsp;&emsp;</span><span class="ltx_creator ltx_role_author">
+<span class="ltx_personname"> USA
+</span></span>
+</div>
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+<p class="ltx_p">Embedding vision&ndash;language models (VLMs) are typically pretrained with short text windows (<math alttext="&lt;" class="ltx_Math" display="inline" id="m15" intent=":literal"><semantics><mo>&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math>77 tokens), which forces the truncation of long-format captions. Yet, the distribution of biomedical captions from large-scale open source literature reveals that a huge portion of captions far exceed 77 tokens. To this end, we investigate the impact of pretraining on long-format biomedical captions by extending the context length of text encoders in VLMs. We find that longer context (thus, enabling additional supervision provided in long-format captions) correlates with better retrieval and classification performance. Given this finding, we introduce BIOMEDICA-LongCAP, a dataset of 1M image&ndash;caption pairs enriched with context-aware descriptions from full-text articles, providing longer and additional textual supervision. Using BIOMEDICA-LongCAP, we train BMC-LongCLIP, a long-context biomedical VLM with a text encoder supporting windows of up to 512 tokens.
+Our model extends context capacity by 6.6&times;, reducing token waste from 55% to just 2.2%. On long-caption retrieval benchmarks, BMC-LongCLIP achieves up to +30% absolute gains in Recall@1 and +2% average improvements in classification, while also converging faster than short-context. Our results demonstrate that long-context modeling is a promising direction for advancing biomedical VLMs.</p>
+</div>
+<div class="ltx_classification">
+<h6 class="ltx_title ltx_title_classification">keywords: </h6>
+Biomedical Vision-Language Models, Long-context Modeling, Contrastive Learning
+
+</div>
+<section class="ltx_paragraph" id="S0.SS0.SSS0.Px1">
+<h4 class="ltx_title ltx_title_paragraph">Data and Code Availability</h4>
+<div class="ltx_para" id="S0.SS0.SSS0.Px1.p1">
+<p class="ltx_p">For CLIP training, we adapt OpenCLIP using our forked version with BMC-LongCLIP config<span class="ltx_note ltx_role_footnote" id="footnote1"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup><span class="ltx_tag ltx_tag_note">1</span><a class="ltx_ref ltx_url ltx_font_typewriter" href="https://github.com/minwoosun/open_clip_bmc" target="_blank" title>https://github.com/minwoosun/open_clip_bmc</a></span></span></span>.
+We train on the BIOMEDICA dataset&nbsp;<cite class="ltx_cite ltx_citemacro_cite">Lozano et&nbsp;al. (<a class="ltx_ref" href="#bib.bib5" title>2025b</a>)</cite> and additionally use MIMIC-CXR&nbsp;<cite class="ltx_cite ltx_citemacro_cite">Johnson et&nbsp;al. (<a class="ltx_ref" href="#bib.bib3" title>2019</a>)</cite>
+for evaluation (credentialed access via PhysioNet). Model weights will be released on Hugging Face <span class="ltx_note ltx_role_footnote" id="footnote2"><sup class="ltx_note_mark">2</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">2</sup><span class="ltx_tag ltx_tag_note">2</span><a class="ltx_ref ltx_url ltx_font_typewriter" href="https://huggingface.co/BIOMEDICA/models/BMC-LongCLIP" target="_blank" title>https://huggingface.co/BIOMEDICA/models/BMC-LongCLIP</a></span></span></span>.</p>
+</div>
+</section>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">1 </span>Introduction</h2>
+<figure class="ltx_figure" id="S1.F1"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="361" id="S1.F1.g1" src="../../assets/papers/40-NoTokensWasted_2025/x1.png" width="664">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>
+(A) Distribution of BIOMEDICA-6M caption token usage with a cutoff of 77 tokens. The blue histogram represents tokens visible to the model, while the pink histogram represents wasted tokens truncated beyond the cutoff (corresponding to 434 million tokens or 55% of total tokens ). (B) Distribution with a cutoff of 512 tokens, showing substantially reduced token waste of 2.2% (17M tokens).
+(C) Qualitative examples of BIOMEDICA-6M and BIOMEDICA-LongCAP captions, showing truncated vs. full captions, as well as our enhanced captions.</figcaption>
+</figure>
+<div class="ltx_para" id="S1.p1">
+<p class="ltx_p">Multimodal foundation models hold immense potential to advance medical practice and biological science <cite class="ltx_cite ltx_citemacro_cite">Moor et&nbsp;al. (<a class="ltx_ref" href="#bib.bib6" title>2023</a>)</cite>. In particular, transformer-based architectures trained on large image&ndash;text datasets have set state-of-the-art performance in tasks such as zero-shot image classification and cross-modal retrieval. Despite these advances, a key limitation remains: current multimodal embedding models (e.g., CLIP <cite class="ltx_cite ltx_citemacro_cite">Radford et&nbsp;al. (<a class="ltx_ref" href="#bib.bib7" title>2021</a>)</cite>) are trained using a restricted text context length&mdash;typically capped at 77 tokens&mdash;which is often insufficient to capture the rich semantics and complexity of high-throughput biomedical images <cite class="ltx_cite ltx_citemacro_cite">Zhang et&nbsp;al. (<a class="ltx_ref" href="#bib.bib11" title>2024</a>)</cite>. As a result, it is common practice to truncate long-form textual descriptions during training and inference, discarding valuable information. For example, as shown in Figure&nbsp;<a class="ltx_ref" href="#S1.F1" title="Figure 1 ‣ 1 Introduction ‣ No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models"><span class="ltx_text ltx_ref_tag">1</span></a>, at a 77 token cutoff, more than 434 million tokens are not used when pretraining with the BIOMEDICA dataset <cite class="ltx_cite ltx_citemacro_cite">Lozano et&nbsp;al. (<a class="ltx_ref" href="#bib.bib5" title>2025b</a>)</cite> (the largest biomedical image caption dataset).</p>
+</div>
+<div class="ltx_para" id="S1.p2">
+<p class="ltx_p">Beyond architectural limitations, capturing the semantics of biomedical images through text remains a major bottleneck. Prior work has leveraged open-access scientific articles to curate large collections of image&ndash;caption pairs <cite class="ltx_cite ltx_citemacro_cite">Zhang et&nbsp;al. (<a class="ltx_ref" href="#bib.bib12" title>2023</a>); Lozano et&nbsp;al. (<a class="ltx_ref" href="#bib.bib5" title>2025b</a>)</cite>; however, these captions often fail to fully convey the visual content present in an image. For instance, critical descriptive details are frequently embedded in inline references within the corresponding scientific manuscript (such as the analysis of a figure) and omitted from the corresponding image captions.</p>
+</div>
+<figure class="ltx_figure" id="S1.F2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="185" id="S1.F2.g1" src="../../assets/papers/40-NoTokensWasted_2025/performance_summary.png" width="598">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 2: </span><span class="ltx_text ltx_font_italic">Context-length ablation results of BMC-LongCLIP trained with 77, 154, and 512 tokens.</span> (Left) Average retrieval performance (Recall@K) on the PMC long-caption benchmark. (Middle) Average retrieval performance on the CXR benchmark. (Right) Average zero-shot classification accuracy across biomedical datasets. Longer context improves retrieval and classification, with the largest gains on PMC.</figcaption>
+</figure>
+<div class="ltx_para" id="S1.p3">
+<p class="ltx_p">Given these challenges, the impact of pretraining multimodal embedding models with highly descriptive image captions remains largely unexplored. In this work, we investigate the effects of pretraining biomedical multimodal embedding models with long-captions by introducing the following contributions:</p>
+</div>
+<div class="ltx_para" id="S1.p4">
+<ul class="ltx_itemize" id="S1.I1">
+<li class="ltx_item" id="S1.I1.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S1.I1.i1.p1">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">BIOMEDICA-LongCAP</span>: We present a dataset of 1M biomedical image&ndash;caption pairs, with captions enriched through LLM-based augmentation leveraging contextual information from the corresponding source text.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I1.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S1.I1.i2.p1">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">BMC-LongCLIP</span>: We pretrain CLIP on BIOMEDICA and BIOMEDICA-LongCAP using context lengths of 77, 154, and 512 tokens to study how scaling text context length (thus reducing token waste) impacts model convergence and downstream zero-shot performance.</p>
+</div>
+</li>
+<li class="ltx_item" id="S1.I1.i3" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">&bull;</span>
+<div class="ltx_para" id="S1.I1.i3.p1">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Multimodal Long-Text Bench</span>: We introduce two novel biomedical benchmarks designed to evaluate long-text multimodal retrieval.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="ltx_para" id="S1.p5">
+<p class="ltx_p">Our empirical findings show that (1) pretraining CLIP with longer context lengths accelerates convergence, (2) improves zero-shot classification performance on short captions, and (3) unlocks real-world long-context retrieval applications.</p>
+</div>
+<div class="ltx_para" id="S1.p6">
+<p class="ltx_p">By extending the text encoder&rsquo;s context window by 6.6&times;, our model reduces token waste from 55% to 2.2%, enabling substantially more supervision from long biomedical captions. On long-caption retrieval benchmarks, BMC-LongCLIP achieves up to 30 point absolute gains in Recall@1, while also delivering 2 point average improvements in classification accuracy. The model also converges faster than short-context baselines, demonstrating the efficiency benefits of longer context windows during training. These findings highlight long-context modeling as a promising direction for advancing biomedical vision&ndash;language models.</p>
+</div>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">2 </span>Methods</h2>
+<div class="ltx_para" id="S2.p1">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Datasets</span>:
+We pretrain all models on the 6M biomedical image&ndash;caption subset of the BIOMEDICA-24M dataset <cite class="ltx_cite ltx_citemacro_cite">Lozano et&nbsp;al. (<a class="ltx_ref" href="#bib.bib5" title>2025b</a>)</cite>.
+In addition, we construct a derived dataset, <span class="ltx_text ltx_font_bold">BIOMEDICA-LongCAP</span>, consisting of 1M image&ndash;caption pairs.
+Each LongCAP caption is created by enriching the original figure caption with contextual information from the corresponding article (e.g., in-line mentions, abstract text, and acronym expansions).
+A VLM-based augmentation pipeline then refines these captions to retain only features that are visually supported by the image (see Appendix&nbsp;<a class="ltx_ref" href="#A1" title="Appendix A BIOMEDICA-LongCAP details ‣ No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models"><span class="ltx_text ltx_ref_tag">A</span></a> for details).
+We use BIOMEDICA-6M for all baseline pretraining, and BIOMEDICA-LongCAP specifically for the BMC-LongCLIP+ variant. The average caption token length is 127 for BIOMEDICA-6M and 323 for BIOMEDICA-LongCAP.</p>
+</div>
+<div class="ltx_para" id="S2.p2">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Modeling</span>: We introduce <span class="ltx_text ltx_font_bold">BMC-LongCLIP</span>, a long-context biomedical VLM designed to align images with extended text descriptions. The model pairs a ViT-L/14 CLIP vision encoder (304M) pretrained on DFN-2B <cite class="ltx_cite ltx_citemacro_cite">Fang et&nbsp;al. (<a class="ltx_ref" href="#bib.bib2" title>2023</a>)</cite> with BioClinical ModernBERT (150M) <cite class="ltx_cite ltx_citemacro_cite">Sounack et&nbsp;al. (<a class="ltx_ref" href="#bib.bib9" title>2025</a>)</cite>, a long-context text encoder pretrained on 53.5B biomedical tokens with an 8,192-token context window.</p>
+</div>
+<section class="ltx_subsection" id="S2.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.1 </span>Benchmarks</h3>
+<div class="ltx_para" id="S2.SS1.p1">
+<p class="ltx_p">We build and evaluate on two complementary benchmarks that stress different aspects of long-context retrieval.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p2">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">MIMIC-CXR radiology report (CXR)</span>
+We constructed a long-text benchmark from the MIMIC-CXR dataset <cite class="ltx_cite ltx_citemacro_cite">Johnson et&nbsp;al. (<a class="ltx_ref" href="#bib.bib3" title>2019</a>)</cite> by pairing chest X-ray images with their full radiology reports. We sampled 1,000 unique image&ndash;report pairs, where the reports provide free-text descriptions.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p3">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">PubMed Long-Caption (PMC)</span>
+From 1,000 PMC-OA articles (restricted to recent 2025 publications), we construct long captions by concatenating inline references with figure captions, testing retrieval in scientific literature where extended technical context is essential.</p>
+</div>
+<figure class="ltx_table" id="S2.T1">
+<figcaption class="ltx_caption ltx_centering" style="font-size:70%;"><span class="ltx_tag ltx_tag_table">Table 1: </span>Text<math alttext="\rightarrow" class="ltx_Math" display="inline" id="S2.T1.m3" intent=":literal"><semantics><mo stretchy="false">&rarr;</mo><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math>Image (T2I) and Image<math alttext="\rightarrow" class="ltx_Math" display="inline" id="S2.T1.m4" intent=":literal"><semantics><mo stretchy="false">&rarr;</mo><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math>Text (I2T) retrieval on long-text CXR and PMC benchmarks, reported as Recall@K (higher is better; <span class="ltx_text ltx_font_bold">bold</span> = best, <span class="ltx_text ltx_framed ltx_framed_underline">underline</span> = second-best). <span class="ltx_text ltx_font_italic">Panel A</span> shows the context-length ablation for BMC-LongCLIP; <span class="ltx_text ltx_font_italic">Panel B</span> benchmarks against prior models.</figcaption>
+<table class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<tbody class="ltx_tbody">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_tt" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Benchmark</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_tt" colspan="3" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Model</span></th>
+<td class="ltx_td ltx_align_center ltx_border_tt" colspan="3" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">T2I</span></td>
+<td class="ltx_td ltx_align_center ltx_border_tt" colspan="3" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">I2T</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Name</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Context</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Batch</span></th>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">R@1</span></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">R@5</span></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">R@10</span></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">R@1</span></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">R@5</span></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">R@10</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" colspan="10" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_italic" style="font-size:70%;">Panel A: Context-length ablation</span></th>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="1.3" class="ltx_Math" display="inline" id="S2.T1.m5" intent=":literal"><semantics><mn mathsize="0.700em">1.3</mn><annotation encoding="application/x-tex">1.3</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="4.7" class="ltx_Math" display="inline" id="S2.T1.m6" intent=":literal"><semantics><mn mathsize="0.700em">4.7</mn><annotation encoding="application/x-tex">4.7</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="9.4" class="ltx_Math" display="inline" id="S2.T1.m7" intent=":literal"><semantics><mn mathsize="0.700em">9.4</mn><annotation encoding="application/x-tex">9.4</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="0.7" class="ltx_Math" display="inline" id="S2.T1.m8" intent=":literal"><semantics><mn mathsize="0.700em">0.7</mn><annotation encoding="application/x-tex">0.7</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="4.9" class="ltx_Math" display="inline" id="S2.T1.m9" intent=":literal"><semantics><mn mathsize="0.700em">4.9</mn><annotation encoding="application/x-tex">4.9</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="7.3" class="ltx_Math" display="inline" id="S2.T1.m10" intent=":literal"><semantics><mn mathsize="0.700em">7.3</mn><annotation encoding="application/x-tex">7.3</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">CXR</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">154</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">1.7</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">5.9</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">10.7</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">1.4</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">5.5</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">9.3</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">1.8</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">5.6</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">10.3</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">1.4</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">5.5</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">9.8</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="37.2" class="ltx_Math" display="inline" id="S2.T1.m11" intent=":literal"><semantics><mn mathsize="0.700em">37.2</mn><annotation encoding="application/x-tex">37.2</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="59.8" class="ltx_Math" display="inline" id="S2.T1.m12" intent=":literal"><semantics><mn mathsize="0.700em">59.8</mn><annotation encoding="application/x-tex">59.8</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="66.4" class="ltx_Math" display="inline" id="S2.T1.m13" intent=":literal"><semantics><mn mathsize="0.700em">66.4</mn><annotation encoding="application/x-tex">66.4</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="42.5" class="ltx_Math" display="inline" id="S2.T1.m14" intent=":literal"><semantics><mn mathsize="0.700em">42.5</mn><annotation encoding="application/x-tex">42.5</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="63.8" class="ltx_Math" display="inline" id="S2.T1.m15" intent=":literal"><semantics><mn mathsize="0.700em">63.8</mn><annotation encoding="application/x-tex">63.8</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="70.8" class="ltx_Math" display="inline" id="S2.T1.m16" intent=":literal"><semantics><mn mathsize="0.700em">70.8</mn><annotation encoding="application/x-tex">70.8</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">PMC</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">154</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">44.2</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">64.9</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">72.5</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">48.8</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">69.8</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">76.8</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">68.9</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">84.3</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">89.3</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">71.2</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">85.9</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">89.9</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" colspan="10" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_italic" style="font-size:70%;">Panel B: Baseline comparison</span></th>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">PMC-CLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">128</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">0.0</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">0.5</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">0.7</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">0.2</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">1.0</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">1.6</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BiomedCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">256</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">4K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="0.5" class="ltx_Math" display="inline" id="S2.T1.m17" intent=":literal"><semantics><mn mathsize="0.700em">0.5</mn><annotation encoding="application/x-tex">0.5</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="2.6" class="ltx_Math" display="inline" id="S2.T1.m18" intent=":literal"><semantics><mn mathsize="0.700em">2.6</mn><annotation encoding="application/x-tex">2.6</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="5.7" class="ltx_Math" display="inline" id="S2.T1.m19" intent=":literal"><semantics><mn mathsize="0.700em">5.7</mn><annotation encoding="application/x-tex">5.7</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="0.6" class="ltx_Math" display="inline" id="S2.T1.m20" intent=":literal"><semantics><mn mathsize="0.700em">0.6</mn><annotation encoding="application/x-tex">0.6</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="3.3" class="ltx_Math" display="inline" id="S2.T1.m21" intent=":literal"><semantics><mn mathsize="0.700em">3.3</mn><annotation encoding="application/x-tex">3.3</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="5.5" class="ltx_Math" display="inline" id="S2.T1.m22" intent=":literal"><semantics><mn mathsize="0.700em">5.5</mn><annotation encoding="application/x-tex">5.5</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">CXR</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-CLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="0.1" class="ltx_Math" display="inline" id="S2.T1.m23" intent=":literal"><semantics><mn mathsize="0.700em">0.1</mn><annotation encoding="application/x-tex">0.1</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="1.1" class="ltx_Math" display="inline" id="S2.T1.m24" intent=":literal"><semantics><mn mathsize="0.700em">1.1</mn><annotation encoding="application/x-tex">1.1</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="2.9" class="ltx_Math" display="inline" id="S2.T1.m25" intent=":literal"><semantics><mn mathsize="0.700em">2.9</mn><annotation encoding="application/x-tex">2.9</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="0.3" class="ltx_Math" display="inline" id="S2.T1.m26" intent=":literal"><semantics><mn mathsize="0.700em">0.3</mn><annotation encoding="application/x-tex">0.3</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="1.9" class="ltx_Math" display="inline" id="S2.T1.m27" intent=":literal"><semantics><mn mathsize="0.700em">1.9</mn><annotation encoding="application/x-tex">1.9</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="3.4" class="ltx_Math" display="inline" id="S2.T1.m28" intent=":literal"><semantics><mn mathsize="0.700em">3.4</mn><annotation encoding="application/x-tex">3.4</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="1.8" class="ltx_Math" display="inline" id="S2.T1.m29" intent=":literal"><semantics><mn mathsize="0.700em">1.8</mn><annotation encoding="application/x-tex">1.8</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="5.6" class="ltx_Math" display="inline" id="S2.T1.m30" intent=":literal"><semantics><mn mathsize="0.700em">5.6</mn><annotation encoding="application/x-tex">5.6</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="10.3" class="ltx_Math" display="inline" id="S2.T1.m31" intent=":literal"><semantics><mn mathsize="0.700em">10.3</mn><annotation encoding="application/x-tex">10.3</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="1.4" class="ltx_Math" display="inline" id="S2.T1.m32" intent=":literal"><semantics><mn mathsize="0.700em">1.4</mn><annotation encoding="application/x-tex">1.4</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="5.5" class="ltx_Math" display="inline" id="S2.T1.m33" intent=":literal"><semantics><mn mathsize="0.700em">5.5</mn><annotation encoding="application/x-tex">5.5</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="9.8" class="ltx_Math" display="inline" id="S2.T1.m34" intent=":literal"><semantics><mn mathsize="0.700em">9.8</mn><annotation encoding="application/x-tex">9.8</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">16K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">2.1</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">9.5</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">12.1</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">2.5</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">9.1</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">14.2</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP+</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">16K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">1.9</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">7.1</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">12.2</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">3.0</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">9.5</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">14.5</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">PMC-CLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">128</span></th>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="0.2" class="ltx_Math" display="inline" id="S2.T1.m35" intent=":literal"><semantics><mn mathsize="0.700em">0.2</mn><annotation encoding="application/x-tex">0.2</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="0.7" class="ltx_Math" display="inline" id="S2.T1.m36" intent=":literal"><semantics><mn mathsize="0.700em">0.7</mn><annotation encoding="application/x-tex">0.7</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="1.2" class="ltx_Math" display="inline" id="S2.T1.m37" intent=":literal"><semantics><mn mathsize="0.700em">1.2</mn><annotation encoding="application/x-tex">1.2</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="0.1" class="ltx_Math" display="inline" id="S2.T1.m38" intent=":literal"><semantics><mn mathsize="0.700em">0.1</mn><annotation encoding="application/x-tex">0.1</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="0.7" class="ltx_Math" display="inline" id="S2.T1.m39" intent=":literal"><semantics><mn mathsize="0.700em">0.7</mn><annotation encoding="application/x-tex">0.7</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding:-0.6pt 3.0pt;"><math alttext="1.2" class="ltx_Math" display="inline" id="S2.T1.m40" intent=":literal"><semantics><mn mathsize="0.700em">1.2</mn><annotation encoding="application/x-tex">1.2</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">MedSigLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">N/A</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="20.1" class="ltx_Math" display="inline" id="S2.T1.m41" intent=":literal"><semantics><mn mathsize="0.700em">20.1</mn><annotation encoding="application/x-tex">20.1</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="37.0" class="ltx_Math" display="inline" id="S2.T1.m42" intent=":literal"><semantics><mn mathsize="0.700em">37.0</mn><annotation encoding="application/x-tex">37.0</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="46.0" class="ltx_Math" display="inline" id="S2.T1.m43" intent=":literal"><semantics><mn mathsize="0.700em">46.0</mn><annotation encoding="application/x-tex">46.0</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="30.9" class="ltx_Math" display="inline" id="S2.T1.m44" intent=":literal"><semantics><mn mathsize="0.700em">30.9</mn><annotation encoding="application/x-tex">30.9</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="49.0" class="ltx_Math" display="inline" id="S2.T1.m45" intent=":literal"><semantics><mn mathsize="0.700em">49.0</mn><annotation encoding="application/x-tex">49.0</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="60.1" class="ltx_Math" display="inline" id="S2.T1.m46" intent=":literal"><semantics><mn mathsize="0.700em">60.1</mn><annotation encoding="application/x-tex">60.1</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BiomedCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">256</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">4K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="68.8" class="ltx_Math" display="inline" id="S2.T1.m47" intent=":literal"><semantics><mn mathsize="0.700em">68.8</mn><annotation encoding="application/x-tex">68.8</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="86.2" class="ltx_Math" display="inline" id="S2.T1.m48" intent=":literal"><semantics><mn mathsize="0.700em">86.2</mn><annotation encoding="application/x-tex">86.2</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="91.1" class="ltx_Math" display="inline" id="S2.T1.m49" intent=":literal"><semantics><mn mathsize="0.700em">91.1</mn><annotation encoding="application/x-tex">91.1</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="73.3" class="ltx_Math" display="inline" id="S2.T1.m50" intent=":literal"><semantics><mn mathsize="0.700em">73.3</mn><annotation encoding="application/x-tex">73.3</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="89.3" class="ltx_Math" display="inline" id="S2.T1.m51" intent=":literal"><semantics><mn mathsize="0.700em">89.3</mn><annotation encoding="application/x-tex">89.3</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">93.7</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">PMC</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-CLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">49.0</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">67.6</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">74.0</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">40.8</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">60.4</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">68.4</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="68.9" class="ltx_Math" display="inline" id="S2.T1.m52" intent=":literal"><semantics><mn mathsize="0.700em">68.9</mn><annotation encoding="application/x-tex">68.9</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="84.3" class="ltx_Math" display="inline" id="S2.T1.m53" intent=":literal"><semantics><mn mathsize="0.700em">84.3</mn><annotation encoding="application/x-tex">84.3</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="89.3" class="ltx_Math" display="inline" id="S2.T1.m54" intent=":literal"><semantics><mn mathsize="0.700em">89.3</mn><annotation encoding="application/x-tex">89.3</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="71.2" class="ltx_Math" display="inline" id="S2.T1.m55" intent=":literal"><semantics><mn mathsize="0.700em">71.2</mn><annotation encoding="application/x-tex">71.2</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="85.9" class="ltx_Math" display="inline" id="S2.T1.m56" intent=":literal"><semantics><mn mathsize="0.700em">85.9</mn><annotation encoding="application/x-tex">85.9</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="89.9" class="ltx_Math" display="inline" id="S2.T1.m57" intent=":literal"><semantics><mn mathsize="0.700em">89.9</mn><annotation encoding="application/x-tex">89.9</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">16K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">80.0</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">92.3</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">95.1</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">80.8</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">91.2</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.6pt 3.0pt;"><math alttext="93.5" class="ltx_Math" display="inline" id="S2.T1.m58" intent=":literal"><semantics><mn mathsize="0.700em">93.5</mn><annotation encoding="application/x-tex">93.5</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_th ltx_th_row ltx_border_bb" style="padding:-0.6pt 3.0pt;"></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP+</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" style="padding:-0.6pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">16K</span></th>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">80.8</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">91.2</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">94.4</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">79.7</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">90.6</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.6pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">93.8</span></td>
+</tr>
+</tbody>
+</table>
+</figure>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p4">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Zero-shot Classification.</span>
+For zero-shot image classification, we evaluate on 39 benchmarks spanning biology, radiology, dermatology, and pathology, as collected and described in <cite class="ltx_cite ltx_citemacro_cite">Lozano et&nbsp;al. (<a class="ltx_ref" href="#bib.bib4" title>2025a</a>)</cite> (see Appendix section <a class="ltx_ref" href="#A4" title="Appendix D Zero-shot classification benchmark ‣ No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models"><span class="ltx_text ltx_ref_tag">D</span></a> for more details).</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S2.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">2.2 </span>Baselines</h3>
+<div class="ltx_para" id="S2.SS2.p1">
+<p class="ltx_p">To contextualize our results, we benchmark our models against several baselines, including: PMC-CLIP <cite class="ltx_cite ltx_citemacro_cite">Eslami et&nbsp;al. (<a class="ltx_ref" href="#bib.bib1" title>2023</a>)</cite>, BiomedCLIP <cite class="ltx_cite ltx_citemacro_cite">Zhang et&nbsp;al. (<a class="ltx_ref" href="#bib.bib12" title>2023</a>)</cite>, MedSigLIP <cite class="ltx_cite ltx_citemacro_cite">Sellergren et&nbsp;al. (<a class="ltx_ref" href="#bib.bib8" title>2025</a>)</cite>, and BMC-CLIP <cite class="ltx_cite ltx_citemacro_cite">Lozano et&nbsp;al. (<a class="ltx_ref" href="#bib.bib5" title>2025b</a>)</cite>,</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">3 </span>Experiments</h2>
+<section class="ltx_subsection" id="S3.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.1 </span>Context-length ablation</h3>
+<div class="ltx_para" id="S3.SS1.p1">
+<p class="ltx_p">We assess the impact of extending text context length, thus reducing token waste on downstream zero-shot performance. To this end, models were trained with context windows of 77, 154, and 512 tokens under identical settings (batch size, learning rate, optimizer, epochs; as described in appendix section <a class="ltx_ref" href="#A6" title="Appendix F Training parameters ‣ No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models"><span class="ltx_text ltx_ref_tag">F</span></a>).</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">3.2 </span>Batch size and BIOMEDICA-LongCAP</h3>
+<div class="ltx_para" id="S3.SS2.p1">
+<p class="ltx_p">We investigate the effect of scaling training batch size while holding other settings fixed, comparing 8K and 16K global batches. In addition, we trained BMC-LongCLIP on both BIOMEDICA-6M and BIOMEDICA-LongCAP, a 1M image&ndash;caption dataset with captions enriched from full-text context, using a 16K batch size and 512-token context window. We denote this model as BMC-LongCLIP+.</p>
+</div>
+<figure class="ltx_table" id="S3.T2">
+<figcaption class="ltx_caption ltx_centering" style="font-size:70%;"><span class="ltx_tag ltx_tag_table">Table 2: </span>
+Zero-shot classification results of different vision&ndash;language models across six biomedical domains. Numbers report average accuracy per domain (higher is better; <span class="ltx_text ltx_font_bold">bold</span> = best, <span class="ltx_text ltx_framed ltx_framed_underline">underline</span> = second-best). <span class="ltx_text ltx_font_italic">Panel A</span> shows ablations of BMC-LongCLIP; <span class="ltx_text ltx_font_italic">Panel B</span> benchmarks against prior models.</figcaption>
+<table class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<tbody class="ltx_tbody">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_tt" colspan="3" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Model</span></th>
+<td class="ltx_td ltx_align_left ltx_border_tt" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Biology</span></td>
+<td class="ltx_td ltx_align_left ltx_border_tt" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Dermatology</span></td>
+<td class="ltx_td ltx_align_left ltx_border_tt" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Microscopy</span></td>
+<td class="ltx_td ltx_align_left ltx_border_tt" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Ophthalmology</span></td>
+<td class="ltx_td ltx_align_left ltx_border_tt" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Pathology</span></td>
+<td class="ltx_td ltx_align_left ltx_border_tt" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Radiology</span></td>
+<td class="ltx_td ltx_align_left ltx_border_tt" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Avg</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Name</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_t" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Context</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_t" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Batch</span></th>
+<td class="ltx_td ltx_nopad_r" style="padding:-0.4pt 3.0pt;"></td>
+<td class="ltx_td ltx_nopad_r" style="padding:-0.4pt 3.0pt;"></td>
+<td class="ltx_td ltx_nopad_r" style="padding:-0.4pt 3.0pt;"></td>
+<td class="ltx_td ltx_nopad_r" style="padding:-0.4pt 3.0pt;"></td>
+<td class="ltx_td ltx_nopad_r" style="padding:-0.4pt 3.0pt;"></td>
+<td class="ltx_td ltx_nopad_r" style="padding:-0.4pt 3.0pt;"></td>
+<td class="ltx_td ltx_nopad_r" style="padding:-0.4pt 3.0pt;"></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" colspan="10" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_italic" style="font-size:70%;">Panel A: Context-length ablation</span></th>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">40.82</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="40.69" class="ltx_Math" display="inline" id="S3.T2.m1" intent=":literal"><semantics><mn mathsize="0.700em">40.69</mn><annotation encoding="application/x-tex">40.69</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="46.04" class="ltx_Math" display="inline" id="S3.T2.m2" intent=":literal"><semantics><mn mathsize="0.700em">46.04</mn><annotation encoding="application/x-tex">46.04</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">59.80</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="42.28" class="ltx_Math" display="inline" id="S3.T2.m3" intent=":literal"><semantics><mn mathsize="0.700em">42.28</mn><annotation encoding="application/x-tex">42.28</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="59.42" class="ltx_Math" display="inline" id="S3.T2.m4" intent=":literal"><semantics><mn mathsize="0.700em">59.42</mn><annotation encoding="application/x-tex">59.42</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="48.18" class="ltx_Math" display="inline" id="S3.T2.m5" intent=":literal"><semantics><mn mathsize="0.700em">48.18</mn><annotation encoding="application/x-tex">48.18</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">154</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">37.21</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">51.34</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">55.76</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="49.88" class="ltx_Math" display="inline" id="S3.T2.m6" intent=":literal"><semantics><mn mathsize="0.700em">49.88</mn><annotation encoding="application/x-tex">49.88</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">47.32</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">59.47</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">50.16</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="34.95" class="ltx_Math" display="inline" id="S3.T2.m7" intent=":literal"><semantics><mn mathsize="0.700em">34.95</mn><annotation encoding="application/x-tex">34.95</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">55.16</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">53.37</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">55.41</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">42.87</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">63.20</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">50.16</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" colspan="10" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_italic" style="font-size:70%;">Panel B: Baseline comparison</span></th>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">PMC-CLIP</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">128</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="7.75" class="ltx_Math" display="inline" id="S3.T2.m8" intent=":literal"><semantics><mn mathsize="0.700em">7.75</mn><annotation encoding="application/x-tex">7.75</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="12.59" class="ltx_Math" display="inline" id="S3.T2.m9" intent=":literal"><semantics><mn mathsize="0.700em">12.59</mn><annotation encoding="application/x-tex">12.59</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="10.91" class="ltx_Math" display="inline" id="S3.T2.m10" intent=":literal"><semantics><mn mathsize="0.700em">10.91</mn><annotation encoding="application/x-tex">10.91</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="23.26" class="ltx_Math" display="inline" id="S3.T2.m11" intent=":literal"><semantics><mn mathsize="0.700em">23.26</mn><annotation encoding="application/x-tex">23.26</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="19.11" class="ltx_Math" display="inline" id="S3.T2.m12" intent=":literal"><semantics><mn mathsize="0.700em">19.11</mn><annotation encoding="application/x-tex">19.11</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="38.64" class="ltx_Math" display="inline" id="S3.T2.m13" intent=":literal"><semantics><mn mathsize="0.700em">38.64</mn><annotation encoding="application/x-tex">38.64</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="18.71" class="ltx_Math" display="inline" id="S3.T2.m14" intent=":literal"><semantics><mn mathsize="0.700em">18.71</mn><annotation encoding="application/x-tex">18.71</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">MedSigLIP</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">N/A</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="33.98" class="ltx_Math" display="inline" id="S3.T2.m15" intent=":literal"><semantics><mn mathsize="0.700em">33.98</mn><annotation encoding="application/x-tex">33.98</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="20.13" class="ltx_Math" display="inline" id="S3.T2.m16" intent=":literal"><semantics><mn mathsize="0.700em">20.13</mn><annotation encoding="application/x-tex">20.13</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="34.56" class="ltx_Math" display="inline" id="S3.T2.m17" intent=":literal"><semantics><mn mathsize="0.700em">34.56</mn><annotation encoding="application/x-tex">34.56</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="38.23" class="ltx_Math" display="inline" id="S3.T2.m18" intent=":literal"><semantics><mn mathsize="0.700em">38.23</mn><annotation encoding="application/x-tex">38.23</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="39.74" class="ltx_Math" display="inline" id="S3.T2.m19" intent=":literal"><semantics><mn mathsize="0.700em">39.74</mn><annotation encoding="application/x-tex">39.74</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="53.03" class="ltx_Math" display="inline" id="S3.T2.m20" intent=":literal"><semantics><mn mathsize="0.700em">53.03</mn><annotation encoding="application/x-tex">53.03</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="36.61" class="ltx_Math" display="inline" id="S3.T2.m21" intent=":literal"><semantics><mn mathsize="0.700em">36.61</mn><annotation encoding="application/x-tex">36.61</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BiomedCLIP</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">256</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">4K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="34.07" class="ltx_Math" display="inline" id="S3.T2.m22" intent=":literal"><semantics><mn mathsize="0.700em">34.07</mn><annotation encoding="application/x-tex">34.07</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="36.01" class="ltx_Math" display="inline" id="S3.T2.m23" intent=":literal"><semantics><mn mathsize="0.700em">36.01</mn><annotation encoding="application/x-tex">36.01</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="49.71" class="ltx_Math" display="inline" id="S3.T2.m24" intent=":literal"><semantics><mn mathsize="0.700em">49.71</mn><annotation encoding="application/x-tex">49.71</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="37.36" class="ltx_Math" display="inline" id="S3.T2.m25" intent=":literal"><semantics><mn mathsize="0.700em">37.36</mn><annotation encoding="application/x-tex">37.36</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="38.40" class="ltx_Math" display="inline" id="S3.T2.m26" intent=":literal"><semantics><mn mathsize="0.700em">38.40</mn><annotation encoding="application/x-tex">38.40</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="56.05" class="ltx_Math" display="inline" id="S3.T2.m27" intent=":literal"><semantics><mn mathsize="0.700em">56.05</mn><annotation encoding="application/x-tex">56.05</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="41.93" class="ltx_Math" display="inline" id="S3.T2.m28" intent=":literal"><semantics><mn mathsize="0.700em">41.93</mn><annotation encoding="application/x-tex">41.93</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-CLIP</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">77</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="34.08" class="ltx_Math" display="inline" id="S3.T2.m29" intent=":literal"><semantics><mn mathsize="0.700em">34.08</mn><annotation encoding="application/x-tex">34.08</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">65.81</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">50.09</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="36.74" class="ltx_Math" display="inline" id="S3.T2.m30" intent=":literal"><semantics><mn mathsize="0.700em">36.74</mn><annotation encoding="application/x-tex">36.74</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="41.21" class="ltx_Math" display="inline" id="S3.T2.m31" intent=":literal"><semantics><mn mathsize="0.700em">41.21</mn><annotation encoding="application/x-tex">41.21</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="59.15" class="ltx_Math" display="inline" id="S3.T2.m32" intent=":literal"><semantics><mn mathsize="0.700em">59.15</mn><annotation encoding="application/x-tex">59.15</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="47.85" class="ltx_Math" display="inline" id="S3.T2.m33" intent=":literal"><semantics><mn mathsize="0.700em">47.85</mn><annotation encoding="application/x-tex">47.85</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">8K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">34.95</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="55.16" class="ltx_Math" display="inline" id="S3.T2.m34" intent=":literal"><semantics><mn mathsize="0.700em">55.16</mn><annotation encoding="application/x-tex">55.16</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">53.37</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">55.41</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="42.87" class="ltx_Math" display="inline" id="S3.T2.m35" intent=":literal"><semantics><mn mathsize="0.700em">42.87</mn><annotation encoding="application/x-tex">42.87</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">63.20</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">50.16</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">16K</span></th>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">34.98</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="38.80" class="ltx_Math" display="inline" id="S3.T2.m36" intent=":literal"><semantics><mn mathsize="0.700em">38.80</mn><annotation encoding="application/x-tex">38.80</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="23.16" class="ltx_Math" display="inline" id="S3.T2.m37" intent=":literal"><semantics><mn mathsize="0.700em">23.16</mn><annotation encoding="application/x-tex">23.16</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="48.79" class="ltx_Math" display="inline" id="S3.T2.m38" intent=":literal"><semantics><mn mathsize="0.700em">48.79</mn><annotation encoding="application/x-tex">48.79</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">46.25</span></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="52.79" class="ltx_Math" display="inline" id="S3.T2.m39" intent=":literal"><semantics><mn mathsize="0.700em">52.79</mn><annotation encoding="application/x-tex">52.79</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left" style="padding:-0.4pt 3.0pt;"><math alttext="40.79" class="ltx_Math" display="inline" id="S3.T2.m40" intent=":literal"><semantics><mn mathsize="0.700em">40.79</mn><annotation encoding="application/x-tex">40.79</annotation></semantics></math></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP+</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_bb" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">512</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_row ltx_border_bb" style="padding:-0.4pt 3.0pt;"><span class="ltx_text" style="font-size:70%;">16K</span></th>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.4pt 3.0pt;"><math alttext="34.34" class="ltx_Math" display="inline" id="S3.T2.m41" intent=":literal"><semantics><mn mathsize="0.700em">34.34</mn><annotation encoding="application/x-tex">34.34</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">55.54</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.4pt 3.0pt;"><math alttext="37.30" class="ltx_Math" display="inline" id="S3.T2.m42" intent=":literal"><semantics><mn mathsize="0.700em">37.30</mn><annotation encoding="application/x-tex">37.30</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">53.05</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">47.65</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">66.99</span></td>
+<td class="ltx_td ltx_align_left ltx_border_bb" style="padding:-0.4pt 3.0pt;"><span class="ltx_text ltx_framed ltx_framed_underline" style="font-size:70%;">49.48</span></td>
+</tr>
+</tbody>
+</table>
+</figure>
+</section>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">4 </span>Results</h2>
+<section class="ltx_subsection" id="S4.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.1 </span>Context-length ablation</h3>
+<div class="ltx_para" id="S4.SS1.p1">
+<p class="ltx_p">Extending the text encoder context length consistently improves retrieval performance and training efficiency.
+Table&nbsp;<a class="ltx_ref" href="#S2.T1" title="Table 1 ‣ 2.1 Benchmarks ‣ 2 Methods ‣ No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models"><span class="ltx_text ltx_ref_tag">1</span></a> shows the zero-shot image-to-text and text-to-image recall at <math alttext="k" class="ltx_Math" display="inline" id="S4.SS1.p1.m1" intent=":literal"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> in the long context benchmarks.
+Panel A shows that longer context improves retrieval across recall levels for both CXR and PMC.
+On CXR, gains are steady but relatively modest.
+PMC benefits most, especially at stricter thresholds, highlighting the value of long contexts for text-heavy tasks.
+In addition, we observe that pretraining CLIP with longer context lengths accelerates convergence (appendix section&nbsp;<a class="ltx_ref" href="#A7" title="Appendix G Training loss curves by training context length ‣ No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models"><span class="ltx_text ltx_ref_tag">G</span></a>), indicating that context extension improves not only downstream retrieval but also training efficiency.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.2 </span>Benchmarking against baselines</h3>
+<div class="ltx_para" id="S4.SS2.p1">
+<p class="ltx_p">BMC-LongCLIP outperforms prior biomedical VLMs on both long-text benchmarks. Table&nbsp;<a class="ltx_ref" href="#S2.T1" title="Table 1 ‣ 2.1 Benchmarks ‣ 2 Methods ‣ No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models"><span class="ltx_text ltx_ref_tag">1</span></a> Panel B and Table&nbsp;<a class="ltx_ref" href="#S3.T2" title="Table 2 ‣ 3.2 Batch size and BIOMEDICA-LongCAP ‣ 3 Experiments ‣ No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models"><span class="ltx_text ltx_ref_tag">2</span></a> compare BMC-LongCLIP with existing biomedical VLMs, including PMC-CLIP, BiomedCLIP, MedSigLIP, and BMC-CLIP. We exclude MedSigLIP from the CXR benchmark comparison, as it was trained on the same MIMIC-CXR image&ndash;report pairs used to construct our benchmark.</p>
+</div>
+<div class="ltx_para" id="S4.SS2.p2">
+<p class="ltx_p">On the CXR benchmark, baselines achieve <math alttext="&lt;" class="ltx_Math" display="inline" id="S4.SS2.p2.m1" intent=":literal"><semantics><mo>&lt;</mo><annotation encoding="application/x-tex">&lt;</annotation></semantics></math>6% Recall@10, while BMC-LongCLIP variants reach 10&ndash;14%, a more than two-fold improvement.
+On PMC, BMC-LongCLIP achieves 89&ndash;95% R@10, performing on par with or slightly better than BiomedCLIP (91&ndash;94%) and outperforming MedSigLIP (46&ndash;60%). At the stricter R@1 threshold, BMC-LongCLIP attains 69&ndash;81%, surpassing BiomedCLIP (69&ndash;73%) and outperforming MedSigLIP (20&ndash;31%).</p>
+</div>
+<div class="ltx_para" id="S4.SS2.p3">
+<p class="ltx_p">Beyond retrieval, BMC-LongCLIP also improves zero-shot classification accuracy across six biomedical domains (Table&nbsp;<a class="ltx_ref" href="#S3.T2" title="Table 2 ‣ 3.2 Batch size and BIOMEDICA-LongCAP ‣ 3 Experiments ‣ No Tokens Wasted: Leveraging Long Context in Biomedical Vision&ndash;Language Models"><span class="ltx_text ltx_ref_tag">2</span></a>).
+While BiomedCLIP and MedSigLIP achieve average accuracies of 41.9% and 36.6%, respectively, BMC-LongCLIP (8K) attains 50.2%, the best overall performance.
+These results highlight that extending context length not only benefits long-text retrieval but also provides improvements in classification tasks.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection">4.3 </span>Effect of batch size and long-caption training</h3>
+<div class="ltx_para" id="S4.SS3.p1">
+<p class="ltx_p">Long-context models benefit from enriched captions, while larger batch sizes yield mixed results. Doubling batch size with BMC-LongCLIP (16K) underperforms in microscopy and dermatology. This suggests that long context windows combined with large batch sizes may not uniformly translate into performance gains across domains. In contrast, BMC-LongCLIP+ (16K) with BIOMEDICA-LongCAP data recovers this drop and matches or exceeds the 8K model. These results indicate that long-context modeling is most effective when paired with sufficient long-caption supervision, though performance in microscopy remains comparatively weak and warrants further investigation.
+<span class="ltx_text ltx_font_bold">Overall.</span>
+Across all experiments, BMC-LongCLIP outperforms prior biomedical VLMs in long-text retrieval and provides competitive advantages in zero-shot classification.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S5">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">5 </span>Conclusion</h2>
+<div class="ltx_para" id="S5.p1">
+<p class="ltx_p">Our results show that extending text context length in biomedical VLMs delivers clear gains.
+On long-text retrieval tasks, BMC-LongCLIP outperforms prior baselines on both CXR and PMC benchmarks, with the largest gains observed for PMC benchmark.
+A key limitation is the scarcity of long-text benchmarks across biomedical domains; expanding such resources will be essential for a fuller evaluation of long-context models.
+Taken together, these results establish long-context modeling as a promising direction for advancing biomedical VLMs.</p>
+</div>
+<div class="ltx_para" id="S5.p2">
+<span class="ltx_ERROR undefined">\acks</span>
+<p class="ltx_p">This research was supported by grants from NVIDIA and utilized NVIDIA A100 GPUs. We gratefully acknowledge additional support from the AIMI&ndash;AWS Cloud Credit Program, which provided AWS cloud computing.</p>
+</div>
+<div class="ltx_para" id="S5.p3">
+<p class="ltx_p">We further acknowledge support from the Stanford Data Science Scholars fellowship and ARPA-H to M.S., and the Arc Institute Graduate Fellowship to A.L. This work was also supported by NIH grant R01 GM134483 to R.T., the Hoffman-Yee Research Grant to S.Y.L., and NSF grant 19DMS1208164. S.Y.L. is a Chan Zuckerberg Biohub &ndash; San Francisco Investigator.</p>
+</div>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+<ul class="ltx_biblist">
+<li class="ltx_bibitem" id="bib.bib1">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Eslami et&nbsp;al. (2023)</span>
+<span class="ltx_bibblock">
+Sedigheh Eslami, Christoph Meinel, and Gerard De&nbsp;Melo.
+
+</span>
+<span class="ltx_bibblock">Pubmedclip: How much does clip benefit visual question answering in the medical domain?
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic">Findings of the Association for Computational Linguistics: EACL 2023</em>, pages 1181&ndash;1193, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib2">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Fang et&nbsp;al. (2023)</span>
+<span class="ltx_bibblock">
+Alex Fang, Albin&nbsp;Madappally Jose, Amit Jain, Ludwig Schmidt, Alexander Toshev, and Vaishaal Shankar.
+
+</span>
+<span class="ltx_bibblock">Data filtering networks, 2023.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2309.17425" target="_blank" title>https://arxiv.org/abs/2309.17425</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib3">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Johnson et&nbsp;al. (2019)</span>
+<span class="ltx_bibblock">
+Alistair E.&nbsp;W. Johnson, Tom&nbsp;J. Pollard, Seth&nbsp;J. Berkowitz, Nathaniel&nbsp;R. Greenbaum, Matthew&nbsp;P. Lungren, Chih ying Deng, Roger&nbsp;G. Mark, Steven Horng, and et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">MIMIC-CXR, a de-identified publicly available database of chest radiographs with free-text reports.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic">Scientific Data</em>, 6(1):317, December 2019.
+
+</span>
+<span class="ltx_bibblock"><a class="ltx_ref" href="https:/doi.org/10.1038/s41597-019-0322-0" target="_blank" title>10.1038/s41597-019-0322-0</a>.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://doi.org/10.1038/s41597-019-0322-0" target="_blank" title>https://doi.org/10.1038/s41597-019-0322-0</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib4">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lozano et&nbsp;al. (2025a)</span>
+<span class="ltx_bibblock">
+Alejandro Lozano, Min&nbsp;Woo Sun, James Burgess, Liangyu Chen, Jeffrey&nbsp;J Nirschl, Jeffrey Gu, Ivan Lopez, Josiah Aklilu, Austin&nbsp;Wolfgang Katzer, Collin Chiu, Anita Rau, Xiaohan Wang, Yuhui Zhang, Alfred&nbsp;Seunghoon Song, Robert Tibshirani, and Serena Yeung-Levy.
+
+</span>
+<span class="ltx_bibblock">Biomedica: An open biomedical image-caption archive, dataset, and vision-language models derived from scientific literature, 2025a.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2501.07171" target="_blank" title>https://arxiv.org/abs/2501.07171</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib5">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Lozano et&nbsp;al. (2025b)</span>
+<span class="ltx_bibblock">
+Alejandro Lozano, Min&nbsp;Woo Sun, James Burgess, Liangyu Chen, Jeffrey&nbsp;J Nirschl, Jeffrey Gu, Ivan Lopez, Josiah Aklilu, Anita Rau, Austin&nbsp;Wolfgang Katzer, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Biomedica: An open biomedical image-caption archive, dataset, and vision-language models derived from scientific literature.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic">Proceedings of the Computer Vision and Pattern Recognition Conference</em>, pages 19724&ndash;19735, 2025b.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib6">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Moor et&nbsp;al. (2023)</span>
+<span class="ltx_bibblock">
+Michael Moor, Oishi Banerjee, Zahra Shakeri&nbsp;Hossein Abad, Harlan&nbsp;M Krumholz, Jure Leskovec, Eric&nbsp;J Topol, and Pranav Rajpurkar.
+
+</span>
+<span class="ltx_bibblock">Foundation models for generalist medical artificial intelligence.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic">Nature</em>, 616(7956):259&ndash;265, 2023.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib7">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Radford et&nbsp;al. (2021)</span>
+<span class="ltx_bibblock">
+Alec Radford, Jong&nbsp;Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Learning transferable visual models from natural language supervision.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic">International conference on machine learning</em>, pages 8748&ndash;8763. PmLR, 2021.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib8">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Sellergren et&nbsp;al. (2025)</span>
+<span class="ltx_bibblock">
+Andrew Sellergren, Sahar Kazemzadeh, Tiam Jaroensri, Atilla Kiraly, Madeleine Traverse, Timo Kohlberger, Shawn Xu, Fayaz Jamil, C&iacute;an Hughes, Charles Lau, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Medgemma technical report.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic">arXiv preprint arXiv:2507.05201</em>, 2025.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib9">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Sounack et&nbsp;al. (2025)</span>
+<span class="ltx_bibblock">
+Thomas Sounack, Joshua Davis, Brigitte Durieux, Antoine Chaffin, Tom&nbsp;J. Pollard, Eric Lehman, Alistair E.&nbsp;W. Johnson, Matthew McDermott, Tristan Naumann, and Charlotta Lindvall.
+
+</span>
+<span class="ltx_bibblock">Bioclinical modernbert: A state-of-the-art long-context encoder for biomedical and clinical nlp, 2025.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2506.10896" target="_blank" title>https://arxiv.org/abs/2506.10896</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib10">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Wang et&nbsp;al. (2024)</span>
+<span class="ltx_bibblock">
+Peng Wang, Shuai Bai, Sinan Tan, Shijie Wang, Zhihao Fan, Jinze Bai, Keqin Chen, Xuejing Liu, Jialin Wang, Wenbin Ge, Yang Fan, Kai Dang, Mengfei Du, Xuancheng Ren, Rui Men, Dayiheng Liu, Chang Zhou, Jingren Zhou, and Junyang Lin.
+
+</span>
+<span class="ltx_bibblock">Qwen2-vl: Enhancing vision-language model&rsquo;s perception of the world at any resolution, 2024.
+
+</span>
+<span class="ltx_bibblock">URL <a class="ltx_ref ltx_url ltx_font_typewriter" href="https://arxiv.org/abs/2409.12191" target="_blank" title>https://arxiv.org/abs/2409.12191</a>.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib11">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Zhang et&nbsp;al. (2024)</span>
+<span class="ltx_bibblock">
+Beichen Zhang, Pan Zhang, Xiaoyi Dong, Yuhang Zang, and Jiaqi Wang.
+
+</span>
+<span class="ltx_bibblock">Long-clip: Unlocking the long-text capability of clip.
+
+</span>
+<span class="ltx_bibblock">In <em class="ltx_emph ltx_font_italic">European conference on computer vision</em>, pages 310&ndash;325. Springer, 2024.
+
+</span>
+</li>
+<li class="ltx_bibitem" id="bib.bib12">
+<span class="ltx_tag ltx_role_refnum ltx_tag_bibitem">Zhang et&nbsp;al. (2023)</span>
+<span class="ltx_bibblock">
+Sheng Zhang, Yanbo Xu, Naoto Usuyama, Hanwen Xu, Jaspreet Bagga, Robert Tinn, Sam Preston, Rajesh Rao, Mu&nbsp;Wei, Naveen Valluri, et&nbsp;al.
+
+</span>
+<span class="ltx_bibblock">Biomedclip: a multimodal biomedical foundation model pretrained from fifteen million scientific image-text pairs.
+
+</span>
+<span class="ltx_bibblock"><em class="ltx_emph ltx_font_italic">arXiv preprint arXiv:2303.00915</em>, 2023.
+
+</span>
+</li>
+</ul>
+</section>
+<div class="ltx_pagination ltx_role_newpage"></div>
+<section class="ltx_appendix" id="A1">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix A </span>BIOMEDICA-LongCAP details</h2>
+<div class="ltx_para" id="A1.p1">
+<p class="ltx_p">BIOMEDICA-LongCAP data generation pipeline using Qwen2-VL-72B-Instruct <cite class="ltx_cite ltx_citemacro_cite">Wang et&nbsp;al. (<a class="ltx_ref" href="#bib.bib10" title>2024</a>)</cite>:</p>
+</div>
+<div class="ltx_para" id="A1.p2">
+<ol class="ltx_enumerate" id="A1.I1">
+<li class="ltx_item" id="A1.I1.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">1.</span>
+<div class="ltx_para" id="A1.I1.i1.p1">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Context-Aware Caption Augmentation</span> We enhance the original figure caption by contextualizing the image description with additional information from the full-text article. Specifically, we collect the original caption, inline mentions from the main text, the abstract, and acronyms used throughout the aforementioned data. Then a VLM is prompted to augment the original caption, by only leveraging the provided information.</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">2.</span>
+<div class="ltx_para" id="A1.I1.i2.p1">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Feasibility Assessment.</span> Given an image and its augmented caption, we extract all atomic features from the generated caption and prompt the VLM to evaluate whether it is feasible to discern each feature from the image alone&mdash;without relying on external sources or any information not visually present, unless explicitly overlaid with feasibility text. The output is an XML file in which each atomic feature is labeled as either <span class="ltx_text ltx_font_typewriter">FEASIBLE</span> or <span class="ltx_text ltx_font_typewriter">NOT_FEASIBLE</span>, along with a rationale explaining the label.</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i3" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">3.</span>
+<div class="ltx_para" id="A1.I1.i3.p1">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Caption Refinement via Feasibility Filtering.</span> Based on the feasibility assessment, we generate a refined caption that preserves only atomic features labeled as <span class="ltx_text ltx_font_typewriter">FEASIBLE</span>. Features labeled as <span class="ltx_text ltx_font_typewriter">NOT_FEASIBLE</span> are removed or reworded to ensure that the final image description reflects only information that can be visually supported.</p>
+</div>
+</li>
+<li class="ltx_item" id="A1.I1.i4" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">4.</span>
+<div class="ltx_para" id="A1.I1.i4.p1">
+<p class="ltx_p"><span class="ltx_text ltx_font_bold">Acronym Expansion.</span> While all previous steps had access to acronym definitions, we explicitly expand all acronyms based on a curated acronym list derived from the full-text article. This ensures that the captions are readable and unambiguous.</p>
+</div>
+</li>
+</ol>
+</div>
+</section>
+<section class="ltx_appendix" id="A2">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix B </span>CXR Benchmark</h2>
+<div class="ltx_para" id="A2.p1">
+<p class="ltx_p">We evaluate cross-modal retrieval between chest radiographs and their paired full-text reports.
+Let <math alttext="\mathcal{D}=\{(x_{i},t_{i})\}_{i=1}^{N}" class="ltx_Math" display="inline" id="A2.p1.m1" intent=":literal"><semantics><mrow><mi class="ltx_font_mathcaligraphic">&Dscr;</mi><mo>=</mo><msubsup><mrow><mo stretchy="false">{</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>,</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo stretchy="false">}</mo></mrow><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup></mrow><annotation encoding="application/x-tex">\mathcal{D}=\{(x_{i},t_{i})\}_{i=1}^{N}</annotation></semantics></math> denote the dataset, where <math alttext="x_{i}" class="ltx_Math" display="inline" id="A2.p1.m2" intent=":literal"><semantics><msub><mi>x</mi><mi>i</mi></msub><annotation encoding="application/x-tex">x_{i}</annotation></semantics></math> is an image and <math alttext="t_{i}" class="ltx_Math" display="inline" id="A2.p1.m3" intent=":literal"><semantics><msub><mi>t</mi><mi>i</mi></msub><annotation encoding="application/x-tex">t_{i}</annotation></semantics></math> its paired report.
+Each pair is treated as a one-to-one ground-truth match.</p>
+</div>
+<div class="ltx_para" id="A2.p2">
+<p class="ltx_p">Reports are tokenized with the CLIP tokenizer and embedded via the text encoder <math alttext="E_{\text{text}}" class="ltx_Math" display="inline" id="A2.p2.m1" intent=":literal"><semantics><msub><mi>E</mi><mtext>text</mtext></msub><annotation encoding="application/x-tex">E_{\text{text}}</annotation></semantics></math>, while images are preprocessed and embedded via the vision encoder <math alttext="E_{\text{img}}" class="ltx_Math" display="inline" id="A2.p2.m2" intent=":literal"><semantics><msub><mi>E</mi><mtext>img</mtext></msub><annotation encoding="application/x-tex">E_{\text{img}}</annotation></semantics></math>.
+We obtain</p>
+<table class="ltx_equation ltx_eqn_table" id="A2.Ex1">
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math alttext="z^{\text{text}}_{i}=\frac{E_{\text{text}}(t_{i})}{\|E_{\text{text}}(t_{i})\|},\quad z^{\text{img}}_{i}=\frac{E_{\text{img}}(x_{i})}{\|E_{\text{img}}(x_{i})\|}," class="ltx_Math" display="block" id="A2.Ex1.m1" intent=":literal"><semantics><mrow><mrow><mrow><msubsup><mi>z</mi><mi>i</mi><mtext>text</mtext></msubsup><mo>=</mo><mfrac><mrow><msub><mi>E</mi><mtext>text</mtext></msub><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mrow><mo stretchy="false">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mo stretchy="false">&Vert;</mo><mrow><msub><mi>E</mi><mtext>text</mtext></msub><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mrow><mo stretchy="false">(</mo><msub><mi>t</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">&Vert;</mo></mrow></mfrac></mrow><mo rspace="1.167em">,</mo><mrow><msubsup><mi>z</mi><mi>i</mi><mtext>img</mtext></msubsup><mo>=</mo><mfrac><mrow><msub><mi>E</mi><mtext>img</mtext></msub><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mrow><mo stretchy="false">&Vert;</mo><mrow><msub><mi>E</mi><mtext>img</mtext></msub><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mrow><mo stretchy="false">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">&Vert;</mo></mrow></mfrac></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">z^{\text{text}}_{i}=\frac{E_{\text{text}}(t_{i})}{\|E_{\text{text}}(t_{i})\|},\quad z^{\text{img}}_{i}=\frac{E_{\text{img}}(x_{i})}{\|E_{\text{img}}(x_{i})\|},</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+</tr></tbody>
+</table>
+<p class="ltx_p">where all embeddings are L2-normalized.</p>
+</div>
+<div class="ltx_para" id="A2.p3">
+<p class="ltx_p">For text<math alttext="\to" class="ltx_Math" display="inline" id="A2.p3.m1" intent=":literal"><semantics><mo stretchy="false">&rarr;</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math>image retrieval, we rank all image embeddings <math alttext="\{z^{\text{img}}_{j}\}" class="ltx_Math" display="inline" id="A2.p3.m2" intent=":literal"><semantics><mrow><mo stretchy="false">{</mo><msubsup><mi>z</mi><mi>j</mi><mtext>img</mtext></msubsup><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{z^{\text{img}}_{j}\}</annotation></semantics></math> by cosine similarity with a query <math alttext="z^{\text{text}}_{i}" class="ltx_Math" display="inline" id="A2.p3.m3" intent=":literal"><semantics><msubsup><mi>z</mi><mi>i</mi><mtext>text</mtext></msubsup><annotation encoding="application/x-tex">z^{\text{text}}_{i}</annotation></semantics></math>; the ground-truth match is <math alttext="z^{\text{img}}_{i}" class="ltx_Math" display="inline" id="A2.p3.m4" intent=":literal"><semantics><msubsup><mi>z</mi><mi>i</mi><mtext>img</mtext></msubsup><annotation encoding="application/x-tex">z^{\text{img}}_{i}</annotation></semantics></math>.
+Image<math alttext="\to" class="ltx_Math" display="inline" id="A2.p3.m5" intent=":literal"><semantics><mo stretchy="false">&rarr;</mo><annotation encoding="application/x-tex">\to</annotation></semantics></math>text retrieval is defined analogously.
+Performance is reported as Recall@<math alttext="\{1,5,10,100\}" class="ltx_Math" display="inline" id="A2.p3.m6" intent=":literal"><semantics><mrow><mo stretchy="false">{</mo><mn>1</mn><mo>,</mo><mn>5</mn><mo>,</mo><mn>10</mn><mo>,</mo><mn>100</mn><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{1,5,10,100\}</annotation></semantics></math> for both directions.</p>
+</div>
+<div class="ltx_para" id="A2.p4">
+<p class="ltx_p">We analyzed the token length distribution of the 1,000 reports in our evaluation set using the BioClinical-ModernBERT tokenizer. The reports contained on average 168.3 tokens, with a median of 158 tokens. The shortest report had 49 tokens, while the longest contained 427 tokens.</p>
+</div>
+</section>
+<section class="ltx_appendix" id="A3">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix C </span>PMC Benchmark</h2>
+<div class="ltx_para" id="A3.p1">
+<p class="ltx_p">We adopt the same retrieval formulation as CXR Benchmark on biomedical articles from PubMed Central. To construct the benchmark, we used the PubMed Central FTP service to download media bundles containing both .nxml full-text files and associated image files for recently published 2025 articles. From each article, we sampled exactly one unique image&ndash;caption pair and did not reuse articles across the benchmark, ensuring that each pair represents a distinct source document.</p>
+</div>
+<div class="ltx_para" id="A3.p2">
+<p class="ltx_p">For the 1,000 CXR reports, tokenization with BioClinical-ModernBERT yielded an average length of 510 tokens, with a median of 460 tokens. Report lengths ranged from 251 tokens at the lower end to 1,022 tokens at the upper bound.</p>
+</div>
+</section>
+<section class="ltx_appendix" id="A4">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix D </span>Zero-shot classification benchmark</h2>
+<div class="ltx_para" id="A4.p1">
+<p class="ltx_p">For the detailed dataset provenance, including dataset names, citations, modalities, and class counts, please refer to BIOMEDICA <cite class="ltx_cite ltx_citemacro_cite">Lozano et&nbsp;al. (<a class="ltx_ref" href="#bib.bib4" title>2025a</a>)</cite>, Table S8. Each dataset&rsquo;s classification task is reformulated into a closed-form VQA task. Labels are mapped to short human-readable text descriptions, and each image is paired with a multiple-choice list of candidate answers (including distractors). The correct label is randomly permuted among the options, and evaluation is performed by computing the similarity between image and answer embeddings.</p>
+</div>
+</section>
+<section class="ltx_appendix" id="A5">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix E </span>Compute details</h2>
+<figure class="ltx_table" id="A5.T3">
+<table class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<thead class="ltx_thead">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row ltx_border_tt">
+<span class="ltx_ERROR undefined">\rowcolor</span>gray!10 <span class="ltx_text ltx_font_bold">GPU Model</span>
+</th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt"><span class="ltx_text ltx_font_bold">GPU Memory</span></th>
+<th class="ltx_td ltx_align_center ltx_th ltx_th_column ltx_border_tt"><span class="ltx_text ltx_font_bold">Quantity</span></th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t">NVIDIA H200</th>
+<td class="ltx_td ltx_align_center ltx_border_t">141 GB</td>
+<td class="ltx_td ltx_align_center ltx_border_t">8</td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_bb">NVIDIA A100</th>
+<td class="ltx_td ltx_align_center ltx_border_bb">80 GB</td>
+<td class="ltx_td ltx_align_center ltx_border_bb">16</td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_table">Table 3: </span>Compute resources used for training.</figcaption>
+</figure>
+</section>
+<section class="ltx_appendix" id="A6">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix F </span>Training parameters</h2>
+<figure class="ltx_table" id="A6.T4">
+<table class="ltx_tabular ltx_centering ltx_guessed_headers ltx_align_middle">
+<thead class="ltx_thead">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_th_row ltx_border_tt" style="padding-left:4.0pt;padding-right:4.0pt;">
+<span class="ltx_ERROR undefined">\rowcolor</span><span class="ltx_text" style="font-size:70%;">gray!10 </span><span class="ltx_text ltx_font_bold" style="font-size:70%;">Model</span>
+</th>
+<th class="ltx_td ltx_align_left ltx_th ltx_th_column ltx_border_tt" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text ltx_font_bold" style="font-size:70%;">Hyperparameters</span></th>
+</tr>
+</thead>
+<tbody class="ltx_tbody">
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_t" rowspan="12" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP</span></th>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">context length: 77/154/512</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">batch size (per GPU): 1024</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;">
+<span class="ltx_text" style="font-size:70%;">GPUs: 8</span><math alttext="\times" class="ltx_Math" display="inline" id="A6.T4.m1" intent=":literal"><semantics><mo mathsize="0.700em">&times;</mo><annotation encoding="application/x-tex">\times</annotation></semantics></math><span class="ltx_text" style="font-size:70%;">H200</span>
+</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">effective batch size: 8192</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;">
+<span class="ltx_text" style="font-size:70%;">learning rate: </span><math alttext="5\mathrm{e}{-4}" class="ltx_Math" display="inline" id="A6.T4.m2" intent=":literal"><semantics><mrow><mrow><mn mathsize="0.700em">5</mn><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi mathsize="0.700em" mathvariant="normal">e</mi></mrow><mo mathsize="0.700em">&minus;</mo><mn mathsize="0.700em">4</mn></mrow><annotation encoding="application/x-tex">5\mathrm{e}{-4}</annotation></semantics></math>
+</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">beta1: 0.9,&emsp13; beta2: 0.95</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">warmup: 1000</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">max epochs: 20</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">precision: FP32</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">grad. clip norm: 1.0</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">dataset type: WebDataset</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">dataset: Biomedica-6M</span></td>
+</tr>
+<tr class="ltx_tr">
+<th class="ltx_td ltx_align_left ltx_th ltx_th_row ltx_border_b ltx_border_t" rowspan="12" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">BMC-LongCLIP+</span></th>
+<td class="ltx_td ltx_align_left ltx_border_t" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">context length: 512</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">batch size (per GPU): 1024</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;">
+<span class="ltx_text" style="font-size:70%;">GPUs: 16</span><math alttext="\times" class="ltx_Math" display="inline" id="A6.T4.m3" intent=":literal"><semantics><mo mathsize="0.700em">&times;</mo><annotation encoding="application/x-tex">\times</annotation></semantics></math><span class="ltx_text" style="font-size:70%;">A100</span>
+</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">effective batch size: 16384</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;">
+<span class="ltx_text" style="font-size:70%;">learning rate: </span><math alttext="5\mathrm{e}{-4}" class="ltx_Math" display="inline" id="A6.T4.m4" intent=":literal"><semantics><mrow><mrow><mn mathsize="0.700em">5</mn><mo lspace="0em" rspace="0em">&ZeroWidthSpace;</mo><mi mathsize="0.700em" mathvariant="normal">e</mi></mrow><mo mathsize="0.700em">&minus;</mo><mn mathsize="0.700em">4</mn></mrow><annotation encoding="application/x-tex">5\mathrm{e}{-4}</annotation></semantics></math>
+</td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">beta1: 0.9,&emsp13; beta2: 0.95</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">warmup: 1000</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">max epochs: 20</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">precision: FP32</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">grad. clip norm: 1.0</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">dataset type: WebDataset</span></td>
+</tr>
+<tr class="ltx_tr">
+<td class="ltx_td ltx_align_left ltx_border_b" style="padding-left:4.0pt;padding-right:4.0pt;"><span class="ltx_text" style="font-size:70%;">dataset: Biomedica-6M + LongCAP</span></td>
+</tr>
+</tbody>
+</table>
+<figcaption class="ltx_caption ltx_centering" style="font-size:70%;"><span class="ltx_tag ltx_tag_table">Table 4: </span>Hyperparameters used for pretraining.</figcaption>
+</figure>
+<div class="ltx_pagination ltx_role_newpage"></div>
+</section>
+<section class="ltx_appendix" id="A7">
+<h2 class="ltx_title ltx_title_appendix">
+<span class="ltx_tag ltx_tag_appendix">Appendix G </span>Training loss curves by training context length</h2>
+<figure class="ltx_figure" id="A7.F3"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="598" id="A7.F3.g1" src="../../assets/papers/40-NoTokensWasted_2025/training_loss_converge.png" width="598">
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 3: </span>Training loss curves across context lengths, illustrating that longer text windows accelerate convergence.</figcaption>
+</figure>
+</section>
+</article>
+</div>
+<div class="ar5iv-footer"><a class="ar5iv-nav-button ar5iv-nav-button-prev" href="/html/2510.03977">◄</a>
+<a class="ar5iv-home-button" href="/"><img alt="ar5iv homepage" height="40" src="/assets/ar5iv.png"></a>
+<a class="ar5iv-text-button" href="/feeling_lucky">Feeling<br>lucky?</a>
+<a aria-hidden="true" href="/land_of_honey_and_milk" rel="nofollow" tabindex="-1"></a>
+<a class="ar5iv-text-button ar5iv-severity-error" href="/log/2510.03978">Conversion<br>report</a>
+<a class="ar5iv-text-button" href="https://github.com/dginev/ar5iv/issues/new?template=improve-article--arxiv-id-.md&title=Improve+article+2510.03978" target="_blank">Report<br>an issue</a>
+<a class="ar5iv-text-button arxiv-ui-theme" href="https://arxiv.org/abs/2510.03978">View&nbsp;original<br>on&nbsp;arXiv</a><a class="ar5iv-nav-button ar5iv-nav-button-next" href="/html/2510.03979">►</a>
+</div><footer class="ltx_page_footer">
+<a class="ar5iv-toggle-color-scheme" href="javascript:toggleColorScheme()" title="Toggle ar5iv color scheme"><span class="color-scheme-icon"></span></a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/license" target="_blank">Copyright</a>
+<a class="ar5iv-footer-button" href="https://arxiv.org/help/policies/privacy_policy" target="_blank">Privacy Policy</a>
+<div class="ltx_page_logo">Generated  on Wed Nov  5 20:19:00 2025 by <a class="ltx_LaTeXML_logo" href="http://dlmf.nist.gov/LaTeXML/" target="_blank"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img alt="Mascot Sammy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg=="></a>
+</div></footer>
+</div>
+<script>
+      var canMathML = typeof(MathMLElement) == "function";
+      if (!canMathML) {
+        var body = document.querySelector("body");
+        body.firstElementChild.setAttribute('style', 'opacity: 0;');
+        var loading = document.createElement("div");
+        loading.setAttribute("id", "mathjax-loading-spinner");
+        var message = document.createElement("div");
+        message.setAttribute("id", "mathjax-loading-message");
+        message.innerText = "Typesetting Equations...";
+        body.prepend(loading);
+        body.prepend(message);
+
+        var el = document.createElement("script");
+        el.src = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";
+        document.querySelector("head").appendChild(el);
+
+        window.MathJax = {
+          startup: {
+            pageReady: () => {
+              return MathJax.startup.defaultPageReady().then(() => {
+                body.removeChild(loading);
+                body.removeChild(message);
+                body.firstElementChild.removeAttribute('style');
+              }); } } };
+      }
+    </script>
+<script>
+    // Auxiliary function, building the preview feature when
+    // an inline citation is clicked
+    function clicked_cite(e) {
+      e.preventDefault();
+      let cite = this.closest('.ltx_cite');
+      let next = cite.nextSibling;
+      if (next && next.nodeType == Node.ELEMENT_NODE && next.getAttribute('class') == "ar5iv-bibitem-preview") {
+        next.remove();
+        return; }
+      // Before adding a preview modal,
+      // cleanup older previews, in case they're still open
+      document.querySelectorAll('span.ar5iv-bibitem-preview').forEach(function(node) {
+        node.remove();
+      })
+
+      // Create the preview
+      preview = document.createElement('span');
+      preview.setAttribute('class','ar5iv-bibitem-preview');
+      let target = document.getElementById(this.getAttribute('href').slice(1));
+      target.childNodes.forEach(function (child) {
+        preview.append(child.cloneNode(true));
+      });
+      let close_x = document.createElement('button');
+      close_x.setAttribute("aria-label","Close modal for bibliography item preview");
+      close_x.textContent = "×";
+      close_x.setAttribute('class', 'ar5iv-button-close-preview');
+      close_x.setAttribute('onclick','this.parentNode.remove()');
+      preview.append(close_x);
+      preview.querySelectorAll('.ltx_tag_bibitem').forEach(function(node) {
+        node.remove();
+      });
+      cite.parentNode.insertBefore(preview, cite.nextSibling);
+      return;
+    }
+    // Global Document initialization:
+    // - assign the preview feature to all inline citation links
+    document.querySelectorAll(".ltx_cite .ltx_ref").forEach(function (link) {
+      link.addEventListener("click", clicked_cite);
+    });
+    </script>
+</body>
+</html>

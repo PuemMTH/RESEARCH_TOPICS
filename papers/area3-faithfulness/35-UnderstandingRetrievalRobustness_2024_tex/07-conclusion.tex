@@ -1,0 +1,21 @@
+\section{Conclusion and Future Work}
+We studied the robustness of the state-of-the-art retrieval-augmented image captioning model \textsc{SmallCap} and provide an through analysis and explanation of how retrieved captions effect the final prediction. Our exploration shows that \textsc{SmallCap} is robust to the order of the retrieved captions, but it is sensitive to retrieval noise, which has implications for using retrieval-augmented models in new domains. With extensive input attribution analysis, we show that such sensitivity is due to majority tokens in the retrieved captions. We demonstrate a more retrieval robust model can be trained with sampling methods during training. We expect that our analysis can inspire better retrieval-robust captioning models in the field. 
+
+In the future, we will investigate whether the majority voting behaviour is exploited in other retrieval-augmented captioning models. We hope to further explore if other techniques such as token-dropping or prefix-tuning would further improve retrieval robustness.
+
+\section*{Ethics Statement}
+We acknowledge the potential risks of hallucination and biases introduced by retrieval augmentation in captioning models. Misleading tokens from the retrieved captions could cause the model to generate captions describing nonexistent entities or objects in images~\citep{liu2024survey, rohrbach-etal-2018-object}. This could have adverse effects, such as propagating systematic biases present in the datastore used for retrieval~\citep{foulds2024ragged}.
+
+Despite the exploration in our work, we acknowledge that no system is perfect, and undesirable biases may still be present with our methods. We emphasize the need for continued research into techniques for identifying and mitigating hallucination and bias in retrieval-augmented models~\citep{foulds2024ragged, deng2024seeing}. We also stress the importance of responsible deployment, with human oversight and content moderation pipelines.
+
+As researchers, we have an ethical obligation to be transparent about the potential risks and limitations of our work. We welcome further scrutiny and discussion around these critical issues within the research community. 
+
+\section*{Limitations}
+We evaluate the robustness of a single retrieval-augmented image captioning model in this study. Given variations in training process and model structures, the observed model behavior may be specific to our chosen model. Applying the same analysis to other models  would be useful for a deeper understanding regarding explainability and interpretation of retrieval augmented image captioning models, which we leave for future work. 
+
+For all experiments in our study, we employ the same  CLIP-ViT-B/32 backbone as the image encoder. Investigating how model robustness varies with different visual encoders would enhance the scope of our study.
+
+While training with sampling improves model robustness, it is intuitive that introducing more noise during training makes the task more challenging. In all our experiments, we train the model for same number of epochs as \textsc{SmallCap}, therefore it is not clear if the model would gain more robustness if trained longer. We are curious if there exists an optimal balance between training time and the level of noise exposure for achieving model robustness.
+
+\section*{Acknowledgments}
+ We thank Lei Li and the CoAStal and LAMP groups for feedback. Wenyan Li is supported by the Lundbeck Foundation (BrainDrugs grant: R279-2018-1145) and  a research grant (VIL53122) from VILLUM FONDEN. Jiaang Li is supported by Carlsberg Research Foundation (grant: CF221432). Rita Ramos is supported by the Portuguese Recovery and Resilience Plan through project C645008882-00000055 (i.e., the Center For Responsible AI), and also by Funda\c{c}\~ao para a Ci\^encia e Tecnologia (FCT), through the project with reference UIDB/50021/2020 (DOI:10.54499/UIDB/50021/2020) and the Ph.D. scholarship with reference 2020.06106.BD.

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MLBCAP — Translation</title>
+<link rel="stylesheet" href="../../assets/translation.css">
+<script src="../../assets/translations.js"></script>
+</head>
+<body>
+<div id="progress-bar"></div>
+<div id="toolbar">
+  <button onclick="changeFont(-1)">A−</button>
+  <span id="font-size-val">16px</span>
+  <button onclick="changeFont(1)">A+</button>
+  <button onclick="toggleTheme()">◐ Theme</button>
+</div>
+
+<header class="paper-header">
+  <h1>Multi-LLM Collaborative Caption Generation in Scientific Documents</h1>
+  <p class="meta">Jaeyoung Kim 11 0000-0003-0880-0398 Jongho Lee 11 0000-0002-8520-2722 Hong-Jun Choi 11 0000-0002-3413-511X Ting-Yao Hsu 22 0009-0008-9082-6039 Chieh-Yang Huang 22 0009-0001-6736-9959 Sungchul Kim 33 0000-0003-3580-5290 Ryan Rossi 33 Tong Yu 33 0000-0002-5991-2050 Clyde Lee Giles 22 0000-0002-1931-585X Ting-Hao ‘Kenneth’ Huang 22 0000-0001-7021-4627 Sungchul Choi 11 0000-0002-5836-3838 · arXiv Preprint · 2025 · arXiv:2501.02552</p>
+</header>
+
+<div class="hover-hint"><span>🇬🇧 EN — hover คำเพื่อแปลศัพท์ · Shift + hover เพื่อแปลประโยค · คลิกเพื่อล็อก</span></div>
+
+<div class="translation-grid">
+
+  <div class="row heading">
+    <div class="en"><h2>Multi-LLM Collaborative Caption Generation in Scientific Documents</h2></div>
+    <div class="th"><h2>การสร้างคำอธิบายภาพในเอกสารวิชาการด้วยความร่วมมือของโมเดลภาษาขนาดใหญ่ (Multi-LLM Collaborative Caption Generation in Scientific Documents)</h2></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>Abstract</h3></div>
+    <div class="th"><h3>บทคัดย่อ (Abstract)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Scientific figure captioning is a complex task that requires generating contextually appropriate descriptions of visual content. However, existing methods often fall short by utilizing incomplete information, treating the task solely as either an image-to-text or text summarization problem. This limitation hinders the generation of high-quality captions that fully capture the necessary details. Moreover, existing data sourced from arXiv papers contain low-quality captions, posing significant challenges for training large language models (LLMs). In this paper, we introduce a framework called Multi-LLM Collaborative Figure Caption Generation (MLBCAP) to address these challenges by leveraging specialized LLMs for distinct sub-tasks. Our approach unfolds in three key modules: (Quality Assessment) We utilize multimodal LLMs to assess the quality of training data, enabling the filtration of low-quality captions. (Diverse Caption Generation) We then employ a strategy of fine-tuning/prompting multiple LLMs on the captioning task to generate candidate captions. (Judgment) Lastly, we prompt a prominent LLM to select the highest quality caption from the candidates, followed by refining any remaining inaccuracies. Human evaluations demonstrate that informative captions produced by our approach rank better than human-written captions, highlighting its effectiveness. Our code is available at https://github.com/teamreboott/MLBCAP</p></div>
+    <div class="th"><p>การสร้างคำอธิบายรูปภาพวิทยาศาสตร์ (scientific figure captioning) เป็นงานที่ซับซ้อนซึ่งต้องอาศัยการสร้างคำบรรยายข้อมูลภาพที่สอดคล้องกับบริบท อย่างไรก็ตาม วิธีการในปัจจุบันมักมีข้อจำกัดจากการใช้ข้อมูลที่ไม่ครบถ้วน โดยมองปัญหานี้เป็นเพียงการแปลงภาพเป็นข้อความ (image-to-text) หรือการสรุปความข้อความ (text summarization) เพียงอย่างเดียว ซึ่งข้อจำกัดนี้ขัดขวางการสร้างคำอธิบายภาพที่มีคุณภาพสูงและครอบคลุมรายละเอียดที่จำเป็น นอกจากนี้ ข้อมูลเดิมที่ได้จากบทความวิจัยใน arXiv มักมีคำอธิบายภาพคุณภาพต่ำ ซึ่งเป็นอุปสรรคสำคัญในการฝึกฝนโมเดลภาษาขนาดใหญ่ (LLM) ในบทความวิจัยนี้ เราขอนำเสนอกรอบการทำงานชื่อ MLBCAP (Multi-LLM Collaborative Figure Caption Generation) เพื่อแก้ปัญหาเหล่านี้โดยการใช้ LLM ที่มีความเชี่ยวชาญเฉพาะด้านสำหรับงานย่อยต่าง ๆ แนวทางของเราแบ่งออกเป็นสามโมดูลหลัก ได้แก่: (การประเมินคุณภาพ - Quality Assessment) เราใช้ LLM แบบหลายรูปแบบ (multimodal LLM) เพื่อประเมินคุณภาพของข้อมูลที่ใช้ฝึกฝน ทำให้สามารถกรองคำอธิบายภาพที่มีคุณภาพต่ำออกไปได้ (การสร้างคำอธิบายภาพที่หลากหลาย - Diverse Caption Generation) จากนั้นเราใช้กลยุทธ์การ fine-tune หรือการกำหนด prompt ให้กับ LLM หลายตัวเพื่อสร้างคำอธิบายภาพที่เป็นตัวเลือก (การตัดสิน - Judgment) ขั้นสุดท้าย เรากำหนด prompt ให้ LLM ตัวหลักทำหน้าที่เลือกคำอธิบายภาพที่มีคุณภาพสูงสุดจากตัวเลือกทั้งหมด พร้อมทั้งปรับปรุงแก้ไขความไม่ถูกต้องที่เหลืออยู่ ผลการประเมินโดยมนุษย์แสดงให้เห็นว่าคำอธิบายภาพที่สร้างจากแนวทางของเรามีอันดับที่ดีกว่าคำอธิบายภาพที่เขียนโดยมนุษย์ ซึ่งแสดงถึงประสิทธิภาพของระบบ โค้ดของเราเปิดเผยที่ https://github.com/teamreboott/MLBCAP</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>Keywords:</h3></div>
+    <div class="th"><h3>คำสำคัญ (Keywords):</h3></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>1 Introduction</h2></div>
+    <div class="th"><h2>1 บทนำ (Introduction)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Scientific figures are integral to academic communication, offering a concise and effective means of presenting complex information. However, the value of a figure is largely determined by the quality of its accompanying caption. Captions provide essential context, elucidate visual elements, and enable readers to fully grasp the insights conveyed by the figure. Consequently, the generation of accurate and informative captions for scientific documents is critical to effectively communicating key findings to domain experts. Automated captioning not only aids researchers by improving the clarity of figure descriptions but also contributes to the overall enhancement of scholarly communication [9].</p></div>
+    <div class="th"><p>รูปภาพวิทยาศาสตร์ (scientific figures) เป็นส่วนสำคัญของการสื่อสารทางวิชาการ โดยช่วยนำเสนอข้อมูลที่ซับซ้อนได้อย่างกระชับและมีประสิทธิภาพ อย่างไรก็ตาม คุณค่าของรูปภาพส่วนใหญ่ขึ้นอยู่กับคุณภาพของคำอธิบายภาพ (caption) ที่แนบมาด้วย คำอธิบายภาพช่วยให้บริบทที่จำเป็น อธิบายองค์ประกอบภาพ และช่วยให้ผู้อ่านเข้าใจข้อมูลเชิงลึกที่รูปภาพต้องการสื่อได้อย่างครบถ้วน ดังนั้น การสร้างคำอธิบายภาพที่แม่นยำและให้ข้อมูลครบถ้วนสำหรับเอกสารวิทยาศาสตร์จึงมีความสำคัญอย่างยิ่งต่อการสื่อสารผลการวิจัยหลักไปยังผู้เชี่ยวชาญในสาขา การสร้างคำอธิบายภาพอัตโนมัติไม่เพียงแต่ช่วยนักวิจัยด้วยการปรับปรุงความชัดเจนของคำบรรยายรูปภาพเท่านั้น แต่ยังมีส่วนช่วยส่งเสริมการสื่อสารทางวิชาการในภาพรวมอีกด้วย [9]</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Existing approaches to automatic figure captioning have predominantly treated the task either as an image-to-text problem [8, 21] or a text summarization task [11, 4]. Image-to-text methods focus on extracting information directly from visual content, but they often lack the domain-specific understanding required to interpret abbreviations, symbols, and implicit relationships. On the other hand, text summarization approaches rely on textual metadata such as figure-mentioning paragraphs or optical character recognition (OCR) outputs from figures. While these methods can capture textual context, they frequently overlook crucial visual details, such as trends, patterns, and color-coded elements that are vital for a comprehensive understanding of the figure. Consequently, these fragmented approaches fail to produce captions that are both accurate and informative, underscoring the need for a unified framework capable of leveraging both textual and visual modalities.</p></div>
+    <div class="th"><p>แนวทางปัจจุบันในการสร้างคำอธิบายรูปภาพอัตโนมัติส่วนใหญ่มักมองงานนี้เป็นเพียงปัญหาการแปลงภาพเป็นข้อความ (image-to-text) [8, 21] หรือการสรุปความข้อความ (text summarization) [11, 4] โดยวิธีแปลงภาพเป็นข้อความจะเน้นดึงข้อมูลโดยตรงจากเนื้อหาภาพ แต่อาจขาดความเข้าใจเฉพาะสาขาที่จำเป็นในการตีความคำย่อ สัญลักษณ์ และความสัมพันธ์เชิงนัย ในทางกลับกัน วิธีการสรุปความข้อความจะพึ่งพา metadata เชิงข้อความ เช่น ย่อหน้าที่กล่าวถึงรูปภาพ หรือผลลัพธ์จากการรู้จำอักขระด้วยแสง (OCR) จากรูปภาพ แม้ว่าวิธีเหล่านี้จะจับบริบทเชิงข้อความได้ แต่ก็มักจะละเลยรายละเอียดเชิงทัศน์ที่สำคัญ เช่น แนวโน้ม รูปแบบ และองค์ประกอบที่ระบุด้วยสี ซึ่งมีความสำคัญอย่างยิ่งต่อความเข้าใจรูปภาพอย่างสมบูรณ์ ส่งผลให้แนวทางที่แยกส่วนเหล่านี้ไม่สามารถสร้างคำอธิบายภาพที่ถูกต้องและให้ข้อมูลครบถ้วนได้ ซึ่งตอกย้ำถึงความจำเป็นในกรอบการทำงานที่เป็นหนึ่งเดียวซึ่งสามารถใช้ประโยชน์จากทั้งสื่อข้อความและภาพร่วมกัน</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Another major challenge in figure captioning lies in the quality of available training data. Many existing datasets [14, 13, 8, 26], particularly those sourced from platforms like arXiv, contain captions that are incomplete, verbose, or poorly written. A recent study [11] reports that over 50% of captions in arXiv papers are unhelpful to domain experts. These low-quality captions can hinder model training and result in sub-optimal caption generation, complicating the accurate assessment of model performance.</p></div>
+    <div class="th"><p>ความท้าทายหลักอีกประการหนึ่งในการสร้างคำอธิบายภาพอยู่ที่คุณภาพของข้อมูลสำหรับใช้ฝึกฝนโมเดล ชุดข้อมูลที่มีอยู่ในปัจจุบัน [14, 13, 8, 26] โดยเฉพาะอย่างยิ่งข้อมูลที่มาจากแพลตฟอร์มอย่าง arXiv มักมีคำอธิบายภาพที่ไม่สมบูรณ์ ฟุ่มเฟือย หรือเขียนได้ไม่ดี การศึกษาล่าสุด [11] รายงานว่าคำอธิบายภาพใน arXiv มากกว่า 50% ไม่มีประโยชน์ต่อผู้เชี่ยวชาญในสาขา คำอธิบายภาพคุณภาพต่ำเหล่านี้สามารถขัดขวางการฝึกฝนโมเดลและส่งผลให้การสร้างคำอธิบายภาพได้ประสิทธิภาพต่ำกว่าที่ควร ซึ่งทำให้การประเมินประสิทธิภาพของโมเดลอย่างถูกต้องเป็นไปได้ยาก</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>To this end, we propose a unified framework named Multi-LLM Collaborative Figure Caption Generation (MLBCAP). Unlike previous methods, MLBCAP integrates textual and visual information through a carefully orchestrated pipeline comprising three key components: quality assessment, diverse caption generation, and judgment. The quality assessment module filters out low-quality training captions, ensuring that the models are trained on reliable data. In the caption generation stage, multiple LLMs, each specializing in different aspects of figure captioning, collaborate to produce diverse candidate captions. Finally, a judgment module utilizes a prominent LLM to select the best candidate caption and refine it for accuracy and coherence.</p></div>
+    <div class="th"><p>เพื่อตอบสนองต่อสิ่งนี้ เราขอนำเสนอกรอบการทำงานที่เป็นหนึ่งเดียวชื่อว่า MLBCAP (Multi-LLM Collaborative Figure Caption Generation) ซึ่งแตกต่างจากวิธีการก่อนหน้า โดย MLBCAP จะรวมข้อมูลข้อความและทัศน์เข้าด้วยกันผ่านกระบวนการทำงานที่จัดวางไว้อย่างเป็นระบบซึ่งประกอบด้วยสามส่วนหลัก ได้แก่ การประเมินคุณภาพ (quality assessment) การสร้างคำอธิบายภาพที่หลากหลาย (diverse caption generation) และการตัดสิน (judgment) โมดูลประเมินคุณภาพจะกรองคำอธิบายภาพคุณภาพต่ำออกไปเพื่อให้แน่ใจว่าโมเดลได้รับการฝึกด้วยข้อมูลที่เชื่อถือได้ ในขั้นตอนการสร้างคำอธิบายภาพ LLM หลายตัวที่มีความเชี่ยวชาญในด้านต่าง ๆ จะทำงานร่วมกันเพื่อสร้างตัวเลือกคำอธิบายภาพที่หลากหลาย และท้ายที่สุด โมดูลตัดสินจะใช้ LLM ตัวหลักในการเลือกตัวเลือกที่ดีที่สุดและขัดเกลาเพื่อความถูกต้องและความสอดคล้องของเนื้อหา</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>While prior studies find that longer captions are generally more beneficial to readers [7, 11], scientific journals and conference papers often impose strict page limits. To accommodate this, our framework is designed to generate both long and short versions of captions. In the final step, we utilize GPT-4o with specific instructions regarding caption length to achieve that both versions are concise yet informative. In a human evaluation by domain experts, captions generated by our method are preferred over the original author-written captions, demonstrating the effectiveness of our approach. Our main contributions are as follows:</p></div>
+    <div class="th"><p>แม้ว่าการศึกษาก่อนหน้านี้จะพบว่าคำอธิบายภาพที่ยาวกว่ามักมีประโยชน์ต่อผู้อ่านมากกว่า [7, 11] แต่วารสารทางวิชาการและการประชุมวิชาการมักมีการจำกัดหน้ากระดาษอย่างเข้มงวด เพื่อรองรับข้อจำกัดนี้ กรอบการทำงานของเราจึงถูกออกแบบมาให้สามารถสร้างคำอธิบายภาพได้ทั้งแบบสั้นและแบบยาว ในขั้นตอนสุดท้าย เราใช้ GPT-4o พร้อมคำสั่งเฉพาะเจาะจงเกี่ยวกับความยาวของคำอธิบายภาพ เพื่อให้แน่ใจว่าทั้งสองเวอร์ชันจะกระชับและให้ข้อมูลครบถ้วน ในการประเมินโดยผู้เชี่ยวชาญที่เป็นมนุษย์ คำอธิบายภาพที่สร้างจากวิธีการของเราเป็นที่นิยมมากกว่าคำอธิบายภาพดั้งเดิมที่เขียนโดยผู้เขียนวิจัย ซึ่งแสดงถึงประสิทธิภาพของแนวทางของเรา โดยผลงานหลักของเรามีดังนี้:</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We propose a unified framework that includes data cleaning, caption generation, and post-editing processes to generate high-quality captions.</p></div>
+    <div class="th"><p>เราเสนอกรอบการทำงานที่เป็นหนึ่งเดียว ซึ่งประกอบด้วยกระบวนการล้างข้อมูล การสร้างคำอธิบายภาพ และการแก้ไขหลังประมวลผล เพื่อสร้างคำอธิบายภาพที่มีคุณภาพสูง</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Our approach integrates both textual and visual features, leveraging multi-modal models to produce contextually rich and accurate captions.</p></div>
+    <div class="th"><p>แนวทางของเราบูรณาการทั้งลักษณะเชิงข้อความและทัศน์ โดยใช้ประโยชน์จากโมเดลหลายรูปแบบเพื่อสร้างคำอธิบายภาพที่มีข้อมูลบริบทครบถ้วนและแม่นยำ</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Through human evaluations, we show that our approach ranked better than author-written captions, demonstrating its effectiveness.</p></div>
+    <div class="th"><p>จากผลการประเมินโดยมนุษย์ เราแสดงให้เห็นว่าแนวทางของเราได้รับการจัดอันดับที่ดีกว่าคำอธิบายภาพที่เขียนโดยผู้เขียนวิจัย ซึ่งพิสูจน์ถึงประสิทธิภาพของระบบ</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>2 Related Work</h2></div>
+    <div class="th"><h2>2 งานวิจัยที่เกี่ยวข้อง (Related Work)</h2></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>2.1 Collaboration Techniques with LLMs</h3></div>
+    <div class="th"><h3>2.1 เทคนิคการทำงานร่วมกันด้วย LLM (Collaboration Techniques with LLMs)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>LLMs have shown exceptional performance across a wide range of tasks, benefiting from their ability to comprehend instructions [1, 28]. However, despite their versatility, individual LLMs exhibit distinct strengths and limitations due to differences in training data and architectural design [12]. To mitigate this issue, recent work [23] trained a classifier to select the best response generated by different reasoning models. Another related work [6] proposed an algorithm that combines outputs from multiple LLMs for attribute extraction through weight assignment. Despite the growing application of collaborative methods in various fields, a significant research gap exists in exploring their potential for figure captioning in scientific documents.</p></div>
+    <div class="th"><p>LLM แสดงประสิทธิภาพการทำงานที่โดดเด่นในหลากหลายงาน โดยได้รับประโยชน์จากความสามารถในการเข้าใจคำสั่ง [1, 28] อย่างไรก็ตาม แม้จะมีความสามารถรอบด้าน แต่ LLM แต่ละตัวก็มีจุดแข็งและข้อจำกัดที่แตกต่างกันเนื่องจากความแตกต่างของข้อมูลที่ใช้ฝึกฝนและการออกแบบสถาปัตยกรรมโมเดล [12] เพื่อบรรเทาปัญหานี้ งานวิจัยล่าสุด [23] ได้ฝึกตัวจำแนกประเภท (classifier) เพื่อเลือกคำตอบที่ดีที่สุดที่สร้างจากโมเดลการใช้เหตุผลแบบต่าง ๆ และงานที่เกี่ยวข้องอีกชิ้น [6] ได้นำเสนออัลกอริทึมที่รวมผลลัพธ์จาก LLM หลายตัวเพื่อสกัดคุณลักษณะ (attribute extraction) ผ่านการกำหนดค่าน้ำหนัก แม้ว่าวิธีการทำงานร่วมกันจะถูกนำมาประยุกต์ใช้อย่างแพร่หลายในหลายสาขา แต่ยังคงมีช่องว่างการวิจัยที่สำคัญในการสำรวจศักยภาพสำหรับการสร้างคำอธิบายรูปภาพในเอกสารวิทยาศาสตร์</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>2.2 Figure Captioning in Scientific Documents</h3></div>
+    <div class="th"><h3>2.2 การสร้างคำอธิบายรูปภาพในเอกสารวิชาการ (Figure Captioning in Scientific Documents)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>To facilitate the generation of captions by neural networks, previous research developed a variety of datasets, such as FigureSeer [24], FigureQA [14], DVQA [13], and SciCap [8]. More recently, an enhanced version of SciCap was introduced, incorporating both figures and their associated textual information [11]. This dataset advances caption generator capabilities, enabling them to produce contextually relevant captions for scientific figures. Based on this dataset, a recent study [11] discovered that more than 76% of the words in figure captions matched those in figure-mentioning paragraphs and OCR text. Based on this empirical observation, they formulated the figure captioning task as a text summarization task. Contemporaneously, SciCap+ [26] was proposed as an extension of SciCap, integrating OCR-derived textual data to further enhance the generation of figure captions. However, text summarization models, which depend on textual data from figure-related paragraphs and OCR outputs, often fail to capture essential visual details, including patterns and colors in graphs.</p></div>
+    <div class="th"><p>เพื่ออำนวยความสะดวกในการสร้างคำอธิบายภาพด้วยโครงข่ายประสาทเทียม งานวิจัยก่อนหน้านี้ได้พัฒนาชุดข้อมูลที่หลากหลาย เช่น FigureSeer [24], FigureQA [14], DVQA [13] และ SciCap [8] เมื่อไม่นานมานี้ ได้มีการแนะนำ SciCap เวอร์ชันปรับปรุงที่รวมทั้งรูปภาพและข้อมูลเชิงข้อความที่เกี่ยวข้องเข้าด้วยกัน [11] ชุดข้อมูลนี้ช่วยเพิ่มความสามารถของตัวสร้างคำอธิบายภาพ ทำให้สามารถสร้างคำอธิบายที่สอดคล้องกับบริบทสำหรับรูปภาพวิทยาศาสตร์ได้ จากชุดข้อมูลนี้ การศึกษาล่าสุด [11] พบว่าคำศัพท์ในคำอธิบายภาพมากกว่า 76% ตรงกับคำในย่อหน้าที่กล่าวถึงรูปภาพและข้อความจาก OCR จากการสังเกตเชิงประจักษ์นี้ พวกเขาได้กำหนดให้งานสร้างคำอธิบายภาพเป็นงานสรุปความข้อความ ในขณะเดียวกัน SciCap+ [26] ได้ถูกเสนอขึ้นเพื่อเป็นส่วนขยายของ SciCap โดยรวมข้อมูลข้อความที่ได้จาก OCR เพื่อยกระดับการสร้างคำอธิบายรูปภาพ อย่างไรก็ตาม โมเดลสรุปความข้อความซึ่งพึ่งพาข้อมูลเชิงข้อความจากย่อหน้าที่เกี่ยวข้องและผลลัพธ์ OCR มักล้มเหลวในการจับรายละเอียดเชิงทัศน์ที่สำคัญ เช่น แนวโน้ม รูปแบบ และสีในกราฟ</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>2.3 Evaluating Natural Language Generation (NLG) Tasks</h3></div>
+    <div class="th"><h3>2.3 Evaluating Natural Language Generation (NLG) Tasks</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In NLG tasks, traditional automatic metrics such as BLEU [20] and ROUGE [16] are widely used for evaluation. However, these metrics often exhibit a relatively low correlation with human judgments in text generation tasks [18], mainly because they depend on human-preferred reference outputs to fairly evaluate the performance of NLG models. Recent studies have advocated for using LLMs as reference-free evaluation metrics, achieving higher correspondence with human evaluations than traditional metrics [30, 18]. Notably, SciCap-Eval [10] employed LLMs to assess caption quality and demonstrated that GPT-4, as a zero-shot caption evaluator, positively correlates with Ph.D. students’ assessments (Pearson correlation coefficient of 0.5).</p></div>
+    <div class="th"><p>ในงาน NLG มาตรวัดอัตโนมัติดั้งเดิมอย่าง BLEU [20] และ ROUGE [16] มักถูกใช้อย่างแพร่หลายในการประเมินประสิทธิภาพ อย่างไรก็ตาม มาตรวัดเหล่านี้มักมีความสอดคล้องในระดับต่ำกับการประเมินโดยมนุษย์ในงานสร้างข้อความ [18] เนื่องจากต้องพึ่งพาผลลัพธ์อ้างอิงที่มนุษย์ชอบในการประเมินประสิทธิภาพของโมเดล NLG การศึกษาเมื่อเร็ว ๆ นี้จึงสนับสนุนการใช้ LLM เป็นมาตรวัดการประเมินแบบไม่มีข้อความอ้างอิง (reference-free) ซึ่งมีความสอดคล้องกับการประเมินโดยมนุษย์สูงกว่ามาตรวัดแบบเดิม [30, 18] ที่สำคัญคือ SciCap-Eval [10] ได้นำ LLM มาใช้ประเมินคุณภาพคำอธิบายภาพ และสาธิตว่า GPT-4 ในฐานะตัวประเมินคำอธิบายภาพแบบ zero-shot มีความสัมพันธ์เชิงบวกกับการประเมินของนักศึกษาระดับปริญญาเอก (ค่าสัมประสิทธิ์สหสัมพันธ์เพียร์สันเท่ากับ 0.5)</p></div>
+  </div>
+  <div class="row figure">
+    <div class="en">
+      <img src="https://ar5iv.labs.arxiv.org/html/2501.02552/assets/x1.png" alt="Figure 1" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Figure 1</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Figure 1:</strong> Figure 1: Overview of the collaborative framework integrating multiple LLMs for caption generation in scientific documents. Initially, two MLLMs generate figure descriptions. Next, three fine-tuned models and GPT-4o generate candidate captions. Finally, GPT-4o selects and refines the best caption from the candidates.</p>
+    </div>
+    <div class="th">
+      <img src="https://ar5iv.labs.arxiv.org/html/2501.02552/assets/x1.png" alt="รูปที่ 1" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">รูปที่ 1</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>รูปที่ 1:</strong> รูปที่ 1: ภาพรวมของกรอบการทำงานร่วมกันที่บูรณาการ LLM หลายตัวเพื่อสร้างคำอธิบายภาพในเอกสารวิชาการ ในตอนแรก MLLM สองตัวจะสร้างคำบรรยายรูปภาพ จากนั้นโมเดลที่ผ่านการ fine-tune สามตัวและ GPT-4o จะสร้างตัวเลือกคำอธิบายภาพ และสุดท้าย GPT-4o จะเลือกและปรับปรุงแก้ไขคำอธิบายภาพที่ดีที่สุดจากตัวเลือกเหล่านั้น</p>
+    </div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>3 Problem Statement</h2></div>
+    <div class="th"><h2>3 คำจำกัดความของปัญหา (Problem Statement)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Consider an arXiv paper DD with nn captions {Ci}i=1n\{C_{i}\}_{i=1}^{n}. For each caption CiC_{i}, several related sources from DD are used to assist in caption generation. These sources include the corresponding figure FiF_{i} and mm paragraphs {Pij}j=1m\{P_{i}^{j}\}_{j=1}^{m} that mention FiF_{i}. Specifically, kk sentences {Mij}j=1k\{M_{i}^{j}\}_{j=1}^{k} within these paragraphs explicitly refer to FiF_{i} (e.g., “As shown in Fig. 1, …”). 111For simplicity, superscripts for PiP_{i} and MiM_{i} are omitted in the following sections, as multiple instances may exist. Additionally, textual information extracted using OCR from the figure is denoted as OiO_{i}, and the figure’s type (e.g., bar chart, node diagram) is represented as TiT_{i}. Finally, the subject category of DD (e.g., “cs.AI” for Computer Science - Artificial Intelligence) is denoted as SS. The objective of this work is to generate high-quality CiC_{i} for FiF_{i} utilizing the aforementioned figure-relevant features.</p></div>
+    <div class="th"><p>พิจารณาบทความวิจัยใน arXiv D ที่มีคำอธิบายภาพ n รายการ {Ci}i=1n\{C_{i}\}_{i=1}^{n} สำหรับคำอธิบายภาพ CiC_{i}แต่ละรายการ จะใช้แหล่งข้อมูลที่เกี่ยวข้องจาก D เพื่อช่วยในการสร้างคำอธิบายภาพ แหล่งข้อมูลเหล่านี้ประกอบด้วยรูปภาพที่เกี่ยวข้อง FiF_{i}และ m ย่อหน้า {Pij}j=1m\{P_{i}^{j}\}_{j=1}^{m}ที่กล่าวถึง FiF_{i}โดยเฉพาะอย่างยิ่ง มีประโยค k ประโยค {Mij}j=1k\{M_{i}^{j}\}_{j=1}^{k}ภายในย่อหน้าเหล่านี้ที่อ้างถึง FiF_{i}อย่างชัดเจน (เช่น "ดังแสดงในรูปที่ 1...") เพื่อความง่ายในการอธิบาย เราจะละตัวยกสำหรับ PiP_{i}และ MiM_{i}ในส่วนถัดไป เนื่องจากอาจมีหลายรายการเกิดขึ้นได้ นอกจากนี้ ข้อมูลเชิงข้อความที่สกัดด้วย OCR จากรูปภาพจะแทนด้วย OiO_{i}และประเภทของรูปภาพ (เช่น แผนภูมิแท่ง, แผนผังโหนด) จะแทนด้วย TiT_{i}และสุดท้าย หมวดหมู่หัวข้อของ D (เช่น "cs.AI" สำหรับวิทยาศาสตร์คอมพิวเตอร์ - ปัญญาประดิษฐ์) จะแทนด้วย S วัตถุประสงค์ของงานนี้คือการสร้าง CiC_{i}คุณภาพสูงสำหรับ FiF_{i}โดยใช้คุณลักษณะที่เกี่ยวข้องกับรูปภาพที่กล่าวมาข้างต้น</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>4 Multi-LLM Collaborative Figure Caption Generation</h2></div>
+    <div class="th"><h2>4 การสร้างคำอธิบายรูปภาพด้วยความร่วมมือของโมเดลภาษาขนาดใหญ่ (Multi-LLM Collaborative Figure Caption Generation)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Our overall pipeline is illustrated in Figure 1, and the following sections provide a description of each component. The actual prompts are described in the Appendix.</p></div>
+    <div class="th"><p>กระบวนการทำงานในภาพรวมของเราแสดงไว้ในรูปที่ 1 และหัวข้อต่อไปนี้จะอธิบายรายละเอียดของแต่ละองค์ประกอบ ส่วน prompt จริงที่ใช้นั้นได้อธิบายไว้ในภาคผนวก</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>4.1 Quality Assessment</h3></div>
+    <div class="th"><h3>4.1 การประเมินคุณภาพ (Quality Assessment)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We employ GPT-4o to generate a synthetic quality assessment dataset using 3k subset of the training data. Following the approach of SciCap-Eval, we prompt GPT-4o to score captions on a scale of 1 to 6 based on the given CiC_{i}, FiF_{i}, and PiP_{i} (higher scores indicate better quality).</p></div>
+    <div class="th"><p>เราใช้ GPT-4o เพื่อสร้างชุดข้อมูลการประเมินคุณภาพแบบสังเคราะห์โดยใช้ข้อมูลชุดย่อยขนาด 3,000 รายการของข้อมูลสำหรับฝึกฝน ตามแนวทางของ SciCap-Eval โดยเรากำหนด prompt ให้ GPT-4o ให้คะแนนคำอธิบายภาพในช่วง 1 ถึง 6 คะแนนตามค่า CiC_{i}, FiF_{i}และ PiP_{i}ที่กำหนดให้ (คะแนนที่สูงกว่าแสดงถึงคุณภาพที่ดีกว่า)</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Next, we fine-tune LLaVA [17] on the constructed dataset. After fine-tuning, LLaVA predicts the caption quality across the entire training dataset. We then collect samples 𝒟high\mathcal{D}_{\text{high}} with quality scores of 5 and 6. For the evaluation of 200 samples, the fine-tuned LLaVA showed agreement in quality assessment with GPT-4o, achieving Kendall’s tau coefficient of 0.5502.</p></div>
+    <div class="th"><p>ถัดไป เราทำการ fine-tune LLaVA [17] บนชุดข้อมูลที่สร้างขึ้น หลังจาก fine-tune แล้ว LLaVA จะทำนายคุณภาพของคำอธิบายภาพในชุดข้อมูลที่ใช้ฝึกฝนทั้งหมด จากนั้นเราจะเก็บรวบรวมตัวอย่าง 𝒟high\mathcal{D}_{\text{high}} ที่มีคะแนนคุณภาพเท่ากับ 5 และ 6 สำหรับการประเมินตัวอย่าง 200 รายการ LLaVA ที่ผ่านการ fine-tune แสดงความสอดคล้องในการประเมินคุณภาพร่วมกับ GPT-4o โดยมีค่าสัมประสิทธิ์ทาวของเคนดัลล์ (Kendall’s tau) เท่ากับ 0.5502</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>4.2 Diverse Caption Generation</h3></div>
+    <div class="th"><h3>4.2 การสร้างคำอธิบายภาพที่หลากหลาย (Diverse Caption Generation)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>To capture diverse perspectives and generate a varied set of candidate captions, we utilize four distinct models: GPT-4o, LLaMA-3-8B [2], Yi-1.5-9B [28], and Pegasus [29]. Each model offers unique viewpoints that contribute to the diversity of the generated captions. Specifically, GPT-4o leverages its advanced reasoning capabilities as a large-scale LLM. LLaMA-3-8B and Yi-1.5-9B are fine-tuned on the figure captioning task, enhancing domain-specific knowledge. Pegasus excels in abstractive summarization of textual content, capturing essential information from figure-mentioning paragraphs and OCR text.</p></div>
+    <div class="th"><p>เพื่อจับมุมมองที่หลากหลายและสร้างชุดตัวเลือกคำอธิบายภาพที่ต่างกัน เราใช้โมเดลสี่ตัว ได้แก่ GPT-4o, LLaMA-3-8B [2], Yi-1.5-9B [28] และ Pegasus [29] แต่ละโมเดลนำเสนอจุดเด่นเฉพาะตัวที่มีส่วนช่วยสร้างความหลากหลายของตัวเลือกคำอธิบายภาพ โดยเฉพาะอย่างยิ่ง GPT-4o ใช้ความสามารถในการใช้เหตุผลขั้นสูงของโมเดลภาษาขนาดใหญ่ LLaMA-3-8B และ Yi-1.5-9B ได้รับการ fine-tune สำหรับงานสร้างคำอธิบายภาพโดยเฉพาะเพื่อเพิ่มความรู้เฉพาะด้าน และ Pegasus มีความโดดเด่นในการสรุปใจความสำคัญจากย่อหน้าที่อ้างถึงรูปภาพและข้อความ OCR</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>GPT-4o. For a test sample, we use few-shot prompting by providing GPT-4o with ten example captions, EE, randomly selected from 𝒟h​i​g​h\mathcal{D}_{high}. These examples have the same subject as the test sample and have a quality score of 6. We first instruct GPT-4o to generate a figure description ZiZ_{i} for FiF_{i} by providing the FiF_{i}, TiT_{i} and SS. Then, GPT-4o generates a candidate caption based on EE, PiP_{i}, MiM_{i}, TiT_{i}, OiO_{i}, SS, and ZiZ_{i}.</p></div>
+    <div class="th"><p>GPT-4o: สำหรับตัวอย่างทดสอบ เราใช้การทำ prompt แบบ few-shot โดยให้ตัวอย่างคำอธิบายภาพ 10 รายการแก่ GPT-4o ซึ่งสุ่มเลือกมาจากชุดข้อมูล 𝒟high\mathcal{D}_{high} โดยตัวอย่างเหล่านี้เป็นเรื่องเดียวกันกับตัวอย่างที่ต้องการทดสอบและมีคะแนนคุณภาพเท่ากับ 6 ในขั้นตอนแรก เราสั่งให้ GPT-4o สร้างคำบรรยายรูปภาพ ZiZ_{i} สำหรับ FiF_{i} โดยส่งรูปภาพ FiF_{i}, ประเภทภาพ TiT_{i} และหมวดหมู่หัวข้อ S จากนั้น GPT-4o จะสร้างคำอธิบายภาพตัวเลือกโดยอิงจากตัวอย่าง few-shot, PiP_{i}, MiM_{i}, TiT_{i}, OiO_{i}, S และ ZiZ_{i}</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>LLaMA-3-8B and Yi-1.5-9B are fine-tuned with visual and textual features from the 𝒟high\mathcal{D}_{\text{high}} dataset. Figure descriptions are generated by MiniCPM-V [27], which outperforms GPT-4V-1106 and Gemini-Pro [22] for OpenCompass benchmarks [5]. The prompts used for LLaMA-3-8B and Yi-1.5-9B are identical to the prompts used for GPT-4o, except for the exclusion of the few-shot examples.</p></div>
+    <div class="th"><p>LLaMA-3-8B และ Yi-1.5-9B ได้รับการ fine-tune ด้วยลักษณะเด่นทางภาพและข้อความจากชุดข้อมูล 𝒟high\mathcal{D}_{\text{high}} โดยมีคำบรรยายรูปภาพที่สร้างขึ้นโดย MiniCPM-V [27] ซึ่งมีประสิทธิภาพดีกว่า GPT-4V-1106 และ Gemini-Pro [22] ในการทดสอบ OpenCompass [5] ทั้งนี้ prompt ที่ใช้กับ LLaMA-3-8B และ Yi-1.5-9B จะเหมือนกับ prompt ของ GPT-4o ยกเว้นแต่ไม่มีการส่งตัวอย่างแบบ few-shot</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Pegasus is fine-tuned on figure-mentioning paragraphs and OCR-text from 𝒟high\mathcal{D}_{\text{high}}. Apart from the dataset, this model follows the previous work [11].</p></div>
+    <div class="th"><p>Pegasus ได้รับการ fine-tune บนย่อหน้าที่กล่าวถึงรูปภาพและข้อความ OCR จากชุดข้อมูล 𝒟high\mathcal{D}_{\text{high}} นอกเหนือจากชุดข้อมูลแล้ว โมเดลนี้ดำเนินการตามแนวทางจากงานวิจัยก่อนหน้า [11]</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>4.3 Judgement</h3></div>
+    <div class="th"><h3>4.3 การตัดสิน (Judgement)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We ask GPT-4o to select the best quality caption from four candidate captions and edit inaccuracies in the selected caption leveraging both visual and textual information. To generate both long and short captions, we set a word limit using the placeholder [MAX_LEN] in the prompt. To maintain the conciseness while sufficiently conveying figure information, we define [MAX_LEN] as 50 words for long captions and 30 words for short captions. These limits are based on the training data, where the average caption length is 41.85 words. Here, we refer to the generation of long captions as MLBCAP (long) and short captions as MLBCAP (short).</p></div>
+    <div class="th"><p>เราให้ GPT-4o เลือกคำอธิบายภาพที่มีคุณภาพดีที่สุดจากตัวเลือกทั้งสี่รายการ และแก้ไขความไม่ถูกต้องในคำอธิบายภาพที่เลือกโดยใช้ข้อมูลภาพและข้อความร่วมกัน เพื่อสร้างคำอธิบายภาพทั้งแบบสั้นและแบบยาว เรากำหนดขีดจำกัดจำนวนคำโดยใช้ตัวแทนข้อความ [MAX_LEN] ใน prompt และเพื่อรักษาความกระชับแต่ยังคงข้อมูลรูปภาพที่เพียงพอ เรากำหนด [MAX_LEN] เป็น 50 คำสำหรับคำอธิบายแบบยาว และ 30 คำสำหรับคำอธิบายแบบสั้น ขีดจำกัดเหล่านี้อ้างอิงจากข้อมูลฝึกฝน ซึ่งมีความยาวเฉลี่ยของคำอธิบายภาพอยู่ที่ 41.85 คำ ในที่นี้ เราจะเรียกคำอธิบายแบบยาวว่า MLBCAP (long) และแบบสั้นว่า MLBCAP (short)</p></div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 1 — ตารางที่ 1: สถิติของชุดข้อมูลดั้งเดิมและชุดข้อมูลหลังการประมวลผลเบื้องต้นที่ใช้สำหรับการฝึกฝน การตรวจสอบความถูกต้อง และการทดสอบ</div>
+      
+    </div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 2 — ตารางที่ 2: ผลลัพธ์ของการประเมินคุณภาพคำอธิบายภาพโดยใช้ GPT-4o โดยคำอธิบายภาพที่มีคุณภาพสูงสุดมีสัดส่วนเพียงร้อยละ 27.11</div>
+      
+    </div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>5 Experiments</h2></div>
+    <div class="th"><h2>5 การทดลอง (Experiments)</h2></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>5.1 Dataset</h3></div>
+    <div class="th"><h3>5.1 ชุดข้อมูล (Dataset)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>One of the goals of this study is to evaluate whether MLBCAP can generate captions that align with human preferences. To enhance the richness of the training data, we have chosen to combine the SciCap222https://huggingface.co/datasets/CrowdAILab/scicap/tree/main and SciCap+ [26] datasets for training. These datasets include caption-relevant metadata extracted from the original arXiv papers. Detailed statistics of the datasets is provided in Table 1.</p></div>
+    <div class="th"><p>หนึ่งในเป้าหมายของการศึกษานี้คือการประเมินว่า MLBCAP สามารถสร้างคำอธิบายภาพที่สอดคล้องกับความพึงพอใจของมนุษย์ได้หรือไม่ เพื่อเพิ่มความหลากหลายของข้อมูลฝึกฝน เราได้เลือกที่จะผสมผสานชุดข้อมูล SciCap และ SciCap+ [26] เข้าด้วยกันสำหรับการฝึกฝน ชุดข้อมูลเหล่านี้รวมข้อมูล metadata ที่เกี่ยวข้องกับคำอธิบายภาพซึ่งสกัดมาจากบทความวิจัยใน arXiv ดั้งเดิม รายละเอียดสถิติของชุดข้อมูลแสดงอยู่ในตารางที่ 1</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Data Preprocessing. Since both SciCap and SciCap+ are built on arXiv papers, we first conducted deduplication using the arXiv paper ID. To obtain high-quality examples, the following preprocessing steps were applied. First, figures with captions that do not end with a period were excluded. Second, captions that were either too long or too short, specifically those exceeding 100 words in length or consisting of a single sentence, were removed. Lastly, figures with captions rated below 5, as described in Section 4, were filtered out. After these preprocessing steps, we could get 135,935 samples.</p></div>
+    <div class="th"><p>การประเมินข้อมูลเบื้องต้น: เนื่องจากทั้ง SciCap และ SciCap+ สร้างขึ้นจากบทความวิจัยใน arXiv ขั้นแรกเราจึงลบข้อมูลที่ซ้ำซ้อนโดยใช้ ID ของบทความวิจัย และเพื่อรวบรวมตัวอย่างที่มีคุณภาพสูง เราได้ดำเนินการตามขั้นตอนการประมวลผลเบื้องต้นดังนี้: (1) คัดรูปภาพที่มีคำอธิบายภาพไม่ลงท้ายด้วยจุดออก (2) ลบคำอธิบายภาพที่ยาวหรือสั้นเกินไป โดยเฉพาะที่ยาวเกิน 100 คำ หรือมีเพียงประโยคเดียว และ (3) กรองรูปภาพที่มีคะแนนคุณภาพต่ำกว่า 5 ตามที่อธิบายในส่วนที่ 4 ออกไป หลังผ่านขั้นตอนเหล่านี้ เราได้ตัวอย่างจำนวน 135,935 ตัวอย่าง</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Caption Quality Dataset. We employ GPT-4o to generate a synthetic quality assessment dataset using 3k subset samples for the training data since there is no publicly available dataset. The quality distribution of the 3k captions is shown in Table 2, which shows that the training data contains low-quality captions.</p></div>
+    <div class="th"><p>ชุดข้อมูลคุณภาพคำอธิบายภาพ: เราใช้ GPT-4o เพื่อสร้างชุดข้อมูลการประเมินคุณภาพแบบสังเคราะห์โดยใช้ข้อมูลตัวอย่างย่อย 3,000 ตัวอย่างสำหรับข้อมูลฝึกฝน เนื่องจากไม่มีชุดข้อมูลสาธารณะที่ใช้งานได้ การกระจายคุณภาพของคำอธิบายภาพ 3,000 รายการแสดงอยู่ในตารางที่ 2 ซึ่งบ่งชี้ว่าข้อมูลฝึกฝนเดิมมีคำอธิบายภาพคุณภาพต่ำปะปนอยู่</p></div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 3 — ตารางที่ 3: ตัวอย่างของการบรรยายรูปภาพระหว่าง GPT-4o และ MiniCPM-V</div>
+      
+    </div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>5.2 Training Details</h3></div>
+    <div class="th"><h3>5.2 รายละเอียดการฝึกฝนโมเดล (Training Details)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Prompts. The specific prompts employed in our study are detailed in the Appendix. To elicit figure descriptions from the MiniCPM-V model, we employed a direct and intuitive prompt: “What is in the image?”. We also tried extracting figure descriptions with the prompts used in GPT-4o, however, the quality of the generated descriptions was inferior compared to descriptions obtained using the more intuitive prompts. A representative example of the figure descriptions generated is illustrated in Table 3.</p></div>
+    <div class="th"><p>Prompt: รายละเอียดของ prompt ที่ใช้ในการศึกษาของเราระบุไว้ในภาคผนวก สำหรับการสกัดการบรรยายรูปภาพจากโมเดล MiniCPM-V เราใช้ prompt ที่สั้นและตรงไปตรงมาว่า "What is in the image?" เรายังทดลองสกัดการบรรยายรูปภาพด้วย prompt แบบเดียวกับที่ใช้ใน GPT-4o แต่พบว่าคุณภาพของคำบรรยายที่ได้มีประสิทธิภาพด้อยกว่าคำบรรยายจาก prompt ที่ตรงไปตรงมามากกว่า ตัวอย่างคำบรรยายรูปภาพที่สร้างขึ้นแสดงอยู่ในตารางที่ 3</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Models. Here are the models we used in our experiments. The fine-tuned models were tuned for 5 epochs.</p></div>
+    <div class="th"><p>โมเดล: ต่อไปนี้คือโมเดลที่ใช้ในการทดลองของเรา โดยโมเดลที่ผ่านการ fine-tune จะถูกฝึกเป็นจำนวน 5 epoch</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>GPT-4o. We used gpt-4o-2024-05-13 with a temperature setting of 0. All experimental procedures were conducted between May 2024 and August 2024.</p></div>
+    <div class="th"><p>GPT-4o: เราใช้ gpt-4o-2024-05-13 โดยตั้งค่าอุณหภูมิ (temperature) เป็น 0 ขั้นตอนการทดลองทั้งหมดดำเนินการระหว่างเดือนพฤษภาคม 2024 ถึงสิงหาคม 2024</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>LLaVA. We used llava-llama-3-8b-v1_1-hf model 333https://huggingface.co/xtuner/llava-llama-3-8b-v1_1-transformers, which is fine-tuned from the LLaMA-3-8B architecture. This variant of LLaVA was optimized using the AdamW [19] optimizer, with a learning rate set to 1​e−51e-5 and a batch size of 4.</p></div>
+    <div class="th"><p>LLaVA: เราใช้โมเดล llava-llama-3-8b-v1_1-hf ซึ่งได้รับการ fine-tune มาจากสถาปัตยกรรม LLaMA-3-8B ตัวเลือกของ LLaVA นี้ได้รับการปรับให้เหมาะสมโดยใช้ตัวเพิ่มประสิทธิภาพ AdamW [19] โดยตั้งค่าอัตราการเรียนรู้ไว้ที่ 1e-5 และมีขนาด batch size เท่ากับ 4</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>MiniCPM-V. For the task of figure description extraction, we used the latest model (MiniCPM-Llama3-V 2.5 444https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5) in the MiniCPM-V families without the fine-tuning.</p></div>
+    <div class="th"><p>MiniCPM-V: สำหรับงานสกัดคำบรรยายรูปภาพ เราใช้โมเดลล่าสุด (MiniCPM-Llama3-V 2.5) ในตระกูล MiniCPM-V โดยไม่มีการ fine-tune</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>LLaMA-3-8B. To generate a caption, we used Meta-Llama-3-8B-Instruct 555https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct model. The model was trained with AdamW, a learning rate of 1​e−51e-5 and a batch size of 1.</p></div>
+    <div class="th"><p>LLaMA-3-8B: ในการสร้างคำอธิบายภาพ เราใช้โมเดล Meta-Llama-3-8B-Instruct โมเดลได้รับการฝึกด้วย AdamW โดยมีอัตราการเรียนรู้ 1e-5 และมีขนาด batch size เท่ากับ 1</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Yi-1.5-9B is an upgraded version of Yi. For generating captions, we used Yi-1.5-9B-Chat 666https://huggingface.co/01-ai/Yi-1.5-9B-Chat. The training configuration is the same as LLaMa-3-8B.</p></div>
+    <div class="th"><p>Yi-1.5-9B เป็นเวอร์ชันปรับปรุงของ Yi สำหรับสร้างคำอธิบายภาพ เราใช้ Yi-1.5-9B-Chat โดยการกำหนดค่าการฝึกฝนเหมือนกับ LLaMA-3-8B</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Pegasus. We trained the pegasus-large 777https://huggingface.co/google/pegasus-large model using the AdamW optimizer, with a batch size of 32 and a learning rate of 5​e−55e-5.</p></div>
+    <div class="th"><p>Pegasus: เราฝึกโมเดล pegasus-large โดยใช้ตัวเพิ่มประสิทธิภาพ AdamW โดยมีขนาด batch size เท่ากับ 32 และอัตราการเรียนรู้ 5e-5</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>When fine-tuning the caption generation models, we concatenated all figure-mentioning paragraphs. In cases where the cumulative length of these paragraphs exceeded 512 tokens, the text was truncated to fit within this limit. For text generation, we utilized greedy search to ensure the generation of coherent.</p></div>
+    <div class="th"><p>เมื่อ fine-tune โมเดลสร้างคำอธิบายภาพ เราได้นำย่อหน้าที่กล่าวถึงรูปภาพทั้งหมดมาเชื่อมต่อกัน ในกรณีที่ความยาวสะสมของย่อหน้าเหล่านี้เกิน 512 โทเค็น ข้อความจะถูกตัดให้สั้นลงเพื่อให้พอดีกับขีดจำกัดนี้ สำหรับการสร้างข้อความ เราใช้ greedy search เพื่อให้มั่นใจว่าจะได้ข้อความที่สอดคล้องกัน</p></div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 4 — ตารางที่ 4: การเปรียบเทียบคำอธิบายภาพที่สร้างขึ้น โดย MLBCAP รวมข้อมูลหลักและให้คำบรรยายรูปภาพที่ครอบคลุม ในขณะที่ Pegasus มีแนวโน้มที่จะสร้างคำอธิบายภาพที่สั้นและขาดรายละเอียดที่เพียงพอ</div>
+      
+    </div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>5.3 Human Evaluation Results</h3></div>
+    <div class="th"><h3>5.3 ผลการประเมินโดยมนุษย์ (Human Evaluation Results)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We evaluate MLBCAP with a human evaluation to accurately assess the quality of generated captions. The baseline models used for evaluation include LLaMA-3-8B, Yi-1.5-9B, and Pegasus. All baselines were fine-tuned on the high-quality captions from the SciCap and SciCap+ datasets, specifically captions with a quality score of 5 or higher. The qualitative results for generated captions are illustrated in Table 4.</p></div>
+    <div class="th"><p>เราประเมิน MLBCAP ด้วยการประเมินโดยมนุษย์เพื่อวัดคุณภาพของคำอธิบายภาพที่สร้างขึ้นอย่างถูกต้อง โมเดล baseline ที่ใช้เปรียบเทียบประกอบด้วย LLaMA-3-8B, Yi-1.5-9B และ Pegasus โดย baseline ทั้งหมดได้รับการ fine-tune ด้วยคำอธิบายภาพคุณภาพสูงจากชุดข้อมูล SciCap และ SciCap+ ที่มีคะแนนคุณภาพตั้งแต่ 5 ขึ้นไป ผลลัพธ์เชิงคุณภาพสำหรับคำอธิบายภาพที่สร้างขึ้นแสดงอยู่ในตารางที่ 4</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>5.4 Comparison with Baselines</h3></div>
+    <div class="th"><h3>5.4 การเปรียบเทียบกับโมเดลคู่แข่ง (Comparison with Baselines)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We recruited three computer vision (CV) experts, each with over five years of experience in the field. These experts were asked to select the best and worst quality captions generated by LLMs. We used 91 CV figures from the SciCap test dataset, with the candidate captions de-identified and randomly shuffled for each figure before being presented to the experts.</p></div>
+    <div class="th"><p>เราสรรหาผู้เชี่ยวชาญด้านคอมพิวเตอร์วิทัศน์ (CV) สามคน ซึ่งแต่ละคนมีประสบการณ์มากกว่าห้าปีในสาขานี้ ผู้เชี่ยวชาญเหล่านี้ถูกขอให้เลือกคำอธิบายภาพที่ดีที่สุดและแย่ที่สุดที่สร้างโดย LLM เราใช้รูปภาพ CV จำนวน 91 รูปจากชุดข้อมูลทดสอบ SciCap โดยนำตัวเลือกคำอธิบายภาพมาสลับลำดับแบบสุ่มและปิดบังข้อมูลโมเดลผู้สร้างก่อนที่จะนำเสนอต่อผู้เชี่ยวชาญ</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Figure 2(a) presents the results of the human evaluation. Notably, captions generated by MLBCAP (long) were consistently selected as high-quality by all three experts, indicating a strong preference compared to baselines. To understand the high preference for the MLBCAP, we investigated which LLM-generated captions were selected during the best caption selection phase. The percentages of captions selected from the GPT-4o, Yi-1.5-9B, LLaMA-3-8B, and Pegasus models were 89.38%, 4.23%, 6.17%, and 0.19%, respectively. As expected, GPT-4o performed exceptionally well in generating high-quality captions.</p></div>
+    <div class="th"><p>รูปที่ 2(a) แสดงผลการประเมินโดยมนุษย์ โดยคำอธิบายภาพที่สร้างจาก MLBCAP (long) ได้รับเลือกให้เป็นภาพคุณภาพสูงอย่างสม่ำเสมอจากผู้เชี่ยวชาญทั้งสามคน ซึ่งสะท้อนถึงความพึงพอใจอย่างมากเมื่อเทียบกับ baseline และเพื่อศึกษาความพึงพอใจที่สูงต่อ MLBCAP เราได้ตรวจสอบว่าโมเดล LLM ตัวใดที่ถูกเลือกในระหว่างกระบวนการเลือกคำอธิบายภาพที่ดีที่สุด พบว่าเปอร์เซ็นต์การเลือกคำอธิบายจาก GPT-4o, Yi-1.5-9B, LLaMA-3-8B และ Pegasus อยู่ที่ร้อยละ 89.38, 4.23, 6.17 และ 0.19 ตามลำดับ ซึ่งเป็นไปตามคาดที่ GPT-4o ทำงานได้อย่างโดดเด่นในการสร้างคำอธิบายภาพคุณภาพสูง</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Interestingly, the assessment of MLBCAP (short) captions revealed variability in expert opinion. Despite this variance, Figure 2(b) demonstrates that MLBCAP (short) captions were rarely selected as the worst quality, suggesting that the differences in preference may stem more from individual biases towards caption length rather than from a significant discrepancy in caption quality.</p></div>
+    <div class="th"><p>เป็นเรื่องน่าสนใจที่การประเมินคำอธิบายภาพของ MLBCAP (short) เผยให้เห็นความผันแปรในความเห็นของผู้เชี่ยวชาญ อย่างไรก็ตาม รูปที่ 2(b) แสดงให้เห็นว่าคำอธิบายภาพแบบสั้นของ MLBCAP แทบไม่ถูกเลือกให้เป็นภาพคุณภาพแย่ที่สุดเลย ซึ่งชี้ให้เห็นว่าความแตกต่างของความพึงพอใจอาจเกิดจากความชอบส่วนบุคคลเกี่ยวกับความยาวของคำอธิบายภาพมากกว่าจะเกิดจากความแตกต่างด้านคุณภาพอย่างมีนัยสำคัญ</p></div>
+  </div>
+  <div class="row figure">
+    <div class="en">
+      <img src="https://ar5iv.labs.arxiv.org/html/2501.02552/assets/imgs/high_quality_he_last.png" alt="Figure 2" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">Figure 2</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[image not available]</text></svg>
+      <p class="fig-caption"><strong>Figure 2:</strong> Figure 2: The human evaluation results for selecting captions based on quality. Captions generated by MLBCAP (long) are most frequently selected as high quality.</p>
+    </div>
+    <div class="th">
+      <img src="https://ar5iv.labs.arxiv.org/html/2501.02552/assets/imgs/high_quality_he_last.png" alt="รูปที่ 2" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <svg class="fig-dummy" style="display:none" viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="260" fill="#E8E4DC" rx="6"/><text x="200" y="120" text-anchor="middle" fill="#9A9690" font-family="Georgia,serif" font-size="14">รูปที่ 2</text><text x="200" y="144" text-anchor="middle" fill="#B0ACA4" font-family="Georgia,serif" font-size="11">[ไม่มีรูปภาพ]</text></svg>
+      <p class="fig-caption"><strong>รูปที่ 2:</strong> รูปที่ 2: ผลลัพธ์การประเมินโดยมนุษย์สำหรับการเลือกคำอธิบายภาพตามคุณภาพ โดยคำอธิบายภาพที่สร้างโดย MLBCAP (long) ได้รับเลือกให้เป็นคำอธิบายภาพคุณภาพสูงบ่อยที่สุด</p>
+    </div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>5.5 Comparison with Author Captions</h3></div>
+    <div class="th"><h3>5.5 การเปรียบเทียบกับคำอธิบายภาพของผู้วิจัยเดิม (Comparison with Author Captions)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Another human evaluation was conducted as part of the 2nd SciCap challenge 888http://scicap.ai/. To account for the natural distinctions and ensure equitable assessment between short and long captions, the task was divided into two tracks. Participants in the short caption track were required to submit results where at least 30% of the captions were no longer than the original author-written captions from the SciCap test dataset. Similarly, teams in the long caption track were required to submit results where at least 30% of the captions exceeded the length of the original author-written captions. In the case of MLBCAP, 68.15% of the captions in the long caption track were longer than the author-written captions, while 46.53% of the captions in the short caption track were shorter than the author’s captions.</p></div>
+    <div class="th"><p>การประเมินโดยมนุษย์อีกรายการหนึ่งถูกจัดขึ้นเป็นส่วนหนึ่งของการแข่งขัน SciCap Challenge ครั้งที่ 2 เพื่อพิจารณาถึงความแตกต่างและประเมินอย่างเป็นธรรมระหว่างคำอธิบายแบบสั้นและแบบยาว งานนี้ถูกแบ่งออกเป็นสองแทร็ก ผู้เข้าร่วมในแทร็กคำอธิบายแบบสั้นต้องส่งผลลัพธ์ที่คำอธิบายภาพอย่างน้อย 30% ไม่ยาวกว่าคำอธิบายดั้งเดิมที่เขียนโดยผู้เขียนวิจัยเดิมในชุดทดสอบ SciCap ในทำนองเดียวกัน แทร็กคำอธิบายแบบยาวต้องส่งผลลัพธ์ที่คำอธิบายภาพอย่างน้อย 30% ยาวกว่าคำอธิบายดั้งเดิมของผู้วิจัย สำหรับ MLBCAP พบว่าร้อยละ 68.15 ของคำอธิบายภาพในแทร็กแบบยาวนั้นยาวกว่าคำอธิบายของผู้วิจัย ในขณะที่ร้อยละ 46.53 ของคำอธิบายภาพในแทร็กแบบสั้นมีขนาดสั้นกว่าของผู้วิจัย</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Three judges (who are not the CV experts), all native American English speakers with expertise in technical academic writing, were recruited to rank the captions. They ranked captions for the same 200 figures, randomly selected from the challenge test set, based on how effectively they convey the figure’s message for each track. The selection of these figures adhered to the following criteria: (1) For the long caption track, figures were selected where the author-written captions were shorter than the generated captions submitted by participants. (2) For the short caption track, figures were chosen where the author-written captions exceeded the length of the generated captions submitted by participants. (3) For both the long and short caption tracks, only figures with a SciCap-Eval score of 4 or higher were included.</p></div>
+    <div class="th"><p>กรรมการสามคน (ซึ่งไม่ใช่ผู้เชี่ยวชาญด้าน CV) เป็นผู้พูดภาษาอังกฤษแบบอเมริกันโดยกำเนิดที่มีความเชี่ยวชาญด้านการเขียนเชิงวิชาการเชิงเทคนิค ได้รับการสรรหาเพื่อจัดอันดับคำอธิบายภาพ กรรมการจัดอันดับคำอธิบายภาพสำหรับรูปภาพ 200 รูปที่สุ่มเลือกมาจากชุดทดสอบการแข่งขัน โดยพิจารณาจากประสิทธิภาพการสื่อความหมายของรูปภาพในแต่ละแทร็ก การคัดเลือกรูปภาพเหล่านี้เป็นไปตามเกณฑ์ดังนี้: (1) แทร็กคำอธิบายแบบยาว จะเลือกรูปภาพที่คำอธิบายของผู้วิจัยสั้นกว่าที่ผู้เข้าร่วมสร้างขึ้น (2) แทร็กคำอธิบายแบบสั้น จะเลือกรูปภาพที่คำอธิบายของผู้วิจัยยาวกว่าที่ผู้เข้าร่วมสร้างขึ้น และ (3) ทั้งสองแทร็กจะรวมเฉพาะรูปภาพที่มีคะแนน SciCap-Eval ตั้งแต่ 4 ขึ้นไปเท่านั้น</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>As shown in Table 5, in the long caption track, MLBCAP (long) outperformed all others, receiving the best score of 1.27. This result presents the effectiveness of our approach in generating comprehensive captions that resonated well with expert evaluators. Additionally, although the MLBCAP’s caption in the short caption track ranked marginally lower than the author-written captions, it still placed our method ahead of other methods.</p></div>
+    <div class="th"><p>ดังแสดงในตารางที่ 5 ในแทร็กคำอธิบายแบบยาว MLBCAP (long) ทำประสิทธิภาพได้ดีกว่าโมเดลอื่น ๆ ทั้งหมด โดยได้รับคะแนนเฉลี่ยดีที่สุดที่ 1.27 ผลลัพธ์นี้แสดงถึงประสิทธิภาพของกรอบงานของเราในการสร้างคำอธิบายภาพที่ครอบคลุมซึ่งได้รับความเห็นชอบอย่างดีจากกรรมการประเมิน นอกจากนี้ แม้ว่าคำอธิบายของ MLBCAP ในแทร็กแบบสั้นจะได้อันดับต่ำกว่าคำอธิบายของผู้วิจัยเล็กน้อย แต่ก็ยังทำให้แนวทางของเราอยู่นำหน้าแนวทางอื่น ๆ</p></div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 5 — ตารางที่ 5: ผลการประเมินโดยมนุษย์สำหรับการแข่งขัน SciCap Challenge และเปรียบเทียบ MLBCAP กับทางออกที่ดีที่สุดเป็นอันดับสองในแต่ละแทร็ก โดยค่าเฉลี่ยอันดับที่ต่ำกว่าบ่งบอกถึงความพึงพอใจของกรรมการประเมินที่สูงกว่า</div>
+      
+    </div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>5.6 Analysis</h3></div>
+    <div class="th"><h3>5.6 บทวิเคราะห์ (Analysis)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Here we conduct an analysis focused on the components of MLBCAP to examine their impact on caption quality, using a random sample of 200 instances from the SciCap test dataset. Table 6 illustrates the significant improvements in caption quality across all models when figure descriptions and a robust filtering process are incorporated. While models such as LLaMA-3-8B and Yi-1.5-9B perform well in generating high-quality captions, GPT-4o emerges as the best model for providing top-tier candidate captions.</p></div>
+    <div class="th"><p>ในที่นี้เราวิเคราะห์โดยเน้นที่องค์ประกอบย่อยของ MLBCAP เพื่อตรวจสอบผลกระทบต่อคุณภาพของคำอธิบายภาพ โดยใช้กลุ่มตัวอย่างสุ่ม 200 รายการจากชุดทดสอบ SciCap ตารางที่ 6 แสดงให้เห็นถึงการปรับปรุงคุณภาพคำอธิบายภาพอย่างมีนัยสำคัญในทุกโมเดลเมื่อมีการนำคำบรรยายรูปภาพและกระบวนการกรองข้อมูลที่มีประสิทธิภาพมาร่วมใช้งาน แม้ว่าโมเดลอย่าง LLaMA-3-8B และ Yi-1.5-9B จะทำงานได้ดีในการสร้างคำอธิบายภาพคุณภาพสูง แต่ GPT-4o ยังคงโดดเด่นในฐานะโมเดลที่ดีที่สุดสำหรับสร้างคำอธิบายภาพตัวเลือกชั้นยอด</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>However, Table 7 reveals a crucial insight; the highest caption quality score (5.440) is achieved not solely by relying on the individual model (GPT-4o) but through a strategic combination of multiple LLMs and subsequent post-editing. This approach demonstrates that even with the availability of a powerful model like GPT-4o, the incorporation of diverse perspectives from smaller LLMs can yield improved results.</p></div>
+    <div class="th"><p>อย่างไรก็ตาม ตารางที่ 7 เผยข้อมูลเชิงลึกที่สำคัญว่า คะแนนคุณภาพคำอธิบายภาพสูงสุด (5.440) นั้นไม่ได้มาจากการพึ่งพาโมเดลเดี่ยว (GPT-4o) เพียงอย่างเดียว แต่มาจากการทำงานร่วมกันของ LLM หลายตัวตามกลยุทธ์และการแก้ไขหลังการสร้างคำอธิบาย วิธีการนี้พิสูจน์ให้เห็นว่าแม้จะมีโมเดลที่มีประสิทธิภาพสูงอย่าง GPT-4o การผสมผสานมุมมองที่หลากหลายจาก LLM ขนาดเล็กกว่าก็สามารถสร้างผลลัพธ์ที่ดีขึ้นได้</p></div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 6 — ตารางที่ 6: ผลกระทบของการนำคำบรรยายรูปภาพและกระบวนการกรองมาร่วมใช้งาน โดยแต่ละค่าคือคะแนนคุณภาพคำอธิบายภาพ (SciCap-Eval)</div>
+      
+    </div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 7 — ตารางที่ 7: การศึกษาการลดทอนองค์ประกอบ (Ablation study) เพื่อวิเคราะห์ผลกระทบของการเลือกคำอธิบายภาพที่ดีที่สุดและการแก้ไขหลังการประมวลผลต่อคุณภาพคำอธิบายภาพ</div>
+      
+    </div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>6 Discussion</h2></div>
+    <div class="th"><h2>6 การอภิปราย (Discussion)</h2></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>6.1 Caption Preferences</h3></div>
+    <div class="th"><h3>6.1 ความพึงพอใจของคำอธิบายภาพ (Caption Preferences)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>While MLBCAP rarely produced low-quality captions in human evaluations, we observed variability among experts when selecting the best and worst captions. This challenge was reflected in the low inter-rater agreement metrics. For instance, Fleiss’ kappa for selecting high-quality captions among baseline models was 0.154, indicating low agreement, while for low-quality captions, the kappa improved to 0.382, signifying moderate agreement. Similarly, in the SciCap Challenge, Kendall’s tau for inter-rater agreement, provided by the challenge organizers, was 0.3589 for long captions and 0.1100 for short captions, highlighting the difficulty of reaching a consensus even among experienced judges.</p></div>
+    <div class="th"><p>แม้ว่า MLBCAP แทบไม่สร้างคำอธิบายภาพคุณภาพต่ำในการประเมินโดยมนุษย์ แต่เราก็พบความผันแปรในกลุ่มผู้เชี่ยวชาญเมื่อเลือกคำอธิบายที่ดีที่สุดและแย่ที่สุด ความท้าทายนี้สะท้อนออกมาในมาตรวัดความสอดคล้องระหว่างกรรมการประเมินในระดับต่ำ ตัวอย่างเช่น Fleiss’ kappa สำหรับการเลือกคำอธิบายภาพคุณภาพสูงท่ามกลางโมเดล baseline อยู่ที่ 0.154 ซึ่งแสดงความสอดคล้องในระดับต่ำ ขณะที่การเลือกคำอธิบายคุณภาพต่ำ ค่า kappa ปรับดีขึ้นเป็น 0.382 บ่งชี้ถึงความสอดคล้องระดับปานกลาง ในทำนองเดียวกัน ในการแข่งขัน SciCap Challenge ค่า Kendall’s tau สำหรับความสอดคล้องระหว่างกรรมการซึ่งจัดทำโดยผู้จัดแข่งขัน อยู่ที่ 0.3589 สำหรับคำอธิบายแบบยาว และ 0.1100 สำหรับคำอธิบายแบบสั้น ซึ่งเน้นย้ำถึงความยากลำบากในการบรรลุฉันทามติแม้ในกลุ่มผู้ตัดสินที่มีประสบการณ์</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>These findings align with previous research [11], which has shown that caption ranking tasks inherently elicit varied judgments from evaluators. The low agreement underscores the complexity of defining “quality” in figure captioning, where multiple factors interplay, such as the caption’s informativeness, length, detail, and overall style.</p></div>
+    <div class="th"><p>ผลลัพธ์เหล่านี้สอดคล้องกับงานวิจัยก่อนหน้า [11] ซึ่งแสดงให้เห็นว่างานจัดอันดับคำอธิบายภาพมักกระตุ้นการตัดสินใจที่แตกต่างกันในกลุ่มผู้ประเมิน ความสอดคล้องในระดับต่ำตอกย้ำถึงความซับซ้อนของการนิยามคำว่า "คุณภาพ" ในการสร้างคำอธิบายรูปภาพ ซึ่งมีปัจจัยหลายอย่างที่ส่งผลกระทบร่วมกัน เช่น ความครบถ้วนของข้อมูล ความยาว รายละเอียด และรูปแบบโดยรวมของคำอธิบายภาพ</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>A plausible explanation for the observed discrepancies lies in the subjective nature of caption preferences. Evaluators may prioritize different attributes, such as the level of detail versus brevity, or favor stylistic differences in language. For instance, one expert might value a caption that provides exhaustive detail, while another might prefer concise summaries that align with the space constraints typical in scientific publications. This subjectivity in preferences naturally leads to variability in judgments, reducing inter-rater reliability.</p></div>
+    <div class="th"><p>คำอธิบายที่เป็นไปได้สำหรับความแตกต่างที่สังเกตพบนั้นอยู่ในธรรมชาติที่เป็นอัตวิสัย (subjective) ของความชอบส่วนบุคคล ผู้ประเมินอาจให้ความสำคัญกับคุณลักษณะที่ต่างกัน เช่น ระดับของรายละเอียดเทียบกับความกระชับ หรือชอบความแตกต่างทางสไตล์การใช้ภาษา ตัวอย่างเช่น ผู้เชี่ยวชาญคนหนึ่งอาจให้คุณค่ากับคำอธิบายภาพที่ให้รายละเอียดอย่างถี่ถ้วน ในขณะที่อีกคนอาจชอบการสรุปกระชับที่สอดคล้องกับข้อความจำกัดหน้ากระดาษของการตีพิมพ์วิทยาศาสตร์ ความชอบที่เป็นอัตวิสัยนี้ทำให้การตัดสินใจมีความผันแปรและลดระดับความน่าเชื่อถือระหว่างผู้ประเมินลง</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>These observations highlight the importance of developing clearer guidelines and evaluation criteria for figure captions. A more standardized framework could help align evaluators’ judgments and establish a consensus on what constitutes a “high-quality” caption. Future work could explore leveraging LLMs not only for caption generation but also as assistive tools for evaluating captions in a more consistent manner, thereby addressing some of the subjectivity inherent in human evaluations. This would ensure that assessments of caption quality are both rigorous and aligned with the needs of diverse scientific communities.</p></div>
+    <div class="th"><p>การสังเกตเหล่านี้ตอกย้ำถึงความสำคัญของการพัฒนาแนวทางและเกณฑ์การประเมินคำอธิบายภาพที่ชัดเจนยิ่งขึ้น กรอบการทำงานที่เป็นมาตรฐานมากขึ้นจะช่วยปรับการตัดสินใจของผู้ประเมินให้สอดคล้องกันและสร้างฉันทามติว่าสิ่งใดถือเป็นคำอธิบายภาพ "คุณภาพสูง" งานในอนาคตอาจสำรวจการใช้ประโยชน์จาก LLM ไม่เพียงแต่สำหรับการสร้างคำอธิบายภาพเท่านั้น แต่ยังเป็นเครื่องมือช่วยประเมินคำอธิบายภาพให้สอดคล้องกันมากขึ้น ซึ่งจะช่วยลดข้อจำกัดของอัตวิสัยในการประเมินโดยมนุษย์ และช่วยให้การประเมินคุณภาพคำอธิบายมีความเข้มงวดและตอบสนองความต้องการของชุมชนวิทยาศาสตร์ที่หลากหลาย</p></div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 8 — ตารางที่ 8: ผลการประเมินสำหรับชุดข้อมูลทดสอบ SciCap โดยคะแนน ROUGE (F1-score) และ BLEU (4-gram) ของ MLBCAP ขัดแย้งกับความชอบของมนุษย์ (รูปที่ 2)</div>
+      
+    </div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h3>6.2 Evaluation with Traditional Metrics</h3></div>
+    <div class="th"><h3>6.2 การประเมินด้วยมาตรวัดดั้งเดิม (Evaluation with Traditional Metrics)</h3></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Furthermore, we found a discrepancy between traditional metric-based evaluations and human judgments. In Table 8, while MLBCAP was preferred over the author-written captions in the human evaluations, traditional metrics failed to capture the perceived quality of captions. This divergence presents the limitations of relying solely on conventional metrics for evaluating caption quality. Similar observations have been made in the natural image captioning task [3], where BLEU and ROUGE scores showed low correlation with human judgments (Kendall’s tau of approximately 0.3 for both metrics).</p></div>
+    <div class="th"><p>นอกจากนี้ เรายังพบความไม่สอดคล้องกันระหว่างการประเมินด้วยมาตรวัดดั้งเดิมกับการตัดสินโดยมนุษย์ ในตารางที่ 8 แม้ว่า MLBCAP จะเป็นที่ชื่นชอบมากกว่าคำอธิบายภาพดั้งเดิมที่เขียนโดยผู้แต่งในการประเมินโดยมนุษย์ แต่มาตรวัดดั้งเดิมกลับล้มเหลวในการสะท้อนคุณภาพที่รับรู้ได้ของคำอธิบายภาพ ความขัดแย้งนี้แสดงถึงข้อจำกัดของการพึ่งพามาตรวัดแบบเดิมเพียงอย่างเดียว การสังเกตการณ์ที่คล้ายกันนี้พบในงานสร้างคำอธิบายรูปภาพธรรมชาติทั่วไป [3] ซึ่งคะแนน BLEU และ ROUGE แสดงความสัมพันธ์ในระดับต่ำมากกับการประเมินโดยมนุษย์ (ค่าเคนดัลล์ทาวประมาณ 0.3 สำหรับทั้งสองมาตรวัด)</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>This inconsistency can be attributed to the inherent limitations of BLEU and ROUGE metrics, which focus on n-gram overlap between the generated caption and the reference caption. In scientific figure captioning, there are multiple valid ways to describe the same content using different terminologies or phrasings. As a result, even high-quality captions may receive low scores if they do not closely match the reference.</p></div>
+    <div class="th"><p>ความไม่สอดคล้องกันนี้อาจมีสาเหตุมาจากข้อจำกัดโดยธรรมชาติของมาตรวัด BLEU และ ROUGE ซึ่งเน้นเฉพาะการจับคู่คำแบบ n-gram ระหว่างคำอธิบายภาพที่สร้างขึ้นกับคำอธิบายภาพอ้างอิง ในการสร้างคำอธิบายรูปภาพวิทยาศาสตร์ มีวิธีการที่ถูกต้องหลายวิธีในการอธิบายเนื้อหาเดียวกันโดยใช้คำศัพท์หรือโครงสร้างประโยคที่ต่างกัน ส่งผลให้แม้แต่คำอธิบายภาพที่มีคุณภาพสูงก็อาจได้รับคะแนนต่ำหากคำที่ใช้ไม่ตรงกับตัวอ้างอิงทุกประการ</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>7 Limitations</h2></div>
+    <div class="th"><h2>7 ข้อจำกัด (Limitations)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>While our experiments indicate the potential of MLBCAP in the figure captioning task, there are some limitations that point to possible directions for future work.</p></div>
+    <div class="th"><p>แม้ว่าการทดลองของเราจะชี้ให้เห็นถึงศักยภาพของ MLBCAP ในงานสร้างคำอธิบายภาพ แต่ยังมีข้อจำกัดบางประการที่สามารถชี้ทางสำหรับการวิจัยในอนาคต</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Firstly, the integration of multiple LLMs in our framework introduces a trade-off between performance and efficiency. The reliance on multiple models not only reduces inference speed but also increases the demand for computational resources. This may limit the practical scalability of MLBCAP, particularly in environments with restricted computational capabilities or in real-time applications.</p></div>
+    <div class="th"><p>ประการแรก การรวม LLM หลายตัวเข้าในกรอบงานของเราก่อให้เกิดการแลกเปลี่ยน (trade-off) ระหว่างประสิทธิภาพและประสิทธิผล การพึ่งพาหลายโมเดลไม่เพียงแต่ลดความเร็วในการอนุมาน (inference speed) แต่ยังเพิ่มความต้องการทรัพยากรการคำนวณอีกด้วย ซึ่งอาจจำกัดความสามารถในการขยายขนาดระบบของ MLBCAP ในทางปฏิบัติ โดยเฉพาะอย่างยิ่งในสภาพแวดล้อมที่มีข้อจำกัดด้านการคำนวณ หรือในการใช้งานแบบเรียลไทม์</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Secondly, MLBCAP incorporates a closed-source LLM as a critical component of the caption generation pipeline. This inclusion imposes inherent limitations, particularly in terms of transparency and interpretability. The closed-source nature restricts our ability to fully understand and analyze the model’s reasoning processes and decision-making behavior, which may hinder trust and adoption in certain scientific communities where explainability is crucial.</p></div>
+    <div class="th"><p>ประการที่สอง MLBCAP รวม LLM ที่เป็น closed-source เป็นส่วนประกอบหลักของกระบวนการสร้างคำอธิบายภาพ การรวมนี้เพิ่มข้อจำกัดโดยเฉพาะด้านความโปร่งใสและการตีความได้ การเป็นโมเดล closed-source จำกัดความสามารถของเราในการทำความเข้าใจและวิเคราะห์กระบวนการใช้เหตุผลและการตัดสินใจของโมเดล ซึ่งอาจส่งผลเสียต่อความไว้วางใจและการยอมรับในชุมชนวิทยาศาสตร์บางกลุ่มที่ความสามารถในการอธิบายความ (explainability) มีความจำเป็น</p></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>Lastly, our evaluation was primarily conducted through human assessments on arXiv papers, which, while valuable, does not fully capture the generalization capabilities of MLBCAP across a broader range of scientific literature. To rigorously validate the robustness and adaptability of the model, future evaluations should include a diverse set of scientific documents.</p></div>
+    <div class="th"><p>สุดท้ายนี้ การประเมินของเราดำเนินการหลักๆ ผ่านการประเมินโดยมนุษย์บนบทความ arXiv ซึ่งแม้ว่าจะมีค่า แต่ก็ไม่สามารถจับความสามารถในการทำเป็นกรณีทั่วไป (generalization capabilities) ของ MLBCAP บนเอกสารวิทยาศาสตร์ที่กว้างขวางขึ้นได้ เพื่อทดสอบความทนทานและการปรับตัวของโมเดลอย่างเข้มงวด การประเมินในอนาคตควรครอบคลุมเอกสารวิทยาศาสตร์ที่หลากหลายและครอบคลุมมากขึ้น</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>8 Conclusion</h2></div>
+    <div class="th"><h2>8 บทสรุป (Conclusion)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>In this paper, we presented MLBCAP, a novel framework for generating high-quality captions for scientific figures through the collaborative utilization of multiple Large Language Models (LLMs). Unlike prior approaches that rely on isolated modalities or limited data perspectives, MLBCAP uniquely integrates textual and visual features alongside a filtering mechanism to ensure that only high-quality training data is utilized. By combining the complementary strengths of multiple LLMs with candidate caption generation and a post-editing stage, our framework generates captions that are not only preferred over author-written captions in informativeness but also cater to diverse needs through long and short caption formats. In addition, our results highlight the effectiveness of a multi-LLM approach, demonstrating higher caption quality compared to a single prominent LLM like GPT-4o.</p></div>
+    <div class="th"><p>ในบทความวิจัยนี้ เราได้นำเสนอ MLBCAP กรอบการทำงานใหม่สำหรับการสร้างคำอธิบายรูปภาพวิทยาศาสตร์ที่มีคุณภาพสูงผ่านการทำงานร่วมกันของโมเดลภาษาขนาดใหญ่ (LLM) หลายตัว ซึ่งแตกต่างจากแนวทางก่อนหน้านี้ที่พึ่งพารูปแบบสื่อเดี่ยวหรือมุมมองข้อมูลที่จำกัด MLBCAP ผสานรวมลักษณะเด่นของข้อความและทัศน์เข้ากับกลไกการกรองเพื่อให้แน่ใจว่าใช้เฉพาะข้อมูลฝึกฝนที่มีคุณภาพสูงเท่านั้น การผสานจุดเด่นที่ส่งเสริมกันของ LLM หลายตัวร่วมกับการสร้างคำอธิบายภาพตัวเลือกและขั้นตอนการขัดเกลาแก้ไข ทำให้กรอบงานของเราสร้างคำอธิบายภาพที่ได้รับการจัดอันดับสูงกว่าคำอธิบายภาพของผู้วิจัยเดิมในแง่ของความครบถ้วนของข้อมูล และยังสามารถตอบสนองต่อความต้องการที่แตกต่างกันผ่านรูปแบบคำอธิบายแบบสั้นและแบบยาว นอกจากนี้ ผลลัพธ์ของเรายังเน้นย้ำถึงประสิทธิภาพของแนวทางทำงานร่วมกันแบบหลาย LLM โดยมีคุณภาพของคำอธิบายภาพที่สูงกว่าการใช้ LLM เดี่ยวที่มีประสิทธิภาพสูงเพียงตัวเดียวอย่าง GPT-4o</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>9 Acknowledgement</h2></div>
+    <div class="th"><h2>9 กิตติกรรมประกาศ (Acknowledgement)</h2></div>
+  </div>
+  <div class="row para">
+    <div class="en"><p>We are grateful to the anonymous reviewers for their valuable feedback. This research, along with the SciCap Challenge 2024, was partially supported by the Alfred P. Sloan Foundation (Grant Number: 2024-22721).</p></div>
+    <div class="th"><p>เราขอแสดงความขอบคุณต่อผู้ประเมินนิรนามสำหรับข้อเสนอแนะที่มีคุณค่า งานวิจัยนี้และกิจกรรม SciCap Challenge 2024 ได้รับการสนับสนุนบางส่วนจากมูลนิธิ Alfred P. Sloan Foundation (หมายเลขทุน: 2024-22721)</p></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>References</h2></div>
+    <div class="th"><h2>เอกสารอ้างอิง (References)</h2></div>
+  </div>
+  <div class="row heading">
+    <div class="en"><h2>Appendix</h2></div>
+    <div class="th"><h2>ภาคผนวก (Appendix)</h2></div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 9 — ตารางที่ 9: prompt จริงที่เราใช้ และข้อความสีชมพูมาเจนตาคือตัวแทนข้อความ โดยในส่วนนี้ [Figure] คือรูปภาพที่ใช้เป็นอินพุตสำหรับ MLLM</div>
+      <table >
+<thead >
+<tr >
+<th >
+<span >
+<span ><span >Purpose</span></span>
+</span>
+</th>
+<th >
+<span >
+<span ><span >Prompt</span></span>
+</span>
+</th>
+</tr>
+</thead>
+<tbody >
+<tr >
+<td >
+<span >
+<span >Quality Assessment</span>
+</span>
+</td>
+<td >
+<span >
+<span ><span  >[Figure]</span><span  ></span></span>
+<span ><span  >### Paragraphs</span></span>
+<span ><span  >[Paragraphs]</span><span  ></span></span>
+<span ><span  >### Caption</span></span>
+<span ><span  >[Caption]</span><span  ></span></span>
+<span ><span  >Given the figure, paragraphs and caption, please rate the level of usefulness of the caption from 1 to 6 based on how well the caption could help readers understand the important information. 6 is the highest. 1 is the lowest. The answer should be JSON format: {“rating”: }.</span></span>
+</span>
+</td>
+</tr>
+<tr >
+<td >
+<table >
+<tr >
+<td >Figure Description</td>
+</tr>
+<tr >
+<td >(GPT-4o)</td>
+</tr>
+</table>
+</td>
+<td >
+<span >
+<span ><span  >[Figure]</span><span  ></span></span>
+<span ><span  >Your task is to describe a figure from a scientific paper.</span></span>
+<span ><span  >Answer your results in JSON format.</span></span>
+<span ><span  >### Background</span></span>
+<span ><span  >Figure is a <span  >[Figure Type]</span>.</span></span>
+<span ><span  >It is a figure about the topic <span  >[Subject]</span>.</span></span>
+<span ><span  >### Rule</span></span>
+<span ><span  >Description of the figure should be accurate and clear. If in doubt, avoid numerical expressions. Provide the description in JSON format with the following key: description.</span></span>
+</span>
+</td>
+</tr>
+<tr >
+<td >
+<table >
+<tr >
+<td >Figure Description</td>
+</tr>
+<tr >
+<td >(MiniCPM-V)</td>
+</tr>
+</table>
+</td>
+<td >
+<span >
+<span ><span  >[Figure]</span><span  ></span></span>
+<span ><span  >What is in the image?</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+    </div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 10 — ตารางที่ 10: prompt สำหรับการสร้างคำอธิบายภาพ โดยในส่วนนี้ [Figure] คือรูปภาพที่ใช้เป็นอินพุตสำหรับ MLLM</div>
+      <table >
+<tbody >
+<tr >
+<td >
+<span >
+<span ><span >Purpose</span></span>
+</span>
+</td>
+<td >
+<span >
+<span ><span >Prompt</span></span>
+</span>
+</td>
+</tr>
+<tr >
+<td >
+<table >
+<tr >
+<td >Caption Generation</td>
+</tr>
+<tr >
+<td >(Few-shot)</td>
+</tr>
+</table>
+</td>
+<td >
+<span >
+<span ><span  >Your task is to create a caption that summarizes based on a paragraph.</span></span>
+<span ><span  >### Figure Caption</span></span>
+<span ><span  >The format of a Figure Caption is Declarative title + Description + Statistical
+information (optional).</span></span>
+<span ><span  >Declarative title: summarises the result or major finding of the data you are presenting in the
+figure. (A mere representation of the x and y axes cannot be a title.)</span></span>
+<span ><span  >Description: a brief description of the results necessary for understanding the figure without
+having to refer to the main text</span></span>
+<span ><span  >Statistical information: for example, number of replicates, asterisks denoting P-values,
+statistical tests, etc.</span></span>
+<span ><span  >### Background</span></span>
+<span ><span  >Figure is a <span  >[Figure Type]</span>.</span></span>
+<span ><span  >Figure is a category related to <span  >[Subject]</span>.</span></span>
+<span ><span  >### Rule</span></span>
+<span ><span  >Caption MUST have a word count of 60 words or less.</span></span>
+<span ><span  >Caption MUST have a tone and sentence structure appropriate for a top-tier conference (e.g.,
+NeurIPS, ICLR, CVPR, ACL, EMNLP).</span></span>
+<span ><span  >It is not a caption to describe the x-axis y-axis.</span></span>
+<span ><span  >Caption MUST be clear, concise, consistent, and provide specific information, especially not
+false.</span></span>
+<span ><span  >If the given paragraph uses abbreviations, use them in the caption.</span></span>
+<span ><span  >### Best Caption Examples</span></span>
+<span ><span  >[Few-shot Examples]<span  ></span></span></span>
+<span ><span  >### Input</span></span>
+<span ><span  >Paragraph:
+<span  >[Paragraphs]</span></span></span>
+<span ><span  >Figure Summary:
+<span  >[Figure Description]</span></span></span>
+<span ><span  >Mention:
+<span  >[Mentions]</span></span></span>
+<span ><span  >OCR text:
+<span  >[OCR]</span></span></span>
+<span ><span  >### Output format</span></span>
+<span ><span  >Answer results in JSON format: {“caption”: }.</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+    </div>
+  </div>
+  <div class="row table-row">
+    <div class="table-full">
+      <div class="table-label">Table 11 — ตารางที่ 11: prompt สำหรับการเลือกคำอธิบายภาพที่ดีที่สุดและกระบวนการแก้ไขหลังการสร้าง โดย [Max Len] คือขีดจำกัดความยาวของคำอธิบายภาพ (แบบยาว: 50, แบบสั้น: 30)</div>
+      <table >
+<tbody >
+<tr >
+<td >
+<span >
+<span ><span >Purpose</span></span>
+</span>
+</td>
+<td >
+<span >
+<span ><span >Prompt</span></span>
+</span>
+</td>
+</tr>
+<tr >
+<td >
+<span >
+<span >Judgement</span>
+</span>
+</td>
+<td >
+<span >
+<span ><span  >A good figure caption should include the following elements:</span></span>
+<span ><span  >1. **Clear Description**: Clearly describe what the figure represents so that readers can understand
+the main point of the figure just by reading the caption.</span></span>
+<span ><span  >2. **Conciseness**: Keep it concise while including all essential information. The caption MUST be
+brief yet informative (important!!).</span></span>
+<span ><span  >3. **Relevant Information**: Include background information, experimental conditions, or methods
+used that are necessary to understand the figure. This helps the reader interpret the data correctly.</span></span>
+<span ><span  >4. **Consistency**: Maintain consistency with the rest of the paper in terms of terminology and style.
+Ensure that the terms used in the caption match those used in the text.</span></span>
+<span ><span  >5. **Citation**: If necessary, include citations of related research or references in the paragraph.</span></span>
+<span ><span  >You are given a summarization of the figure, relevant paragraphs, a mentioned sentences, and four
+caption candidates:</span></span>
+<span ><span  >### Summarization of the Figure</span></span>
+<span ><span  >[Figure Description]<span  ></span></span></span>
+<span ><span  >### Paragraph</span></span>
+<span ><span  >[Paragraphs]<span  ></span></span></span>
+<span ><span  >### Mention</span></span>
+<span ><span  >[Mentions]<span  ></span></span></span>
+<span ><span  >### Caption A</span></span>
+<span ><span  >[Pegasus Caption]<span  ></span></span></span>
+<span ><span  >### Caption B</span></span>
+<span ><span  >[LLaMA-3-8B Caption]<span  ></span></span></span>
+<span ><span  >### Caption C</span></span>
+<span ><span  >[Yi-1.5-9B Caption]<span  ></span></span></span>
+<span ><span  >### Caption D</span></span>
+<span ><span  >[GPT-4o Caption]<span  ></span></span></span>
+<span ><span  >1. Choose the best and worst caption and answer in JSON format (For example, if A is the best and B
+is the worst, the answer is: "Good": "A", "Bad": "B). Candidate captions shouldn’t be scored low
+just because they’re concise.</span></span>
+<span ><span  >2. If even the best caption could be improved, use the candidate captions and paragraphs to improve it
+(math symbols, legend, grammar, etc.).</span></span>
+<span ><span  >3. The improved sentence should have a tone and sentence structure appropriate for a top-tier
+conference (e.g., NeurIPS, ICLR, CVPR, ACL, EMNLP) and MUST have a word count of <span  >[Max Len]</span> words or less.</span></span>
+<span ><span  >4. If you find that sentences are becoming long and complex, making it difficult for readers to
+understand, break the sentences up to effectively convey the important information.</span></span>
+<span ><span  >5. If you already provided a perfect caption, keep it the same.</span></span>
+<span ><span  >6. Do not omit the figure numbers, such as in "Fig. 3" or "Figure 5".
+Provide them in JSON format with the following keys: Good, Bad,
+Improved Caption
+"Good" : "", "Bad" : "", "Improved Caption": ""</span></span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+    </div>
+  </div>
+
+</div><!-- /translation-grid -->
+
+<footer>
+  Bilingual translation generated 2026-06-09 · arXiv:2501.02552 ·
+  <span style="color:var(--teal)">Hover an English sentence → shows Thai · Click to lock</span>
+  · <span style="color:var(--accent)">Hover underlined words for term tooltips</span>
+</footer>
+
+<script src="../../assets/translation.js"></script>
+</body>
+</html>

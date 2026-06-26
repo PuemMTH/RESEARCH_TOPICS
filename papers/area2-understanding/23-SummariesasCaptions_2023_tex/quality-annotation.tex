@@ -1,0 +1,92 @@
+
+
+\input{tables/quality-annotation-correlation}
+
+%More than 50\% of the captions were considered unhelpful, illustrating the need for our task.
+%We further computed the Pearson correlations~\cite{doi:10.1080/00031305.1988.10475524} among 
+%the four aspects using the raw five-point Likert scale ratings. 
+We calculated Pearson correlations~\cite{doi:10.1080/00031305.1988.10475524} among the four aspects using raw five-point Likert ratings.
+The results are shown in \Cref{tab-quality-annotation-correlation}. 
+\textbf{The highest correlation was found between Takeaway and Helpfulness, suggesting that a high-quality caption accurately captures the main message of the figure.}
+There were also strong correlations between Helpfulness, Visual-Description, and Takeaway, indicating that a good caption effectively conveys visual information and summarizes the main message.
+However,
+\Cref{tab:quality-annotation-stat} shows that
+%the majority (84.71\%) of captions mentioned image texts, 
+%whereas 
+only 16.04\% and 18.55\% of the captions described the visual characteristics and the takeaway message, respectively. 
+
+A moderate correlation between Helpfulness and Length supports previous research findings that longer captions are generally more helpful for readers~\cite{hartley2003single,gelman2002let}.
+
+
+
+%-------------------- dead kitten -----------------
+
+\begin{comment}
+
+
+After merging Strongly Agree and Agree as Agree, and Neutral, Disagree, and Strongly Disagree as Disagree, 
+the results were calculated as shown in 
+
+
+
+
+
+The high correlations among Helpfulness, Visual-Description, 
+and Takeaway imply that a good caption likely describes the visual characteristics and concludes with the takeaway message. 
+The moderate correlation between Helpfulness and Length also shows that a good caption inclines toward being slightly longer. 
+
+
+
+%\paragraph{Indicative summary v.s. informative summary}
+%indicative: what is the text about, without specific content
+%informative: short version of the text
+%\cite{radev2002introduction}
+
+
+
+%\kenneth{I would move this to AFTER method and main eval results. We didn't use this in our method. This is mostly for analysis. I guess you want to say 50\% of captions are bad, but readers not here for this. I would move this to later and add a hook sentence, e.g., ``Based on our analysis (Section X), 50\% of captions are useless or worse.''}
+%\cy{I put this here mainly because both of the ``evaluation on different quality beams'' and ``human evaluation'' heavily depend on this quality annotation.  It would be weird for me to talk about this after the evaluation. However, inserting this after the ``normalization score'' is also weird because this section is kind of large and contains two tables. What do you think?}
+%\ed{I think it's a little bit weird to say we annotated the caption quality of the test set before conduct the experiment. We probably can put it at the beginning of human evaluation or before because I think it's kind of human evaluation as well. just my personal opinion}
+To understand what makes a good caption, we manually annotated 438 captions in the Computation and Language domain (\texttt{cs.CL}) from the test set. 
+For each figure and caption, we provided a preview of the original paper for reference in the interface. 
+The annotators (coauthors) were required to first validate that 
+(\textit{i}) the paper contained the target figure, 
+(\textit{ii}) there were no image-extraction errors, 
+(\textit{iii}) there were no text-extraction errors, 
+(\textit{iv}) the figure was a line chart, 
+and (\textit{v}) the figure was not a compound figure. 
+Unqualified captions were excluded from the quality annotation. 
+We then asked the annotators to rate four aspects using a five-point Likert scale:
+
+%\vspace{-.5pc}
+
+\begin{itemize}  [leftmargin=*,itemsep=0mm] %[leftmargin=*] %[leftmargin=*,itemsep=0mm]
+    \item \textbf{Image-Text.} The caption included named entities or important words/numbers in the figure (\eg, title, legends, labels, \textit{etc}.).
+    %\vspace{-.5pc}
+
+    \item \textbf{Visual-Description.} The caption included some visual characteristics of the figure (\eg, color, shape, trend, \textit{etc}.).
+    %\vspace{-.5pc}
+
+    \item \textbf{Takeaway.} The caption explicitly stated the high-level takeaway message or the conclusion that the figure attempted to convey.
+    %\vspace{-.5pc}
+
+    \item \textbf{Helpfulness.} ``The caption helped me understand the message that the figure attempted to convey''.
+\end{itemize}
+
+\Cref{fig:ui-rating} (see Appendix) shows the interface we used to rate the usefulness for captions. 
+The title (with a hyperlink to the paper's URL), abstract, 
+and PDF file of the paper are shown alongside the target figure's image, caption, and questions. 
+We displayed the paper's PDF to help raters make more informed decisions on caption quality.
+
+%\vspace{-.5pc}
+
+(\textit{i}) this caption mentions some named entities or important words/numbers that appear in the figure;
+(\textit{ii}) this caption mentions some visual characteristics of the figure;
+(\textit{iii}) this caption explicitly states the high-level takeaway message or the conclusion that the figure tries to convey;
+and (\textit{iv}) this caption helps me understand the message that the figure tries to convey.
+
+- 5 authors annotated 
+
+\end{comment}
+
+

@@ -1,0 +1,20 @@
+\begin{itemize}
+    \item Our method needs mentions to produce captions, but identifying the mentions for figures in real-world data is not always easy. 18.81\% of figures in original \oldDataset did not have any identified mentions, which we excluded in this work.
+Many factors contributed to the gap, including
+errors caused by upstream components such as image extraction or image type classification (\eg, table),
+unexpected figure index formats (\eg, ``Figure VIII'', ``Figure C·1'',``Fig.Fig. 4(b)''),
+PDF parsing errors, or 
+the figure never being explicitly referred to in the paper. Our procedure is not applicable to such cases.
+
+\item
+Our paper focused on non-compound line charts in arXiv papers, and the human evaluation only focused on NLP papers.
+More research is needed to examine the generalizability.
+
+\item 
+The proposed method uses texts instead of images as the primary information source, so it is not capable of capturing the visual content that only occurs in the image.
+
+\item 
+The quality of the generated caption in our approach is bounded by the text quality of the paragraph.
+When the article is poorly written, our models will likely struggle.
+
+\end{itemize}

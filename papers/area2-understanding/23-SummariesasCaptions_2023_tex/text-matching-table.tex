@@ -1,0 +1,41 @@
+\begin{table}[t]
+\tiny
+% \scriptsize
+\small
+\centering
+\addtolength{\tabcolsep}{-0.12cm}
+
+\begin{tabular}{ll  rrrr  rr}
+\toprule
+% \hline
+\textbf{} & \textbf{} & \multicolumn{4}{c}{\textbf{Words from}} & \multicolumn{2}{c}{\textbf{Baseline}} \\ 
+\cmidrule(lr){3-6}
+\cmidrule(lr){7-8}
+% \hline
+ &  & \multicolumn{1}{c}{\textbf{OCR}} & \multicolumn{1}{c}{\textbf{Whole Caption}} & \multicolumn{1}{c}{\textbf{1st Caption}} & \multicolumn{1}{c}{\textbf{M Mentions (M}$\mathbf{\geq}$\textbf{1)}} & \multicolumn{1}{c}{\textbf{NON-mention S}} & \multicolumn{1}{c}{\textbf{random S}} \\ 
+ \midrule
+
+\multirow{5}{*}{\shortstack{\textbf{Words}\\\textbf{occur}}} & \textbf{OCR} & 100.00 & 8.26 & 6.66 & 7.78 & 5.39 & 0.47 \\ 
+\cmidrule{2-8}
+% \cline{2-8} 
+ & \textbf{Whole Caption} & 8.11 & 100.00 & 62.37 & 27.20 & 19.76 & 0.16 \\ 
+ \cmidrule{2-8}
+%  \cline{2-8} 
+ & \textbf{1st Caption} & 5.07 & 54.78 & 100.00 & 19.16 & 12.81 & 0.01 \\ 
+ \cmidrule{2-8}
+%  \cline{2-8} 
+ & \textbf{M Mentions (M}$\mathbf{\geq}$\textbf{1)} & 7.74 & 27.29 & 22.99 & 100.00 & 24.49 & 0.26 \\ 
+ \midrule
+%  \hline
+\multirow{2}{*}{\textbf{Baseline}} & \textbf{NON-mention S} & 5.32 & 19.77 & 14.88 & 24.46 & 100.00 & 0.21 \\ 
+\cmidrule{2-8} 
+ & \textbf{random S} & 1.65 & 0.93 & 0.64 & 1.22 & 1.11 & 100.00 \\  
+%  \hline
+\bottomrule
+\end{tabular}
+\addtolength{\tabcolsep}{+0.12cm}
+
+\caption{Text matching between image texts, captions and mentions of each figure.}
+\label{tab:analysis_ocr-caption-mention}
+
+\end{table}

@@ -1,0 +1,93 @@
+\section{\data~}
+\label{sec:benchmark}
+
+In this section, we detail the methodology employed to create the benchmark, which aims to evaluate the hallucination issues of LVLMs. As illustrated in Figure~\ref{fig:benchmark_overview}, constructing this benchmark involves two principle phases: the \textit{collection} of images (\Cref{sec:images_collection}) and their subsequent \textit{annotation} (\Cref{sec:annotation}). 
+
+\begin{figure}[t]
+ \centering
+ \includegraphics[width=\linewidth]{figures/benchmark_overview.pdf}
+ \vspace{-7mm}
+ \caption{Overview of our proposed benchmark \data~ collection procedure: (1) Image collection (\Cref{sec:images_collection}): (a) \textit{Co-occurrence statistics calculation} (\Cref{sec:dependecies_calculation}): We employ two statistical measures to determine co-occurring features – frequencies and conditional probabilities; (b) \textit{Image extraction} (\cref{sec:extraction_steps}): Next, we leverage the identified co-occurrence statistics to systematically extract images from existing datasets; (2) \textit{Human Annotations} (\Cref{sec:annotation}): Finally, we manually annotate each image within the distinct feature subsets, adhering to the definition in \Cref{sec:definition}. Here, we provide an example of how we use the co-occurrence statistics to select images for \textit{object} subsets and add human annotations for later evaluation.}
+ \vspace{-5mm}
+ \label{fig:benchmark_overview}
+\end{figure}
+
+\vspace{-2mm}
+\subsection{Image Collection}
+\label{sec:images_collection}
+\vspace{-1mm}
+
+We aim to select images that can effectively expose the issue of model hallucinations. We hypothesize that when models are repeatedly exposed to specific combinations of features -- such as object existence, object attributes, and object relations -- during training, they develop a pronounced \textit{associative bias}, which leads the models to expect these co-occurring features in similar situations. Consequently, when a model encounters an image containing only one element of a familiar combination, it may erroneously infer the presence of the associated feature. This associative bias is one primary source of model hallucinations \cite{li-etal-2023-evaluating,zhou2023analyzing}. To explore this phenomenon, we initially analyze the co-occurrence statistics of \textit{object-object}, \textit{object-attribute}, and \textit{object-relation-object} combinations within the extensively annotated GQA \cite{Hudson2019GQAAN} dataset. We then curate a collection of images representing \textit{frequently} and \textit{infrequently} co-occur (object, object), (object, attribute), (object, relation, object) tuples. By doing so, we identify the most challenging images to construct a benchmark, to which we then add detailed human annotations for later thorough evaluation. 
+
+We first outline the definition (\Cref{sec:definition}), then explain the process for calculating co-occurrence statistics (\Cref{sec:dependecies_calculation}), and finally describe the steps for using these dependencies to select images (\Cref{sec:extraction_steps}).
+
+\vspace{-1mm}
+\subsubsection{Definition}
+\label{sec:definition}
+
+We first define three principal features to assess hallucination issues in LVLMs. The first feature, \textbf{Object existence} (object-object), encompasses all visual entities within an image, covering both \textit{foreground} and \textit{background} elements. The second feature, \textbf{Attribute} (object-attribute), focuses on the characteristics of objects, with a particular emphasis on \textit{color} and \textit{counting}. Our analysis within this category is divided into two segments: \textit{object} and \textit{people}. For objects, we concentrate on the color and count of each item not related to people (\textit{e.g.}, six \textit{green apples} on the table). For people, we highlight the colors of attire and the total number of individuals depicted (\textit{e.g.}, a woman who is wearing a \textit{red jacket}). The third feature, \textbf{Relation} (object-relation-object), pertains to the relational information between the objects in the image. Here, we focus on \textit{positional} and \textit{comparative} relation. Specifically, the positional relation tests the relative position between the objects, while the comparative relation analyzes the understanding of ``which object is larger than the other.'' 
+
+\subsubsection{Quantifying Co-Occurring Features}
+\label{sec:dependecies_calculation}
+
+To utilize co-occurring features effectively, the first step involves computing the \textit{statistical dependencies} between different features. This analysis aids in identifying dominant co-occurrence patterns in the data, thereby spotlighting features with strong associations that the model might have internalized. We employ two statistical methods to determine these dependencies -- \textit{frequencies} and \textit{conditional probabilities}. \textbf{Frequency} provides insights by quantifying the frequency of specific features in conjunction with particular objects, attributes, or relations, thereby illuminating the raw distribution of these features throughout the dataset. To delve deeper, we calculate the \textbf{conditional probability}, which quantifies the likelihood of encountering a specific feature given the presence of an object:
+
+\vspace{-5mm}
+\begin{equation}
+    \small
+    \mathcal{P}(\text{feature}|\text{object}) = \frac{\text{Frequency}(\text{feature, object)}}{\text{Frequency}(\text{object})},
+\end{equation}
+where feature $\in$ \{object, attribute, relation\}. Our goal is to identify objects whose conditional probability distributions exhibit significant skew. To achieve this, we explore five distinct metrics based on conditional probabilities. Detailed definitions of these five metrics are provided in Appendix \ref{apx:cond_prob}.
+
+\subsubsection{Utilizing Co-Occurrence Statistics for Image Extraction}
+\label{sec:extraction_steps}
+
+Leveraging the identified co-occurrence statistics, we systematically extract images from existing datasets. The process includes several critical steps:
+
+\begin{enumerate}
+    \item Identify objects ($\mathbf{O}$) that exhibit the \textit{most pronounced} co-occurrence dependencies, including frequency and conditional probabilities:
+    \begin{equation}
+        \small
+        \mathbf{O} = \{\arg \max_{o} \mathcal{P}(f|o) | f \in \mathcal{F}\},
+    \end{equation}
+    where $\mathcal{F}$ denotes the set of all features (including object, attribute, and relation) annotated in the dataset, $o$ represents any object annotated in the dataset, and $\mathcal{P}$ signifies all statistical dependencies, including frequencies and five kinds of conditional probabilities.
+    
+    \item Select features that are \textit{minimally} associated with each identified object in $\mathbf{O}$, denoted as set $\mathbf{I}$,  thereby spotlighting instances where common co-occurrences are \textit{absent}:
+    \begin{equation}
+        \small
+        \mathbf{I} = \{\arg \min_{i} \mathcal{P}(i|o) | i \in \mathcal{F}_o, o \in \mathbf{O} \},
+    \end{equation}
+    where $\mathcal{F}_o$ denotes the set of all features (including object, attribute, and relation) annotated in the dataset related to object $o$ and $\mathcal{P}$ signifies all statistical dependencies.
+    
+    \item Determine features that are \textit{most frequently} co-occurring with each identified object in $O$, denoted as set $\mathbf{H}$, serving as \textit{strong} associative tendencies:
+    \begin{equation}
+        \small
+        \mathbf{H} = \{\arg \max_{h} \mathcal{P}(h|o) | h \in \mathcal{F}_o, o \in \mathbf{O} \},
+    \end{equation}
+    where $\mathcal{F}_o$ denotes the set of all features (including object, attribute, and relation) annotated in the dataset related to object $o$ and $\mathcal{P}$ signifies all statistical dependencies.
+    
+    \item Collect images $\mathbf{C}$ for each feature in $\mathbf{I}$ corresponding to an object in $\mathbf{O}$, with the chosen images \textit{including} the specified feature and object, yet \textit{excluding} any features from $\mathbf{H}$, to create clear cases for testing the model's associative bias:
+    \begin{equation}
+        \small
+        \mathbf{C} = \{c: (o,f) | o \in \mathbf{O}, f \in \mathbf{I}, \text{and } f \not\in \mathbf{H}\}
+    \end{equation}
+    where $c$ denotes an image that contains the object $o$ characterized by the feature $f$.
+\end{enumerate}
+
+For each feature defined in \Cref{sec:definition}, we adhere to the outlined steps to extract images from the GQA dataset. Subsequently, we manually review the collected images by two expert annotators to ensure that only those of high quality and with clear annotations are retained. These procedures enable us to amass a collection of images for evaluating the object existence and the relations. However, extracting images that accurately represent specific \textit{attributes} proved to be challenging due to the limited attribute annotations in GQA. To overcome this, we source copyright-free images from the Internet\footnote{We use Pixel, a free stock photos platform: \url{https://www.pexels.com/} for image retrieval.}, guided by the attribute-related statistics gathered in the previous step. The statistics of our proposed benchmark are detailed in \Cref{tab:benchmark_stats}.
+
+\vspace{-1mm}
+\subsection{Annotation}
+\label{sec:annotation}
+
+For each image within the distinct feature subsets, we manually annotate them based on existing annotations, adhering to the definitions discussed in Section \ref{sec:definition}. Figure \ref{fig:benchmark_overview} presents an example in the object subset, while Figure \ref{fig:evaluation_overview} illustrates three examples in the object, attribute, and relation subsets from our collected benchmark. Below, we discuss the details of these annotations.
+
+\paragraph{Object Existence.} Through manual verification of existing annotations, we enhance the dataset by including additional annotations to ensure all visual entities within an image are accounted for. This contains both \textit{foreground} and \textit{background} entities. For example, in an image showing ``a lady sitting on a bench in front of a building,'' the objects to be annotated are the ``lady,'' ``bench,'' and ``building.''
+
+\paragraph{Attributes.} In a similar vein to the approach adopted in the object subset, we further enhance images by appending detailed attribute annotations to the depicted objects. Our analysis within this category bifurcates into two subsets: \textit{object} and \textit{people}. Within the object sub-category, for an image described as ``two green apples on a white table,'' the identified attributes are ``(green, apple)'' for each apple and ``(white, table)'' for the table. For \textit{people} sub-category, in a scene showing ``a woman wearing a red jacket with black shoes,'' the identified attribute is ``(woman, (red, jacket), (black, shoes))''.
+
+\paragraph{Relations.} In our benchmark, we capture \textit{positional} relations between objects. For instance, the statement ``the bed is to the left of the table'' illustrates the positional relation between ``bed'' and ``table''. Conversely, the inverse statement ``the table is to the right of the bed'' is equally valid and is annotated accordingly. Additionally, we annotate descriptions such as ``a bed is on the left side of the image'' to denote the positional relations of objects at the image level. For \textit{comparative} relations, we use an annotation scheme that assigns a numerical rank based on object size, ordering objects from largest to smallest (\textit{e.g.}, ``1. bed, 2. table, 3. cup'').
+
+\input{tables/benchmark_stats}
+
+Ultimately, \data~ provides a set of tuples $(I, F_G, p_G)$, where $I$ denotes the image, $F_G$ is the feature annotations of the image, and $p_G$ represents the prompt designed for LVLMs generation. The designed prompts $p_G$ are shown in  \Cref{apx:caption_generation_prompts} for each subset -- object, attribute, and relation.

@@ -1,0 +1,139 @@
+\appendix
+
+
+
+% \section{Related Work}\label{apd:related}
+
+\newpage
+\section{BIOMEDICA-LongCAP details}\label{apd:longcap}
+
+
+BIOMEDICA-LongCAP data generation pipeline using Qwen2-VL-72B-Instruct \cite{qwen2vl}:
+
+\begin{enumerate}
+    \item {\bf Context-Aware Caption Augmentation} We enhance the original figure caption by contextualizing the image description with additional information from the full-text article. Specifically, we collect the original caption, inline mentions from the main text, the abstract, and acronyms used throughout the aforementioned data. Then a VLM is prompted to augment the original caption, by only leveraging the provided information.
+    
+    \item {\bf Feasibility Assessment.} Given an image and its augmented caption, we extract all atomic features from the generated caption and prompt the VLM to evaluate whether it is feasible to discern each feature from the image alone—without relying on external sources or any information not visually present, unless explicitly overlaid with feasibility text. The output is an XML file in which each atomic feature is labeled as either \texttt{FEASIBLE} or \texttt{NOT\_FEASIBLE}, along with a rationale explaining the label.
+
+    \item {\bf Caption Refinement via Feasibility Filtering.} Based on the feasibility assessment, we generate a refined caption that preserves only atomic features labeled as \texttt{FEASIBLE}. Features labeled as \texttt{NOT\_FEASIBLE} are removed or reworded to ensure that the final image description reflects only information that can be visually supported.
+    
+    \item {\bf Acronym Expansion.} While all previous steps had access to acronym definitions, we explicitly expand all acronyms based on a curated acronym list derived from the full-text article. This ensures that the captions are readable and unambiguous.
+    
+\end{enumerate}
+
+% \section{CXR Benchmark}
+% % histogram of token length
+% We evaluate cross-modal retrieval between radiology images and their paired full-text reports. Each image--report pair is treated as one ground-truth match (1:1 setting). Reports are tokenized with the CLIP tokenizer.
+% All embeddings are L2-normalized. Performance is reported as Recall@\{$1,5,10,100$\} for both text$\to$image and image$\to$text directions.
+
+
+% \section{PMC Benchmark}
+% We follow the same retrieval setup as in the CXR benchmark.
+\section{CXR Benchmark}
+We evaluate cross-modal retrieval between chest radiographs and their paired full-text reports. 
+Let $\mathcal{D} = \{(x_i, t_i)\}_{i=1}^N$ denote the dataset, where $x_i$ is an image and $t_i$ its paired report. 
+Each pair is treated as a one-to-one ground-truth match. 
+
+Reports are tokenized with the CLIP tokenizer and embedded via the text encoder $E_{\text{text}}$, while images are preprocessed and embedded via the vision encoder $E_{\text{img}}$. 
+We obtain
+\[
+z^{\text{text}}_i = \frac{E_{\text{text}}(t_i)}{\|E_{\text{text}}(t_i)\|}, \quad 
+z^{\text{img}}_i = \frac{E_{\text{img}}(x_i)}{\|E_{\text{img}}(x_i)\|},
+\]
+where all embeddings are L2-normalized. 
+
+For text$\to$image retrieval, we rank all image embeddings $\{z^{\text{img}}_j\}$ by cosine similarity with a query $z^{\text{text}}_i$; the ground-truth match is $z^{\text{img}}_i$. 
+Image$\to$text retrieval is defined analogously. 
+Performance is reported as Recall@$\{1,5,10,100\}$ for both directions.
+
+We analyzed the token length distribution of the 1,000 reports in our evaluation set using the BioClinical-ModernBERT tokenizer. The reports contained on average 168.3 tokens, with a median of 158 tokens. The shortest report had 49 tokens, while the longest contained 427 tokens.
+
+\section{PMC Benchmark}
+We adopt the same retrieval formulation as CXR Benchmark on biomedical articles from PubMed Central. To construct the benchmark, we used the PubMed Central FTP service to download media bundles containing both .nxml full-text files and associated image files for recently published 2025 articles. From each article, we sampled exactly one unique image–caption pair and did not reuse articles across the benchmark, ensuring that each pair represents a distinct source document.
+
+For the 1,000 CXR reports, tokenization with BioClinical-ModernBERT yielded an average length of 510 tokens, with a median of 460 tokens. Report lengths ranged from 251 tokens at the lower end to 1,022 tokens at the upper bound.
+
+
+
+
+
+\section{Zero-shot classification benchmark}\label{apd:zeroshot}
+For the detailed dataset provenance, including dataset names, citations, modalities, and class counts, please refer to BIOMEDICA \cite{biomedica}, Table S8. Each dataset’s classification task is reformulated into a closed-form VQA task. Labels are mapped to short human-readable text descriptions, and each image is paired with a multiple-choice list of candidate answers (including distractors). The correct label is randomly permuted among the options, and evaluation is performed by computing the similarity between image and answer embeddings.
+
+% see table S8 in biomedica 
+
+\section{Compute details}\label{apd:compute}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{l c c}
+\toprule
+\rowcolor{gray!10} \textbf{GPU Model} & \textbf{GPU Memory} & \textbf{Quantity} \\
+\midrule
+NVIDIA H200 & 141 GB & 8 \\
+NVIDIA A100 & 80 GB & 16 \\
+\bottomrule
+\end{tabular}
+\caption{Compute resources used for training.}
+\end{table}
+
+
+
+\section{Training parameters}\label{apd:param}
+
+\begin{table}[h!]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt} % reduce column spacing
+\begin{tabular}{ll}
+\toprule
+\rowcolor{gray!10} \textbf{Model} & \textbf{Hyperparameters} \\
+\midrule
+\multirow{12}{*}{BMC-LongCLIP} 
+ & context length: 77/154/512 \\ 
+ & batch size (per GPU): 1024 \\ 
+ & GPUs: 8$\times$H200 \\
+ & effective batch size: 8192 \\
+ & learning rate: $5\mathrm{e}{-4}$ \\ 
+ & beta1: 0.9,\; beta2: 0.95 \\ 
+ & warmup: 1000 \\ 
+ & max epochs: 20 \\ 
+ & precision: FP32 \\ 
+ & grad. clip norm: 1.0 \\ 
+ & dataset type: WebDataset \\
+ & dataset: Biomedica-6M  \\ 
+\cmidrule{1-2}
+\multirow{12}{*}{BMC-LongCLIP+} 
+ & context length: 512 \\
+ & batch size (per GPU): 1024 \\ 
+ & GPUs: 16$\times$A100 \\
+ & effective batch size: 16384 \\
+ & learning rate: $5\mathrm{e}{-4}$ \\ 
+ & beta1: 0.9,\; beta2: 0.95 \\ 
+ & warmup: 1000 \\ 
+ & max epochs: 20 \\ 
+ & precision: FP32 \\ 
+ & grad. clip norm: 1.0 \\ 
+ & dataset type: WebDataset \\
+ & dataset: Biomedica-6M + LongCAP  \\ 
+\midrule
+\end{tabular}
+\caption{Hyperparameters used for pretraining.}
+\label{tab:hyperparam_search_grid}
+\end{table}
+
+
+\newpage
+
+\section{Training loss curves by training context length}\label{apd:converge}
+\begin{figure}[htbp]
+  \centering
+ % \fbox{\rule{0pt}{200pt}\rule{150pt}{0pt}} % height=100pt, width=150pt
+  \includegraphics[width=1\linewidth]{images/training_loss_converge.png}
+  \caption{Training loss curves across context lengths, illustrating that longer text windows accelerate convergence.}
+
+  \label{fig: convergence}
+\end{figure}
+
+
+

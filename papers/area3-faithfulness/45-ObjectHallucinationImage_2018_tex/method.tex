@@ -1,0 +1,77 @@
+\section{Caption Hallucination Assessment}
+
+We first introduce our image relevance metric, \emph{CHAIR}, which assesses captions w.r.t. objects that are actually in an image. It is used as a main tool in our evaluation. Next we discuss the notions of \emph{image and language model consistency}, which we use to reason about the causes of hallucination. %
+
+\subsection{The \metric{} Metric}
+\label{sec:metric}
+%
+To measure object hallucination, we propose the \emph{\metric{} (\metricfullname{})} metric, which calculates what proportion of words generated are actually in the image according to the ground truth sentences and object segmentations. This metric has two variants: per-instance, or what fraction of object instances are hallucinated (denoted as \metric{}i), and per-sentence, or what fraction of sentences include a hallucinated object (denoted as \metric{}s):%
+$$\text{CHAIR}_{i} = \frac{ \vert\{ \text{hallucinated objects}\}\vert }{\vert\{\text{all objects mentioned}\}\vert }$$
+$$\text{CHAIR}_{s} = \frac{ \vert\{ \text{sentences with hallucinated object}\}\vert }{\vert\{\text{  all sentences}\}\vert }$$
+
+%
+For easier analysis, we restrict our study to the 80 MSCOCO objects which appear in the MSCOCO segmentation challenge.
+To determine whether a generated sentence contains hallucinated objects, we first tokenize each sentence and then singularize each word. 
+We then use a list of synonyms for MSCOCO objects (based on the list from~\citet{lu2018neural}) to map words (e.g., ``player'') to MSCOCO objects (e.g., ``person''). 
+Additionally, for sentences which include two word compounds (e.g., ``hot dog'') we take care that other MSCOCO objects (in this case ``dog'') are not incorrectly assigned to the list of MSCOCO objects in the sentence.
+%
+%
+For each ground truth sentence, we determine a list of MSCOCO objects in the same way.
+The MSCOCO segmentation annotations are used by simply relying on the provided object labels.
+
+We find that considering both sources of annotation is important.
+For example, MSCOCO contains an object ``dining table'' annotated with segmentation maps. However, humans refer to many different kinds of objects as ``table'' (e.g., ``coffee table'' or ``side table''), though these objects are not annotated as they are not specifically ``dining table''.
+By using sentence annotations to scrape ground truth objects, we account for variation in how human annotators refer to different objects.
+%
+Inversely, we find that frequently humans will not mention all objects in a scene. 
+Qualitatively, we observe that both annotations are important to capture hallucination.
+Empirically, we verify that using only segmentation labels or only reference captions leads to higher hallucination (and practically incorrect) rates.
+%
+
+%
+%
+
+%
+%
+
+%
+%
+%
+
+%
+
+
+%
+
+\subsection{Image Consistency}
+\label{sec:img_consistency}
+%
+We define a notion of \textit{image consistency}, or how consistent errors from the captioning model are with a model which predicts objects based on an image alone.
+To measure image consistency for a particular generated word, we train an image model and record $P(w|I)$ or the probability of predicting the word given only the image.
+To score the image consistency of a caption we use the average of $P(w|I)$ for all MSCOCO objects, where
+higher values mean that errors are \textit{more} consistent with the image model.
+Our image model is a multi-label classification model with labels corresponding to MSCOCO objects (labels determined the same way as is done for \metric{}) which shares the visual features with the caption models.
+
+\subsection{Language Consistency}
+\label{sec:lang_consistency}
+We also introduce a notion of \textit{language consistency}, i.e. how consistent errors from the captioning model are with a model which predicts words based only on previously generated words. We train an LSTM~\cite{hochreiter1997long} based language model which predicts a word $w_t$ given previous words $w_{0:t-1}$ 
+%
+ on MSCOCO data. 
+We report language consistency as $1/R(w_t)$ where $R(w_t)$ is the rank of the predicted word in the language model.
+Again, for a caption we report average rank across all MSCOCO objects in the sentence and higher language consistency implies that errors are \textit{more} consistent with the language model.
+
+We illustrate image and language consistency in Figure~\ref{fig:lm_im}, i.e. the hallucination error (``fork'') is more consistent with the Language Model predictions than with the Image Model predictions. We use these consistency measures in Section \ref{sec:causes} to help us investigate the causes of hallucination.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/LM_IM_example.pdf}
+\caption{\label{fig:lm_im} Example of image and language consistency. The hallucination error (``fork'') is more consistent with the Language Model.}
+\end{figure}
+
+%
+%
+%
+%
+
+%
+

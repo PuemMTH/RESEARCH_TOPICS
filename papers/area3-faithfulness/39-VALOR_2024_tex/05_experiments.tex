@@ -1,0 +1,126 @@
+\section{Experiment}
+
+In this section, we perform experiments to evaluate different existing LVLMs within our proposed framework (\Cref{subsec:exp_eval}). We also present evidence demonstrating that our evaluation methodology aligns closely with human judgment (\Cref{subsec:exp_metric}). Additionally, we explore the significance of each design aspect of our framework through ablation studies (\Cref{subsec:exp_ablation}). Finally, we showcase qualitative examples to illustrate our findings (\Cref{subsec:qualitative}).
+
+\subsection{Model Coverage-Faithfulness Evaluation}
+\label{subsec:exp_eval}
+We use the framework \eval~ to evaluate various LVLMs listed in \Cref{tab:lvlm_models} in the Appendix \ref{apx:lvlms}, employing GPT-4 as the evaluation LLM agent. 
+
+In the evaluation of various models, as shown in \Cref{tab:evaluation_results}, Emu2 distinguishes itself by achieving the highest average faithfulness score of 74.98, signifying its consistent capability to generate responses that accurately reflect the content of the input image. However, Emu2's performance in terms of coverage is less impressive, with the lowest average score of 8.1, suggesting that its responses, while accurate, may not comprehensively cover all elements of the image. When broken down into specific dimensions, Emu2 excels in faithfulness across categories -- scoring 94.2 in object existence, 54.3 in attribute-people, 72.2 in relation-positional, and 87.5 in relation-comparative. Conversely, it lags in coverage, with scores of 14.1 in object existence, 10.4 in attribute-object, 1.9 in attribute-people, and 1.8 in relation-positional. These results point to a potential trade-off between faithfulness and coverage in Emu2's design, where the model prioritizes accuracy at the expense of a broader scope in its responses. This pattern supports the initial hypothesis that \textit{some LVLMs may intentionally sacrifice coverage to improve the precision of their outputs}.
+
+Meanwhile, GPT-4V(ision) distinguishes itself with an unparalleled average coverage score of 28.0, showcasing its adeptness in encapsulating a wide array of features from the input image. This indicates that GPT-4V excels in recognizing and addressing diverse elements within images, although it does not necessarily always maintain the highest accuracy, as seen in its lower faithfulness score of 61.6. Particularly in evaluations concerning the existence of objects, GPT-4V leads with the highest coverage score of 38.8, underlining its comprehensive approach to object detection. This approach tends to favor inclusivity, which might lead to the occasional identification of objects that are not present in the image. Furthermore, in evaluations focused on attributes related to people, GPT-4V again achieves the highest coverage score of 54.3. However, this comes with a trade-off, as it also exhibits a higher tendency towards hallucinations compared to other models, indicating a propensity to generate details or elements that may not be grounded in the actual content of the image.
+
+Models such as LLaVA-1.5 and CogVLM showcase a more equitable performance, achieving respectable scores in both faithfulness and coverage metrics. This highlights their capability to provide responses that are not only precise but also encompassing. Notably, LLaVA-1.5 stands out for its remarkable outcomes, achieved through the efficient use of training data, underscoring the significance of leveraging high-quality instruction-tuning data to enhance model performance.
+
+\vspace{-1mm}
+\subsection{Effectiveness of Evaluation Framework}
+\label{subsec:exp_metric}
+\vspace{-1mm}
+
+\begin{table}[t]
+\small
+\centering
+\setlength{\tabcolsep}{0.8mm}{
+\scalebox{0.92}{
+\begin{tabular}{lccc}
+\toprule
+\textbf{Category} & \textbf{Sub-Category} & \textbf{\ Faithful. ($\rho$) } & \textbf{Cover ($\rho$) }\\
+\midrule
+
+Object Existence & - & 0.91 & 0.89\\
+\midrule
+\multirow{2}{*}{Attribute} & Object & 0.99 & 0.98\\
+& People & 0.98 & 0.96\\
+\midrule
+\multirow{2}{*}{Relation} & Positional & 0.78 & 0.86 \\
+& Comparative & 0.92 & 0.98 \\
+
+\bottomrule
+\end{tabular}
+}
+}
+\vspace{-2mm}
+\caption{Pearson correlation ($\rho$) between our GPT-4-based evaluation framework \eval~ and human judgements.}
+\vspace{-6mm}
+\label{tab:human correlation}
+\end{table}
+
+To demonstrate the \textit{effectiveness} and \textit{reliability} of our LLM-based automatic evaluation pipeline, we conduct experiments to evaluate if our evaluation framework correlates with human evaluations in both faithfulness and coverage dimensions. Specifically, we have human and our GPT-4-based evaluation method evaluate InstructBLIP outputs and compute the Pearson correlation ($\rho$) score\footnote{We opt for Pearson correlation as our assessment metric due to its suitability for measuring \textit{linear} relationships, as opposed to Spearman's rank correlation, which is more attuned to \textit{monotonic} relationships.}. As shown in \Cref{tab:human correlation}, for object existence, the findings reveal a significantly strong Pearson correlation of 0.91 for faithfulness and 0.89 for coverage, effectively rejecting the null hypothesis that posits no correlation between the two evaluation methodologies, with a compelling $p$-value of 0. Additionally, our study achieved a notably high correlation of 0.98 in attribute recognition and comparative relations. When evaluating positional relations, which tend to involve longer and more complex descriptions, the correlation scores were not as high as those observed in the other categories but still indicated a very high level of correlation, with 0.78 in faithfulness and 0.86 in coverage. These results affirm the comparability of our automatic evaluation metrics to human evaluation in terms of both \textit{efficacy} and \textit{reliability}.
+
+\subsection{Ablation Study}
+\label{subsec:exp_ablation}
+
+In this section, we serve to answer \textbf{two} questions and discuss our findings. 
+
+\begin{table}[t]
+\small
+\centering
+\setlength{\tabcolsep}{0.9mm}{
+\scalebox{0.99}{
+\begin{tabular}{llll}
+\toprule
+\textbf{Model} & \textbf{InstructBLIP} & \textbf{LLaVA-1.5} & \textbf{GPT-4V}\\
+\midrule
+
+\multicolumn{4}{l}{\textit{Evaluation data: randomly selected}} \\
+Faithfulness & 76.5 & 84.5 & 64.1 \\
+Coverage  &24.3 & 26.3 & 41.2\\
+\midrule 
+\multicolumn{4}{l}{\textit{Evaluation data: co-occurrence selected} (\textbf{Ours}) }  \\
+Faithfulness &74.5 \textcolor{red}{(-2.0)} & 72.1 \textcolor{red}{(-12.4)} & 61.6 \textcolor{red}{(-2.5)}\\
+Coverage  &24.8 \textcolor{red}{(+0.5)} & 24.7 \textcolor{red}{(-1.6)} & 38.8 \textcolor{red}{(-2.4)}\\
+\bottomrule
+\end{tabular}
+}
+}
+\vspace{-2mm}
+\caption{Model performance comparison on our data selection method against random selection. Faithfulness and coverage scores are in percentage (\%).} 
+\vspace{-6mm}
+\label{tab:co-ocurrence ablate}
+\end{table}
+
+1. \textbf{How does our co-occurrence data selection method compare to other alternatives?} 
+
+To illustrate the effectiveness of the co-occurrence data selection method, we set up a baseline of randomly selecting 50 images in the GQA validation split and applying human annotations, the same as for our dataset. For the ablation study, we focus on the well-studied object hallucination. We evaluate three popular models representing query tokens-based image features (InstructBLIP), linear projection-based features (LLaVA-1.5), and advanced commercial LVLMs (GPT-4V). As shown in \Cref{tab:co-ocurrence ablate}, all models tend to produce more hallucinations and exhibit significantly \textit{lower faithfulness} compared to our benchmark. Notably, LLaVA-1.5 scores 12.4 points lower in faithfulness when evaluated against our benchmark. This suggests that our benchmark is challenging due to its reliance on co-occurrence selection. Additionally, the coverage scores for both LLaVA-1.5 and GPT-4V decreased. Upon further analysis through human review, we discover that our benchmark, on average, contains 1.69 more objects than images selected at random. This finding indicates that our data selection method can incorporate more complex objects compared to the random selection approach commonly used in other benchmark constructions.   
+
+2. \textbf{How does our LLM-based evaluation framework compare with LLM-free evaluation?} 
+
+We compare our proposed LLM agent augmented framework against the original CHAIR metric which is adopted by all previous studies. Because the CHAIR metric is limited to evaluating only 80 objects from the MSCOCO dataset, for a fair comparison, we randomly select 20 COCO images and re-annotate them for analysis alongside the CHAIR metric. We have made these annotations publicly available, adhering to the same list of synonyms used in the original CHAIR metric. To conduct this comparison, we utilize two accuracy scores. For Acc (F), we assess the performance by comparing the number of hallucinated objects identified by the metric against the ground-truth hallucinated objects in the caption. If an object is incorrectly identified as hallucinated when it is not, the metric imposes a penalty of -1. This score aligns with the \textit{matching} phase of our framework, ensuring a thorough evaluation of hallucination detection accuracy. For Acc (C), we calculate the number of objects detected by metric over the unique objects mentioned in the caption, assessing our \textit{extraction} phase's efficiency. As shown in Table \ref{tab:LLM agent framework ablate}, our framework significantly outperforms in both faithfulness and coverage accuracy by a large amount. This improvement is due to our framework's \textit{open vocabulary matching} ability, unlike the original CHAIR approach that struggles with new expressions without pre-defined synonyms. Notably, with complex models like GPT-4V, CHAIR's faithfulness accuracy drops to 5.88, highlighting our method's strength in managing diverse object descriptions.
+
+\begin{table}[t]
+\small
+\centering
+\setlength{\tabcolsep}{0.7mm}{
+\scalebox{0.94}{
+\begin{tabular}{lllll}
+\toprule
+\textbf{Metric} & \textbf{F.}$_{\uparrow}$ & \textbf{C.}$_{\uparrow}$ & \textbf{Acc (F)}$_{\uparrow}$& \textbf{Acc (C)}$_{\uparrow}$   \\
+\midrule
+\multicolumn{5}{l}{\textit{Model: InstructBLIP}} \\
+CHAIR & 75.0 & 34.3 & 11.11 & 80.66\\
+CHAIR$_{\text{LLM}}$ \textbf{(Ours)} & 76.9  & 30.4 & 88.89 \textcolor{red}{(+77.78)} & 100.0 \textcolor{red}{(+19.34)}\\
+\midrule
+\multicolumn{5}{l}{\textit{Model: LLaVA-1.5}} \\
+CHAIR & 74.3 & 34.1 & 30.00 & 83.52\\
+CHAIR$_{\text{LLM}}$ \textbf{(Ours)} &81.5 & 27.0 & 90.00 \textcolor{red}{(+60.00)} &   97.08 \textcolor{red}{(+13.56)}\\
+\midrule
+\multicolumn{5}{l}{\textit{Model: GPT-4V}} \\
+CHAIR & 79.3 & 54.8 & 5.88 & 82.35 \\
+CHAIR$_{\text{LLM}}$ \textbf{(Ours)} &69.7&57.9 &82.35 \textcolor{red}{(+76.47)}&98.17 \textcolor{red}{(+15.82)}\\
+\bottomrule
+\end{tabular}
+}
+}
+\vspace{-2mm}
+\caption{Comparison of LLM-augmented CHAIR with original CHAIR metric. Here, F. and C. denote faithfulness and coverage scores in percentage (\%). Acc (F) represents the average percentage of hallucinated objects detected by the metric. Acc (C) denotes the average percentage of objects detected by metric.}
+\vspace{-5mm}
+\label{tab:LLM agent framework ablate}
+\end{table}
+
+Moreover, the limitation of CHAIR's pre-defined object list extends to its inability to account for potential hallucinated objects, which are essential for differentiating between mere words and actual objects in captions. This leads to its failure in detecting hallucinated objects, resulting in performance degradation. In contrast, our method overcomes this by using an automatically extracted object list that dynamically matches objects, avoiding this limitation. Although approaches like \citet{wang2023llm} attempt to address this by including a selection of potential hallucinated objects, they cannot guarantee coverage of all possible hallucinated objects, particularly in complex outputs from advanced LVLMs that generate extensive captions.
+
+\subsection{Qualitative Results}
+\label{subsec:qualitative}
+\vspace{-1mm}
+
+We illustrate the qualitative results of three representative models in \Cref{fig:example_object}, \Cref{fig:example_pos_rela} and \Cref{fig:example_comp_rela} in the Appendix \ref{apx:qualitative_results}. Each model exhibited instances of hallucination in these examples from our evaluation benchmark \data~. Notably, while GPT-4V generates the most comprehensive results, it is also more prone to producing hallucinations. 

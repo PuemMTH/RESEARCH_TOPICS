@@ -1,0 +1,37 @@
+{
+  "arxiv_id": "2209.13718",
+  "title": "A Dataset of Alt Texts from HCI Publications",
+  "authors": [
+    "Sanjana Chintalapati",
+    "Jonathan Bragg",
+    "Lucy Lu Wang"
+  ],
+  "abstract": ". Figures in scientific publications contain important information and results, and alt text is needed for blind and low vision readers to engage with their content. We conduct a study to characterize the semantic content of alt text in HCI publications based on a framework introduced by Lundgard and\nSatyanarayan ( 2022 ) . Our study focuses on alt text for graphs, charts, and plots extracted from HCI and accessibility publications; we focus on these communities due to the lack of alt text in papers published outside of these disciplines. We find that the capacity of author-written alt text to fulfill blind and low vision user needs is mixed; for example, only 50% of alt texts in our sample contain information about extrema or outliers, and only 31% contain information about major trends or comparisons conveyed by the graph. We release our collected dataset of author-written alt text, and outline possible ways that it can be used to develop tools and models to assist future authors in writing better alt text. Based on our findings, we also discuss recommendations that can be acted upon by publishers and authors to encourage inclusion of more types of semantic content in alt text.",
+  "year": "2022",
+  "figure_count": 4,
+  "figure_captions": [
+    {
+      "id": "S4.F1",
+      "caption": "Figure 1.The proportion of PDFs in our analyzed sample which contain valid alt text over time, with 95% confidence intervals computed through bootstrap resampling.",
+      "src": "/html/2209.13718/assets/figures/alttext_over_time.png"
+    },
+    {
+      "id": "S4.F2",
+      "caption": "Figure 2.Distribution of the maximum level (top) and total number of levels (bottom) of semantic content found in the sample of annotated author-written alt text.",
+      "src": "/html/2209.13718/assets/figures/max_alt_text_level.png"
+    },
+    {
+      "id": "S4.F3",
+      "caption": "Figure 3.Proportion of alt text containing text of each semantic level over time with 95% confidence intervals computed using bootstrap resampling.",
+      "src": "/html/2209.13718/assets/figures/levels_over_time.png"
+    },
+    {
+      "id": "S4.F4",
+      "caption": "Figure 4.Relationship between length of alt text (character count) and the number of semantic levels of information represented. Though length correlates with the number of levels, there are many longer alt texts that do not necessarily contain more levels of semantic content.",
+      "src": "/html/2209.13718/assets/figures/alt_text_level_by_length.png"
+    }
+  ],
+  "paper_number": 20,
+  "slug": "DatasetAltTexts",
+  "base_name": "20-DatasetAltTexts_2022"
+}

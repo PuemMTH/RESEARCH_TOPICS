@@ -1,0 +1,42 @@
+
+\paragraph{A Simple Baseline: Using Extracted Mentions as Captions.}
+%\kenneth{MAYBE not put it here...}
+%As suggested by prior literature that images usually illustrate objects in the surrounding documents~\cite{6205758} and 
+Motivated by our information overlap study (\Cref{sec:motivating-analysis}),
+we created the \textbf{Reuse} baselines. 
+These baselines simply repurpose portions of the input text as the prediction.
+%we designed the \textbf{Reuse} baselines that simply output parts of the input text (\eg, texts surrounding Mention) as the prediction. 
+% For example, Reuse$_M$ (Reuse with Mention) outputs the first mention as the caption;
+% Reuse$_{W[0, 1]}$ (Reuse with Window[0, 1]) outputs the first mention and the following 1 sentence as the caption.
+% \kenneth{CY TODO: Check if it makes sense.}
+% and Reuse$_{P}$ (Reuse with Paragraph) outputs the whole paragraph as the summary.
+%Similar to prior findings that relevant events are more likely to occur closely~\cite{huang-huang-2021-semantic}, 
+%we expected Reuse$_M$ to perform the best among the Reuse baselines and its performance would drop as the window size increases.
+
+% \kenneth{We need to cite some more papers to justify this baseline. (1) Semantic Frame Forcast paper and (2) maybe this \cite{6205758}}
+% \cy{Done}
+
+% \paragraph{Baseline: Vision-to-Language Generation.}
+\paragraph{Vision-to-Language Baselines.}
+The vision-to-language generation treated this task as an image-captioning task 
+that took the scientific figure image as input and generated a text to describe it.
+%For this baseline, 
+We compared two vision-to-language models as baselines.
+First, we built a sequence-to-sequence model by combining BEiT~\cite{bao2022beit} and GPT-2~\cite{radford2019language}.
+%The second model we chose was the TrOCR~\cite{li2021trocr} model, a transformer-based sequence-to-sequence model pre-trained for the OCR task.
+%Compared to image encoders trained on real photos (images containing visual objects) 
+%such as ViT~\cite{dosovitskiy2020vit} and BEiT~\cite{bao2022beit}, 
+%OCR models trained with images of printed and handwritten documents are closer to the scientific paper domain, 
+%where figures are mostly lines and texts.
+We also selected the TrOCR~\cite{li2021trocr} model, a transformer-based sequence-to-sequence model pre-trained for OCR tasks.
+Compared to image encoders like ViT~\cite{dosovitskiy2020vit} and BEiT~\cite{bao2022beit}, which were trained on photos, OCR models trained on printed and handwritten documents align more closely with the scientific paper domain.
+All figures from \oldDataset (106,391 training samples) were used for training since no mentions were required.
+%Note that 
+%All available figures from \oldDataset (106,391 training samples) were used for training, as no mentions were needed.
+%\kenneth{Is is before or after resplit?}\cy{After the resplit.}
+% HuggingFace's implementation of the TrOCR model\footnote{\texttt{microsoft/trocr-large-printed} was used.} was used for fine-tuning.
+% The model was trained for 100 epochs, and the one with the highest ROUGE-2 score was kept.
+
+% \paragraph{Baseline: [X-Axis] and [Y-Axis]}
+
+% \kenneth{TODO ED}

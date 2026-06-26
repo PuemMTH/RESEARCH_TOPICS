@@ -1,0 +1,91 @@
+
+\section{Experiments}
+\label{sec:experiments}
+
+
+\subsection{Context-length ablation}
+We assess the impact of extending text context length, thus reducing token waste on downstream zero-shot performance. To this end, models were trained with context windows of 77, 154, and 512 tokens under identical settings (batch size, learning rate, optimizer, epochs; as described in appendix section \ref{apd:param}).
+
+\subsection{Batch size and BIOMEDICA-LongCAP}
+We investigate the effect of scaling training batch size while holding other settings fixed, comparing 8K and 16K global batches. In addition, we trained BMC-LongCLIP on both BIOMEDICA-6M and BIOMEDICA-LongCAP, a 1M image–caption dataset with captions enriched from full-text context, using a 16K batch size and 512-token context window. We denote this model as BMC-LongCLIP+.
+
+% \subsection{Batch size}
+% We investigate the effect of scaling training batch size while holding other settings fixed. Models trained with batch sizes of 8K and 16K are compared to assess how larger global batches influence convergence and downstream performance.
+
+
+% \subsection{BIOMEDICA-LongCAP}
+% We additionally trained BMC-LongCLIP on BIOMEDICA-LongCAP, a 1M image–caption dataset with captions enriched from full-text context, using a global batch size of 16K and 512 context length. 
+
+
+
+% \begin{table*}[t]
+% \centering
+% \scriptsize
+% \setlength{\tabcolsep}{3pt} % keep it compact
+% \renewcommand{\arraystretch}{0.9} % tighter rows
+% \caption{\vspace{-0.6em}
+% Zero-shot classification results of different vision–language models across six biomedical domains. Numbers report average accuracy per domain (higher is better; \textbf{bold} = best, \underline{underline} = second-best). Performance is competitive with or surpasses BiomedCLIP and MedSigLIP.}
+% \label{tab:zeroshot}
+% \vspace{-0.6em}
+% \begin{tabular}{l c c
+% *{6}{S[table-format=2.2]}S[table-format=2.2]}
+% \toprule
+% \multicolumn{3}{c}{\textbf{Model}} &
+% {\textbf{Biology}} & {\textbf{Dermatology}} & {\textbf{Microscopy}} &
+% {\textbf{Ophthalmology}} & {\textbf{Pathology}} & {\textbf{Radiology}} & {\textbf{Avg}} \\
+% \cmidrule(lr){1-3}
+% \textbf{Name} & \textbf{Context} & \textbf{Batch} &
+%  &  &  &  &  &  & \\
+% \midrule
+% PMC-CLIP              & 77  & 128  &  7.75 & 12.59 & 10.91 & 23.26 & 19.11 & 38.64 & 18.71 \\
+% MedSigLIP             & 77  & N/A  & 33.98 & 20.13 & 34.56 & 38.23 & 39.74 & 53.03 & 36.61 \\
+% BiomedCLIP            & 256 & 4K  & 34.07 & 36.01 & 49.71 & 37.36 & 38.40 & 56.05 & 41.93 \\
+% BMC-CLIP              & 77  & 8K  & 34.08 & \textbf{65.81} & \underline{50.09} & 36.74 & 41.21 & 59.15 & 47.85 \\
+% BMC-LongCLIP          & 512 & 8K  & \underline{34.95} & 55.16 & \textbf{53.37} & \textbf{55.41} & 42.87 & \underline{63.20} & \textbf{50.16} \\
+% BMC-LongCLIP          & 512 & 16K & \textbf{34.98} & 38.80 & 23.16 & 48.79 & \underline{46.25} & 52.79 & 40.79 \\
+% BMC-LongCLIP+         & 512 & 16K & 34.34 & \underline{55.54} & 37.30 & \underline{53.05} & \textbf{47.65} & \textbf{66.99} & \underline{49.48} \\
+% \bottomrule
+% \end{tabular}
+% \vspace{-0.6em}
+% \end{table*}
+
+
+
+
+
+\begin{table*}[t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt} % keep it compact
+\renewcommand{\arraystretch}{0.9} % tighter rows
+\caption{\vspace{-0.6em}
+Zero-shot classification results of different vision–language models across six biomedical domains. Numbers report average accuracy per domain (higher is better; \textbf{bold} = best, \underline{underline} = second-best). \textit{Panel A} shows ablations of BMC-LongCLIP; \textit{Panel B} benchmarks against prior models.}
+\label{tab:zeroshot}
+\vspace{-0.6em}
+\begin{tabular}{l c c
+*{6}{S[table-format=2.2]}S[table-format=2.2]}
+\toprule
+\multicolumn{3}{c}{\textbf{Model}} &
+{\textbf{Biology}} & {\textbf{Dermatology}} & {\textbf{Microscopy}} &
+{\textbf{Ophthalmology}} & {\textbf{Pathology}} & {\textbf{Radiology}} & {\textbf{Avg}} \\
+\cmidrule(lr){1-3}
+\textbf{Name} & \textbf{Context} & \textbf{Batch} &
+ &  &  &  &  &  & \\
+\midrule
+\multicolumn{10}{l}{\textit{Panel A: Context-length ablation}} \\
+BMC-LongCLIP    & 77  & 8K   & \textbf{40.82} & 40.69 & 46.04 & \textbf{59.80} & 42.28 & 59.42 & 48.18 \\
+BMC-LongCLIP    & 154 & 8K   & \underline{37.21} & \underline{51.34} & \textbf{55.76} & 49.88 & \textbf{47.32} & \underline{59.47} & \textbf{50.16} \\
+BMC-LongCLIP   & 512 & 8K   & 34.95 & \textbf{55.16} & \underline{53.37} & \underline{55.41} & \underline{42.87} & \textbf{63.20} & \textbf{50.16} \\
+\midrule
+\multicolumn{10}{l}{\textit{Panel B: Baseline comparison}} \\
+PMC-CLIP        & 77  & 128  &  7.75 & 12.59 & 10.91 & 23.26 & 19.11 & 38.64 & 18.71 \\
+MedSigLIP       & 77  & N/A  & 33.98 & 20.13 & 34.56 & 38.23 & 39.74 & 53.03 & 36.61 \\
+BiomedCLIP      & 256 & 4K   & 34.07 & 36.01 & 49.71 & 37.36 & 38.40 & 56.05 & 41.93 \\
+BMC-CLIP        & 77  & 8K   & 34.08 & \textbf{65.81} & \underline{50.09} & 36.74 & 41.21 & 59.15 & 47.85 \\
+BMC-LongCLIP    & 512 & 8K   & \underline{34.95} & 55.16 & \textbf{53.37} & \textbf{55.41} & 42.87 & \underline{63.20} & \textbf{50.16} \\
+BMC-LongCLIP    & 512 & 16K  & \textbf{34.98} & 38.80 & 23.16 & 48.79 & \underline{46.25} & 52.79 & 40.79 \\
+BMC-LongCLIP+   & 512 & 16K  & 34.34 & \underline{55.54} & 37.30 & \underline{53.05} & \textbf{47.65} & \textbf{66.99} & \underline{49.48} \\
+\bottomrule
+\end{tabular}
+\vspace{-0.6em}
+\end{table*}

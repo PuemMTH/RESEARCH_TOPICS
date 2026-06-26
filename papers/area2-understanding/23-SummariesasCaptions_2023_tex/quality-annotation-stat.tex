@@ -1,0 +1,23 @@
+\begin{table}[t]
+    \small
+    \centering
+    \addtolength{\tabcolsep}{-1mm}
+    
+    \begin{tabular}{@{}lcccc@{}}
+    \toprule
+    \multicolumn{1}{c}{\textbf{}} & \textbf{Agree} & \textbf{Disagree} & \textbf{Total} & \textbf{Agree Percentage} \\ \midrule
+    \textbf{Helpfulness}        & 184 & 215 & 399 & 46.12\% \\
+    \textbf{Image-Text}         & 338 & 61 & 399 & 84.71\% \\
+    \textbf{Visual-Desc}        & 64 & 335 & 399 & 16.04\% \\
+    \textbf{Takeaway}           & 74 & 325 & 399 & 18.55\% \\ \bottomrule
+    \end{tabular}
+    \addtolength{\tabcolsep}{+1mm}
+    \vspace{-1mm}
+
+    \caption{Results of the manual annotation.
+    % \textbf{Agree} contains labels of [Strongly Agree, Agree]. \textbf{Disagree} contains labels of [Neutral, Disagree, Strongly Disagree].
+    More than 50\% of the captions were annotated as unhelpful. (Out of the initial 438 figure captions, we excluded those with extraction or classification errors, \eg, incomplete images, leaving us with only 399 captions.)}
+    \label{tab:quality-annotation-stat}
+    \vspace{-2mm}
+    
+\end{table}

@@ -1,0 +1,178 @@
+\begin{thebibliography}{36}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Agrawal et~al.(2019)Agrawal, Desai, Wang, Chen, Jain, Johnson, Batra, Parikh, Lee, and Anderson}]{agrawal2019nocaps}
+Harsh Agrawal, Karan Desai, Yufei Wang, Xinlei Chen, Rishabh Jain, Mark Johnson, Dhruv Batra, Devi Parikh, Stefan Lee, and Peter Anderson. 2019.
+\newblock nocaps: novel object captioning at scale.
+\newblock In \emph{Proceedings of the IEEE International Conference on Computer Vision}.
+
+\bibitem[{Ancona et~al.(2018)Ancona, Ceolini, Öztireli, and Gross}]{ancona2018towards}
+Marco Ancona, Enea Ceolini, Cengiz Öztireli, and Markus Gross. 2018.
+\newblock \href {https://openreview.net/forum?id=Sy21R9JAW} {Towards better understanding of gradient-based attribution methods for deep neural networks}.
+\newblock In \emph{International Conference on Learning Representations}.
+
+\bibitem[{Asai et~al.(2023)Asai, Wu, Wang, Sil, and Hajishirzi}]{asai2023self}
+Akari Asai, Zeqiu Wu, Yizhong Wang, Avirup Sil, and Hannaneh Hajishirzi. 2023.
+\newblock Self-rag: Learning to retrieve, generate, and critique through self-reflection.
+\newblock \emph{arXiv preprint arXiv:2310.11511}.
+
+\bibitem[{Chen et~al.(2015)Chen, Fang, Lin, Vedantam, Gupta, Doll{\'a}r, and Zitnick}]{chen2015microsoft}
+Xinlei Chen, Hao Fang, Tsung-Yi Lin, Ramakrishna Vedantam, Saurabh Gupta, Piotr Doll{\'a}r, and C~Lawrence Zitnick. 2015.
+\newblock Microsoft coco captions: Data collection and evaluation server.
+\newblock \emph{arXiv preprint arXiv:1504.00325}.
+
+\bibitem[{Cuconasu et~al.(2024)Cuconasu, Trappolini, Siciliano, Filice, Campagnano, Maarek, Tonellotto, and Silvestri}]{cuconasu2024noise}
+Florin Cuconasu, Giovanni Trappolini, Federico Siciliano, Simone Filice, Cesare Campagnano, Yoelle Maarek, Nicola Tonellotto, and Fabrizio Silvestri. 2024.
+\newblock \href {http://arxiv.org/abs/2401.14887} {The power of noise: Redefining retrieval for rag systems}.
+
+\bibitem[{Deng et~al.(2024)Deng, Chen, and Hooi}]{deng2024seeing}
+Ailin Deng, Zhirui Chen, and Bryan Hooi. 2024.
+\newblock Seeing is believing: Mitigating hallucination in large vision-language models via clip-guided decoding.
+\newblock \emph{arXiv preprint arXiv:2402.15300}.
+
+\bibitem[{Foulds et~al.(2024)Foulds, James, and Pan}]{foulds2024ragged}
+Philip~Feldman Foulds, R~James, and Shimei Pan. 2024.
+\newblock Ragged edges: The double-edged sword of retrieval-augmented chatbots.
+\newblock \emph{arXiv preprint arXiv:2403.01193}.
+
+\bibitem[{Gurari et~al.(2020)Gurari, Zhao, Zhang, and Bhattacharya}]{vizwiz}
+Danna Gurari, Yinan Zhao, Meng Zhang, and Nilavra Bhattacharya. 2020.
+\newblock \href {http://arxiv.org/abs/2002.08565} {Captioning images taken by people who are blind}.
+
+\bibitem[{Hao et~al.(2023)Hao, Huang, Liu, Zhang, Shi, and Wang}]{hao-etal-2023-rethinking}
+Hongkun Hao, Guoping Huang, Lemao Liu, Zhirui Zhang, Shuming Shi, and Rui Wang. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.findings-acl.162} {Rethinking translation memory augmented neural machine translation}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: ACL 2023}.
+
+\bibitem[{He et~al.(2016)He, Zhang, Ren, and Sun}]{he2016deep}
+Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun. 2016.
+\newblock Deep residual learning for image recognition.
+\newblock \emph{Proceedings of the IEEE conference on computer vision and pattern recognition}.
+
+\bibitem[{Hoang et~al.(2022)Hoang, Sachan, Mathur, Thompson, and Federico}]{hoang2022improving}
+Cuong Hoang, Devendra Sachan, Prashant Mathur, Brian Thompson, and Marcello Federico. 2022.
+\newblock \href {http://arxiv.org/abs/2210.05059} {Improving robustness of retrieval augmented translation via shuffling of suggestions}.
+
+\bibitem[{Hoang et~al.(2023)Hoang, Sachan, Mathur, Thompson, and Federico}]{hoang-etal-2023-improving}
+Cuong Hoang, Devendra Sachan, Prashant Mathur, Brian Thompson, and Marcello Federico. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.findings-eacl.22} {Improving retrieval augmented neural machine translation by controlling source and fuzzy-match interactions}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EACL 2023}.
+
+\bibitem[{Lewis et~al.(2020)Lewis, Perez, Piktus, Petroni, Karpukhin, Goyal, K\"{u}ttler, Lewis, Yih, Rockt\"{a}schel, Riedel, and Kiela}]{rag}
+Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Heinrich K\"{u}ttler, Mike Lewis, Wen-tau Yih, Tim Rockt\"{a}schel, Sebastian Riedel, and Douwe Kiela. 2020.
+\newblock \href {https://proceedings.neurips.cc/paper/2020/file/6b493230205f780e1bc26945df7481e5-Paper.pdf} {Retrieval-augmented generation for knowledge-intensive {NLP} tasks}.
+\newblock In \emph{Advances in Neural Information Processing Systems}, volume~33, pages 9459--9474.
+
+\bibitem[{Li et~al.(2023)Li, Vo, Sugimoto, and Nakayama}]{li2023evcap}
+Jiaxuan Li, Duc~Minh Vo, Akihiro Sugimoto, and Hideki Nakayama. 2023.
+\newblock Evcap: Retrieval-augmented image captioning with external visual-name memory for open-world comprehension.
+\newblock \emph{arXiv preprint arXiv:2311.15879}.
+
+\bibitem[{Lin et~al.(2014)Lin, Maire, Belongie, Hays, Perona, Ramanan, Doll{\'a}r, and Zitnick}]{lin2014microsoft}
+Tsung-Yi Lin, Michael Maire, Serge Belongie, James Hays, Pietro Perona, Deva Ramanan, Piotr Doll{\'a}r, and C~Lawrence Zitnick. 2014.
+\newblock Microsoft coco: Common objects in context.
+\newblock In \emph{Computer Vision--ECCV 2014: 13th European Conference, Zurich, Switzerland, September 6-12, 2014, Proceedings, Part V 13}. Springer.
+
+\bibitem[{Liu et~al.(2024)Liu, Xue, Chen, Chen, Zhao, Wang, Hou, Li, and Peng}]{liu2024survey}
+Hanchao Liu, Wenyuan Xue, Yifei Chen, Dapeng Chen, Xiutian Zhao, Ke~Wang, Liping Hou, Rongjun Li, and Wei Peng. 2024.
+\newblock A survey on hallucination in large vision-language models.
+\newblock \emph{arXiv preprint arXiv:2402.00253}.
+
+\bibitem[{Lu et~al.(2022)Lu, Bartolo, Moore, Riedel, and Stenetorp}]{lu-etal-2022-fantastically}
+Yao Lu, Max Bartolo, Alastair Moore, Sebastian Riedel, and Pontus Stenetorp. 2022.
+\newblock \href {https://doi.org/10.18653/v1/2022.acl-long.556} {Fantastically ordered prompts and where to find them: Overcoming few-shot prompt order sensitivity}.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}.
+
+\bibitem[{Mialon et~al.(2023)Mialon, Dess{\`\i}, Lomeli, Nalmpantis, Pasunuru, Raileanu, Rozi{\`e}re, Schick, Dwivedi-Yu, Celikyilmaz et~al.}]{mialon2023augmented}
+Gr{\'e}goire Mialon, Roberto Dess{\`\i}, Maria Lomeli, Christoforos Nalmpantis, Ram Pasunuru, Roberta Raileanu, Baptiste Rozi{\`e}re, Timo Schick, Jane Dwivedi-Yu, Asli Celikyilmaz, et~al. 2023.
+\newblock Augmented language models: a survey.
+\newblock \emph{arXiv preprint arXiv:2302.07842}.
+
+\bibitem[{Osman et~al.(2023)Osman, Shalaby, Soliman, and Elsayed}]{osman2023survey}
+Asmaa~AE Osman, Mohamed A~Wahby Shalaby, Mona~M Soliman, and Khaled~M Elsayed. 2023.
+\newblock A survey on attention-based models for image captioning.
+\newblock \emph{International Journal of Advanced Computer Science and Applications}, 14(2).
+
+\bibitem[{Radford et~al.(2021)Radford, Kim, Hallacy, Ramesh, Goh, Agarwal, Sastry, Askell, Mishkin, Clark, Krueger, and Sutskever}]{clip}
+Alec Radford, Jong~Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, Gretchen Krueger, and Ilya Sutskever. 2021.
+\newblock \href {https://proceedings.mlr.press/v139/radford21a.html} {Learning transferable visual models from natural language supervision}.
+\newblock In \emph{Proceedings of the 38th International Conference on Machine Learning}, Proceedings of Machine Learning Research.
+
+\bibitem[{Radford et~al.(2019)Radford, Wu, Child, Luan, Amodei, and Sutskever}]{gpt2}
+Alec Radford, Jeff Wu, Rewon Child, David Luan, Dario Amodei, and Ilya Sutskever. 2019.
+\newblock Language models are unsupervised multitask learners.
+
+\bibitem[{Ramos et~al.(2023{\natexlab{a}})Ramos, Elliott, and Martins}]{ramos-etal-2023-retrieval}
+Rita Ramos, Desmond Elliott, and Bruno Martins. 2023{\natexlab{a}}.
+\newblock \href {https://doi.org/10.18653/v1/2023.eacl-main.266} {Retrieval-augmented image captioning}.
+\newblock In \emph{Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics}, pages 3666--3681, Dubrovnik, Croatia. Association for Computational Linguistics.
+
+\bibitem[{Ramos et~al.(2023{\natexlab{b}})Ramos, Martins, Elliott, and Kementchedjhieva}]{ramos2023smallcap}
+Rita Ramos, Bruno Martins, Desmond Elliott, and Yova Kementchedjhieva. 2023{\natexlab{b}}.
+\newblock Smallcap: lightweight image captioning prompted with retrieval augmentation.
+\newblock In \emph{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition}, pages 2840--2849.
+
+\bibitem[{Rohrbach et~al.(2018)Rohrbach, Hendricks, Burns, Darrell, and Saenko}]{rohrbach-etal-2018-object}
+Anna Rohrbach, Lisa~Anne Hendricks, Kaylee Burns, Trevor Darrell, and Kate Saenko. 2018.
+\newblock \href {https://doi.org/10.18653/v1/D18-1437} {Object hallucination in image captioning}.
+\newblock In \emph{Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing}. Association for Computational Linguistics.
+
+\bibitem[{Sarto et~al.(2022)Sarto, Cornia, Baraldi, and Cucchiara}]{rag-transformer}
+Sara Sarto, Marcella Cornia, Lorenzo Baraldi, and Rita Cucchiara. 2022.
+\newblock \href {https://doi.org/10.1145/3549555.3549585} {Retrieval-augmented transformer for image captioning}.
+\newblock In \emph{Proceedings of the 19th International Conference on Content-Based Multimedia Indexing}, CBMI '22.
+
+\bibitem[{Sundararajan et~al.(2017)Sundararajan, Taly, and Yan}]{ig}
+Mukund Sundararajan, Ankur Taly, and Qiqi Yan. 2017.
+\newblock Axiomatic attribution for deep networks.
+\newblock In \emph{Proceedings of the 34th International Conference on Machine Learning - Volume 70}, ICML'17.
+
+\bibitem[{Vedantam et~al.(2015)Vedantam, Zitnick, and Parikh}]{cider}
+Ramakrishna Vedantam, C.~Lawrence Zitnick, and Devi Parikh. 2015.
+\newblock \href {http://dblp.uni-trier.de/db/conf/cvpr/cvpr2015.html#VedantamZP15} {Cider: Consensus-based image description evaluation.}
+\newblock In \emph{CVPR}.
+
+\bibitem[{Vig and Belinkov(2019)}]{gpt2-analyzing}
+Jesse Vig and Yonatan Belinkov. 2019.
+\newblock \href {https://doi.org/10.18653/v1/W19-4808} {Analyzing the structure of attention in a transformer language model}.
+\newblock In \emph{Proceedings of the 2019 ACL Workshop BlackboxNLP: Analyzing and Interpreting Neural Networks for NLP}, pages 63--76, Florence, Italy. Association for Computational Linguistics.
+
+\bibitem[{Wang et~al.(2023)Wang, Araki, Jiang, Parvez, and Neubig}]{wang2023learning}
+Zhiruo Wang, Jun Araki, Zhengbao Jiang, Md~Rizwan Parvez, and Graham Neubig. 2023.
+\newblock \href {http://arxiv.org/abs/2311.08377} {Learning to filter context for retrieval-augmented generation}.
+
+\bibitem[{Xu et~al.(2015)Xu, Ba, Kiros, Cho, Courville, Salakhudinov, Zemel, and Bengio}]{xu2015show}
+Kelvin Xu, Jimmy Ba, Ryan Kiros, Kyunghyun Cho, Aaron Courville, Ruslan Salakhudinov, Rich Zemel, and Yoshua Bengio. 2015.
+\newblock Show, attend and tell: Neural image caption generation with visual attention.
+\newblock In \emph{International conference on machine learning}, pages 2048--2057. PMLR.
+
+\bibitem[{Yan et~al.(2024)Yan, Gu, Zhu, and Ling}]{yan2024corrective}
+Shi-Qi Yan, Jia-Chen Gu, Yun Zhu, and Zhen-Hua Ling. 2024.
+\newblock Corrective retrieval augmented generation.
+\newblock \emph{arXiv preprint arXiv:2401.15884}.
+
+\bibitem[{Yang et~al.(2023)Yang, Ping, Liu, Korthikanti, Nie, Huang, Fan, Yu, Lan, Li et~al.}]{yang2023re}
+Zhuolin Yang, Wei Ping, Zihan Liu, Vijay Korthikanti, Weili Nie, De-An Huang, Linxi Fan, Zhiding Yu, Shiyi Lan, Bo~Li, et~al. 2023.
+\newblock Re-vilm: Retrieval-augmented visual language model for zero and few-shot image captioning.
+\newblock \emph{arXiv preprint arXiv:2302.04858}.
+
+\bibitem[{Yasunaga et~al.(2023)Yasunaga, Aghajanyan, Shi, James, Leskovec, Liang, Lewis, Zettlemoyer, and Yih}]{racm3}
+Michihiro Yasunaga, Armen Aghajanyan, Weijia Shi, Rich James, Jure Leskovec, Percy Liang, Mike Lewis, Luke Zettlemoyer, and Wen-tau Yih. 2023.
+\newblock Retrieval-augmented multimodal language modeling.
+\newblock In \emph{Proceedings of the 40th International Conference on Machine Learning}, ICML'23.
+
+\bibitem[{Yoran et~al.(2023)Yoran, Wolfson, Ram, and Berant}]{ret-robust23}
+Ori Yoran, Tomer Wolfson, Ori Ram, and Jonathan Berant. 2023.
+\newblock Making retrieval-augmented language models robust to irrelevant context.
+\newblock \emph{arXiv preprint arXiv:2310.01558}.
+
+\bibitem[{Zhang et~al.(2022)Zhang, Roller, Goyal, Artetxe, Chen, Chen, Dewan, Diab, Li, Lin, Mihaylov, Ott, Shleifer, Shuster, Simig, Koura, Sridhar, Wang, and Zettlemoyer}]{zhang2022opt}
+Susan Zhang, Stephen Roller, Naman Goyal, Mikel Artetxe, Moya Chen, Shuohui Chen, Christopher Dewan, Mona Diab, Xian Li, Xi~Victoria Lin, Todor Mihaylov, Myle Ott, Sam Shleifer, Kurt Shuster, Daniel Simig, Punit~Singh Koura, Anjali Sridhar, Tianlu Wang, and Luke Zettlemoyer. 2022.
+\newblock \href {http://arxiv.org/abs/2205.01068} {Opt: Open pre-trained transformer language models}.
+
+\bibitem[{Zhou and Long(2023)}]{zhou-long-2023-style}
+Yucheng Zhou and Guodong Long. 2023.
+\newblock \href {https://doi.org/10.18653/v1/2023.findings-eacl.169} {Style-aware contrastive learning for multi-style image captioning}.
+\newblock In \emph{Findings of the Association for Computational Linguistics: EACL 2023}.
+
+\end{thebibliography}

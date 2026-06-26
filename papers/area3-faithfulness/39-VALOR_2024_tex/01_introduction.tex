@@ -1,0 +1,31 @@
+\section{Introduction}
+\label{sec:intro}
+
+\begin{figure}[t]
+ \centering
+ \includegraphics[width=\linewidth]{figures/intro.pdf}
+ \vspace{-7mm}
+ \caption{Example of the hallucination in open vocabulary generation task of LVLMs. Our proposed framework can identify objects, attributes, and relations from the generated captions and provide a comprehensive evaluation of faithfulness and coverage. We highlight \hlc{lightpink}{hallucinated} features and \hlc{gold}{uncovered} features.}
+ \label{fig:intro}
+ \vspace{-5mm}
+\end{figure}
+
+Large Vision-Language Models (LVLMs)~\cite{liu2023llava,Achiam2023GPT4TR,Chen2023MiniGPTv2LL} have shown remarkable performance across a broad range of vision-language tasks.
+Despite the promising progress, the issue of hallucinations has emerged as a critical concern. \textit{Hallucination} refers to the generation of plausible-sounding but inaccurate or fabricated textual descriptions for a given image, which can compromise the reliability and trustworthiness of the models.
+
+\input{tables/evaluation_frameworks}
+
+Recent studies have proposed various methods to \textit{evaluate} models' \textit{generative} hallucinations \cite{Wang2023EvaluationAA,Zhai2023HallESwitchRA,faithscore} and \textit{discriminative} hallucinations \cite{li-etal-2023-evaluating,guan2023hallusionbench,Lovenia2023NegativeOP}. However, they predominantly focus on hallucinations concerning object existence and their faithfulness within generated content, often neglecting other critical types of hallucinations and the assessment of coverage. This oversight can result in a lack of attention to the variety and depth of hallucinations that may occur beyond object identification, such as attributes and relations. Furthermore, these evaluation methods are often constrained by a predefined vocabulary, thus are inherently limited to fully appreciating the richness of the free-form generated captions. Specifically, the evaluation metrics may not capture novel expressions that extend beyond the predetermined vocabulary. 
+
+In contrast to prior studies, we introduce a human-annotated multi-dimensional evaluation benchmark \data~\footnote{VALOR is short for \underline{v}ision-language \underline{a}ttribute, re\underline{l}ation, and \underline{o}bject cove\underline{r}age and faithfulness.} by breaking down hallucinations into three categories: \textit{object} (existence), \textit{attributes} (color and count), and \textit{relations} (positional and comparative). In addition, to make the test cases challenging, we utilize the \textit{associative biases} \cite{li-etal-2023-evaluating,zhou2023analyzing} presented in training datasets to select images with only one component of commonly co-occurred pairs or groups, leading models to mistakenly generate associated elements that are not present. Our experimental findings validate the effectiveness of this methodology in exposing the susceptibility of current LVLMs to such biases.
+
+In addition to constructing the benchmark dataset, we also propose a new evaluation framework, \eval{}. Existing evaluation frameworks such as the widely used CHAIR \cite{rohrbach-etal-2018-object} metric, exhibit several major constraints. First, they rely on a predefined vocabulary, limiting their ability to identify hallucinations in an \textit{open vocabulary} setting where semantic nuances -- such as synonyms and variations --  are prevalent in model outputs and references. Additionally, focusing exclusively on hallucination overlooking the aspect of \textit{coverage}, resulting in a preference for precise but uninformative model outputs. To address these issues, our propose \eval~ metric generalizes CHAIR by incorporating an LLM in a two-stage design, enhancing the capability to evaluate open vocabulary hallucination across object, attribute, and relation dimensions while also considering coverage. We provide a detailed comparison of existing evaluation methods in \Cref{tab:evaluation_frameworks}.
+
+We conduct comprehensive evaluations on 10 established LVLMs across multiple dimensions with \data~. Our findings reveal that some LVLMs tend to prioritize precision over coverage, leading to predictions with high accuracy but limited scope. This observation underscores the need for the community to focus on achieving an \textit{balance} between faithfulness and coverage in LVLMs. Our contributions are threefold:
+
+\begin{itemize}
+    \item We introduce \data~, a comprehensive human-annotated dataset covering \textit{relation}, \textit{attribute}, \textit{object} with challenging images selected based on associative bias.
+    \item We propose an LLM-based two-stage evaluation framework \eval~ that generalizes previous methods to consider the precision and informativeness trade-off and handle object, attribute, and relation evaluation in open vocabulary settings.
+    \item We evaluate 10 mainstream LVLMs on \data~, focusing on the balance between faithfulness and coverage score. We notice that even GPT-4V(ision) \cite{Achiam2023GPT4TR} still suffers from hallucination, achieving a relatively low faithfulness score despite covering more information within an image compared to other models. 
+\end{itemize}
+

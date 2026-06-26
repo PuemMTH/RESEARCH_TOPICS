@@ -1,0 +1,150 @@
+\section{Improving Robustness to Retrieval via Sampling}
+\label{sec:sample}
+
+
+In order to improve the robustness of the model to potentially noisy captions, we propose to randomly sample the captions from a larger retrieval list for a given image, instead of training with only the top-$k$ retrieved captions. In this manner, the model can learn from more diverse context that includes both top- and lower-ranked captions.
+
+\subsection{Experimental Setup}
+\label{subsec:exp}
+Inspired by \citet{hoang2022improving}, we experiment with two sampling methods during training to improve retrieval robustness.
+
+
+
+\paragraph*{Sample-$k$ training.}
+\label{para:training}
+We sample $k$ captions randomly from the top-$N$=7 retrieved captions during training\footnote{We sample from the top-$N$=7 for alignment with the baseline; see the Appendix for an ablation on varying $N$.}. Following \citet{ramos2023smallcap}, we train \textsc{smallCap} with the OPT-350M decoder on the COCO captioning dataset~\citep{chen2015microsoft} for 10 epochs on a NVIDIA A100 40GB GPU with the default learning rate of 1e-4 and batch size of 64. We experiment with $k$ in the range of 1--4.
+
+
+
+\paragraph*{Controlled sample-$k$ training (c-sample-$k$).}
+Aiming to train the model that better distinguishes irrelevant context, we design a controlled sampling process --- selecting $k-1$ randomly from the larger list while keeping the top relevant caption of the image during training. We train the model with same hyperparameters and dataset as sample-$k$.
+
+
+\subsection{Evaluation and Results}
+\label{subsec:results}
+
+In addition to the COCO and NoCaps validation set, we evaluate the \textit{Out}-domain performance of the model using VizWiz caption dataset~\citep{vizwiz} and report CIDEr scores.
+
+
+
+\begin{table}[ht]
+\centering
+    \resizebox{0.9\linewidth}{!}{
+     \begin{tabular}{llccc}
+        \toprule   
+          & & \multicolumn{3}{c}{COCO Eval} \\
+          \cmidrule(lr){3-5} 
+        Model & $k$ & top-$k$ & last-$k$ & random \\
+        \midrule
+        \rowcolor[gray]{0.95}
+         top-k & 1 & 115.1 & 112.2 & 73.2 \\
+         sample-k & 1 & \textbf{116.0} & \textbf{115.0} & \textbf{98.9} \\
+        \arrayrulecolor{lightgray}\midrule
+        \rowcolor[gray]{0.95}
+        top-k & 2 & 116.8 & 115.0 & 67.4 \\
+        sample-k & 2 & \textbf{117.4} & \textbf{116.8} & \textbf{84.6} \\
+        \arrayrulecolor{lightgray}\midrule
+        \rowcolor[gray]{0.95}
+        top-k & 3 & 118.3 & 117.1 & 71.8 \\
+        sample-k & 3 & \textbf{118.5} & \textbf{117.3} & \textbf{77.6} \\
+        \arrayrulecolor{lightgray}\midrule
+        \rowcolor[gray]{0.95}
+        top-k & 4 & 120.1 & 117.1 & 70.1 \\
+        sample-k & 4 & 119.2 & \textbf{118.6} & \textbf{73.1} \\
+        \arrayrulecolor{lightgray}\midrule
+        \rowcolor[gray]{0.95}
+        c-sample-k & 4 & 119.3 & \textbf{118.9} & \textbf{72.6} \\
+        \arrayrulecolor{black}\bottomrule 
+        \end{tabular}
+    }
+    \caption{CIDEr scores when training on the top-$k$, sample-$k$ and c-sample-$k$ captions. Training by sampling the retrieved captions almost always outperforms \textsc{SmallCap} for all $k$ values. It also reduces the gap between using top-relevant and low-ranked retrieved captions. Results are averaged over three seeds. Improved scores are in \textbf{bold}.\label{tab:sample}}
+\end{table}
+
+
+\paragraph*{Sample-$k$ training improves model robustness to random retrieved captions.} 
+As shown in Table~\ref{tab:sample}, incorporating sampled retrieved captions into training consistently enhances performance across various $k$ values. The improvement is particularly notable when captions are randomly retrieved, suggesting the model is now better able to ignore irrelevant context. 
+If we compare across different values of $k$, sampling mitigates the model's sensitivity to the number of retrieved captions, outperforming top-$k$ training. For instance, it achieves comparable performance with a smaller $k$ value than in the case of top-$k$ training. Furthermore, the gap between using the top-$k$ vs. the last-$k$ retrieved captions is reduced with sample-$k$ training: the maximum gap is reduced from 3.0 to 1.0 CIDEr points, indicating increased model robustness, even with lower-ranked retrieved captions. Figure~\ref{fig:qualitative} and~\ref{fig:pred} show qualitative examples of the improved robustness to randomly retrieved examples.
+
+
+\begin{figure*}[t]
+    \centering
+        \includegraphics[width=\linewidth, trim=1cm 4cm 0cm 0cm, clip]{figs/robcap-fig6-new.pdf}
+        \caption{Qualitative examples of generated captions when \textbf{randomly} retrieving four captions for a given image using a model trained with either the Sample-k or the Top-k method.
+        \label{fig:qualitative}}
+\end{figure*}
+
+
+
+
+\begin{table}[t]
+\centering
+    \resizebox{1\linewidth}{!}{
+     \begin{tabular}{llccccccc}
+        \toprule   
+          & & VizWiz & \multicolumn{3}{c}{NoCaps} & \multicolumn{3}{c}{NoCaps (+Web)}
+          \\ \cmidrule(rl){4-6} \cmidrule(rl) {7-9}
+        Model & $k$ &  & In & Near & Out & In & Near & Out \\
+        \midrule
+        \rowcolor[gray]{0.95}
+         top-k & 1 
+         & 31.3
+         & 85.0 & 74.3 &	62.3
+         & 84.1 & 80.7 & 81.5 
+          \\
+         sample-k
+        & 1 & \textbf{32.3}
+        & \textbf{87.0} & \textbf{75.7}	& \textbf{63.6} &
+        \textbf{87.8} &  \textbf{81.2} & 77.5 
+         \\
+        \arrayrulecolor{lightgray}\midrule
+        \rowcolor[gray]{0.95}
+        top-k & 2 & 33.7 
+        & 85.0	& 74.3 & 62.3
+        & 90.5 & 86.2 & 89.5 
+        \\
+        sample-k & 2  
+         & \textbf{34.0}
+         & \textbf{87.8} & \textbf{77.4}	&\textbf{67.6}	
+         &\textbf{90.6}  & 85.3  & 86.7 
+          \\
+         \arrayrulecolor{lightgray}\midrule
+         \rowcolor[gray]{0.95}
+         top-k & 3 & 35.0
+        & 87.4	& 79.6	& 68.3
+        & 91.7 & 88.3  & 89.9 
+         \\
+        sample-k & 3  
+         & \textbf{35.4} 
+         &\textbf{88.7} & \textbf{80.3}	&\textbf{69.4}	
+         &\textbf{92.6}  & 88.0  & \textbf{90.0}
+         \\
+         \arrayrulecolor{lightgray}\midrule
+        \rowcolor[gray]{0.95}
+         top-k & 4 & 35.5
+        & 87.4	 & 79.6 & 68.3
+        &94.2  & 89.4  & 91.2
+         \\
+        sample-k & 4  
+          & \textbf{35.7}
+         & \textbf{89.7} & \textbf{80.9}	&\textbf{71.1}	
+         &\textbf{94.8}  & \textbf{89.5} &\textbf{93.1}
+        \\
+        \arrayrulecolor{lightgray}\midrule
+         c-sample-k & 4  
+        & \textbf{36.0}
+         & \textbf{90.1} & \textbf{81.3}	&\textbf{71.5}	
+         & \textbf{94.5} & \textbf{90.0} &\textbf{93.3}
+         \\
+        \arrayrulecolor{black}\bottomrule 
+        \end{tabular}
+        }
+    \caption{Training with sampled retrieval always outperforms top-$k$ retrieval for all values of $k$ on the out-of-domain VizWiz and NoCaps datasets. The gains are smaller when using a larger datastore (+Web) but it still improves out-domain performance when retrieving more captions. Improved scores are in \textbf{bold}.\label{tab:sample-2}}
+\end{table}
+
+\paragraph*{Sampling improves cross-domain evaluation.} We also evaluate on VizWiz and NoCaps to measure cross-domain performance (Table~\ref{tab:sample-2}). This is a more realistic setting where retrieved captions are out-of-domain and could be more noisy and less relevant. The application of sampling improves across all values of $k$ for Vizwiz. On the NoCaps dataset, with the COCO datastore, sampling consistently improves near and out-domain performance, suggesting increased robustness to noisy retrieval context.  This is consistent with the benefits of sampled training demonstrated in cross-domain machine translation by \citet{hoang2022improving}. If we use a larger datastore that incorporates internet-derived captions (+Web), this consistently improves in-domain performance. Retrieval constraints are alleviated for near and out-domain samples with the larger datastore, where we see smaller gains with \text{sample-$k$}. See qualitative examples in Figure~\ref{fig:qua-nocaps} in Appendix~\ref{appendix:qua}.
+
+
+\paragraph*{Controlled sampling further improves cross-domain evaluation.} Finally, on top of our best performing sample-$k$ model, controlled sample-$k$ further improves performance for both NoCaps and VizWiz. This suggests that incorporating both top-relevant and low-ranked captions during training aids the model in distinguishing irrelevant context.
+
+
+

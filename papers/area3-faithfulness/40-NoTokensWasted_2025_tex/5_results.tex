@@ -1,0 +1,49 @@
+\section{Results}
+\label{sec:results}
+
+
+\subsection{Context-length ablation}
+Extending the text encoder context length consistently improves retrieval performance and training efficiency.
+Table~\ref{tab:retrieval_all} shows the zero-shot image-to-text and text-to-image recall at $k$ in the long context benchmarks. 
+Panel A shows that longer context improves retrieval across recall levels for both CXR and PMC.
+On CXR, gains are steady but relatively modest. 
+PMC benefits most, especially at stricter thresholds, highlighting the value of long contexts for text-heavy tasks.
+In addition, we observe that pretraining CLIP with longer context lengths accelerates convergence (appendix section~\ref{apd:converge}), indicating that context extension improves not only downstream retrieval but also training efficiency.
+
+% \begin{figure*}[htbp]
+%   \centering
+%  % \fbox{\rule{0pt}{200pt}\rule{150pt}{0pt}} % height=100pt, width=150pt
+%   \includegraphics[width=0.8\linewidth]{}
+%   \caption{
+%   % (A) BIOMEDICA-6M caption token length distribution 
+%   Zero-shot accuracy as a function of text context length. A) Zero-shot image classification. B) Zero-shot image-text and text-image retrievel.}
+%   \label{fig: motivation-and-example}
+% \end{figure*}
+
+
+
+\subsection{Benchmarking against baselines}
+BMC-LongCLIP outperforms prior biomedical VLMs on both long-text benchmarks. Table~\ref{tab:retrieval_all} Panel B and Table~\ref{tab:zeroshot} compare BMC-LongCLIP with existing biomedical VLMs, including PMC-CLIP, BiomedCLIP, MedSigLIP, and BMC-CLIP. We exclude MedSigLIP from the CXR benchmark comparison, as it was trained on the same MIMIC-CXR image–report pairs used to construct our benchmark.
+
+
+% On the CXR benchmark, baselines achieve $<$6\% Recall@10, while BMC-LongCLIP variants reach 10–14\%, a $>$2× improvement. On PMC, BMC-LongCLIP reaches 89–95\% R@10, matching/surpassing BiomedCLIP and far outperforming MedSigLIP; gains are largest at stricter thresholds.
+
+On the CXR benchmark, baselines achieve $<$6\% Recall@10, while BMC-LongCLIP variants reach 10–14\%, a more than two-fold improvement. 
+On PMC, BMC-LongCLIP achieves 89–95\% R@10, performing on par with or slightly better than BiomedCLIP (91–94\%) and outperforming MedSigLIP (46–60\%). At the stricter R@1 threshold, BMC-LongCLIP attains 69–81\%, surpassing BiomedCLIP (69–73\%) and outperforming MedSigLIP (20–31\%).
+
+% On PMC, BMC-LongCLIP attains 89–95\% R@10, matching or slightly surpassing BiomedCLIP (91–94\%) and outperforming MedSigLIP (46–60\%), with the largest relative gains at stricter thresholds. For R@1, BMC-LongCLIP reaches 69–81\%, exceeding both BiomedCLIP (64–72\%) and far surpassing MedSigLIP (21–36\%)
+
+
+
+
+% On the CXR benchmark, baseline models perform poorly, with Recall@10 values below 6\%. In contrast, BMC-LongCLIP-512 variants achieve Recall@10 between 10.3--12.2\% (T2I) and 9.8--14.5\% (I2T). Across all BMC-LongCLIP variants, this represents more than a two-fold improvement over the strongest baseline.
+
+% On the PMC benchmark, BMC-LongCLIP variants achieve Recall@10 scores ranging from 89.3\% to 95.1\% (T2I) and 89.9\% to 93.8\% (I2T). These results closely match or slightly surpass BiomedCLIP (91.1 and 93.7\%) and substantially outperform MedSigLIP (45.5 and 60.7\%). While we highlight R@10 for clarity, the same trend holds across all recall levels, with the largest relative gains observed at stricter thresholds such as R@1.
+
+Beyond retrieval, BMC-LongCLIP also improves zero-shot classification accuracy across six biomedical domains (Table~\ref{tab:zeroshot}). 
+While BiomedCLIP and MedSigLIP achieve average accuracies of 41.9\% and 36.6\%, respectively, BMC-LongCLIP (8K) attains 50.2\%, the best overall performance. 
+These results highlight that extending context length not only benefits long-text retrieval but also provides improvements in classification tasks.
+
+\subsection{Effect of batch size and long-caption training} Long-context models benefit from enriched captions, while larger batch sizes yield mixed results. Doubling batch size with BMC-LongCLIP (16K) underperforms in microscopy and dermatology. This suggests that long context windows combined with large batch sizes may not uniformly translate into performance gains across domains. In contrast, BMC-LongCLIP+ (16K) with BIOMEDICA-LongCAP data recovers this drop and matches or exceeds the 8K model. These results indicate that long-context modeling is most effective when paired with sufficient long-caption supervision, though performance in microscopy remains comparatively weak and warrants further investigation.
+\noindent \textbf{Overall.} 
+Across all experiments, BMC-LongCLIP outperforms prior biomedical VLMs in long-text retrieval and provides competitive advantages in zero-shot classification.

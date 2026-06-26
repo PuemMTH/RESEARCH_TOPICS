@@ -1,0 +1,22 @@
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[]
+\centering \small
+%\caption{Human evaluation on different quality beams. When human-written captions are bad (unhelpful beam), Pegasus$_{P+O+B}$'s captions were rated more helpful.}
+
+% \vspace{-2mm}
+\addtolength{\tabcolsep}{-1mm}
+\begin{tabular}{@{}lcccc@{}}
+    \toprule
+     & \textbf{\#Sample} & \textbf{Peg}$_{P+O}$ & \textbf{Peg}$_{P+O+B}$ & \textbf{Caption} \\ \midrule
+    % \textbf{All} & 90 & 2.152 & 1.930 & \textbf{1.919} \\
+    \textbf{Helpful} & 55 & 2.176 & 1.970 & \textbf{1.855} \\
+    \textbf{Unhelpful} & 35 & 2.114 & \textbf{1.867} & 2.019 \\ 
+    \bottomrule
+\end{tabular}
+\addtolength{\tabcolsep}{+1mm}
+\vspace{-1mm}
+\caption{Human ranking results (lower is better) on helpful and unhelpful beams. Pegasus$_{P+O+B}$ received better rankings in the unhelpful beam.}
+\label{tab:human-eval-quality-beam}
+\vspace{-5mm}
+\end{table}

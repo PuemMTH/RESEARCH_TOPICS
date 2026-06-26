@@ -1,0 +1,28 @@
+\section{The \metric{} \criticemoji{}~ metric}
+As shown in \Cref{fig:CHATS-CRITIC}, \metric{} is composed of a chart de-rendering model that generates the table content of the input chart image, and a table entailment model applied on a sentence level.
+This motivation stems from the observation that fine-grained evaluations are simpler than full-summary evaluations, mirroring the ease observed in human assessments~\cite{krishna-etal-2023-longeval}.%
+
+\paragraph{Chart de-rendering.} To utilize the information in chart, previous works have incorporated a step to transcribe the image across modalities to a data table~\citep{luo2021chartocr,kantharaj-etal-2022-chart,liu-etal-2023-deplot}. This process of \emph{de-rendering} enables leveraging downstream text model capabilities to process the information, rather than relying on an image model, which is typically only pre-trained on natural images.
+Similarly, in our work we start with a de-rendering step to extract the table $t$ from an image of a chart $C$~\cite{liu-etal-2023-deplot}.\footnote{We also tested end-to-end models using chart images as direct input, but the current de-rendering-based pipeline yielded the best performance.}
+
+
+
+
+
+\paragraph{Sentence level faithfulness score $f(s)$} (interchangeably referred to as \metric{}) is a sentence-level score defined as the probability of entailment of a sentence $s$ conditioned on the de-rendered table $t$.
+This can be accomplished using a fine-tuned table-specialized model such as TAPEX~\cite{liu2022tapex} and TAPAS-CS~\cite{eisenschlos-etal-2020-understanding}, or by prompting an LLM such as PALM-2~\cite{anil2023palm}.
+For the latter case, we can use few-shot examples with chain-of-thought as well as ensemble across $K$ model runs by averaging the binary scores produced in each run, to improve the entailment accuracy, as shown in the example in \Cref{fig:CHATS-CRITIC}. The sampling produces a similar effect as Monte-Carlo dropout used by \citet{steen-etal-2023-little}.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+\section{Introduction}
+Chart summarization requires faithfully extracting quantitative data and describing them using natural language. Recent natural language generation (NLG) studies have explored different flavors of chart-to-summary generation tasks including caption generation for scientific figures \cite{hsu-etal-2021-scicap-generating}, chart summary generation \cite{kantharaj-etal-2022-chart}, or analytical textual descriptions for charts \cite{zhu-etal-2021-autochart}. These tasks can be advantageous for the visually impaired \citep{benetech-making-graphs-accessible} as well as for automating interpreting complex domains such as finance data-analysis, news reporting, and scientific domains \citep{siegel2016figureseer}.
+
+\begin{figure}[!t]
+    \centering
+    \includegraphics[width=1.\linewidth]{figures/ChaTS-Pi.pdf}
+    \caption{\pipeline generates multiple summaries given the chart using any summarization model. Each summary is then \emph{repaired} by dropping refuted sentences according to the \metric{} sentence scoring. 
+    Finally, we rank the summaries by computing the ratio of sentences that were kept.
+    }
+    \label{fig:ChaTS-Pi}
+    \vspace{-2.0ex}
+\end{figure}
+
+While a wide range of models and techniques have been applied for chart summarization, faithfulness remains a major challenge for the task.
+Specifically, the models often misread details in the charts (due to perceptual mistakes) or miscalculate the aggregations (due to reasoning flaws).
+To overcome some of these limitations, \emph{optical character recognition} (OCR) models and object detection systems are usually employed to extract meta-data such as axis, values, titles, legend~\cite{luo2021chartocr,masry-etal-2022-chartqa}. These data are then used as auxiliary inputs to finetune NLG models. Nonetheless, these modeling efforts are still limited by two fundamental issues (i) training \& evaluation dataset quality and (ii) the reference-based metrics being used for evaluation.
+As examples, two widely used datasets, Chart-to-Text~\cite{kantharaj-etal-2022-chart} and SciCap~\cite{hsu-etal-2021-scicap-generating}, are automatically extracted from web articles and academic journals. As a result, the summary references are prone to \emph{hallucination}, i.e. the reference might contain context that cannot be entailed solely by the chart content. Training on this data can encourage the NLG models to improvise/hallucinate. Besides, the auto-extracted summaries sometimes emphasize only certain aspects of the chart, missing out critical insights.
+
+On the other hand, n-gram based metrics such as BLEU~\cite{papineni-etal-2002-bleu}, or learned metrics such as BLEURT~\cite{sellam-etal-2020-bleurt} rely only on gold references. They are not capable of recognizing 
+unreferenced but correct insights since they solely rely on the reference for scoring the summaries, 
+as shown in \Cref{fig:example_statista}. This issue is especially pronounced when the gold references are noisy, which is the case for Chart-to-Text and SciCap.
+Last but not least, reference-based metrics also heavily penalize summary style mismatches, giving an artificial disadvantage to LLMs which are not tuned on the task data ~\cite{maynez-etal-2023-benchmarking}.
+
+This motivates building a reference-free critic \metric{} (\Cref{fig:CHATS-CRITIC}) that can be used as a metric
+to score and re-rank summaries.
+We additionally introduce \pipeline{} (\Cref{fig:ChaTS-Pi}) that leverage \metric{} scores to generate a high quality summaries.
+We summarize our contributions as follows:
+
+\begin{figure}[!ht]
+ \vspace{-1.0ex}
+    \centering
+    \includegraphics[width=0.90\linewidth]{figures/CHATS-CRITIC.pdf}
+  \vspace{-2.0ex}
+    \caption{\metric{} is composed of a de-rendering model to extract the table from the chart, and a table entailment model. The latter can be a blackbox table entailment model (e.g., TabFact as benchmarked in \Cref{tab:chats-critic-size}) or an LLM; in latter case, we use CoT prompt and average over~$8$ samples. In the figure, the threshold to reach a binary decision is set to $T=0.75$. The chart icon refers to the same plot of \Cref{fig:example_statista}.}
+    \label{fig:CHATS-CRITIC}
+    \vspace{-2.0ex}
+\end{figure}
+
+\begin{enumerate}[noitemsep]
+    \item We present \metric{}, a reference-free metric composed of a model that extracts the underlying table data from the chart and a table-entailment model acting on each sentence within a chart summary.
+    \item We design \pipeline{}, a pipeline that (i) generates multiple candidate summaries using a generative model, either fine-tuned or with in-context learning; (ii) then leverages \metric{} to refine the summaries by dropping unsupported sentences; (iii) computes a summary score to rank the summaries by penalizing summaries with dropped sentences to increase the fluency, and (iv) outputs the best one.
+    \item To assess the efficacy of \metric{}, we juxtapose human preferences against both \metric{} and other prevailing metrics. Our results indicate that \metric{} aligns more consistently with human evaluations. Furthermore, when contrasting \pipeline{} with other leading models that serve as baselines, \pipeline{} establishes \sota on two popular English benchmarks.
+
+\end{enumerate}
+
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=1.0\linewidth]{figures/example_limits_current_models.pdf}
+    \vspace{-4ex}
+    \caption{This example from \citet{kantharaj-etal-2022-chart} showcases the limits of reference-based metrics for summary evaluation: (1) the reference text often contains extra information that is not present in the chart which skews the evaluation, and (2) the reference-based metrics can fail at capturing unreferenced but correct sentences. In comparison, \metric{} better reflects the human ratings for summary faithfulness.
+    }
+    \label{fig:example_statista}
+    \vspace{-3ex}
+\end{figure}

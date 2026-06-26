@@ -1,0 +1,247 @@
+% This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
+\pdfoutput=1
+% In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
+
+\documentclass[11pt]{article}
+
+% Remove the "review" option to generate the final version.
+\usepackage{acl}
+
+% Standard package includes
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{fdsymbol}
+% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
+\usepackage[T1]{fontenc}
+% For Vietnamese characters
+% \usepackage[T5]{fontenc}
+% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
+
+% This assumes your files are encoded as UTF8
+\usepackage[utf8]{inputenc}
+
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+\renewcommand{\UrlFont}{\ttfamily\small}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\graphicspath{{./imgs/}}
+\usepackage{footmisc}
+% This is not strictly necessary, and may be commented out,
+% but it will improve the layout of the manuscript,
+% and will typically save some space.
+\usepackage{microtype}
+
+\usepackage{caption}
+\usepackage{subcaption}
+
+\input{math_com}
+\usepackage[nameinlink]{cleveref}
+\crefformat{section}{\S#2#1#3} % see manual of cleveref, section 8.2.1
+\crefname{algorithm}{Alg.}{Algs.}
+\crefformat{subsection}{\S#2#1#3}
+\Crefname{equation}{Eq.}{Eqs.}
+\Crefname{figure}{Fig.}{Figs.}
+
+\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+\newcommand{\enamul}[1]{\textcolor{purple}{(Enamul: #1)}}
+\newcommand{\tiffany}[1]{\textcolor{blue}{(Tiffany: #1)}}
+\newcommand{\ahmed}[1]{\textcolor{red}{(Ahmed: #1)}}
+\newcommand{\shankar}[1]{\textcolor{green}{(Shankar: #1)}}
+\usepackage{soul}
+\newcommand{\cut}[1]{\textcolor{gray}{\sout{#1}}}
+\newcommand{\change}[1]{{\leavevmode\color{black}#1}}%Revision change
+% If the title and author information does not fit in the area allocated, uncomment the following
+%
+%\setlength\titlebox{<dim>}
+%
+% and set <dim> to something 5cm or larger.
+
+\title{Chart-to-Text: A Large-Scale Benchmark for Chart Summarization}
+
+% Author information can be set in various styles:
+% For several authors from the same institution:
+% \author{Author 1 \and ... \and Author n \\
+%         Address line \\ ... \\ Address line}
+% if the names do not fit well on one line use
+%         Author 1 \\ {\bf Author 2} \\ ... \\ {\bf Author n} \\
+% For authors from different institutions:
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \And  ... \And
+%         Author n \\ Address line \\ ... \\ Address line}
+% To start a seperate ``row'' of authors use \AND, as in
+% \author{Author 1 \\ Address line \\  ... \\ Address line
+%         \AND
+%         Author 2 \\ Address line \\ ... \\ Address line \And
+%         Author 3 \\ Address line \\ ... \\ Address line}
+
+% \author{First Author \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \texttt{email@domain} \\\And
+%   Second Author \\
+%   Affiliation / Address line 1 \\
+%   Affiliation / Address line 2 \\
+%   Affiliation / Address line 3 \\
+%   \texttt{email@domain} \\}
+% \author{Shafiq Joty \\
+%   School of Computer Science and Engineering \\
+%   Nanyang Technological University, Singapore \\
+%   \texttt{srjoty@ntu.edu.sg} \\\And
+%   Enamul Hoque \\
+%   School of Information Technology \\
+%   York University, Canada \\
+%   \texttt{enamulh@yorku.ca} \\}
+% \date{}
+\author{
+Shankar Kantharaj$^{\clubsuit}$\thanks{\ \ Equal contribution. Listing order is based on the alphabetical ordering of author surnames.}, \  Rixie Tiffany Ko Leong$^{\vardiamondsuit}$\footnotemark[1], \ Xiang Lin$^\vardiamondsuit$\footnotemark[1], \ Ahmed Masry$^{\clubsuit}$\footnotemark[1]\\ \textbf{Megh Thakkar$^{\vardiamondsuit}$\footnotemark[1], \ Enamul Hoque$^{\clubsuit}$,  \ Shafiq Joty$^{\vardiamondsuit\spadesuit}$}\\
+$^\clubsuit$York University, Canada, 
+$^\vardiamondsuit$Nanyang Technological University, Singapore\\
+$^\spadesuit$Salesforce Research Asia, Singapore\\
+\{shankark, masry20, enamulh\}@yorku.ca\\
+\{rleong007, linx0057, srjoty\}@ntu.edu.sg \\
+megh.1211@gmail.com \\
+}
+
+
+
+
+
+
+\begin{document}
+\maketitle
+
+
+
+
+\begin{abstract}
+Charts are commonly used for exploring data and communicating insights. Generating natural language summaries from charts can be very helpful for people in inferring key insights that would otherwise require a lot of cognitive and perceptual efforts. 
+We present Chart-to-text, a large-scale benchmark with two datasets and a total of 44,096 charts covering a wide range of topics and chart types. We explain the dataset construction process and analyze the datasets. We also introduce a number of state-of-the-art neural models as baselines that utilize image captioning and data-to-text generation techniques to tackle two problem variations: one assumes the underlying data table of the chart is available while the other needs to extract data from chart images. Our analysis with automatic and human evaluation shows that while our best models usually generate fluent summaries and yield reasonable BLEU scores, they also suffer from  hallucinations and factual errors as well as difficulties in correctly explaining complex patterns and trends in charts.
+
+\end{abstract}
+
+\section{Introduction} \label{sec:intro}
+
+Data visualizations such as bar charts, line charts, and pie charts are very popular for presenting quantitative data. Often people use such charts to get important insights from data and make informed decisions. However, it is well-known that inferring key insights from the charts can be quite challenging and time-consuming, as it may require a lot of cognitive and perceptual efforts~\cite{perez, whitaker}. 
+
+Automatic chart summarization is a task where the goal is to explain a chart and summarize key takeaways from it in natural language. Chart summarization has several key benefits and potential applications. First, chart summaries can help people  identify key insights from charts that they might have missed otherwise. In a study on a chart corpus, \citet{carberry2006information} found that chart authors often failed to convey key insights from charts in their corresponding textual captions. Thus, automatic summarization could help authors write effective reports and articles on data facts by suggesting explanatory texts. Similarly, readers could benefit from such summaries, as studies have found that captions help readers find important points by explaining visually prominent features in charts~\citep{kim2021towards}.
+Chart summarization offers another important benefit of making charts more accessible to people who are visually impaired since they can use screen readers to understand what is being presented in the chart~\cite{Ferres-accessibility-2013}. Finally, the generated summaries can be leveraged for indexing documents containing charts to improve information retrieval algorithms~\cite{li2013towards}.
+
+\begin{figure}[t] 
+\linespread{0.5}\selectfont\centering 
+\scriptsize
+%\renewcommand{\arraystretch}{1.0}
+\scalebox{0.99}{\begin{tabular}{@{}p{1\linewidth}} 
+%\toprule
+        \includegraphics[width=7.8cm]{imgs/sample charts/statista_368_edit_2.png} \\ [+0.5em]
+        { 
+        \textbf{Gold:} In 2019, Singapore imported approximately 236.8 billion Singapore dollars worth of machinery and equipment, making it the country's largest import commodity by value. This was followed by the import of mineral fuels and lubricants, valued at 102.7 billion Singapore dollars.}
+      \\ [+0.3em]
+        {\textbf{TAB-T5:} Machinery and equipment was the most valuable commodity for Singapore in 2019, with an import value of 236.8 billion Singapore dollars. Mineral fuels and lubricants were the second most valuable commodity for Singapore, with an import value of 102.7 billion Singapore dollars.}
+    \end{tabular}
+    }
+    \caption{An example chart-summary pair from our Benchmark and the output from one of the best models (TAB-T5).}
+    \label{tab:example}
+\end{figure}
+
+Despite its numerous benefits and applications, the chart summarization problem  has not received much attention in the NLP community.  Early approaches relied on template-based text generation methods that combine statistical techniques and planning-based architecture~\cite{reiter2007architecture} to generate captions from bar and line charts~\cite{fasciano1996postgraphe, mittal-etal-1998-describing, green2004autobrief,  demir-etal-2012-summarizing}. Recently, researchers considered data-driven neural models for describing tabular data~\cite{mei2016talk, gong-etal-2019-enhanced}. 
+\change{However, compared to tables, charts serve a different communication goal, and so is the chart-to-text problem. Unlike tables which simply list raw data, 
+charts create visual representation of data that can draw a reader’s attention to various prominent features such as trends and outliers~\cite{kim2021towards}.  For example, a line chart may depict an important trend whereas a scatterplot may visually communicate correlations and outliers. 
+Existing table-to-text approaches are not designed to explain such visually salient chart features in summaries.} 
+
+
+There are two main impediments to addressing the chart summarization task. First, the lack of large-scale datasets makes it difficult to solve the  task using data-driven neural models. Second, there are no strong baselines that  utilize the latest advances in neural text generation tasks. \citet{obeid} made an initial attempt to address this problem with a dataset and a model that utilizes a Transformer \cite{Vaswani2017attn}  architecture. 
+However, their dataset was built by collecting a small set of charts (8,305) from a single source covering only two types of charts (bar and line). Also, their approach does not exploit the recent advances in large-scale language model pretraining, which has been shown to be very beneficial for many vision and language tasks \cite{devlin-etal-2019-bert,pmlr-v139-touvron21a}. To our knowledge, there is no large-scale benchmark with a wider range of topics from multiple sources, covering many different chart types, and with models that employ large-scale pretraining.
+
+In this work, we present a large-scale benchmark for chart-to-text with two datasets consisting of 44,096 charts  covering a broad range of topics and a variety of chart types. We introduce two variations of the problem. The first variation assumes that the underlying data table of a chart is available, while the other introduces a more challenging and realistic scenario by assuming that the chart is in image format and the underlying table is not available. These two problem scenarios motivated us to adapt a variety of state-of-the-art models that combine computer vision and natural language generation techniques as strong baselines; see \Cref{tab:example} for a sample model output.
+
+Our primary contributions are: \Ni a new large-scale benchmark 
+covering a wide range of topics and chart types; \Nii a set of state-of-the-art neural models 
+which can act as a starting point for other researchers to expand and improve upon; and \Niii a series of automatic and human evaluations as well as in-depth qualitative analysis to identify further challenges.
+Our code and benchmark datasets are publicly available at
+\href{https://github.com/vis-nlp/Chart-to-text}{https://github.com/vis-nlp/Chart-to-text}.
+
+
+
+\section{Related Work}
+
+
+\paragraph{Chart Summarization}
+
+
+Early work 
+\cite{mittal-etal-1998-describing,Ferres-accessibility-2013} followed a planning-based architecture ~\cite{reiter2007architecture} and used templates to generate texts. 
+These systems only describe how to read the chart rather than explain key insights conveyed by the chart. 
+Recently, commercial systems such as  Quill and Wordsmith\footnote{Narrative Science \href{https://narrativescience.com/quill/}{Quill}; Automated Insights \href{https://automatedinsights.com/wordsmith}{Wordsmith}}
+as well as research prototypes, \eg\ \cite{cui2019datasite} and  \cite{srinivasan2018augmenting}  
+computed statistics  (\eg\ extrema, outliers) to present facts from a dataset. \citet{demir-etal-2012-summarizing} also compute statistics to generates bar chart summaries in a bottom–up manner to simultaneously construct the discourse and sentence structures. Recently, \citet{DBLP:journals/corr/abs-1906-02850} used the ResNet \cite{he2016deep} to encode the chart image and an LSTM decoder to create the caption. 
+
+A key limitation of the above bodies of work is that sentences are generated using predefined templates, which may lack generality and offer little variation in terms of reported insights, grammatical styles and lexical choices compared to data-driven models. Moving beyond template-based summaries, \citet{obeid} adapted a transformer-based  model on a dataset of 8,305 
+charts,  while \citet{Andrea-carenini} applied an LSTM based encoder-decoder model on a dataset of 306 
+chart summaries. Both studies used much smaller datasets and did not consider the computer vision aspects of the problem. \change{~\citet{hsu2021scicap} recently use a CNN+LSTM based image captioning model for scientific figure captioning.} In contrast, \change{we focus on the generic chart-to-text problem and} train several 
+ neural models that combine computer vision and data2text generation. 
+
+
+
+\paragraph{Data2text Generation}
+Data2text models generate a descriptive summary for a table of records. They have been used for various domain-specific tasks such as summarizing sports data~\cite{barzilay-lapata-2005-collective,  
+wiseman2017challenges}, weather-forecast data
+~\cite{reiter2005choosing}, recipe generation~\cite{yang2017reference} and biography generation~\cite{lebret-etal-2016-neural} as well as open-domain tasks~\cite{parikh2020totto, chen2020logical}. Recent methods have primarily used an LSTM-based encoder-decoder architecture~\cite{mei2016talk, lebret-etal-2016-neural, wiseman2017challenges}.  \citet{gong-etal-2019-enhanced} found that transformers \cite{Vaswani2017attn} yielded more fluent and coherent outputs compared to their LSTM counterparts. Others focused on \change{controlling the structure of the summary using a planning approach~\cite{su2021plangen} as well as generating facts by preforming logical inference over the given table~\cite{chen2020logical,chen-etal-2020-logic2text}.} 
+
+\paragraph{Image Captioning}
+There has been swift progress 
+in image captioning largely due to the availability of large-scale datasets \cite{agrawal2019nocaps, chen2015microsoft}.  ~\citet{zhang2021vinvl} developed an 
+object detection model to summarize objects in images while 
+\citet{sidorov2020textcaps} utilized texts extracted from images using OCR  to generate captions. 
+Unlike images with real-world objects and scenes, charts have marks (\eg\ bars,  lines) that map quantitative data. This makes the chart-to-text problem different from image captioning. 
+
+
+\section{Chart-to-text Datasets}
+\input{Dataset}
+
+
+\section{Chart-to-text Baseline Models}
+\input{Models}
+
+
+
+\section{Evaluation}
+\input{Evaluation}
+
+
+\section{Conclusion}
+
+We have presented two large-scale datasets for chart summarization. We also provided several state-of-the-art baselines and measures. Our evaluation highlights the promise of these baselines and also reveals several unique challenges for the chart summarization task. We hope that Chart-to-text will serve as a useful research benchmark for model and metric development and motivate other researchers to explore this relatively new area. 
+\section*{Acknowledgement}
+The authors would like to thank the anonymous reviewers for their helpful comments. This research was supported by the Natural Sciences \& Engineering Research Council (NSERC) of Canada.
+\section*{Ethical Considerations}
+During the dataset collection and annotation process, we had many ethical issues to take into consideration. To respect the intellectual property of the chart publishers, we only used publicly available charts from resources that provide publication rights of downloaded content for academic purposes. According to the terms of use and publication rights for Statista,\footnote{\href{https://www.statista.com/getting-started/publishing-statista-content-terms-of-use-and-publication-rights}{https://www.statista.com/getting-started/publishing-statista-content-terms-of-use-and-publication-rights}} users are granted publication rights only to free studies of Statista, so we only used the free publicly available webpages. According to the terms and conditions for Pew,\footnote{\href{https://www.pewresearch.org/about/terms-and-conditions/}{https://www.pewresearch.org/about/terms-and-conditions/}} users are allowed to use the content as long as they are attributed to the Center or are not attributed to a different party. 
+
+To fairly compensate the Mechanical Turk annotators, we compensated the annotators based on the minimum wage in the United States at the time (7.25 US\$ per hour) and the estimated time taken for each task (1 minute). Hence, these annotators received 0.10 - 0.15 US\$ for each chart, depending on the number of candidate paragraphs associated with it. Additionally, to protect the privacy of these annotators, all of their annotations were anonymized.
+
+To ensure the reproducibility of our experimental results, we have provided the hyperparameter settings and estimated training time in \Cref{app:baselines}.
+
+
+We foresee one possible misuse of our models that is to spread misinformation. Currently, our model outputs tend to appear fluent but contain some hallucinations and factual errors, as detailed in \Cref{sec:error-analysis}. Hence, if such model outputs are published without being corrected, it may mislead and misinform the general public.
+
+
+
+
+
+% \section*{Acknowledgments}
+
+% The acknowledgments should go immediately before the references. Do not number the acknowledgments section.
+% Do not include this section when submitting your paper for review.
+
+\bibliographystyle{acl_natbib}
+\bibliography{chart2text}
+\newpage
+\input{Appendix}
+
+\end{document}

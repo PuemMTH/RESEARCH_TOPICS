@@ -1,0 +1,719 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{49}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[\protect\citeauthoryear{Ammar, Groeneveld, Bhagavatula, Beltagy,
+  Crawford, Downey, Dunkelberger, Elgohary, Feldman, Ha, Kinney, Kohlmeier, Lo,
+  Murray, Ooi, Peters, Power, Skjonsberg, Wang, Wilhelm, Yuan, van Zuylen, and
+  Etzioni}{Ammar et~al\mbox{.}}{2018}]%
+        {Ammar2018ConstructionOT}
+\bibfield{author}{\bibinfo{person}{Waleed Ammar}, \bibinfo{person}{Dirk
+  Groeneveld}, \bibinfo{person}{Chandra Bhagavatula}, \bibinfo{person}{Iz
+  Beltagy}, \bibinfo{person}{Miles Crawford}, \bibinfo{person}{Doug Downey},
+  \bibinfo{person}{Jason Dunkelberger}, \bibinfo{person}{Ahmed Elgohary},
+  \bibinfo{person}{Sergey Feldman}, \bibinfo{person}{Vu~A. Ha},
+  \bibinfo{person}{Rodney~Michael Kinney}, \bibinfo{person}{Sebastian
+  Kohlmeier}, \bibinfo{person}{Kyle Lo}, \bibinfo{person}{Tyler~C. Murray},
+  \bibinfo{person}{Hsu-Han Ooi}, \bibinfo{person}{Matthew~E. Peters},
+  \bibinfo{person}{Joanna~L. Power}, \bibinfo{person}{Sam Skjonsberg},
+  \bibinfo{person}{Lucy~Lu Wang}, \bibinfo{person}{Christopher Wilhelm},
+  \bibinfo{person}{Zheng Yuan}, \bibinfo{person}{Madeleine van Zuylen}, {and}
+  \bibinfo{person}{Oren Etzioni}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Construction of the Literature Graph in Semantic
+  Scholar}. In \bibinfo{booktitle}{\emph{NAACL}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Baker, Milne, Scofield, Bennett, and
+  Ladner}{Baker et~al\mbox{.}}{2014}]%
+        {Baker2014TactileGW}
+\bibfield{author}{\bibinfo{person}{Catherine~M. Baker},
+  \bibinfo{person}{Lauren~R. Milne}, \bibinfo{person}{Jeffrey Scofield},
+  \bibinfo{person}{Cynthia~L. Bennett}, {and} \bibinfo{person}{Richard~E.
+  Ladner}.} \bibinfo{year}{2014}\natexlab{}.
+\newblock \showarticletitle{Tactile graphics with a voice: using QR codes to
+  access text in tactile graphics}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 16th international ACM
+  SIGACCESS conference on Computers \& accessibility}} (\bibinfo{year}{2014}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Beltagy, Lo, and Cohan}{Beltagy
+  et~al\mbox{.}}{2019}]%
+        {Beltagy2019SciBERTAP}
+\bibfield{author}{\bibinfo{person}{Iz Beltagy}, \bibinfo{person}{Kyle Lo},
+  {and} \bibinfo{person}{Arman Cohan}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{SciBERT: A Pretrained Language Model for Scientific
+  Text}. In \bibinfo{booktitle}{\emph{EMNLP}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Bennett, Gleason, Scheuerman, Bigham, Guo, and
+  To}{Bennett et~al\mbox{.}}{2021}]%
+        {bennett-chi21}
+\bibfield{author}{\bibinfo{person}{Cynthia~L. Bennett}, \bibinfo{person}{Cole
+  Gleason}, \bibinfo{person}{Morgan~Klaus Scheuerman},
+  \bibinfo{person}{Jeffrey~P. Bigham}, \bibinfo{person}{Anhong Guo}, {and}
+  \bibinfo{person}{Alexandra To}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{“It’s Complicated”: Negotiating Accessibility
+  and (Mis)Representation in Image Descriptions of Race, Gender, and
+  Disability}. In \bibinfo{booktitle}{\emph{Proceedings of the 2021 CHI
+  Conference on Human Factors in Computing Systems}} (Yokohama, Japan)
+  \emph{(\bibinfo{series}{CHI '21})}. \bibinfo{publisher}{Association for
+  Computing Machinery}, \bibinfo{address}{New York, NY, USA}, Article
+  \bibinfo{articleno}{375}, \bibinfo{numpages}{19}~pages.
+\newblock
+\showISBNx{9781450380966}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3411764.3445498}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Bigham, Brady, Gleason, Guo, and
+  Shamma}{Bigham et~al\mbox{.}}{2016}]%
+        {Bigham2016AnUT}
+\bibfield{author}{\bibinfo{person}{Jeffrey~P. Bigham}, \bibinfo{person}{E.
+  Brady}, \bibinfo{person}{Cole Gleason}, \bibinfo{person}{Anhong Guo}, {and}
+  \bibinfo{person}{D. Shamma}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{An Uninteresting Tour Through Why Our Research
+  Papers Aren't Accessible}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 2016 CHI Conference
+  Extended Abstracts on Human Factors in Computing Systems}}
+  (\bibinfo{year}{2016}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Bigham, Jayant, Ji, Little, Miller, Miller,
+  Miller, Tatarowicz, White, White, and Yeh}{Bigham et~al\mbox{.}}{2010}]%
+        {Bigham2010VizWizNR}
+\bibfield{author}{\bibinfo{person}{Jeffrey~P. Bigham},
+  \bibinfo{person}{Chandrika Jayant}, \bibinfo{person}{Hanjie Ji},
+  \bibinfo{person}{Greg Little}, \bibinfo{person}{Andrew Miller},
+  \bibinfo{person}{Rob Miller}, \bibinfo{person}{Rob Miller},
+  \bibinfo{person}{Aubrey Tatarowicz}, \bibinfo{person}{Brandyn~Allen White},
+  \bibinfo{person}{Samuel White}, {and} \bibinfo{person}{Tom Yeh}.}
+  \bibinfo{year}{2010}\natexlab{}.
+\newblock \showarticletitle{VizWiz: nearly real-time answers to visual
+  questions}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 23nd annual ACM symposium
+  on User interface software and technology}} (\bibinfo{year}{2010}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Brady, Zhong, and Bigham}{Brady
+  et~al\mbox{.}}{2015}]%
+        {Brady2015CreatingAP}
+\bibfield{author}{\bibinfo{person}{E. Brady}, \bibinfo{person}{Y. Zhong}, {and}
+  \bibinfo{person}{Jeffrey~P. Bigham}.} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Creating accessible PDFs for conference
+  proceedings}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 12th Web for All
+  Conference}} (\bibinfo{year}{2015}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Bragg, Kushalnagar, and Ladner}{Bragg
+  et~al\mbox{.}}{2018}]%
+        {Bragg2018DesigningAA}
+\bibfield{author}{\bibinfo{person}{Danielle Bragg}, \bibinfo{person}{Raja~S.
+  Kushalnagar}, {and} \bibinfo{person}{Richard~E. Ladner}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Designing an Animated Character System for American
+  Sign Language}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 20th International ACM
+  SIGACCESS Conference on Computers and Accessibility}} (\bibinfo{year}{2018}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Caldwell, Cooper, Reid, and
+  Vanderheiden}{Caldwell et~al\mbox{.}}{2008}]%
+        {Caldwell2008WebCA}
+\bibfield{author}{\bibinfo{person}{B. Caldwell}, \bibinfo{person}{M. Cooper},
+  \bibinfo{person}{Loretta~Guarino Reid}, {and} \bibinfo{person}{G.
+  Vanderheiden}.} \bibinfo{year}{2008}\natexlab{}.
+\newblock \showarticletitle{Web Content Accessibility Guidelines (WCAG) 2.0}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Chen, Zhang, Kim, Cohen, Yu, Rossi, and
+  Bunescu}{Chen et~al\mbox{.}}{2019a}]%
+        {Chen2019NeuralCG}
+\bibfield{author}{\bibinfo{person}{Chen Chen}, \bibinfo{person}{Ruiyi Zhang},
+  \bibinfo{person}{Sungchul Kim}, \bibinfo{person}{Scott~D. Cohen},
+  \bibinfo{person}{Tong Yu}, \bibinfo{person}{Ryan~A. Rossi}, {and}
+  \bibinfo{person}{Razvan~C. Bunescu}.} \bibinfo{year}{2019}\natexlab{a}.
+\newblock \showarticletitle{Neural caption generation over figures}.
+\newblock \bibinfo{journal}{\emph{Adjunct Proceedings of the 2019 ACM
+  International Joint Conference on Pervasive and Ubiquitous Computing and
+  Proceedings of the 2019 ACM International Symposium on Wearable Computers}}
+  (\bibinfo{year}{2019}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Chen, Zhang, Koh, Kim, Cohen, Yu, Bunescu, and
+  Bunescu}{Chen et~al\mbox{.}}{2019b}]%
+        {Chen2019FigureCW}
+\bibfield{author}{\bibinfo{person}{Charles~C. Chen}, \bibinfo{person}{Ruiyi
+  Zhang}, \bibinfo{person}{Eunyee Koh}, \bibinfo{person}{Sungchul Kim},
+  \bibinfo{person}{Scott~D. Cohen}, \bibinfo{person}{Tong Yu},
+  \bibinfo{person}{Razvan~C. Bunescu}, {and} \bibinfo{person}{Razvan~C.
+  Bunescu}.} \bibinfo{year}{2019}\natexlab{b}.
+\newblock \showarticletitle{Figure Captioning with Reasoning and Sequence-Level
+  Training}.
+\newblock \bibinfo{journal}{\emph{ArXiv}}  \bibinfo{volume}{abs/1906.02850}
+  (\bibinfo{year}{2019}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Chen, Fang, Lin, Vedantam, Gupta, Doll{\'a}r,
+  and Zitnick}{Chen et~al\mbox{.}}{2015}]%
+        {Chen2015MicrosoftCC}
+\bibfield{author}{\bibinfo{person}{Xinlei Chen}, \bibinfo{person}{Hao Fang},
+  \bibinfo{person}{Tsung-Yi Lin}, \bibinfo{person}{Ramakrishna Vedantam},
+  \bibinfo{person}{Saurabh Gupta}, \bibinfo{person}{Piotr Doll{\'a}r}, {and}
+  \bibinfo{person}{C.~Lawrence Zitnick}.} \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Microsoft COCO Captions: Data Collection and
+  Evaluation Server}.
+\newblock \bibinfo{journal}{\emph{ArXiv}}  \bibinfo{volume}{abs/1504.00325}
+  (\bibinfo{year}{2015}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Chisholm, Vanderheiden, and Jacobs}{Chisholm
+  et~al\mbox{.}}{2001}]%
+        {Chisholm2001WebCA}
+\bibfield{author}{\bibinfo{person}{W. Chisholm}, \bibinfo{person}{G.
+  Vanderheiden}, {and} \bibinfo{person}{Ian Jacobs}.}
+  \bibinfo{year}{2001}\natexlab{}.
+\newblock \showarticletitle{Web content accessibility guidelines 1.0}.
+\newblock \bibinfo{journal}{\emph{Interactions}}  \bibinfo{volume}{8}
+  (\bibinfo{year}{2001}), \bibinfo{pages}{35--54}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Devlin, Chang, Lee, and Toutanova}{Devlin
+  et~al\mbox{.}}{2019}]%
+        {Devlin2019BERTPO}
+\bibfield{author}{\bibinfo{person}{Jacob Devlin}, \bibinfo{person}{Ming-Wei
+  Chang}, \bibinfo{person}{Kenton Lee}, {and} \bibinfo{person}{Kristina
+  Toutanova}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{BERT: Pre-training of Deep Bidirectional
+  Transformers for Language Understanding}. In
+  \bibinfo{booktitle}{\emph{NAACL}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Engel and Weber}{Engel and Weber}{2017}]%
+        {Engel2017ImproveTA}
+\bibfield{author}{\bibinfo{person}{Christin Engel} {and}
+  \bibinfo{person}{Gerhard Weber}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Improve the Accessibility of Tactile Charts}. In
+  \bibinfo{booktitle}{\emph{INTERACT}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Fraser, Ngoon, Weingarten, Dontcheva, and
+  Klemmer}{Fraser et~al\mbox{.}}{2017}]%
+        {critiquekit}
+\bibfield{author}{\bibinfo{person}{C.~Ailie Fraser}, \bibinfo{person}{Tricia~J.
+  Ngoon}, \bibinfo{person}{Ariel~S. Weingarten}, \bibinfo{person}{Mira
+  Dontcheva}, {and} \bibinfo{person}{Scott Klemmer}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{CritiqueKit: A Mixed-Initiative, Real-Time
+  Interface For Improving Feedback}. In \bibinfo{booktitle}{\emph{Adjunct
+  Publication of the 30th Annual ACM Symposium on User Interface Software and
+  Technology}} (Qu\'{e}bec City, QC, Canada) \emph{(\bibinfo{series}{UIST
+  '17})}. \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{7–9}.
+\newblock
+\showISBNx{9781450354196}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3131785.3131791}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Gleason, Pavel, McCamey, Low, Carrington,
+  Kitani, and Bigham}{Gleason et~al\mbox{.}}{2020}]%
+        {Gleason2020TwitterAA}
+\bibfield{author}{\bibinfo{person}{Cole Gleason}, \bibinfo{person}{Amy Pavel},
+  \bibinfo{person}{Emma McCamey}, \bibinfo{person}{Christina Low},
+  \bibinfo{person}{Patrick Carrington}, \bibinfo{person}{Kris~M. Kitani}, {and}
+  \bibinfo{person}{Jeffrey~P. Bigham}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Twitter A11y: A Browser Extension to Make Twitter
+  Images Accessible}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 2020 CHI Conference on
+  Human Factors in Computing Systems}} (\bibinfo{year}{2020}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Guinness, Cutrell, and Morris}{Guinness
+  et~al\mbox{.}}{2018}]%
+        {Guinness2018CaptionCE}
+\bibfield{author}{\bibinfo{person}{Darren Guinness}, \bibinfo{person}{Edward
+  Cutrell}, {and} \bibinfo{person}{Meredith~Ringel Morris}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Caption Crawler: Enabling Reusable Alternative Text
+  Descriptions using Reverse Image Search}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 2018 CHI Conference on
+  Human Factors in Computing Systems}} (\bibinfo{year}{2018}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Gurari, Li, Stangl, Guo, Lin, Grauman, Luo,
+  and Bigham}{Gurari et~al\mbox{.}}{2018}]%
+        {Gurari2018VizWizGC}
+\bibfield{author}{\bibinfo{person}{Danna Gurari}, \bibinfo{person}{Qing Li},
+  \bibinfo{person}{Abigale Stangl}, \bibinfo{person}{Anhong Guo},
+  \bibinfo{person}{Chi Lin}, \bibinfo{person}{Kristen Grauman},
+  \bibinfo{person}{Jiebo Luo}, {and} \bibinfo{person}{Jeffrey~P. Bigham}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{VizWiz Grand Challenge: Answering Visual Questions
+  from Blind People}.
+\newblock \bibinfo{journal}{\emph{2018 IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}} (\bibinfo{year}{2018}),
+  \bibinfo{pages}{3608--3617}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Hsu, Giles, and Huang}{Hsu
+  et~al\mbox{.}}{2021}]%
+        {Hsu2021SciCapGC}
+\bibfield{author}{\bibinfo{person}{Ting-Yao Hsu}, \bibinfo{person}{C.~Lee
+  Giles}, {and} \bibinfo{person}{Ting-Hao~Kenneth Huang}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{SciCap: Generating Captions for Scientific
+  Figures}. In \bibinfo{booktitle}{\emph{EMNLP}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Jobin, Mondal, and Jawahar}{Jobin
+  et~al\mbox{.}}{2019}]%
+        {Jobin2019DocFigureAD}
+\bibfield{author}{\bibinfo{person}{K.~V. Jobin}, \bibinfo{person}{Ajoy Mondal},
+  {and} \bibinfo{person}{C.~V. Jawahar}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{DocFigure: A Dataset for Scientific Document Figure
+  Classification}.
+\newblock \bibinfo{journal}{\emph{2019 International Conference on Document
+  Analysis and Recognition Workshops (ICDARW)}}  \bibinfo{volume}{1}
+  (\bibinfo{year}{2019}), \bibinfo{pages}{74--79}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Jung, Kim, Song, Hwang, Lee, Kim, and
+  Seo}{Jung et~al\mbox{.}}{2017}]%
+        {Jung2017ChartSenseID}
+\bibfield{author}{\bibinfo{person}{Daekyoung Jung}, \bibinfo{person}{Wonjae
+  Kim}, \bibinfo{person}{Hyunjoo Song}, \bibinfo{person}{Jeongin Hwang},
+  \bibinfo{person}{Bongshin Lee}, \bibinfo{person}{Bo~Hyoung Kim}, {and}
+  \bibinfo{person}{Jinwook Seo}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{ChartSense: Interactive Data Extraction from Chart
+  Images}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 2017 CHI Conference on
+  Human Factors in Computing Systems}} (\bibinfo{year}{2017}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Kafle, Cohen, Price, and Kanan}{Kafle
+  et~al\mbox{.}}{2018}]%
+        {Kafle2018DVQAUD}
+\bibfield{author}{\bibinfo{person}{Kushal Kafle}, \bibinfo{person}{Scott~D.
+  Cohen}, \bibinfo{person}{Brian~L. Price}, {and} \bibinfo{person}{Christopher
+  Kanan}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{DVQA: Understanding Data Visualizations via
+  Question Answering}.
+\newblock \bibinfo{journal}{\emph{2018 IEEE/CVF Conference on Computer Vision
+  and Pattern Recognition}} (\bibinfo{year}{2018}),
+  \bibinfo{pages}{5648--5656}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Kahou, Atkinson, Michalski, K{\'a}d{\'a}r,
+  Trischler, and Bengio}{Kahou et~al\mbox{.}}{2018}]%
+        {Kahou2018FigureQAAA}
+\bibfield{author}{\bibinfo{person}{Samira~Ebrahimi Kahou},
+  \bibinfo{person}{Adam Atkinson}, \bibinfo{person}{Vincent Michalski},
+  \bibinfo{person}{{\'A}kos K{\'a}d{\'a}r}, \bibinfo{person}{Adam Trischler},
+  {and} \bibinfo{person}{Yoshua Bengio}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{FigureQA: An Annotated Figure Dataset for Visual
+  Reasoning}.
+\newblock \bibinfo{journal}{\emph{ArXiv}}  \bibinfo{volume}{abs/1710.07300}
+  (\bibinfo{year}{2018}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Kuznetsova, Rom, Alldrin, Uijlings, Krasin,
+  Pont-Tuset, Kamali, Popov, Malloci, Kolesnikov, Duerig, and
+  Ferrari}{Kuznetsova et~al\mbox{.}}{2020}]%
+        {Kuznetsova2020TheOI}
+\bibfield{author}{\bibinfo{person}{Alina Kuznetsova}, \bibinfo{person}{Hassan
+  Rom}, \bibinfo{person}{Neil~Gordon Alldrin}, \bibinfo{person}{Jasper R.~R.
+  Uijlings}, \bibinfo{person}{Ivan Krasin}, \bibinfo{person}{Jordi Pont-Tuset},
+  \bibinfo{person}{Shahab Kamali}, \bibinfo{person}{Stefan Popov},
+  \bibinfo{person}{Matteo Malloci}, \bibinfo{person}{Alexander Kolesnikov},
+  \bibinfo{person}{Tom Duerig}, {and} \bibinfo{person}{Vittorio Ferrari}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{The Open Images Dataset V4}.
+\newblock \bibinfo{journal}{\emph{International Journal of Computer Vision}}
+  \bibinfo{volume}{128} (\bibinfo{year}{2020}), \bibinfo{pages}{1956--1981}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Lazar, Churchill, Grossman, Veer, Palanque,
+  Morris, and Mankoff}{Lazar et~al\mbox{.}}{2017}]%
+        {Lazar2017MakingTF}
+\bibfield{author}{\bibinfo{person}{J. Lazar}, \bibinfo{person}{E. Churchill},
+  \bibinfo{person}{T. Grossman}, \bibinfo{person}{G.~V.~D. Veer},
+  \bibinfo{person}{Philippe~A. Palanque}, \bibinfo{person}{J. Morris}, {and}
+  \bibinfo{person}{Jennifer Mankoff}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Making the field of computing more inclusive}.
+\newblock \bibinfo{journal}{\emph{Commun. ACM}}  \bibinfo{volume}{60}
+  (\bibinfo{year}{2017}), \bibinfo{pages}{50 -- 59}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Levy, Ben-Ari, and Lischinski}{Levy
+  et~al\mbox{.}}{2021}]%
+        {Levy2021ClassificationRegressionFC}
+\bibfield{author}{\bibinfo{person}{Matan Levy}, \bibinfo{person}{Rami Ben-Ari},
+  {and} \bibinfo{person}{Dani Lischinski}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Classification-Regression for Chart Comprehension}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Li, Yatskar, Yin, Hsieh, and Chang}{Li
+  et~al\mbox{.}}{2019}]%
+        {Li2019VisualBERTAS}
+\bibfield{author}{\bibinfo{person}{Liunian~Harold Li}, \bibinfo{person}{Mark
+  Yatskar}, \bibinfo{person}{Da Yin}, \bibinfo{person}{Cho-Jui Hsieh}, {and}
+  \bibinfo{person}{Kai-Wei Chang}.} \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{VisualBERT: A Simple and Performant Baseline for
+  Vision and Language}.
+\newblock \bibinfo{journal}{\emph{ArXiv}}  \bibinfo{volume}{abs/1908.03557}
+  (\bibinfo{year}{2019}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Lu, Batra, Parikh, and Lee}{Lu
+  et~al\mbox{.}}{2019}]%
+        {Lu2019ViLBERTPT}
+\bibfield{author}{\bibinfo{person}{Jiasen Lu}, \bibinfo{person}{Dhruv Batra},
+  \bibinfo{person}{Devi Parikh}, {and} \bibinfo{person}{Stefan Lee}.}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{ViLBERT: Pretraining Task-Agnostic Visiolinguistic
+  Representations for Vision-and-Language Tasks}. In
+  \bibinfo{booktitle}{\emph{NeurIPS}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Lundgard and Satyanarayan}{Lundgard and
+  Satyanarayan}{2022}]%
+        {Lundgard2022AccessibleVV}
+\bibfield{author}{\bibinfo{person}{Alan Lundgard} {and} \bibinfo{person}{Arvind
+  Satyanarayan}.} \bibinfo{year}{2022}\natexlab{}.
+\newblock \showarticletitle{Accessible Visualization via Natural Language
+  Descriptions: A Four-Level Model of Semantic Content}.
+\newblock \bibinfo{journal}{\emph{IEEE Transactions on Visualization and
+  Computer Graphics}}  \bibinfo{volume}{28} (\bibinfo{year}{2022}),
+  \bibinfo{pages}{1073--1083}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Mack, Cutrell, Lee, and Morris}{Mack
+  et~al\mbox{.}}{2021}]%
+        {Mack2021DesigningTF}
+\bibfield{author}{\bibinfo{person}{Kelly~M. Mack}, \bibinfo{person}{Edward
+  Cutrell}, \bibinfo{person}{Bongshin Lee}, {and}
+  \bibinfo{person}{Meredith~Ringel Morris}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Designing Tools for High-Quality Alt Text
+  Authoring}.
+\newblock \bibinfo{journal}{\emph{The 23rd International ACM SIGACCESS
+  Conference on Computers and Accessibility}} (\bibinfo{year}{2021}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Methani, Ganguly, Khapra, and Kumar}{Methani
+  et~al\mbox{.}}{2020}]%
+        {Methani2020PlotQARO}
+\bibfield{author}{\bibinfo{person}{Nitesh Methani}, \bibinfo{person}{Pritha
+  Ganguly}, \bibinfo{person}{Mitesh~M. Khapra}, {and} \bibinfo{person}{Pratyush
+  Kumar}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{PlotQA: Reasoning over Scientific Plots}.
+\newblock \bibinfo{journal}{\emph{2020 IEEE Winter Conference on Applications
+  of Computer Vision (WACV)}} (\bibinfo{year}{2020}),
+  \bibinfo{pages}{1516--1525}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Morash, Siu, Miele, Hasty, and Landau}{Morash
+  et~al\mbox{.}}{2015}]%
+        {Morash2015GuidingNW}
+\bibfield{author}{\bibinfo{person}{Valerie~S. Morash},
+  \bibinfo{person}{Yue-Ting Siu}, \bibinfo{person}{Joshua~A. Miele},
+  \bibinfo{person}{Lucia Hasty}, {and} \bibinfo{person}{Steven Landau}.}
+  \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{Guiding Novice Web Workers in Making Image
+  Descriptions Using Templates}.
+\newblock \bibinfo{journal}{\emph{ACM Transactions on Accessible Computing
+  (TACCESS)}}  \bibinfo{volume}{7} (\bibinfo{year}{2015}), \bibinfo{pages}{1 --
+  21}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Morris, M{\"u}ller-Budack, and Ewerth}{Morris
+  et~al\mbox{.}}{2020}]%
+        {Morris2020SlideImagesAD}
+\bibfield{author}{\bibinfo{person}{David Morris}, \bibinfo{person}{Eric
+  M{\"u}ller-Budack}, {and} \bibinfo{person}{Ralph Ewerth}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{SlideImages: A Dataset for Educational Image
+  Classification}.
+\newblock \bibinfo{journal}{\emph{Advances in Information Retrieval}}
+  \bibinfo{volume}{12036} (\bibinfo{year}{2020}), \bibinfo{pages}{289 -- 296}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Morris, Johnson, Bennett, and Cutrell}{Morris
+  et~al\mbox{.}}{2018}]%
+        {Morris2018RichRO}
+\bibfield{author}{\bibinfo{person}{Meredith~Ringel Morris},
+  \bibinfo{person}{Jazette Johnson}, \bibinfo{person}{Cynthia~L. Bennett},
+  {and} \bibinfo{person}{Edward Cutrell}.} \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Rich Representations of Visual Content for Screen
+  Reader Users}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 2018 CHI Conference on
+  Human Factors in Computing Systems}} (\bibinfo{year}{2018}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Nazemi and Murray}{Nazemi and Murray}{2013}]%
+        {Nazemi2013AMT}
+\bibfield{author}{\bibinfo{person}{Azadeh Nazemi} {and} \bibinfo{person}{Iain
+  Murray}.} \bibinfo{year}{2013}\natexlab{}.
+\newblock \showarticletitle{A Method to Provide Accessibility for Visual
+  Components to Vision Impaired}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Neumann, King, Beltagy, and Ammar}{Neumann
+  et~al\mbox{.}}{2019}]%
+        {Neumann2019ScispaCyFA}
+\bibfield{author}{\bibinfo{person}{Mark Neumann}, \bibinfo{person}{Daniel
+  King}, \bibinfo{person}{Iz Beltagy}, {and} \bibinfo{person}{Waleed Ammar}.}
+  \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{ScispaCy: Fast and Robust Models for Biomedical
+  Natural Language Processing}.
+\newblock \bibinfo{journal}{\emph{ArXiv}}  \bibinfo{volume}{abs/1902.07669}
+  (\bibinfo{year}{2019}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Nicolson, Dowling, and Koopman}{Nicolson
+  et~al\mbox{.}}{2021}]%
+        {Nicolson2021AEHRCCA}
+\bibfield{author}{\bibinfo{person}{Aaron Nicolson}, \bibinfo{person}{Jason
+  Dowling}, {and} \bibinfo{person}{Bevan Koopman}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{AEHRC CSIRO at ImageCLEFmed Caption 2021}. In
+  \bibinfo{booktitle}{\emph{CLEF}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Qian, Koh, Du, Kim, and Chan}{Qian
+  et~al\mbox{.}}{2020}]%
+        {qian-formative}
+\bibfield{author}{\bibinfo{person}{Xin Qian}, \bibinfo{person}{Eunyee Koh},
+  \bibinfo{person}{Fan Du}, \bibinfo{person}{Sungchul Kim}, {and}
+  \bibinfo{person}{Joel Chan}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{A Formative Study on Designing Accurate and Natural
+  Figure Captioning Systems}. In \bibinfo{booktitle}{\emph{Extended Abstracts
+  of the 2020 CHI Conference on Human Factors in Computing Systems}} (Honolulu,
+  HI, USA) \emph{(\bibinfo{series}{CHI EA '20})}.
+  \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{1–8}.
+\newblock
+\showISBNx{9781450368193}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3334480.3382946}
+\showDOI{\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Qian, Koh, Du, Kim, Chan, Rossi, Malik, and
+  Lee}{Qian et~al\mbox{.}}{2021}]%
+        {Qian2021GeneratingAC}
+\bibfield{author}{\bibinfo{person}{Xin Qian}, \bibinfo{person}{Eunyee Koh},
+  \bibinfo{person}{Fan Du}, \bibinfo{person}{Sungchul Kim},
+  \bibinfo{person}{Joel Chan}, \bibinfo{person}{Ryan~A. Rossi},
+  \bibinfo{person}{Sana Malik}, {and} \bibinfo{person}{Tak~Yeon Lee}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Generating Accurate Caption Units for Figure
+  Captioning}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the Web Conference 2021}}
+  (\bibinfo{year}{2021}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Reinecke, Flatla, and Brooks}{Reinecke
+  et~al\mbox{.}}{2016}]%
+        {Reinecke2016EnablingDT}
+\bibfield{author}{\bibinfo{person}{Katharina Reinecke},
+  \bibinfo{person}{David~R. Flatla}, {and} \bibinfo{person}{Christopher
+  Brooks}.} \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{Enabling Designers to Foresee Which Colors Users
+  Cannot See}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 2016 CHI Conference on
+  Human Factors in Computing Systems}} (\bibinfo{year}{2016}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Russakovsky, Deng, Su, Krause, Satheesh, Ma,
+  Huang, Karpathy, Khosla, Bernstein, Berg, and Fei-Fei}{Russakovsky
+  et~al\mbox{.}}{2015}]%
+        {Russakovsky2015ImageNetLS}
+\bibfield{author}{\bibinfo{person}{Olga Russakovsky}, \bibinfo{person}{Jia
+  Deng}, \bibinfo{person}{Hao Su}, \bibinfo{person}{Jonathan Krause},
+  \bibinfo{person}{Sanjeev Satheesh}, \bibinfo{person}{Sean Ma},
+  \bibinfo{person}{Zhiheng Huang}, \bibinfo{person}{Andrej Karpathy},
+  \bibinfo{person}{Aditya Khosla}, \bibinfo{person}{Michael~S. Bernstein},
+  \bibinfo{person}{Alexander~C. Berg}, {and} \bibinfo{person}{Li Fei-Fei}.}
+  \bibinfo{year}{2015}\natexlab{}.
+\newblock \showarticletitle{ImageNet Large Scale Visual Recognition Challenge}.
+\newblock \bibinfo{journal}{\emph{International Journal of Computer Vision}}
+  \bibinfo{volume}{115} (\bibinfo{year}{2015}), \bibinfo{pages}{211--252}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Salisbury, Kamar, and Morris}{Salisbury
+  et~al\mbox{.}}{2017}]%
+        {Salisbury2017TowardSS}
+\bibfield{author}{\bibinfo{person}{Elliot Salisbury}, \bibinfo{person}{Ece
+  Kamar}, {and} \bibinfo{person}{Meredith~Ringel Morris}.}
+  \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Toward Scalable Social Alt Text: Conversational
+  Crowdsourcing as a Tool for Refining Vision-to-Language Technology for the
+  Blind}. In \bibinfo{booktitle}{\emph{HCOMP}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Sharma, Ding, Goodman, and Soricut}{Sharma
+  et~al\mbox{.}}{2018}]%
+        {Sharma2018ConceptualCA}
+\bibfield{author}{\bibinfo{person}{Piyush Sharma}, \bibinfo{person}{Nan Ding},
+  \bibinfo{person}{Sebastian Goodman}, {and} \bibinfo{person}{Radu Soricut}.}
+  \bibinfo{year}{2018}\natexlab{}.
+\newblock \showarticletitle{Conceptual Captions: A Cleaned, Hypernymed, Image
+  Alt-text Dataset For Automatic Image Captioning}. In
+  \bibinfo{booktitle}{\emph{ACL}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Siegel, Horvitz, Levin, Divvala, and
+  Farhadi}{Siegel et~al\mbox{.}}{2016}]%
+        {Siegel2016FigureSeerPR}
+\bibfield{author}{\bibinfo{person}{Noah Siegel}, \bibinfo{person}{Zachary
+  Horvitz}, \bibinfo{person}{Roie Levin}, \bibinfo{person}{Santosh~Kumar
+  Divvala}, {and} \bibinfo{person}{Ali Farhadi}.}
+  \bibinfo{year}{2016}\natexlab{}.
+\newblock \showarticletitle{FigureSeer: Parsing Result-Figures in Research
+  Papers}. In \bibinfo{booktitle}{\emph{ECCV}}.
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Stangl, Morris, and Gurari}{Stangl
+  et~al\mbox{.}}{2020}]%
+        {stangl-what-want}
+\bibfield{author}{\bibinfo{person}{Abigale Stangl},
+  \bibinfo{person}{Meredith~Ringel Morris}, {and} \bibinfo{person}{Danna
+  Gurari}.} \bibinfo{year}{2020}\natexlab{}.
+\newblock \bibinfo{booktitle}{\emph{"Person, Shoes, Tree. Is the Person Naked?"
+  What People with Vision Impairments Want in Image Descriptions}}.
+\newblock \bibinfo{publisher}{Association for Computing Machinery},
+  \bibinfo{address}{New York, NY, USA}, \bibinfo{pages}{1–13}.
+\newblock
+\showISBNx{9781450367080}
+\urldef\tempurl%
+\url{https://doi.org/10.1145/3313831.3376404}
+\showURL{%
+\tempurl}
+
+
+\bibitem[\protect\citeauthoryear{Wang, Cachola, Bragg, Cheng, Haupt, Latzke,
+  Kuehl, van Zuylen, Wagner, and Weld}{Wang et~al\mbox{.}}{2021}]%
+        {Wang2021ImprovingTA}
+\bibfield{author}{\bibinfo{person}{Lucy~Lu Wang}, \bibinfo{person}{Isabel
+  Cachola}, \bibinfo{person}{Jonathan Bragg}, \bibinfo{person}{Evie (Yu-Yen)
+  Cheng}, \bibinfo{person}{Chelsea~Hess Haupt}, \bibinfo{person}{Matt Latzke},
+  \bibinfo{person}{Bailey Kuehl}, \bibinfo{person}{Madeleine van Zuylen},
+  \bibinfo{person}{Linda~M. Wagner}, {and} \bibinfo{person}{Daniel~S. Weld}.}
+  \bibinfo{year}{2021}\natexlab{}.
+\newblock \showarticletitle{Improving the Accessibility of Scientific
+  Documents: Current State, User Needs, and a System Solution to Enhance
+  Scientific PDF Accessibility for Blind and Low Vision Users}.
+\newblock \bibinfo{journal}{\emph{ArXiv}}  \bibinfo{volume}{abs/2105.00076}
+  (\bibinfo{year}{2021}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Wu, Wieland, Farivar, and Schiller}{Wu
+  et~al\mbox{.}}{2017}]%
+        {Wu2017AutomaticAC}
+\bibfield{author}{\bibinfo{person}{Shaomei Wu}, \bibinfo{person}{Jeffrey
+  Wieland}, \bibinfo{person}{Omid Farivar}, {and} \bibinfo{person}{Julie
+  Schiller}.} \bibinfo{year}{2017}\natexlab{}.
+\newblock \showarticletitle{Automatic Alt-text: Computer-generated Image
+  Descriptions for Blind Users on a Social Network Service}.
+\newblock \bibinfo{journal}{\emph{Proceedings of the 2017 ACM Conference on
+  Computer Supported Cooperative Work and Social Computing}}
+  (\bibinfo{year}{2017}).
+\newblock
+
+
+\bibitem[\protect\citeauthoryear{Zhou, Palangi, Zhang, Hu, Corso, and Gao}{Zhou
+  et~al\mbox{.}}{2020}]%
+        {Zhou2020UnifiedVP}
+\bibfield{author}{\bibinfo{person}{Luowei Zhou}, \bibinfo{person}{Hamid
+  Palangi}, \bibinfo{person}{Lei Zhang}, \bibinfo{person}{Houdong Hu},
+  \bibinfo{person}{Jason~J. Corso}, {and} \bibinfo{person}{Jianfeng Gao}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Unified Vision-Language Pre-Training for Image
+  Captioning and VQA}.
+\newblock \bibinfo{journal}{\emph{ArXiv}}  \bibinfo{volume}{abs/1909.11059}
+  (\bibinfo{year}{2020}).
+\newblock
+
+
+\end{thebibliography}

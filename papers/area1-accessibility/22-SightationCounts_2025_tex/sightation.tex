@@ -1,0 +1,55 @@
+\section{The \textsc{Sightation} Dataset}\label{sec:sightation}
+
+\textsc{Sightation} is a BLV-specific vision-language dataset for the educational domain. It is built upon the AI2D dataset \citep{kembhavi2016diagram}: we chose this for two reasons: it contains diagrams from grade school material, requiring no specialized expertise or domain knowledge in our annotator recruiting process; diagrams pose a unique challenge to VLMs in that they often require an understanding of the rendered schematics \textit{and} the natural objects.
+
+AI2D contains 5k science diagrams, with 150k annotations, spanning OCR texts and bounding box locations, as well as 15k multiple choice questions. Of these features, we take only the diagrams, to simplify \textsc{Sightation}-like dataset construction in the future. All notation and labeling methods used in this section are summarized in a separate Table~\ref{tab:notation} to aid comprehension.
+
+\subsection{Overview}
+
+Different annotator roles can be found in Figure~\ref{fig:dimension_assignments}. There are a total of 9 aspects to be assessed, and these were inspired by various related studies. In \citet{kreiss2023contextref}, relevance and irrelevance aspects are studied to measure the image information carried in text and the inclusion of extraneous information in the text, respectively. As such, we chose to examine \textbf{Informativeness} and \textbf{Factuality} dimensions. These both require reliable visual grounding so were assigned to the sighted accordingly. We also opted for some measures to be assessed by all groups. Since brevity \citep{9555469} and diverse opinion coverage \citep{glockner-etal-2024-ambifc, nie2020can} have been pointed out as contributors to perceived quality, we chose to incorporate them as the \textbf{Succinctness} and the \textbf{Diversity} aspects, both of which are assessable with text comprehension alone. Following \citet{tang2023vistext}, we split the use cases for the usefulness measure along typical vision-language comprehension tasks common in the classroom: \textbf{Useful-Sum} (summarization), \textbf{Useful-MCQ} (multiple-choice questions), and \textbf{Useful-OEQ} (open-ended questions). These were assigned to the BLV educators, adept at teaching and knowledgeable in accessibility needs. A general usefulness measure \textbf{Useful-Gen} was assigned to the sighted educators to probe their estimate of BLV needs. Finally, a categorical variable, \textbf{Nature}, was assigned to the BLV educators to ask for their opinion on how interpretive the text appears.
+
+These different subsets were assigned to pursue a synergistic interplay between varying visual abilities, teaching experience, and accessibility requirements. The sighted general group, shown on the left in Figure~\ref{fig:main_visual} ensures that the diagram \textit{content} is well-conveyed in the description. Sighted educators, shown on the top right of Figure~\ref{fig:main_visual} validate the general group's assessment whilst also rating the general usefulness of the description to BLV users. Finally, the text-based assessment by BLV educators, shown on the bottom right in the same figure, gauges the alignment of \textsc{Sightation}-tuned descriptions with BLV preferences. A more detailed description of the annotation tasks is in Section~\ref{sec:annot} for the sighted general group and in Section~\ref{sec:pros} for the sighted and BLV.
+
+\subsection{Guided Generation with Latent Supervision}\label{sec:guide}
+
+Previous work \citep{9555469} has shown that crowdsourced data visualization descriptions written by sighted crowdworkers were not equally useful to the BLV groups as they were to the sighted, in terms of describing low-level numerical elements or high-level insights such as subjective commentary. Building on this, we hypothesized that the key to generating a description that is useful to BLV individuals lies not only in \textit{what} is seen but also in \textit{how} the perceived information is articulated. We hypothesized that introducing auxiliary data such as plausible question-answer pairs, would have a good effect as they assist the description generator with understanding which parts are critical and which are less so.
+
+In implementing this idea, we incorporated a two-pass guided generation process. The first inference pass is to create the guide, which is a VLM-generated set of question-answer pairs in response to an input diagram. We carefully examine the quality of the question and answer pairs we have generated and, in the Appendix \ref{app:gqa}, provide a more in-depth analysis of how these pairs differ from those originally included in the AI2D dataset. Then, the second pass generates the diagram description in response to the input diagram \textit{and} the guided generation prompt, as shown on the leftmost part of Figure~\ref{fig:main_visual}. 
+
+We applied this generation process with two models: \textsc{GPT-4o mini} and \textsc{Qwen2-VL} 72B model, producing four descriptions for each of the 5k diagrams in the AI2D dataset. The working dataset thus contains 20k descriptions.
+
+\subsection{Annotation Tasks}\label{sec:annot}
+
+1k images were randomly sampled from the working dataset. They were then paired with their respective descriptions generated by \textsc{GPT-4o mini} ($\textbf{Desc}_{}^{\texttt{g}}$ and $\textbf{Desc}_{\texttt{++}}^{\texttt{g}}$) and descriptions generated by \textsc{Qwen2-VL} ($\textbf{Desc}_{}^{\texttt{q}}$ and $\textbf{Desc}_{\texttt{++}}^{\texttt{q}}$) were distributed to the 30 sighted annotators, to complete three tasks: \textit{\romannumeral 1)} preference choice, \textit{\romannumeral 2)} quality rating, and \textit{\romannumeral 3)} best sentence choice. The 1k tuples were partitioned into 10, so that 3 participants perform the annotation on a shared total of 100 tuples.
+
+First, annotators were asked to select pairwise preferred descriptions: one from the GPT pair and the other from the Qwen pair. Second, for all four diagram descriptions, they were asked to rate the description quality across the 4 aspects assigned to them, as in Figure~\ref{fig:dimension_assignments}, on a 5-point Likert scale.
+
+Lastly, they were asked to pick the best-contributing sentence from each of the four diagram descriptions. Sample screenshots of the annotation interface, along with the annotation guidelines, are provided in Appendix~\ref{app:guidelines}.
+
+The total number of annotations is 11,804, spanning 998 diagrams and 3,992 descriptions. Further statistics and post-processing steps are found in Appendix~\ref{app:ann_detail}.
+
+
+\subsection{Dataset Construction}
+In this section, we describe how the annotated tuples are processed for various downstream tasks.
+
+\subsubsection{Chat Completion} % -> corresponds to role as completions (e.g., SFT) dataset
+
+\textsc{SightationCompletions} contains instruction-response pairs from two sets: \textit{\romannumeral 1)} all the 4k human-annotated descriptions over 1k images, with the base instruction in Appendix~\ref{app:prompts} and \textit{\romannumeral 2)} the top 25\% highly rated descriptions for each of the 4 aspects annotated. For the latter subset, we augment the base instruction to pair responses that were of high quality in some aspect. We append an aspect-specific suffix outlining the desired quality according to our annotation guidelines in Appendix~\ref{app:guidelines}. For instance, the aspect suffix for the factuality dimension is: ``When generating the diagram description, pay close attention to making it factual. A highly factual description delivers only the facts that are grounded in the diagram.''
+
+With the former set consisting of 4k (diagram, base prompt, description) samples and the latter set consisting of 1k (diagram, augmented prompt, description) samples per aspect, our completions dataset totals 8k samples. 
+
+\subsubsection{Preference Alignment} % -> '' to role as DPO (*PO) dataset
+
+\textsc{SightationPreference} also proceeds from the 4k diagram-description pairs, consisting of 4 descriptions for every image. From these 4, we take the 6 possible pairwise combinations and label ``chosen'' and ``rejected'' to each contender in the pairwise comparisons as follows.
+\paragraph{In-model Contenders}
+Within each of the 2 same-model comparisons, (\textit{e.g.}, $\textbf{Desc}^{\texttt{g}}_{}$ versus $\textbf{Desc}^{\texttt{g}}_{\texttt{++}}$) we directly take the $\textbf{Preference}^{model}$ annotation to assign ``chosen'' and ``rejected''. This assignment results in 2 \texttimes~1k = 2k chosen-rejected preference pairs.
+\paragraph{Cross-model Contenders}
+Within each of the 4 cross-model comparisons, (\textit{e.g.}, $\textbf{Desc}^{\texttt{g}}_{\texttt{++}}$ versus $\textbf{Desc}^{\texttt{q}}_{}$), we averaged the rating scores per contender and assigned\footnote{Ties are technically possible, but the collected annotations did not contain any.}  ``chosen'' to the ratings winner. This assignment results in 4 \texttimes~1k = 4k preference pairs.
+\paragraph{Synthetic Contenders}
+Additionally, we synthesized an inferior (``rejected'') variant of a description by removing its best sentence. To account for the reduced length, we remove a random non-best sentence from the original description and label this variant ``chosen''. This assignment results in 4 \texttimes~1k = 4k preference pairs per annotator. A maximum of three annotators evaluated the same sample, so the preference pairs total 12k. After deduplicating (\textit{e.g.}, annotators selecting the same sentence as the best sentence), we have 10k preference pairs.
+
+Putting together the in-model (2k), cross-model (4k), and synthetic (10k) contenders and their respective labels, \textsc{SightationPreference} spans 16k pairs.
+
+\subsubsection{Retrieval}         % -> '' to role as retrieval dataset
+
+Each row in \textsc{SightationRetrieval} contains an image as a retrieval query, accompanied by the top 1, top 5, and top 10 descriptions as the positives, as well as 10 hard negatives. This set contains 1k rows, with a potential well beyond that number. For instance, more than 63 million unique combinations can be derived utilizing 5 random samples from the 10 positives and 5 random samples from the 10 negatives. Further details can be found in Appendix~\ref{app:retrieval}. 

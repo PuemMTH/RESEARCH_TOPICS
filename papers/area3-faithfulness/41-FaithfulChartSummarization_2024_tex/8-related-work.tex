@@ -1,0 +1,15 @@
+\section{Related work}
+
+\paragraph{Limits of reference-based metrics} have been explored for text summarization tasks and different solutions have been proposed to address them.
+\citet{scialom-etal-2019-answers, scialom-etal-2021-questeval, fabbri-etal-2022-qafacteval} use question generation pipelines to evaluate the faithfulness of summaries without relying on references.
+\citet{spice} study the use of intermediate dependency parse trees to rate natural image captions. 
+For semi-structured data such as table-to-summary generation, PARENT~\cite{dhingra-etal-2019-handling} demonstrates the limitation of BLEU as it do not highlight the key knowledge from the table, whereas \citet{opitz-frank-2021-towards} focuses on generating text from abstract meaning representations. 
+\citet{gehrmann2022tata} observed the poor correlation of BLEURT-20 to human ratings and proposed STATA, a learned metric using human annotation.
+
+In this work we explore building a reference-free metric for chart summary that does not require human-annotated references. We show that our metric \metric has much higher correlation with human judgment than reference-based metrics such as BLEU.
+
+\paragraph{Chart-to-summary generation} has recently gained relevance within multimodal NLP.
+\citet{obeid-hoque-2020-chart} created the Chart-to-Text dataset, using charts extracted from Statista. \citet{kantharaj-etal-2022-chart} extended it with more examples from Statista and Pew Research.
+Besides efforts on evaluation, multiple modeling methods have been proposed to reduce hallucinations. The approaches can be roughly divided into (1) pipeline-based methods which first extract chart components (e.g. data, title, axis, etc.) using OCR then leverage text-based models to further summarize the extracted information \citet{kantharaj-etal-2022-chart, choi2019visualizing}; (2) end-to-end models which directly input chart-attribute embeddings to Transformer-based models for enabling structured understanding of charts \cite{obeid-hoque-2020-chart}. 
+
+In this work we explored both (1) and (2). The best approach \pipeline{} generally follows the idea of (1). Instead of relying on OCR we use a de-rendering model for extracting structured information in charts and we explore a self-critiquing pipeline with LLMs for the best quality chart summarization. 

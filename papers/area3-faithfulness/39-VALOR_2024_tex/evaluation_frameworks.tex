@@ -1,0 +1,31 @@
+\begin{table*}[ht]
+\small
+\centering
+\setlength{\tabcolsep}{3mm}{
+\scalebox{0.93}{
+\begin{tabular}{lccccccc}
+\toprule
+ \textbf{Evaluation} &\multicolumn{3}{c}{\textbf{Hallucination Type}}&\textbf{Human} & \multirow{2}{*}{\textbf{Faithfulness}} & \multirow{2}{*}{\textbf{Coverage}} & \textbf{Open Vocab.} \\
+  \cmidrule(lr){2-4}  
+ \textbf{Method} & \textbf{\textit{Object}} & \textbf{\textit{Attribute}} & \textbf{\textit{Relation}}  &\textbf{Annotation} &&& \textbf{Generation} \\
+\midrule
+POPE & \cmark & \xmark & \xmark & \xmark & \cmark & \xmark & \xmark\\
+HaELM &\cmark &\textbf{?} &\textbf{?} & \xmark & \cmark & \xmark & \cmark\\ 
+HallusionBench &\cmark &\textbf{?} &\textbf{?}  & \cmark  & \cmark & \xmark & \xmark \\ 
+Halle-Switch &\cmark & \xmark&\xmark&\xmark & \cmark & \cmark & \cmark\\
+NOPE &\cmark & \xmark&\xmark&\xmark  & \cmark & \xmark & \xmark \\
+Bingo & \textbf{?} &\textbf{?}  &\textbf{?} &\textbf{?}  & \cmark & \xmark & \xmark  \\ 
+FaithScore & \cmark &\cmark &\cmark &\xmark & \cmark & \xmark & \cmark \\
+AMBER & \cmark& \cmark & \cmark& \cmark   & \cmark & \cmark & \xmark  \\
+MERLIM & \cmark & \xmark &\xmark & \xmark & \cmark & \xmark & \xmark \\
+\colorgray \textbf{Ours (\eval~)} & \colorgray \cmark & \colorgray \cmark & \colorgray \cmark & \colorgray \cmark & \colorgray  \cmark & \colorgray  \cmark &\colorgray  \cmark  \\
+
+\bottomrule
+\end{tabular}
+}
+}
+\vspace{-3mm}
+\caption{Comparison of existing hallucination evaluation benchmarks for LVLMs, including POPE \cite{li-etal-2023-evaluating}, HaELM \cite{Wang2023EvaluationAA}, HallusionBench \cite{guan2023hallusionbench}, Halle-Switch \cite{Zhai2023HallESwitchRA}, NOPE \cite{Lovenia2023NegativeOP}, Bingo \cite{cui2023holistic}, FaithScore \cite{faithscore}, AMBER \cite{wang2023llm}, MERLIM \cite{Villa2023BehindTM}. \textbf{?} refers to features not explicitly mentioned in the paper. Open Vocab represents evaluating free-form generated captions without constraints to pre-defined vocabulary.}
+\vspace{-4mm}
+\label{tab:evaluation_frameworks}
+\end{table*}
