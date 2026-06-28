@@ -1,0 +1,9 @@
+[project]
+name = "typhoon-chat"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi==0.138.0",
+    "uvicorn[standard]>=0.49.0",
+    "httpx>=0.27.0",
+]
